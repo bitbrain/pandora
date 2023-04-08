@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://djamw8wer3dlw"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/editor/PandoraEditor.gd" id="1_bowve"]
+[ext_resource type="PackedScene" uid="uid://bycll8sv8mu50" path="res://addons/pandora/ui/editor/item/ItemTabUI.tscn" id="2_firs2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_le11k"]
+
+[node name="PandoraEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bowve")
+editor_tab_bg = SubResource("StyleBoxFlat_le11k")
+
+[node name="Tabs" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="Items" parent="Tabs" instance=ExtResource("2_firs2")]
+layout_mode = 2

@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://jhsu1m4qy5jk"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/SearchableTable/SearchableTable.gd" id="1_y8v8x"]
+
+[node name="SearchableTable" type="VBoxContainer"]
+offset_right = 256.0
+offset_bottom = 74.0
+size_flags_horizontal = 0
+script = ExtResource("1_y8v8x")
+
+[node name="CreateButton" type="Button" parent="."]
+layout_mode = 2
+text = "Add new element"
+
+[node name="SearchEdit" type="TextEdit" parent="."]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 0
+placeholder_text = "Search..."
+
+[node name="Elements" type="ItemList" parent="."]
+layout_mode = 2

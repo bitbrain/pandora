@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://bycll8sv8mu50"]
+
+[ext_resource type="PackedScene" uid="uid://gkwpjaeobhtc" path="res://addons/pandora/ui/components/SearchableTable/SearchableTable.tscn" id="1_emv4g"]
+[ext_resource type="PackedScene" uid="uid://b24cdbcskjrni" path="res://addons/pandora/ui/components/PandoraDetails/PandoraDetails.tscn" id="2_ribgd"]
+
+[node name="ItemTabUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemSearchTable" parent="HBoxContainer" instance=ExtResource("1_emv4g")]
+layout_mode = 2
+
+[node name="PandoraDetails" parent="HBoxContainer" instance=ExtResource("2_ribgd")]
+layout_mode = 2
+size_flags_horizontal = 3
