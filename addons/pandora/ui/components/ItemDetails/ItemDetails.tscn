@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://deu8lxkftpwr0" path="res://addons/pandora/icons/pandora-icon.svg" id="1_uo6my"]
 [ext_resource type="PackedScene" uid="uid://xm1wjeqa0sam" path="res://addons/pandora/ui/components/TextureSceneSelector/TextureSceneSelector.tscn" id="2_a2a5w"]
 
-[node name="PandoraDetails" type="VBoxContainer"]
+[node name="ItemDetails" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,27 +25,16 @@ text = "Node name"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 2
-columns = 4
-
-[node name="IconPathLabel" type="Label" parent="GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Description
-"
-
-[node name="TextureSceneSelector" parent="GridContainer" instance=ExtResource("2_a2a5w")]
-layout_mode = 2
-
-[node name="DescriptionLabel" type="Label" parent="GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Description
-"
-
-[node name="DescriptionEdit" type="LineEdit" parent="GridContainer"]
+[node name="DescriptionEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Description"
+
+[node name="IconPathLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Icon path"
+
+[node name="TextureSceneSelector" parent="." instance=ExtResource("2_a2a5w")]
+layout_mode = 2

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://gkwpjaeobhtc"]
+[gd_scene load_steps=3 format=3 uid="uid://gkwpjaeobhtc"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/SearchableTable/SearchableTable.gd" id="1_y8v8x"]
+[ext_resource type="PackedScene" uid="uid://o3b6lxyspwq4" path="res://addons/pandora/ui/components/SearchableTable/SearchTableEntry.tscn" id="2_fbl4k"]
 
 [node name="SearchableTable" type="VBoxContainer"]
 custom_minimum_size = Vector2(400, 0)
@@ -11,7 +12,7 @@ script = ExtResource("1_y8v8x")
 
 [node name="CreateButton" type="Button" parent="."]
 layout_mode = 2
-text = "Add new element"
+text = "Create item"
 
 [node name="SearchEdit" type="TextEdit" parent="."]
 custom_minimum_size = Vector2(0, 60)
@@ -20,4 +21,13 @@ size_flags_vertical = 0
 placeholder_text = "Search..."
 
 [node name="Elements" type="GridContainer" parent="."]
+layout_mode = 2
+
+[node name="SearchTableEntry" parent="Elements" instance=ExtResource("2_fbl4k")]
+layout_mode = 2
+
+[node name="SearchTableEntry2" parent="Elements" instance=ExtResource("2_fbl4k")]
+layout_mode = 2
+
+[node name="SearchTableEntry3" parent="Elements" instance=ExtResource("2_fbl4k")]
 layout_mode = 2

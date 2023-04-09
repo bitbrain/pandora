@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bycll8sv8mu50"]
+[gd_scene load_steps=3 format=3 uid="uid://c0webxcwhj8qg"]
 
 [ext_resource type="PackedScene" uid="uid://gkwpjaeobhtc" path="res://addons/pandora/ui/components/SearchableTable/SearchableTable.tscn" id="1_emv4g"]
-[ext_resource type="PackedScene" uid="uid://b24cdbcskjrni" path="res://addons/pandora/ui/components/PandoraDetails/PandoraDetails.tscn" id="2_ribgd"]
+[ext_resource type="PackedScene" uid="uid://b24cdbcskjrni" path="res://addons/pandora/ui/components/ItemDetails/ItemDetails.tscn" id="2_qhvkl"]
 
 [node name="ItemTabUI" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
@@ -12,14 +17,25 @@ layout_mode = 2
 text = "Items define collectable things in a game and can be categorized into categories."
 
 [node name="Label" type="Label" parent="Label"]
+layout_mode = 0
 text = "Items define collectable things in a game and can be categorized into categories."
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="ItemSearchTable" parent="HBoxContainer" instance=ExtResource("1_emv4g")]
 layout_mode = 2
 
-[node name="PandoraDetails" parent="HBoxContainer" instance=ExtResource("2_ribgd")]
+[node name="ItemDetails" parent="HBoxContainer" instance=ExtResource("2_qhvkl")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Create an item first to get started!"
