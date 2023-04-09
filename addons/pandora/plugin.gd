@@ -12,6 +12,7 @@ func _init() -> void:
 
 
 func _enter_tree() -> void:
+	add_autoload_singleton("Pandora", "res://addons/pandora/PandoraSingleton.tscn")
 	editor_view = PandoraEditor.instantiate()
 	editor_view.plugin_reference = self
 	editor_view.hide()

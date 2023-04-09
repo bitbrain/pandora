@@ -15,6 +15,10 @@ run/main_scene="res://TestScene.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Pandora="*res://addons/pandora/PandoraSingleton.tscn"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/pandora/plugin.cfg")

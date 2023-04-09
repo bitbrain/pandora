@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://jhsu1m4qy5jk"]
+[gd_scene load_steps=2 format=3 uid="uid://gkwpjaeobhtc"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/SearchableTable/SearchableTable.gd" id="1_y8v8x"]
 
 [node name="SearchableTable" type="VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
 offset_right = 256.0
 offset_bottom = 74.0
 size_flags_horizontal = 0
@@ -18,5 +19,5 @@ layout_mode = 2
 size_flags_vertical = 0
 placeholder_text = "Search..."
 
-[node name="Elements" type="ItemList" parent="."]
+[node name="Elements" type="GridContainer" parent="."]
 layout_mode = 2

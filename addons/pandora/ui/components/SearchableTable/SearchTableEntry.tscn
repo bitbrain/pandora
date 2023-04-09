@@ -2,12 +2,21 @@
 
 [ext_resource type="Texture2D" uid="uid://deu8lxkftpwr0" path="res://addons/pandora/icons/pandora-icon.svg" id="1_pkxxk"]
 
-[node name="SearchTableEntry" type="HBoxContainer"]
+[node name="SearchTableEntry" type="MarginContainer"]
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("1_pkxxk")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Item Name"
