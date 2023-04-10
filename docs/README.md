@@ -1,4 +1,4 @@
-![logo](docs/assets/logo.svg)
+![logo](assets/logo.svg)
 
 [![pandora-ci](https://github.com/bitbrain/pandora/actions/workflows/pandora-ci.yml/badge.svg)](https://github.com/bitbrain/pandora/actions/workflows/pandora-ci.yml) [![](https://img.shields.io/discord/785246324793540608.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/CKBuE5djXe)
 

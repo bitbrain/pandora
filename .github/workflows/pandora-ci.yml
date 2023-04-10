@@ -1,4 +1,4 @@
-name: beehave-ci
+name: pandora-ci
 
 on:
   push:
