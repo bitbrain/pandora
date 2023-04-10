@@ -19,7 +19,8 @@ config/icon="res://icon.png"
 [autoload]
 
 Pandora="*res://addons/pandora/PandoraSingleton.tscn"
+PandoraSettings="*res://addons/pandora/settings/PandoraSettings.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/pandora/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/pandora/plugin.cfg")

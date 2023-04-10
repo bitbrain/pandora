@@ -1,14 +1,16 @@
 @tool
 extends VBoxContainer
 
-@onready var create_button = $CreateButton
+const SearchEntry = preload("res://addons/pandora/ui/components/SearchableTable/SearchTableEntry.tscn")
+
+@onready var add_new_item = %AddNewItem
 @onready var search_edit = $SearchEdit
-@onready var elements = $Elements
+@onready var elements = %Elements
 
 func _ready() -> void:
-	pass
+	add_new_item.text_submitted.connect(_add_new_item)
 	
-# How to ideally populate the table?
-# We need to sync items in this list somehow
-# Maybe hard refresh instead every time an entry
-# has been modified?
+func _add_new_item(name:String) -> void:
+	var item = Pandora.get_item_server().create_item(name)
+	var entry = SearchEntry.instantiate()
+	elements.add_child(entry)
