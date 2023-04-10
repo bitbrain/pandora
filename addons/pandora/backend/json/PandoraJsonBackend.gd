@@ -100,13 +100,13 @@ func _get_cache_area_from_id(id:String) -> String:
 
 
 func _get_cache_area(identifiable:PandoraIdentifiable) -> String:
-	if identifiable is Item:
+	if identifiable is PandoraItem:
 		return FILE_NAME_ITEM
-	if identifiable is ItemInstance:
+	if identifiable is PandoraItemInstance:
 		return FILE_NAME_ITEM_INSTANCES
-	if identifiable is ItemCategory:
+	if identifiable is PandoraItemCategory:
 		return FILE_NAME_ITEM_CATEGORIES
-	if identifiable is Inventory:
+	if identifiable is PandoraInventory:
 		return FILE_NAME_INVENTORIES
 	return ""
 

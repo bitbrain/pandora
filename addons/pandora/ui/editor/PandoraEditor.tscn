@@ -1,21 +1,25 @@
 [gd_scene load_steps=5 format=3 uid="uid://djamw8wer3dlw"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/PandoraEditor.gd" id="1_bowve"]
-[ext_resource type="PackedScene" uid="uid://bycll8sv8mu50" path="res://addons/pandora/ui/editor/item/ItemTabUI.tscn" id="2_firs2"]
+[ext_resource type="PackedScene" uid="uid://c0webxcwhj8qg" path="res://addons/pandora/ui/editor/item/ItemTabUI.tscn" id="2_firs2"]
 [ext_resource type="PackedScene" uid="uid://dm6b2tlb785r5" path="res://addons/pandora/ui/editor/settings/SettingsUI.tscn" id="3_fwp5x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_le11k"]
 
-[node name="PandoraEditor" type="Control"]
-layout_mode = 3
-anchors_preset = 0
+[node name="PandoraEditor" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_bowve")
 editor_tab_bg = SubResource("StyleBoxFlat_le11k")
 
 [node name="Tabs" type="TabContainer" parent="."]
 layout_mode = 2
-offset_right = 1081.0
-offset_bottom = 130.0
+size_flags_vertical = 3
 drag_to_rearrange_enabled = true
 
 [node name="Items" parent="Tabs" instance=ExtResource("2_firs2")]

@@ -1,1 +1,1 @@
-class_name Inventory extends PandoraIdentifiable
+class_name PandoraInventory extends PandoraIdentifiable

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0webxcwhj8qg"]
+[gd_scene load_steps=4 format=3 uid="uid://c0webxcwhj8qg"]
 
 [ext_resource type="PackedScene" uid="uid://gkwpjaeobhtc" path="res://addons/pandora/ui/components/SearchableTable/SearchableTable.tscn" id="1_emv4g"]
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/item/ItemTabUI.gd" id="1_t2ta0"]
+[ext_resource type="PackedScene" uid="uid://lytekvsfxqud" path="res://addons/pandora/ui/components/IdentifiableDetails/IdentifiableDetailsUI.tscn" id="3_s7k3x"]
 
 [node name="ItemTabUI" type="VBoxContainer"]
 anchors_preset = 15
@@ -10,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 3
 script = ExtResource("1_t2ta0")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
@@ -30,5 +31,9 @@ size_flags_vertical = 3
 
 [node name="ItemSearchTable" parent="HBoxContainer" instance=ExtResource("1_emv4g")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="IdentifiableDetails" parent="HBoxContainer" instance=ExtResource("3_s7k3x")]
 layout_mode = 2
 size_flags_horizontal = 3
