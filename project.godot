@@ -22,4 +22,4 @@ Pandora="*res://addons/pandora/PandoraSingleton.tscn"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/pandora/plugin.cfg")
+enabled=PackedStringArray("res://addons/pandora/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
