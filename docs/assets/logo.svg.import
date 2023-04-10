@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mo2k0ppv1f48"
-path="res://.godot/imported/pandora-icon.svg-32440ea7d526187438f368f7b3906fad.ctex"
+uid="uid://cjqnk0xjuxycs"
+path="res://.godot/imported/logo.svg-48f05d8b28da37021a80acdaebd36ffe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/pandora/icons/pandora-icon.svg"
-dest_files=["res://.godot/imported/pandora-icon.svg-32440ea7d526187438f368f7b3906fad.ctex"]
+source_file="res://docs/assets/logo.svg"
+dest_files=["res://.godot/imported/logo.svg-48f05d8b28da37021a80acdaebd36ffe.ctex"]
 
 [params]
 

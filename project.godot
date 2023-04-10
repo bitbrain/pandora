@@ -13,7 +13,8 @@ config_version=5
 config/name="Pandora"
 run/main_scene="res://TestScene.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/image="res://splash.png"
+config/icon="res://icon.png"
 
 [autoload]
 
