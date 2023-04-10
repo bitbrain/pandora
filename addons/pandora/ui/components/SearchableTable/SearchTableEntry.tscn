@@ -1,22 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://o3b6lxyspwq4"]
+[gd_scene load_steps=3 format=3 uid="uid://o3b6lxyspwq4"]
 
-[ext_resource type="Texture2D" uid="uid://deu8lxkftpwr0" path="res://addons/pandora/icons/pandora-icon.svg" id="1_pkxxk"]
+[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="1_pkxxk"]
+[ext_resource type="Script" path="res://addons/pandora/ui/components/SearchableTable/SearchTableEntry.gd" id="1_wgatw"]
 
-[node name="SearchTableEntry" type="MarginContainer"]
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+[node name="SearchTableEntry" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 33.0
+grow_horizontal = 2
+size_flags_vertical = 3
+script = ExtResource("1_wgatw")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+[node name="Icon" type="TextureRect" parent="."]
 layout_mode = 2
 texture = ExtResource("1_pkxxk")
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="CenterContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Item Name"
+
+[node name="NameEdit" type="LineEdit" parent="CenterContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "noname"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 5
+
+[node name="NameLabel" type="Label" parent="CenterContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "noname"
