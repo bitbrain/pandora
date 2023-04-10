@@ -29,5 +29,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ItemSearchTable" parent="HBoxContainer" instance=ExtResource("1_emv4g")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

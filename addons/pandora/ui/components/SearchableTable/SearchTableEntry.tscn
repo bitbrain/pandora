@@ -12,30 +12,17 @@ size_flags_vertical = 3
 script = ExtResource("1_wgatw")
 
 [node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("1_pkxxk")
 
-[node name="CenterContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="NameEdit" type="LineEdit" parent="CenterContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "noname"
-caret_blink = true
-caret_blink_interval = 0.5
-
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 5
-
-[node name="NameLabel" type="Label" parent="CenterContainer/MarginContainer"]
+[node name="NameLabel" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 1
+size_flags_horizontal = 0
 text = "noname"
+vertical_alignment = 1
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
