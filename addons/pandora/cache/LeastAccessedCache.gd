@@ -50,7 +50,7 @@ func set_entry(key: String, value: PandoraIdentifiable, data_type: String, send_
 		_data[data_type][key] = value
 		_access_times[data_type][key] = Time.get_unix_time_from_system()
 		if send_signal:
-			entry_created.emit(data_type, key, value)
+			entry_updated.emit(data_type, key, value)
 
 
 func delete_entry(key: String, data_type: String) -> void:

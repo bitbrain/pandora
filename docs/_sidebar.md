@@ -1,2 +1,6 @@
 * [💎 Getting started](/)
+* [🏹 Items](/items/)
+* [🧠 Advanced concepts](/advanced/)
+  * [💾 Caching](/advanced/caching/)
+  * [📦 Data Backend](/advanced/data-backend/)
 * [🍻 Contribute](/contribute.md)

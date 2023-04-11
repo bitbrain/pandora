@@ -6,18 +6,13 @@ extends Node
 @onready var _context_manager:PandoraContextManager = $PandoraContextManager
 
 
-var static_cache : PandoraCache
-var dynamic_cache : PandoraCache
-var static_data_sync : PandoraDataSyncer
-var dynamic_data_sync : PandoraDataSyncer
+var static_cache : PandoraCache = PandoraLeastAccessedCache.new(PandoraSettings.get_static_cache_size())
+var dynamic_cache : PandoraCache = PandoraLeastAccessedCache.new(PandoraSettings.get_dynamic_cache_size())
+var static_data_sync : PandoraDataSyncer = PandoraDataSyncer.new(static_cache, PandoraSettings.get_static_backend())
+var dynamic_data_sync : PandoraDataSyncer =  PandoraDataSyncer.new(dynamic_cache, PandoraSettings.get_dynamic_backend())
 
 
 func _ready() -> void:
-	self.static_cache = PandoraLeastAccessedCache.new(PandoraSettings.get_static_cache_size())
-	self.dynamic_cache = PandoraLeastAccessedCache.new(PandoraSettings.get_dynamic_cache_size())
-	self.static_data_sync = PandoraDataSyncer.new(static_cache, PandoraSettings.get_static_backend())
-	self.dynamic_data_sync = PandoraDataSyncer.new(dynamic_cache, PandoraSettings.get_dynamic_backend())
-	
 	_item_server.static_cache = self.static_cache
 	_item_server.dynamic_cache = self.dynamic_cache
 

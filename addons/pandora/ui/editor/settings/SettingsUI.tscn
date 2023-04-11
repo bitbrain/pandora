@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dm6b2tlb785r5"]
 
-[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="1_dvbw0"]
+[ext_resource type="Script" path="res://addons/pandora/ui/editor/settings/SettingsUI.gd" id="1_xfbes"]
 
 [node name="SettingsUI" type="VBoxContainer"]
 anchors_preset = 15
@@ -8,6 +8,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xfbes")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 layout_mode = 2
@@ -21,15 +22,11 @@ text = "Data Backend
 [node name="HBoxContainer" type="HBoxContainer" parent="GridContainer"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="GridContainer/HBoxContainer"]
+[node name="AvailableBackends" type="OptionButton" parent="GridContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-item_count = 1
-selected = 0
-popup/item_0/text = "Pandora JSON"
-popup/item_0/icon = ExtResource("1_dvbw0")
-popup/item_0/id = 0
 
-[node name="Button" type="Button" parent="GridContainer/HBoxContainer"]
+[node name="RegisterNewBackend" type="Button" parent="GridContainer/HBoxContainer"]
 layout_mode = 2
 disabled = true
 text = "Register custom backend (coming soon)

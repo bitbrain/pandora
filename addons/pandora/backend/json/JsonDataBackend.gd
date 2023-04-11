@@ -7,6 +7,15 @@ const ICON = preload("res://addons/pandora/icons/pandora-json-icon.svg")
 var data_directory: String = "user://pandora"
 
 
+func get_backend_name() -> String:
+	return "Pandora JSON"
+	
+func get_backend_description() -> String:
+	return "Stores data via json at the data_directory provided."
+
+func get_backend_icon() -> Texture:
+	return ICON
+
 func _init(data_dir: String):
 	data_directory = data_dir
 

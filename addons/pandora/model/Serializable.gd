@@ -1,4 +1,4 @@
-class_name PandoraSerializable extends RefCounted
+class_name PandoraSerializable extends Resource
 
 
 static func get_data_type() -> String:
