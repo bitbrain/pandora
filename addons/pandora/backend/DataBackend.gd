@@ -19,21 +19,9 @@ func get_backend_icon() -> Texture:
 	return DEFAULT_ICON
 
 
-func create_all_data(data_type: String, data: Array[Dictionary], context_id: String) -> Array[Dictionary]:
-	return []
+func store_all_data(data_type: String, data: Dictionary, context_id: String) -> Dictionary:
+	return {}
 
 
-func update_all_data(data_type: String, data: Array[Dictionary], context_id: String) -> void:
-	pass
-
-
-func delete_all_data(data_type: String, data_id: Array[String], context_id: String) -> void:
-	pass
-
-
-func get_data_list(data_type: String, data_ids: Array, context_id: String) -> Array:
-	return []
-
-
-func get_all_data(data_type: String, context_id: String) -> Array:
-	return []
+func get_all_data(data_type: String, context_id: String) -> Dictionary:
+	return {}

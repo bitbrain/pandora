@@ -10,7 +10,7 @@ class_name PandoraContextManager extends Node
 signal context_changed
 
 
-var _context_id: String = "default"
+var _context_id: String = ""
 
 
 func set_context_id(new_context_id: String) -> void:

@@ -8,7 +8,11 @@ func get_entry(key: String, data_type: String) -> PandoraIdentifiable:
 	return null
 
 
-func set_entry(key: String, value: PandoraIdentifiable, data_type: String) -> void:
+func get_all_entries(data_type:String) -> Array[PandoraIdentifiable]:
+	return []
+	
+
+func set_entry(key: String, value: PandoraIdentifiable, data_type: String, send_signal = true) -> void:
 	pass
 
 

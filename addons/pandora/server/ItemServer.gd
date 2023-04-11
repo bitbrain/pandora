@@ -7,6 +7,14 @@ const UUID = preload("res://addons/pandora/utils/UUID.gd")
 var static_cache: PandoraCache
 var dynamic_cache: PandoraCache
 
+
+func list_all_items() -> Array[PandoraItem]:
+	var result:Array[PandoraItem] = []
+	var cached_items = static_cache.get_all_entries(PandoraItem.get_data_type())
+	result.assign(cached_items)
+	return result
+
+
 func create_item(name: String) -> PandoraItem:
 	var item = PandoraItem.new()
 	item.name = name

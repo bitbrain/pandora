@@ -34,6 +34,11 @@ func get_context_manager() -> PandoraContextManager:
 	return _context_manager
 	
 	
-func flush(data_type:String = "") -> void:
+func flush(data_type:String) -> void:
 	dynamic_data_sync.flush(data_type)
 	static_data_sync.flush(data_type)
+	
+	
+func warm_up(data_type:String) -> void:
+	dynamic_data_sync.warm_up(data_type)
+	static_data_sync.warm_up(data_type)
