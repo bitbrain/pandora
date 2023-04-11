@@ -6,11 +6,14 @@ extends VBoxContainer
 
 func _ready() -> void:
 	save_button.pressed.connect(_save_all_data)
-	item_search_table.call_deferred("set_create_with_name_resolver", Pandora.get_item_server().create_item)
+	_setup_resolver.call_deferred()
 	item_search_table.on_selected.connect(_item_selected)
 
 func _item_selected(id:String) -> void:
 	print("Item selected:", id)
 	
 func _save_all_data() -> void:
-	Pandora.get_item_server().flush()
+	Pandora.flush(PandoraItem.get_data_type())
+
+func _setup_resolver() -> void:
+	item_search_table.set_create_with_name_resolver(Pandora.get_item_server().create_item)

@@ -1,6 +1,7 @@
 ## Stores the pandora context. The context influences
 ## where user data will be stored. Change the context id
 ## to ensure custom save games for example.
+@tool
 class_name PandoraContextManager extends Node
 
 

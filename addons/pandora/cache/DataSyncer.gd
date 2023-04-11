@@ -3,7 +3,6 @@ class_name PandoraDataSyncer extends RefCounted
 
 var _cache: PandoraCache
 var _backend: PandoraDataBackend
-# TODO implement me
 # DataType -> Array[PandoraIdentifiable]
 var _create_back_buffer: Dictionary = {}
 var _update_back_buffer: Dictionary = {}
@@ -20,19 +19,22 @@ func _init(cache: PandoraCache, backend: PandoraDataBackend):
 
 func _on_entry_created(data_type:String, key:String, data:PandoraIdentifiable) -> void:
 	if not data_type in _create_back_buffer:
-		_create_back_buffer[data_type] = []
+		var empty_array:Array[PandoraIdentifiable] = []
+		_create_back_buffer[data_type] = empty_array
 	_create_back_buffer[data_type].append(data)
 
 
 func _on_entry_deleted(data_type:String, key:String, data:PandoraIdentifiable) -> void:
 	if not data_type in _update_back_buffer:
-		_update_back_buffer[data_type] = []
+		var empty_array:Array[PandoraIdentifiable] = []
+		_update_back_buffer[data_type] = empty_array
 	_update_back_buffer[data_type].append(data)
 
 
 func _on_entry_updated(data_type:String, key:String, data:PandoraIdentifiable) -> void:
 	if not data_type in _delete_back_buffer:
-		_delete_back_buffer[data_type] = []
+		var empty_array:Array[PandoraIdentifiable] = []
+		_delete_back_buffer[data_type] = empty_array
 	_delete_back_buffer[data_type].append(data)
 
 
@@ -82,15 +84,17 @@ func _flush_delete_buffer(context_id:String, data_type_filter:String = "") -> vo
 		_delete_back_buffer.clear()
 
 
-func _convert_to_dict(identifiables:Array[PandoraIdentifiable]) -> Array[Dictionary]:
-	var result = []
+func _convert_to_dict(identifiables:Array) -> Array[Dictionary]:
+	var result:Array[Dictionary] = []
 	for identifiable in identifiables:
-		result.append(identifiable.save_data())
+		if identifiable is PandoraIdentifiable:
+			result.append(identifiable.save_data())
 	return result
 
 
-func _convert_to_ids(identifiables:Array[PandoraIdentifiable]) -> Array[String]:
+func _convert_to_ids(identifiables:Array) -> Array[String]:
 	var result = []
 	for identifiable in identifiables:
-		result.append(identifiable.get_id())
+		if identifiable is PandoraIdentifiable:
+			result.append(identifiable.get_id())
 	return result

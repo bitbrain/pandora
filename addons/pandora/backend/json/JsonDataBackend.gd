@@ -4,7 +4,7 @@ class_name PandoraJsonDataBackend extends PandoraDataBackend
 const ICON = preload("res://addons/pandora/icons/pandora-json-icon.svg")
 
 
-var data_directory: String = "user://"
+var data_directory: String = "user://pandora"
 
 
 func _init(data_dir: String):
@@ -54,7 +54,10 @@ func get_all_data(data_type: String, context_id: String) -> Array:
 
 
 func _get_directory_path(data_type: String, context_id: String) -> String:
-	return "%s/%s/%s" % [data_directory, context_id, data_type]
+	var directory_path = "%s/%s" % [data_directory, context_id]
+	if not DirAccess.dir_exists_absolute(directory_path):
+		DirAccess.make_dir_recursive_absolute(directory_path)
+	return "%s/%s" % [directory_path, data_type]
 
 
 func _get_file_path(data_type: String, context_id: String) -> String:
@@ -65,7 +68,7 @@ func _get_file_path(data_type: String, context_id: String) -> String:
 func _add_to_file(file_path: String, data: Array[Dictionary]) -> void:
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	var json = JSON.new()
-	file.store_string(json.print(data))
+	file.store_string(json.stringify(data))
 	file.close()
 	
 
