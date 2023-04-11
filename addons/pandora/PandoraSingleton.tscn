@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://wplixfbesj4e"]
+[gd_scene load_steps=4 format=3 uid="uid://cpegf6vfyrx0l"]
 
-[ext_resource type="Script" path="res://addons/pandora/item/ItemServer.gd" id="1_i14ki"]
 [ext_resource type="Script" path="res://addons/pandora/PandoraSingleton.gd" id="1_uiy7n"]
+[ext_resource type="Script" path="res://addons/pandora/model/item/ItemServer.gd" id="2_pbvpx"]
+[ext_resource type="Script" path="res://addons/pandora/context/ContextManager.gd" id="3_dme4a"]
 
 [node name="PandoraSingleton" type="Node2D"]
 script = ExtResource("1_uiy7n")
 
-[node name="PandoraItemServer" type="Node" parent="." node_paths=PackedStringArray("backend")]
-script = ExtResource("1_i14ki")
-backend = NodePath("")
+[node name="PandoraItemServer" type="Node" parent="."]
+script = ExtResource("2_pbvpx")
+
+[node name="PandoraContextManager" type="Node" parent="."]
+script = ExtResource("3_dme4a")

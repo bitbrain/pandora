@@ -1,7 +1,10 @@
 ## Generic definition of a Pandora backend.
 ## Provides a generic way to persist and load
 ## data required for this addon.
-class_name PandoraDataBackend extends Node
+class_name PandoraDataBackend extends RefCounted
+
+
+var DEFAULT_ICON = preload("res://addons/pandora/icons/pandora-icon.svg")
 
 
 func get_backend_name() -> String:
@@ -13,24 +16,24 @@ func get_backend_description() -> String:
 	
 	
 func get_backend_icon() -> Texture:
-	return null
+	return DEFAULT_ICON
 
 
-## called when saving a list of serializables
-func save_all(serializables:Array[PandoraIdentifiable]) -> void:
-	pass
-
-
-## Loads PandoraIdentifiable by ids
-func load_by_ids(ids:Array[String]) -> Dictionary:
-	return {}
-
-
-## called whenever items need to be loaded
-func load_all(filters:Array[Callable] = []) -> Array[PandoraIdentifiable]:
+func create_all_data(data_type: String, data: Array[Dictionary], context_id: String) -> Array[Dictionary]:
 	return []
 
 
-## Flushes the saved data to disk
-func flush() -> bool:
-	return false
+func update_all_data(data_type: String, data: Array[Dictionary], context_id: String) -> void:
+	pass
+
+
+func delete_all_data(data_type: String, data_id: Array[String], context_id: String) -> void:
+	pass
+
+
+func get_data_list(data_type: String, data_ids: Array, context_id: String) -> Array:
+	return []
+
+
+func get_all_data(data_type: String, context_id: String) -> Array:
+	return []

@@ -25,13 +25,13 @@ text = "Save"
 layout_mode = 2
 text = "Items define collectable things in a game and can be categorized into categories."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ItemSearchTable" parent="HBoxContainer" instance=ExtResource("1_emv4g")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 
 [node name="IdentifiableDetails" parent="HBoxContainer" instance=ExtResource("3_s7k3x")]

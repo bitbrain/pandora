@@ -6,8 +6,13 @@ class_name PandoraItem extends PandoraIdentifiableWithDetails
 var _category_id:String
 var _properties:PandoraCustomProperties
 
+
+static func get_data_type() -> String:
+	return "item"
+
+
 func create_instance() -> PandoraItemInstance:
-	return Pandora.get_item_server().create_item_instance(self)
+	return Pandora.get_item_server().create_item_instance(self._id)
 
 
 func get_category() -> PandoraItemCategory:

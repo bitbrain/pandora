@@ -4,6 +4,10 @@ var _item_id:String
 var _stack_size:int
 
 
+static func get_data_type() -> String:
+	return "iteminstance"
+
+
 func hash_value() -> int:
 	return Hash.hash_attributes([_id, _item_id])
 

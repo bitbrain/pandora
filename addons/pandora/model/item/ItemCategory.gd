@@ -2,6 +2,11 @@ class_name PandoraItemCategory extends PandoraIdentifiableWithDetails
 
 var properties:PandoraCustomProperties
 
+
+static func get_data_type() -> String:
+	return "itemcategory"
+
+
 func load_data(data:Dictionary) -> void:
 	super.load_data(data)
 	properties = PandoraCustomProperties.new()

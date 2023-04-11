@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://lytekvsfxqud"]
 
-[ext_resource type="Texture2D" uid="uid://cjqnk0xjuxycs" path="res://docs/assets/logo.svg" id="1_lblbg"]
+[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="1_ll6en"]
 
 [node name="IdentifiableDetails" type="MarginContainer"]
 anchors_preset = 15
@@ -24,7 +24,7 @@ columns = 2
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(130, 130)
 layout_mode = 2
-texture = ExtResource("1_lblbg")
+texture = ExtResource("1_ll6en")
 expand_mode = 1
 stretch_mode = 5
 
@@ -43,12 +43,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "(item id)"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_top = 10
-
-[node name="ItemDescription" type="TextEdit" parent="VBoxContainer/MarginContainer"]
+[node name="ItemDescription" type="TextEdit" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

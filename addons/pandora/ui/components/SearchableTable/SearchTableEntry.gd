@@ -1,15 +1,19 @@
 @tool
-class_name PandoraItemSearchEntry extends HBoxContainer
+class_name PandoraItemSearchEntry extends Panel
 
 signal on_click
 
-@onready var icon: TextureRect = $Icon
+
+@onready var icon: TextureRect = %Icon
 @onready var name_label: Label = %NameLabel
+
 
 var current_name:String
 
+
 func _ready() -> void:
 	name_label.text = self.current_name
+
 
 func set_name(name:String) -> void:
 	self.current_name = name

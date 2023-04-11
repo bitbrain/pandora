@@ -27,8 +27,7 @@ layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 
-[node name="Elements" type="GridContainer" parent="VScrollBar"]
+[node name="Elements" type="VBoxContainer" parent="VScrollBar"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+theme_override_constants/separation = 1
