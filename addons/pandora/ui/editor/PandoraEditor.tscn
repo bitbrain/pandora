@@ -1,8 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://djamw8wer3dlw"]
+[gd_scene load_steps=3 format=3 uid="uid://djamw8wer3dlw"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/PandoraEditor.gd" id="1_bowve"]
-[ext_resource type="PackedScene" uid="uid://c0webxcwhj8qg" path="res://addons/pandora/ui/editor/item/ItemTabUI.tscn" id="2_firs2"]
-[ext_resource type="PackedScene" uid="uid://dm6b2tlb785r5" path="res://addons/pandora/ui/editor/settings/SettingsUI.tscn" id="3_fwp5x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_le11k"]
 
@@ -22,9 +20,5 @@ layout_mode = 2
 size_flags_vertical = 3
 drag_to_rearrange_enabled = true
 
-[node name="Items" parent="Tabs" instance=ExtResource("2_firs2")]
-layout_mode = 2
-
-[node name="Settings" parent="Tabs" instance=ExtResource("3_fwp5x")]
-visible = false
+[node name="Items" type="TabContainer" parent="Tabs"]
 layout_mode = 2

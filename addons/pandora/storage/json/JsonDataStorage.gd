@@ -1,11 +1,10 @@
 @tool
-class_name PandoraJsonDataBackend extends PandoraDataBackend
+class_name PandoraJsonDataStorage extends PandoraDataStorage
 
 const ICON = preload("res://addons/pandora/icons/pandora-json-icon.svg")
 
 
 var data_directory: String = "user://pandora"
-
 
 func get_backend_name() -> String:
 	return "Pandora JSON"
@@ -20,8 +19,8 @@ func _init(data_dir: String):
 	data_directory = data_dir
 
 
-func store_all_data(data_type: String, data:Dictionary, context_id: String) -> Dictionary:
-	var file_path = _get_file_path(data_type, context_id)
+func store_all_data(data:Dictionary, context_id: String) -> Dictionary:
+	var file_path = _get_file_path(context_id)
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	var json = JSON.new()
 	file.store_string(json.stringify(data))
@@ -29,8 +28,8 @@ func store_all_data(data_type: String, data:Dictionary, context_id: String) -> D
 	return data
 
 
-func get_all_data(data_type: String, context_id: String) -> Dictionary:
-	var file_path = _get_file_path(data_type, context_id)
+func get_all_data(context_id: String) -> Dictionary:
+	var file_path = _get_file_path(context_id)
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	var json = JSON.new()
 	json.parse(file.get_as_text())
@@ -38,15 +37,15 @@ func get_all_data(data_type: String, context_id: String) -> Dictionary:
 	return json.get_data() as Dictionary
 
 
-func _get_directory_path(data_type: String, context_id: String) -> String:
+func _get_directory_path(context_id: String) -> String:
 	var directory_path = "%s/%s" % [data_directory, context_id] if context_id != "" else data_directory
 	if not DirAccess.dir_exists_absolute(directory_path):
 		DirAccess.make_dir_recursive_absolute(directory_path)
-	return "%s/%s" % [directory_path, data_type]
+	return "%s" % [directory_path]
 
 
-func _get_file_path(data_type: String, context_id: String) -> String:
-	return "%s.json" % [_get_directory_path(data_type, context_id)]
+func _get_file_path(context_id: String) -> String:
+	return "%s/data.pandora" % [_get_directory_path(context_id)]
 
 
 func _load_from_file(file_path: String) -> Dictionary:
