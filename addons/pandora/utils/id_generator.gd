@@ -1,8 +1,10 @@
 ## Generates unique ids based on a pseudo UUID algorithm incorperating
 ## system time, process id and random numbers.
+
 static func generate(seed = 0) -> String:
 	var timestamp = int(Time.get_unix_time_from_system())
 	var process_id = OS.get_process_id()
+	var ticks = Time.get_ticks_msec()
 
 	if seed == 0:
 		randomize()
@@ -10,11 +12,8 @@ static func generate(seed = 0) -> String:
 		seed(seed)
 		timestamp = seed
 		process_id = seed
+		ticks = seed
 
-	return "%08x-%04x-%04x-%04x-%012x" % [
-		timestamp % (1 << 32),
-		(timestamp >> 32) % (1 << 16),
-		process_id % (1 << 16),
-		randi() % (1 << 16),
-		randi() % (1 << 48)
-	]
+	var random_number = randi_range(0, 999999)
+
+	return str(process_id) + str(timestamp) + str(ticks) + str(random_number).pad_zeros(4)

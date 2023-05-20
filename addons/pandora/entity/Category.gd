@@ -1,1 +1,0 @@
-class_name PandoraCategory extends PandoraEntity

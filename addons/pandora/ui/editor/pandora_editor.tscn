@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://djamw8wer3dlw"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/editor/PandoraEditor.gd" id="1_bowve"]
+[ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_le11k"]
 

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bugi05e1237h2"]
+
+[ext_resource type="Script" path="res://addons/pandora/api.gd" id="1_0pess"]
+[ext_resource type="Script" path="res://addons/pandora/context/context_manager.gd" id="2_5jfoj"]
+
+[node name="PandoraAPI" type="Node2D"]
+script = ExtResource("1_0pess")
+
+[node name="PandoraContextManager" type="Node" parent="."]
+script = ExtResource("2_5jfoj")

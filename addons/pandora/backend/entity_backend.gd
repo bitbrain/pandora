@@ -1,23 +1,25 @@
 class_name PandoraEntityBackend extends RefCounted
 
-const UUID = preload("res://addons/pandora/utils/UUID.gd")
+const id_generator = preload("res://addons/pandora/utils/id_generator.gd")
 
 
 var _entities:Dictionary = {}
 var _categories:Dictionary = {}
 	
 	
-func create_entity(name:String) -> PandoraEntity:
+func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	var entity = PandoraEntity.new()
-	entity._id = UUID.generate()
+	entity._id = id_generator.generate()
 	entity._name = name
+	entity._category_id = category._id
 	_entities[entity._id] = entity
+	category._children.append(entity)
 	return entity
 	
 	
 func create_category(name:String) -> PandoraCategory:
 	var category = PandoraCategory.new()
-	category._id = UUID.generate()
+	category._id = id_generator.generate()
 	category._name = name
 	_categories[category._id] = category
 	return category
@@ -26,6 +28,10 @@ func create_category(name:String) -> PandoraCategory:
 func load_data(data:Dictionary) -> void:
 	_entities = deserialize_entities(data["_entities"])
 	_categories = deserialize_categories(data["_categories"])
+	for key in _entities:
+		var entity = _entities[key] as PandoraEntity
+		var category = _categories[entity._category_id] as PandoraCategory
+		category._children.append(entity)
 	
 	
 func save_data() -> Dictionary:
