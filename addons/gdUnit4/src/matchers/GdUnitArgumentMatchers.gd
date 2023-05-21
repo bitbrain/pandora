@@ -1,0 +1,28 @@
+class_name GdUnitArgumentMatchers
+extends RefCounted
+
+const TYPE_ANY = TYPE_MAX + 100
+
+
+static func to_matcher(arguments :Array, auto_deep_check_mode := false) -> ChainedArgumentMatcher:
+	var matchers := Array()
+	for arg in arguments:
+		# argument is already a matcher
+		if arg is GdUnitArgumentMatcher:
+			matchers.append(arg)
+		else:
+			# pass argument into equals matcher
+			matchers.append(EqualsArgumentMatcher.new(arg, auto_deep_check_mode))
+	return ChainedArgumentMatcher.new(matchers)
+
+
+static func any() -> GdUnitArgumentMatcher:
+	return  AnyArgumentMatcher.new()
+
+
+static func by_type(type :int) -> GdUnitArgumentMatcher:
+	return AnyBuildInTypeArgumentMatcher.new(type)
+
+
+static func any_class(clazz) -> GdUnitArgumentMatcher:
+	return AnyClazzArgumentMatcher.new(clazz)

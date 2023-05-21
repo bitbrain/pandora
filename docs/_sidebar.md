@@ -1,0 +1,6 @@
+* [💎 Getting started](/)
+* [🏹 Items](/items/)
+* [🧠 Advanced concepts](/advanced/)
+  * [🦄 Data Model](/advanced/data-model/)
+  * [📦 Data Storage](/advanced/data-storage/)
+* [🍻 Contribute](/contribute.md)
