@@ -14,6 +14,6 @@ static func generate(seed = 0) -> String:
 		process_id = seed
 		ticks = seed
 
-	var random_number = randi_range(0, 999999)
+	var random_number = randi_range(0, 99999999)
 
-	return str(process_id) + str(timestamp) + str(ticks) + str(random_number).pad_zeros(4)
+	return str(process_id) + str(timestamp) + str(ticks) + str(random_number)

@@ -9,6 +9,33 @@ var _category_id:String
 var _properties:Array[PandoraProperty] = []
 
 
+func _init(id:String, name:String, icon_path:String, category_id:String) -> void:
+	self._id = id
+	self._name = name
+	self._icon_path = icon_path
+	self._category_id = category_id
+	
+	
+func get_entity_id() -> String:
+	return _id
+	
+	
+func get_entity_name() -> String:
+	return tr(_name)
+	
+	
+func get_icon_path() -> String:
+	return _icon_path
+	
+	
+func get_category_id() -> String:
+	return _category_id
+	
+	
+func get_entity_properties() -> Array[PandoraProperty]:
+	return _properties
+
+
 func load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_name = data["_name"]
