@@ -1,1 +1,1 @@
-# Learn about Pandora item concepts
+# Learn about Pandora data model
