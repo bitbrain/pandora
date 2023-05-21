@@ -25,7 +25,7 @@ func get_property_type() -> String:
 	return _type
 	
 	
-func get_default_value() -> String:
+func get_default_value() -> Variant:
 	return _default_value
 
 

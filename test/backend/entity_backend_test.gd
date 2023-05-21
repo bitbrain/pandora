@@ -58,7 +58,36 @@ func test_entity_inherits_properties_from_category_hierarchy() -> void:
 	assert_that(child_instance.get_string("key1")).is_equal("foobar1")
 	assert_that(parent_instance.get_string("key2")).is_equal("")
 	assert_that(child_instance.get_string("key2")).is_equal("foobar2")
-
+	
+	
+func test_entity_instance_data_type_lookup_bool() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("category")
+	var entity = backend.create_entity("entity", category)
+	backend.create_property(category, "some-property", true)
+	var instance = instance_backend.create_entity_instance(entity)
+	assert_that(instance.get_bool("some-property")).is_equal(true)
+	
+	
+func test_entity_instance_data_type_lookup_int() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("category")
+	var entity = backend.create_entity("entity", category)
+	backend.create_property(category, "some-property", 42)
+	var instance = instance_backend.create_entity_instance(entity)
+	assert_that(instance.get_integer("some-property")).is_equal(42)
+	
+	
+func test_entity_instance_data_type_lookup_float() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("category")
+	var entity = backend.create_entity("entity", category)
+	backend.create_property(category, "some-property", 42.0)
+	var instance = instance_backend.create_entity_instance(entity)
+	assert_that(instance.get_float("some-property")).is_equal(42.0)
 
 
 func test_save_and_load_data() -> void:
