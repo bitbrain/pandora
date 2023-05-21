@@ -4,7 +4,6 @@ const id_generator = preload("res://addons/pandora/utils/id_generator.gd")
 
 
 var _entities:Dictionary = {}
-var _instances:Dictionary = {}
 var _properties:Dictionary = {}
 var _categories:Dictionary = {}
 	
@@ -13,13 +12,8 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	var entity = PandoraEntity.new(id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
+	_invalidate_properties(category)
 	return entity
-	
-	
-func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
-	var entity_instance = PandoraEntityInstance.new(id_generator.generate(), of_entity.get_entity_id(), _create_properties(of_entity.get_entity_properties()))
-	_instances[entity_instance._id] = entity_instance
-	return entity_instance
 
 
 func create_category(name:String) -> PandoraCategory:
@@ -48,11 +42,16 @@ func get_category(category_id:String) -> PandoraCategory:
 	return _categories[category_id]
 	
 	
+func get_property(property_id:String) -> PandoraProperty:
+	if not _properties.has(property_id):
+		return null
+	return _properties[property_id]
+	
+	
 func load_data(data:Dictionary) -> void:
 	_entities = deserialize_entities(data["_entities"])
 	_categories = deserialize_categories(data["_categories"])
 	_properties = deserialize_properties(data["_properties"])
-	_instances = deserialize_instances(data["_instances"])
 	for key in _entities:
 		var entity = _entities[key] as PandoraEntity
 		var category = _categories[entity._category_id] as PandoraCategory
@@ -63,7 +62,6 @@ func save_data() -> Dictionary:
 	return {
 		"_entities": serialize_data(_entities),
 		"_categories": serialize_data(_categories),
-		"_instances": serialize_data(_instances),
 		"_properties": serialize_data(_properties)
 	}
 	
@@ -116,17 +114,8 @@ func serialize_data(data:Dictionary) -> Array[Dictionary]:
 func _clear() -> void:
 	_entities.clear()
 	_categories.clear()
-	
-	
-func _create_properties(properties:Array[PandoraProperty]) -> Array[PandoraPropertyInstance]:
-	var property_instances:Array[PandoraPropertyInstance] = []
-	for property in properties:
-		var id = id_generator.generate()
-		var property_id = property.get_property_id()
-		var default_value = property.get_default_value()
-		property_instances.append(PandoraPropertyInstance.new(id, property_id, default_value))
-	return property_instances
-	
+	_properties.clear()
+
 	
 # recusively recalculates all the current properties for child entities of a given category
 func _invalidate_properties(category:PandoraCategory) -> void:
@@ -137,6 +126,15 @@ func _invalidate_properties(category:PandoraCategory) -> void:
 func _append_properties(category:PandoraCategory, property_references:Array[PandoraProperty]) -> void:
 	for property in category._properties:
 		property_references.append(property)
+	var child_categories:Array[PandoraCategory] = []
+	for child in category._children:
+		if child is PandoraCategory:
+			child_categories.append(child as PandoraCategory)
+		else:
+			# child is just a plain entity -> set properties
+			child._properties.clear()
+			for property in category._properties:
+				child._properties.append(property)
 	for child in category._children:
 		if child is PandoraCategory:
 			_append_properties(child as PandoraCategory, property_references)

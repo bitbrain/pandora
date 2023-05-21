@@ -32,7 +32,16 @@ func test_api_save_and_load_objects() -> void:
 
 func test_api_save_and_load_instances() -> void:
 	var item_backend = Pandora.get_item_backend()
+	var item_instance_backend = Pandora.get_item_instance_backend()
 	var category = item_backend.create_category("Swords")
-	var category_id = category._id
 	var entity = item_backend.create_entity("Zweihander", category)
+	var entity_instance = item_instance_backend.create_entity_instance(entity)
+	var instance_id = entity_instance._id
+	Pandora._save_object_data()
+	Pandora._save_instance_data()
+	Pandora._clear()
+	Pandora._load_object_data()
+	Pandora._load_instance_data()
+	var instance = item_instance_backend.get_entity_instance(instance_id)
+	assert_that(instance).is_not_null()
 	

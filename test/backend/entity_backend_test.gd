@@ -9,12 +9,16 @@ extends GdUnitTestSuite
 const __source = "res://addons/pandora/entity_backend.gd"
 
 
-func create_object() -> PandoraEntityBackend:
+func create_object_backend() -> PandoraEntityBackend:
 	return PandoraEntityBackend.new()
+	
+	
+func create_instance_backend() -> PandoraEntityInstanceBackend:
+	return PandoraEntityInstanceBackend.new()
 
 
 func test_create_entity() -> void:
-	var backend = create_object()
+	var backend = create_object_backend()
 	var category = backend.create_category("a")
 	var entity = backend.create_entity("Test", category)
 	assert_that(entity._id).is_not_null()
@@ -22,24 +26,25 @@ func test_create_entity() -> void:
 	
 
 func test_create_category() -> void:
-	var backend = create_object()
+	var backend = create_object_backend()
 	var category = backend.create_category("Test")
 	assert_that(category._id).is_not_null()
 	
 	
 func test_create_property_after_entity_creation() -> void:
-	var backend = create_object()
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
 	var category = backend.create_category("a")
 	backend.create_property(category, "key1", "foobar1")
 	var entity = backend.create_entity("Test", category)
 	backend.create_property(category, "key2", "foobar2")
-	var entity_instance = backend.create_entity_instance(entity)
+	var entity_instance = instance_backend.create_entity_instance(entity)
 	assert_that(entity_instance.get_string("key1")).is_equal("foobar1")
 	assert_that(entity_instance.get_string("key2")).is_equal("foobar2")
 
 
 func test_save_and_load_data() -> void:
-	var backend = create_object()
+	var backend = create_object_backend()
 	var old_entities = backend._entities
 	var old_categories = backend._categories
 	var category_a = backend.create_category("a")

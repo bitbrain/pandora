@@ -4,7 +4,7 @@ extends Node
 
 @onready var _context_manager:PandoraContextManager = $PandoraContextManager
 @onready var _item_backend:PandoraEntityBackend = PandoraEntityBackend.new()
-@onready var _item_instance_backend:PandoraEntityBackend = PandoraEntityBackend.new()
+@onready var _item_instance_backend:PandoraEntityInstanceBackend = PandoraEntityInstanceBackend.new()
 
 var loaded = false
 
@@ -26,6 +26,10 @@ func set_context_id(context_id:String) -> void:
 	
 func get_item_backend() -> PandoraEntityBackend:
 	return _item_backend
+	
+	
+func get_item_instance_backend() -> PandoraEntityInstanceBackend:
+	return _item_instance_backend
 	
 	
 func load_data() -> void:

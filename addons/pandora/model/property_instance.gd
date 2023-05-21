@@ -3,23 +3,30 @@ class_name PandoraPropertyInstance extends Resource
 var _id: String
 var _property_id: String
 var _value: Variant
+# not persisted -> set at runtime
+var _property:PandoraProperty
 
-
-func _init(id:String, property_id:String, value:Variant) -> void:
+func _init(id:String, _property:PandoraProperty, value:Variant) -> void:
 	self._id = id
-	self._property_id = property_id
+	if _property != null:
+		self._property_id = _property._id
 	self._value = value
+	self._property = _property
 	
 	
 func get_property_instance_id() -> String:
 	return _id
+	
+	
+func get_property_name() -> String:
+	return _property._name
 
 
 func get_property_id() -> String:
 	return _property_id
-	
 
-func get_value() -> Variant:
+
+func get_property_value() -> Variant:
 	return _value
 
 
