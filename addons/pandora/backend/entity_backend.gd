@@ -16,8 +16,11 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	return entity
 
 
-func create_category(name:String) -> PandoraCategory:
+func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
 	var category = PandoraCategory.new(id_generator.generate(), name, "", "")
+	if parent_category != null:
+		parent_category._children.append(category)
+		category._category_id = parent_category._id
 	_categories[category._id] = category
 	return category
 	
@@ -115,12 +118,29 @@ func _clear() -> void:
 	_entities.clear()
 	_categories.clear()
 	_properties.clear()
+	
+	
+func _find_root_category(category:PandoraCategory) -> PandoraCategory:
+	if category._category_id == "":
+		# this category has no parent- it is the root!
+		return category
+	var parent_category_id:String = category._category_id
+	while true:
+		var parent_category = get_category(parent_category_id)
+		if parent_category._category_id == "":
+			return parent_category
+		parent_category_id = parent_category._category_id
+	return null
 
 	
 # recusively recalculates all the current properties for child entities of a given category
 func _invalidate_properties(category:PandoraCategory) -> void:
 	var property_references:Array[PandoraProperty] = []
-	_append_properties(category, property_references)
+	# FIXME we currently have to start from the root category as we
+	# currently do not cache the parent properties on children except
+	# entities themselves.
+	var root_category = _find_root_category(category)
+	_append_properties(root_category, property_references)
 
 
 func _append_properties(category:PandoraCategory, property_references:Array[PandoraProperty]) -> void:
@@ -133,9 +153,8 @@ func _append_properties(category:PandoraCategory, property_references:Array[Pand
 		else:
 			# child is just a plain entity -> set properties
 			child._properties.clear()
-			for property in category._properties:
+			for property in property_references:
 				child._properties.append(property)
-	for child in category._children:
-		if child is PandoraCategory:
-			_append_properties(child as PandoraCategory, property_references)
+	for child in child_categories:
+		_append_properties(child, property_references)
 

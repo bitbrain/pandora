@@ -16,7 +16,7 @@ func _init(id:String, entity_id:String, properties:Array[PandoraPropertyInstance
 		
 func get_string(property_name:String) -> String:
 	if not _properties.has(property_name):
-		push_error("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown string property %s on instance %s" % [property_name, _id])
 		return ""
 	if not _get_property_value(property_name) is String:
 		push_error("property %s on instance %s is not a string" % [property_name, _id])
@@ -26,7 +26,7 @@ func get_string(property_name:String) -> String:
 	
 func get_integer(property_name:String) -> int:
 	if not _properties.has(property_name):
-		push_error("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown string property %s on instance %s" % [property_name, _id])
 		return 0
 	if not _get_property_value(property_name) is int:
 		push_error("property %s on instance %s is not an int" % [property_name, _id])
@@ -36,7 +36,7 @@ func get_integer(property_name:String) -> int:
 	
 func get_float(property_name:String) -> float:
 	if not _properties.has(property_name):
-		push_error("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown string property %s on instance %s" % [property_name, _id])
 		return 0.0
 	if not _get_property_value(property_name) is float:
 		push_error("property %s on instance %s is not a float" % [property_name, _id])
@@ -46,7 +46,7 @@ func get_float(property_name:String) -> float:
 	
 func get_bool(property_name:String) -> bool:
 	if not _properties.has(property_name):
-		push_error("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown string property %s on instance %s" % [property_name, _id])
 		return false
 	if not _get_property_value(property_name) is bool:
 		push_error("property %s on instance %s is not a bool" % [property_name, _id])

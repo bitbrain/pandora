@@ -41,6 +41,24 @@ func test_create_property_after_entity_creation() -> void:
 	var entity_instance = instance_backend.create_entity_instance(entity)
 	assert_that(entity_instance.get_string("key1")).is_equal("foobar1")
 	assert_that(entity_instance.get_string("key2")).is_equal("foobar2")
+	
+	
+func test_entity_inherits_properties_from_category_hierarchy() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category_parent = backend.create_category("parent-category")
+	var parent_entity = backend.create_entity("parent_entity", category_parent)
+	var category_child = backend.create_category("child-category", category_parent)
+	var child_entity = backend.create_entity("child_entity", category_child)
+	backend.create_property(category_parent, "key1", "foobar1")
+	backend.create_property(category_child, "key2", "foobar2")
+	var parent_instance = instance_backend.create_entity_instance(parent_entity)
+	var child_instance = instance_backend.create_entity_instance(child_entity)
+	assert_that(parent_instance.get_string("key1")).is_equal("foobar1")
+	assert_that(child_instance.get_string("key1")).is_equal("foobar1")
+	assert_that(parent_instance.get_string("key2")).is_equal("")
+	assert_that(child_instance.get_string("key2")).is_equal("foobar2")
+
 
 
 func test_save_and_load_data() -> void:
