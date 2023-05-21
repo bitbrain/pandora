@@ -53,6 +53,8 @@ static func parse_value(value:String, type:String) -> Variant:
 		return bool(int(value))
 	if type == "float":
 		return float(value)
+	if type == "color":
+		return Color.from_string(value, Color.WHITE)
 	push_error("Unsupported variant type of value %s" % str(type))
 	return ""
 	
@@ -66,5 +68,7 @@ static func type_of(variant:Variant) -> String:
 		return "bool"
 	if variant is float:
 		return "float"
+	if variant is Color:
+		return "color"
 	push_error("Unsupported variant type of value %s" % str(variant))
 	return ""
