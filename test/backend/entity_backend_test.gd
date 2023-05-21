@@ -90,6 +90,15 @@ func test_entity_instance_data_type_lookup_float() -> void:
 	assert_that(instance.get_float("some-property")).is_equal(42.0)
 
 
+func test_entity_instance_data_type_lookup_color() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("category")
+	var entity = backend.create_entity("entity", category)
+	backend.create_property(category, "some-property", Color.RED)
+	var instance = instance_backend.create_entity_instance(entity)
+	assert_that(instance.get_color("some-property")).is_equal(Color.RED)
+
 func test_save_and_load_data() -> void:
 	var backend = create_object_backend()
 	var old_entities = backend._entities

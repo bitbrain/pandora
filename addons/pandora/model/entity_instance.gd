@@ -26,7 +26,7 @@ func get_string(property_name:String) -> String:
 	
 func get_integer(property_name:String) -> int:
 	if not _properties.has(property_name):
-		push_warning("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown integer property %s on instance %s" % [property_name, _id])
 		return 0
 	if not _get_property_value(property_name) is int:
 		push_error("property %s on instance %s is not an int" % [property_name, _id])
@@ -36,7 +36,7 @@ func get_integer(property_name:String) -> int:
 	
 func get_float(property_name:String) -> float:
 	if not _properties.has(property_name):
-		push_warning("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown float property %s on instance %s" % [property_name, _id])
 		return 0.0
 	if not _get_property_value(property_name) is float:
 		push_error("property %s on instance %s is not a float" % [property_name, _id])
@@ -46,12 +46,22 @@ func get_float(property_name:String) -> float:
 	
 func get_bool(property_name:String) -> bool:
 	if not _properties.has(property_name):
-		push_warning("unknown string property %s on instance %s" % [property_name, _id])
+		push_warning("unknown bool property %s on instance %s" % [property_name, _id])
 		return false
 	if not _get_property_value(property_name) is bool:
 		push_error("property %s on instance %s is not a bool" % [property_name, _id])
 		return false
 	return _get_property_value(property_name) as bool
+	
+	
+func get_color(property_name:String) -> Color:
+	if not _properties.has(property_name):
+		push_warning("unknown color property %s on instance %s" % [property_name, _id])
+		return Color.WHITE
+	if not _get_property_value(property_name) is Color:
+		push_error("property %s on instance %s is not a bool" % [property_name, _id])
+		return Color.WHITE
+	return _get_property_value(property_name) as Color
 
 
 func load_data(data:Dictionary) -> void:
