@@ -23,7 +23,7 @@ func _assert_no_collisions(iterations: int) -> void:
 	var id_generator = preload(__source)
 	var generated_ids:Array[String] = []
 	var collisions = 0
-	for i in range(0, 50000):
+	for i in range(0, iterations):
 		var id = id_generator.generate()
 		if generated_ids.has(id):
 			collisions += 1

@@ -1,11 +1,15 @@
 class_name PandoraEntityBackend extends RefCounted
 
+signal entity_added(entity:PandoraEntity)
+
+
 const id_generator = preload("res://addons/pandora/utils/id_generator.gd")
 
 
 var _entities:Dictionary = {}
 var _properties:Dictionary = {}
 var _categories:Dictionary = {}
+var _root_categories:Array[PandoraEntity] = []
 	
 	
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
@@ -13,6 +17,7 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_invalidate_properties(category)
+	entity_added.emit(entity)
 	return entity
 
 
@@ -21,7 +26,11 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	if parent_category != null:
 		parent_category._children.append(category)
 		category._category_id = parent_category._id
+	else:
+		# If category has no parent, it's a root category
+		_root_categories.append(category)
 	_categories[category._id] = category
+	entity_added.emit(category)
 	return category
 	
 	
@@ -51,7 +60,12 @@ func get_property(property_id:String) -> PandoraProperty:
 	return _properties[property_id]
 	
 	
+func get_all() -> Array[PandoraEntity]:
+	return _root_categories
+	
+	
 func load_data(data:Dictionary) -> void:
+	_root_categories.clear()
 	_entities = deserialize_entities(data["_entities"])
 	_categories = deserialize_categories(data["_categories"])
 	_properties = deserialize_properties(data["_properties"])
@@ -59,7 +73,6 @@ func load_data(data:Dictionary) -> void:
 		var entity = _entities[key] as PandoraEntity
 		var category = _categories[entity._category_id] as PandoraCategory
 		category._children.append(entity)
-	
 	
 func save_data() -> Dictionary:
 	return {
@@ -84,6 +97,9 @@ func deserialize_categories(data:Array) -> Dictionary:
 		var category = PandoraCategory.new("", "", "", "")
 		category.load_data(category_data)
 		dict[category._id] = category
+		if category._category_id == "":
+			# If category has no parent, it's a root category
+			_root_categories.append(category)
 	return dict
 	
 	
@@ -118,6 +134,7 @@ func _clear() -> void:
 	_entities.clear()
 	_categories.clear()
 	_properties.clear()
+	_root_categories.clear()
 	
 	
 func _find_root_category(category:PandoraCategory) -> PandoraCategory:

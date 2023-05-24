@@ -1,12 +1,13 @@
 @tool
 extends Node
 
+signal data_loaded
 
 @onready var _context_manager:PandoraContextManager = $PandoraContextManager
 @onready var _item_backend:PandoraEntityBackend = PandoraEntityBackend.new()
 @onready var _item_instance_backend:PandoraEntityInstanceBackend = PandoraEntityInstanceBackend.new()
 
-var loaded = false
+var _loaded = false
 
 func get_object_storage() -> PandoraDataStorage:
 	return PandoraSettings.get_object_storage()
@@ -30,17 +31,24 @@ func get_item_backend() -> PandoraEntityBackend:
 	
 func get_item_instance_backend() -> PandoraEntityInstanceBackend:
 	return _item_instance_backend
-	
+
+
+func load_data_async() -> void:
+	var thread = Thread.new()
+	if thread.start(load_data) != 0:
+		push_error("Unable to load Pandora data in async mode.")
+
 	
 func load_data() -> void:
-	if loaded:
+	if _loaded:
 		print("Skipping loading data - loaded already!")
+		data_loaded.emit()
 		return
-	if Engine.is_editor_hint():
-		_load_object_data()
-	else:
+	_load_object_data()
+	if not Engine.is_editor_hint():
 		_load_instance_data()
-	loaded = true
+	_loaded = true
+	data_loaded.emit()
 	
 func save_data() -> void:
 	if Engine.is_editor_hint():
@@ -75,7 +83,8 @@ func _save_instance_data() -> void:
 	get_instance_storage().store_all_data(all_instance_data, _context_manager.get_context_id())
 
 
-# used for testing only
+# used for testing only and shutting down the addon
 func _clear() -> void:
 	_item_backend._clear()
 	_item_instance_backend._clear()
+	_loaded = false
