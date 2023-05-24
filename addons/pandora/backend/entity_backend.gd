@@ -72,7 +72,7 @@ func load_data(data:Dictionary) -> void:
 	for key in _entities:
 		var entity = _entities[key] as PandoraEntity
 		var category = _categories[entity._category_id] as PandoraCategory
-	
+		category._children.append(entity)
 	
 func save_data() -> Dictionary:
 	return {
