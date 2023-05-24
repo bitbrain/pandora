@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
+[ext_resource type="PackedScene" uid="uid://ctmsh7eg6wypu" path="res://addons/pandora/ui/components/entity_tree/entity_tree.tscn" id="2_symmn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_le11k"]
 
@@ -15,10 +16,10 @@ size_flags_vertical = 3
 script = ExtResource("1_bowve")
 editor_tab_bg = SubResource("StyleBoxFlat_le11k")
 
-[node name="Tabs" type="TabContainer" parent="."]
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Hello!"
+
+[node name="EntityTree" parent="." instance=ExtResource("2_symmn")]
 layout_mode = 2
 size_flags_vertical = 3
-drag_to_rearrange_enabled = true
-
-[node name="Items" type="TabContainer" parent="Tabs"]
-layout_mode = 2

@@ -4,6 +4,7 @@ extends EditorPlugin
 const PandoraEditor := preload("res://addons/pandora/ui/editor/pandora_editor.tscn")
 const PandoraIcon := preload("res://addons/pandora/icons/pandora-icon.svg")
 
+
 var editor_view
 
 
@@ -19,9 +20,13 @@ func _enter_tree() -> void:
 	editor_view.hide()
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
+	# initialise data the next frame so nodes get the chance
+	# to connect to required signals!
+	Pandora.call_deferred("load_data_async")
 
 
 func _exit_tree() -> void:
+	Pandora.save_data()
 	if editor_view:
 		remove_control_from_bottom_panel(editor_view)
 		editor_view.queue_free()

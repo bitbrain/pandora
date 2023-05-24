@@ -14,6 +14,8 @@ func _init(id:String, name:String, icon_path:String, category_id:String) -> void
 	self._name = name
 	self._icon_path = icon_path
 	self._category_id = category_id
+	if icon_path == "":
+		self._icon_path = "res://addons/pandora/icons/pandora-icon.svg"
 	
 	
 func get_entity_id() -> String:
