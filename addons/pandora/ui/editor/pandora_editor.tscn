@@ -1,9 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=3 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="PackedScene" uid="uid://ctmsh7eg6wypu" path="res://addons/pandora/ui/components/entity_tree/entity_tree.tscn" id="2_symmn"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_le11k"]
 
 [node name="PandoraEditor" type="VBoxContainer"]
 anchors_preset = 15
@@ -14,12 +12,26 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_bowve")
-editor_tab_bg = SubResource("StyleBoxFlat_le11k")
 
-[node name="Label" type="Label" parent="."]
+[node name="SaveButton" type="Button" parent="."]
 layout_mode = 2
-text = "Hello!"
+text = "Save"
 
 [node name="EntityTree" parent="." instance=ExtResource("2_symmn")]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CreateEntityButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Create Entity"
+
+[node name="CreateCategoryButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Create Category"
