@@ -16,19 +16,25 @@ func _ready():
 	item_selected.connect(_clicked)
 	item_edited.connect(_edited)
 	
+	if not category_items.is_empty():
+		loading_spinner.visible = false
+	
 	
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.double_click:
-		get_selected().set_editable(0, true)
+		if get_selected() != null:
+			get_selected().set_editable(0, true)
 		edit_selected()
 		accept_event()
 	elif event is InputEventMouseButton and not event.double_click:
-		get_selected().set_editable(0, false)
+		if get_selected() != null:
+			get_selected().set_editable(0, false)
 	
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:
 	_populate_tree(category_tree)
-	loading_spinner.visible = false
+	if loading_spinner != null:
+		loading_spinner.visible = false
 	
 	
 func add_entity(entity: PandoraEntity) -> void:
