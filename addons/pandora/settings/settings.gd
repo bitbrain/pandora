@@ -2,8 +2,8 @@
 extends Node
 
 
-var _object_storage:PandoraDataStorage = PandoraJsonDataStorage.new("res://")
-var _instance_storage:PandoraDataStorage = PandoraJsonDataStorage.new("user://")
+@onready var _object_storage:PandoraDataStorage = PandoraJsonDataStorage.new("res://")
+@onready var _instance_storage:PandoraDataStorage = PandoraJsonDataStorage.new("user://")
 
 
 func get_object_storage() -> PandoraDataStorage:

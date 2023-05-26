@@ -36,6 +36,12 @@ func get_category_id() -> String:
 	
 func get_entity_properties() -> Array[PandoraProperty]:
 	return _properties
+	
+	
+func get_category() -> PandoraCategory:
+	if _category_id == null or _category_id == "":
+		return null
+	return Pandora.get_category(_category_id)
 
 
 func load_data(data:Dictionary) -> void:
