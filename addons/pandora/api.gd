@@ -17,6 +17,10 @@ var _loaded = false
 func _ready() -> void:
 	_entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
 	
+	# initialise data the next frame so nodes get the chance
+	# to connect to required signals!
+	call_deferred("load_data")
+
 
 func get_object_storage() -> PandoraDataStorage:
 	return PandoraSettings.get_object_storage()
@@ -59,7 +63,10 @@ func get_property(property_id:String) -> PandoraProperty:
 	
 	
 func get_all_categories() -> Array[PandoraEntity]:
-	return _entity_backend.get_all()
+	return _entity_backend.get_all_categories()
+	
+func get_all_entities() -> Array[PandoraEntity]:
+	return _entity_backend.get_all_entities()
 	
 
 func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:

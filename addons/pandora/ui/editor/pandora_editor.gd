@@ -18,10 +18,6 @@ func _ready() -> void:
 	
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(tree.add_entity)
-	
-	# initialise data the next frame so nodes get the chance
-	# to connect to required signals!
-	Pandora.call_deferred("load_data_async")
 
 
 func _enter_tree() -> void:

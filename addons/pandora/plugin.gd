@@ -18,7 +18,7 @@ func _enter_tree() -> void:
 	
 	editor_view = PandoraEditor.instantiate()
 	editor_view.hide()
-	get_editor_interface().get_editor_main_screen().call_deferred("add_child", editor_view)
+	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 
 	entity_inspector = PandoraEntityInspector.new()
 	add_inspector_plugin(entity_inspector)

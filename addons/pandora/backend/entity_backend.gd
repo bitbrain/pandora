@@ -22,6 +22,7 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 
 
 func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
+	print("CREATE!!!")
 	var category = PandoraCategory.new(id_generator.generate(), name, "", "")
 	if parent_category != null:
 		parent_category._children.append(category)
@@ -60,8 +61,16 @@ func get_property(property_id:String) -> PandoraProperty:
 	return _properties[property_id]
 	
 	
-func get_all() -> Array[PandoraEntity]:
+func get_all_categories() -> Array[PandoraEntity]:
 	return _root_categories
+	
+	
+func get_all_entities() -> Array[PandoraEntity]:
+	var entities:Array[PandoraEntity] = []
+	for key in _entities:
+		entities.append(_entities[key])
+	entities.sort_custom(_compare_entities)
+	return entities
 	
 	
 func load_data(data:Dictionary) -> void:
@@ -175,3 +184,6 @@ func _append_properties(category:PandoraCategory, property_references:Array[Pand
 	for child in child_categories:
 		_append_properties(child, property_references)
 
+
+func _compare_entities(entity1:PandoraEntity, entity2:PandoraEntity) -> bool:
+	return entity1.get_entity_name() < entity2.get_entity_name()
