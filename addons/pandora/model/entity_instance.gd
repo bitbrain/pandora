@@ -15,8 +15,11 @@ func _init(id:String, entity_id:String, properties:Array[PandoraPropertyInstance
 
 
 func get_entity() -> PandoraEntity:
-	# FIXME this depends on items but should be generic
-	return Pandora.get_item_backend().get_entity(_entity_id)
+	return Pandora.get_entity(_entity_id)
+	
+	
+func get_category() -> PandoraCategory:
+	return get_entity().get_category()
 
 		
 func get_string(property_name:String) -> String:
@@ -96,9 +99,7 @@ func _load_properties(data:Array) -> Dictionary:
 		var property = PandoraPropertyInstance.new("", null, "")
 		property.load_data(property_dict)
 		# ensure to populate the original property
-		# FIXME this depends on item but should be generic!
-		var item_backend = Pandora.get_item_backend()
-		property._property = item_backend.get_property(property.get_property_id())
+		property._property = Pandora.get_property(property.get_property_id())
 		properties[property.get_property_name()] = property
 	return properties
 	

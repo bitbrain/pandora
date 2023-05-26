@@ -1,5 +1,5 @@
 @tool
 extends CenterContainer
 
-@export var item:PandoraEntityInstance = PandoraEntityInstance.new("", "", [])
+@export var item:PandoraEntityInstance
 

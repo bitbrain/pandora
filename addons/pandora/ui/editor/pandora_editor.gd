@@ -17,7 +17,7 @@ func _ready() -> void:
 	create_category_button.disabled = true
 	
 	# Add any newly created entity directly to the tree
-	Pandora.get_item_backend().entity_added.connect(tree.add_entity)
+	Pandora.entity_added.connect(tree.add_entity)
 	
 	# initialise data the next frame so nodes get the chance
 	# to connect to required signals!
@@ -37,23 +37,19 @@ func _entity_selected(entity:PandoraEntity) -> void:
 func _create_entity() -> void:
 	if not selected_entity is PandoraCategory:
 		return
-	var backend = Pandora.get_item_backend() as PandoraEntityBackend
-	backend.create_entity("New Entity", selected_entity)
+	Pandora.create_entity("New Entity", selected_entity)
 	
 	
 func _create_category() -> void:
 	if not selected_entity is PandoraCategory:
 		return
-	var backend = Pandora.get_item_backend() as PandoraEntityBackend
-	backend.create_category("New Category", selected_entity)
+	Pandora.create_category("New Category", selected_entity)
 	
 
 func _populate_data() -> void:
-	var data = Pandora.get_item_backend().get_all()
+	var data = Pandora.get_all_categories()
 	if data.is_empty():
-		# Pandora not initialised yet! Create initial categories
-		var item_backend = Pandora.get_item_backend() as PandoraEntityBackend
-		item_backend.create_category("Items")
+		Pandora.create_category("Items")
 	tree.set_data(data)
 	
 	
