@@ -1,4 +1,4 @@
-class_name PandoraEntityInstance extends Resource
+class_name PandoraEntityInstance extends RefCounted
 
 
 var _id:String
@@ -12,6 +12,10 @@ func _init(id:String, entity_id:String, properties:Array[PandoraPropertyInstance
 	self._entity_id = entity_id
 	for property in properties:
 		self._properties[property.get_property_name()] = property
+
+
+func get_entity_instance_id() -> String:
+	return _id
 
 
 func get_entity() -> PandoraEntity:

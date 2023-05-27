@@ -18,6 +18,13 @@ func get_entity_instance(instance_id:String) -> PandoraEntityInstance:
 	return _instances[instance_id]
 	
 	
+func delete_entity_instance(instance_id:String) -> bool:
+	if not _instances.has(instance_id):
+		return false
+	_instances.erase(instance_id)
+	return true
+	
+	
 func load_data(data:Dictionary) -> void:
 	_instances = deserialize_instances(data["_instances"])
 	

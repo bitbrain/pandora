@@ -9,12 +9,8 @@ func _can_handle(object):
 
 func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wide):
 	if object != null && type == TYPE_OBJECT:
-		if hint_string == "PandoraEntityInstance":
-			var inspector_property: = BrowserProperty.new()
-			add_property_editor(name, inspector_property)
-			return true
 		if hint_string == "PandoraEntity":
-			var inspector_property: = BrowserProperty.new()
+			var inspector_property:= BrowserProperty.new(hint_string)
 			add_property_editor(name, inspector_property)
 			return true
 		return false
