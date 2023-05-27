@@ -20,8 +20,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Pandora="*res://addons/pandora/api.tscn"
-PandoraSettings="*res://addons/pandora/settings/settings.gd"
+Pandora="*res://addons/pandora/api.gd"
 
 [editor_plugins]
 

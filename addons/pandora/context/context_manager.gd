@@ -2,7 +2,7 @@
 ## where user data will be stored. Change the context id
 ## to ensure custom save games for example.
 @tool
-class_name PandoraContextManager extends Node
+class_name PandoraContextManager extends RefCounted
 
 
 # Notifies if the context has changed.

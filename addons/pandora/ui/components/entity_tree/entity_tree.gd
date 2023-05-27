@@ -33,7 +33,6 @@ func _gui_input(event: InputEvent) -> void:
 	
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:
-	print(category_tree.size())
 	_populate_tree(category_tree)
 	if loading_spinner != null:
 		loading_spinner.visible = false

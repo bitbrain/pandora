@@ -22,7 +22,6 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 
 
 func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
-	print("CREATE!!!")
 	var category = PandoraCategory.new(id_generator.generate(), name, "", "")
 	if parent_category != null:
 		parent_category._children.append(category)

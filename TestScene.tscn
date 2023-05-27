@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://wqbu0ir2a0qy"]
+[gd_scene load_steps=5 format=3 uid="uid://wqbu0ir2a0qy"]
 
 [ext_resource type="Script" path="res://TestScene.gd" id="1_88w03"]
 [ext_resource type="Texture2D" uid="uid://bd13bip4a1yuy" path="res://splash.png" id="1_r3xd3"]
+[ext_resource type="Script" path="res://addons/pandora/model/entity_proxy.gd" id="2_vpduk"]
+
+[sub_resource type="Resource" id="Resource_8x2og"]
+script = ExtResource("2_vpduk")
+proxied_entity_id = "7216168511915110037222824066"
 
 [node name="TestScene" type="CenterContainer"]
 anchors_preset = 15
@@ -10,6 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_88w03")
+entity = SubResource("Resource_8x2og")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2

@@ -1,12 +1,15 @@
 @tool
 extends Control
 
-@onready var tree:PandoraEntityTree = $EntityTree
+
+@onready var tree:PandoraEntityTree = %EntityTree
 @onready var save_button:Button = $SaveButton
-@onready var create_entity_button:Button = $HBoxContainer/CreateEntityButton
-@onready var create_category_button:Button = $HBoxContainer/CreateCategoryButton
+@onready var create_entity_button:Button = %CreateEntityButton
+@onready var create_category_button:Button = %CreateCategoryButton
+
 
 var selected_entity:PandoraEntity
+
 
 func _ready() -> void:
 	save_button.pressed.connect(_save)

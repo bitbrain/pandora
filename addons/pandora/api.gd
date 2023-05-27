@@ -6,22 +6,24 @@ signal data_loaded
 signal entity_added(entity:PandoraEntity)
 
 
-@onready var _context_manager:PandoraContextManager = $PandoraContextManager
-@onready var _entity_backend:PandoraEntityBackend = PandoraEntityBackend.new()
-@onready var _entity_instance_backend:PandoraEntityInstanceBackend = PandoraEntityInstanceBackend.new()
+var _context_manager:PandoraContextManager
+var _entity_backend:PandoraEntityBackend
+var _entity_instance_backend:PandoraEntityInstanceBackend
+var _settings:PandoraSettings
 
 
 var _loaded = false
 
-
-func _ready() -> void:
-	_entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
-
 	
 func _enter_tree() -> void:
-	# initialise data the next frame so nodes get the chance
-	# to connect to required signals!
-	load_data.call_deferred()
+	self._settings = PandoraSettings.new()
+	self._context_manager = PandoraContextManager.new()
+	self._entity_backend = PandoraEntityBackend.new()
+	self._entity_instance_backend = PandoraEntityInstanceBackend.new()
+	
+	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
+	
+	load_data()
 
 
 func _exit_tree() -> void:
@@ -29,11 +31,11 @@ func _exit_tree() -> void:
 
 
 func get_object_storage() -> PandoraDataStorage:
-	return PandoraSettings.get_object_storage()
+	return _settings.get_object_storage()
 	
 
 func get_instance_storage() -> PandoraDataStorage:
-	return PandoraSettings.get_instance_storage()
+	return _settings.get_instance_storage()
 
 
 func get_context_id() -> String:
