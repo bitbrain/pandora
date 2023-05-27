@@ -13,8 +13,6 @@ var _settings:PandoraSettings
 
 
 var _loaded = false
-var _defer_save = false
-var _saving = false
 
 	
 func _enter_tree() -> void:
@@ -107,13 +105,6 @@ func load_data() -> void:
 		_load_instance_data()
 	_loaded = true
 	data_loaded.emit()
-	
-	
-func save_data_async() -> Thread:
-	var thread = Thread.new()
-	if thread.start(save_data) != 0:
-		push_error("Unable to save Pandora data in async mode.")
-	return thread
 
 
 func save_data() -> void:
@@ -121,11 +112,6 @@ func save_data() -> void:
 		_save_object_data()
 	else:
 		_save_instance_data()
-	_saving = false
-
-		
-func save_data_deferred() -> void:
-	_defer_save = true
 		
 		
 func is_loaded() -> bool:
@@ -163,10 +149,3 @@ func _clear() -> void:
 	_entity_backend._clear()
 	_entity_instance_backend._clear()
 	_loaded = false
-	
-	
-func _process(delta: float) -> void:
-	if _defer_save and not _saving:
-		_defer_save = false
-		_saving = true
-		save_data_async()

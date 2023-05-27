@@ -6,7 +6,7 @@ extends GdUnitTestSuite
 
 
 # TestSuite generated from
-const __source = "res://addons/pandora/entity_backend.gd"
+const __source = "res://addons/pandora/backend/entity_backend.gd"
 
 
 func create_object_backend() -> PandoraEntityBackend:
@@ -29,6 +29,16 @@ func test_create_category() -> void:
 	var backend = create_object_backend()
 	var category = backend.create_category("Test")
 	assert_that(category._id).is_not_null()
+	
+	
+func test_delete_entity_instance() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("a")
+	var entity = backend.create_entity("Test", category)
+	var instance = instance_backend.create_entity_instance(entity)
+	instance_backend.delete_entity_instance(instance.get_entity_instance_id())
+	assert_that(instance_backend.get_entity_instance(instance.get_entity_instance_id())).is_null()
 	
 	
 func test_create_property_after_entity_creation() -> void:
