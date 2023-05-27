@@ -22,6 +22,8 @@ func _ready() -> void:
 
 func _enter_tree() -> void:
 	Pandora.data_loaded.connect(_populate_data)
+	if Pandora.is_loaded():
+		_populate_data.call_deferred()
 	
 	
 func _entity_selected(entity:PandoraEntity) -> void:

@@ -16,10 +16,16 @@ var _loaded = false
 
 func _ready() -> void:
 	_entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
+
 	
+func _enter_tree() -> void:
 	# initialise data the next frame so nodes get the chance
 	# to connect to required signals!
-	call_deferred("load_data")
+	load_data.call_deferred()
+
+
+func _exit_tree() -> void:
+	_clear()
 
 
 func get_object_storage() -> PandoraDataStorage:
@@ -100,6 +106,10 @@ func save_data() -> void:
 		_save_object_data()
 	else:
 		_save_instance_data()
+		
+		
+func is_loaded() -> bool:
+	return _loaded
 
 
 func _load_object_data() -> void:

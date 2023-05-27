@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=5 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="PackedScene" uid="uid://ctmsh7eg6wypu" path="res://addons/pandora/ui/components/entity_tree/entity_tree.tscn" id="2_symmn"]
+[ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="3_y1844"]
+[ext_resource type="PackedScene" uid="uid://bvabuierlf81k" path="res://addons/pandora/ui/components/property_list/property_list.tscn" id="4_chj85"]
 
 [node name="PandoraEditor" type="VBoxContainer"]
 anchors_preset = 15
@@ -17,21 +19,39 @@ script = ExtResource("1_bowve")
 layout_mode = 2
 text = "Save"
 
-[node name="EntityTree" parent="." instance=ExtResource("2_symmn")]
+[node name="DataContent" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LeftSideBar" type="VBoxContainer" parent="DataContent"]
+layout_mode = 2
+
+[node name="EntityTree" parent="DataContent/LeftSideBar" instance=ExtResource("2_symmn")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="DataContent/LeftSideBar"]
 layout_mode = 2
 
-[node name="CreateEntityButton" type="Button" parent="HBoxContainer"]
+[node name="CreateEntityButton" type="Button" parent="DataContent/LeftSideBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 disabled = true
 text = "Create Entity"
 
-[node name="CreateCategoryButton" type="Button" parent="HBoxContainer"]
+[node name="CreateCategoryButton" type="Button" parent="DataContent/LeftSideBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 disabled = true
 text = "Create Category"
+
+[node name="RightContent" type="VBoxContainer" parent="DataContent"]
+layout_mode = 2
+
+[node name="PropertyBar" parent="DataContent/RightContent" instance=ExtResource("3_y1844")]
+layout_mode = 2
+
+[node name="PropertyList" parent="DataContent/RightContent" instance=ExtResource("4_chj85")]
+layout_mode = 2
+
+[node name="RightSideBar" type="VBoxContainer" parent="DataContent"]
+layout_mode = 2
