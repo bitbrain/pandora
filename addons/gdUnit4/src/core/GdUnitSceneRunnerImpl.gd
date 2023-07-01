@@ -207,23 +207,23 @@ func simulate_frames(frames: int, delta_milli :int = -1) -> GdUnitSceneRunner:
 
 
 func simulate_until_signal(signal_name :String, arg0=NO_ARG, arg1=NO_ARG, arg2=NO_ARG, arg3=NO_ARG, arg4=NO_ARG, arg5=NO_ARG, arg6=NO_ARG, arg7=NO_ARG, arg8=NO_ARG, arg9=NO_ARG) -> GdUnitSceneRunner:
-	var args = GdObjects.array_filter_value([arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9], NO_ARG)
+	var args = GdArrayTools.filter_value([arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9], NO_ARG)
 	await GdUnitAwaiter.await_signal_idle_frames(_current_scene, signal_name, args, 10000)
 	return self
 
 
 func simulate_until_object_signal(source :Object, signal_name :String, arg0=NO_ARG, arg1=NO_ARG, arg2=NO_ARG, arg3=NO_ARG, arg4=NO_ARG, arg5=NO_ARG, arg6=NO_ARG, arg7=NO_ARG, arg8=NO_ARG, arg9=NO_ARG) -> GdUnitSceneRunner:
-	var args = GdObjects.array_filter_value([arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9], NO_ARG)
+	var args = GdArrayTools.filter_value([arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9], NO_ARG)
 	await GdUnitAwaiter.await_signal_idle_frames(source, signal_name, args, 10000)
 	return self
 
 
-func await_func(func_name :String, args := [], expeced := GdUnitAssert.EXPECT_SUCCESS) -> GdUnitFuncAssert:
-	return GdUnitFuncAssertImpl.new(_current_scene, func_name, args, expeced)
+func await_func(func_name :String, args := []) -> GdUnitFuncAssert:
+	return GdUnitFuncAssertImpl.new(_current_scene, func_name, args)
 
 
-func await_func_on(instance :Object, func_name :String, args := [], expeced := GdUnitAssert.EXPECT_SUCCESS) -> GdUnitFuncAssert:
-	return GdUnitFuncAssertImpl.new(instance, func_name, args, expeced)
+func await_func_on(instance :Object, func_name :String, args := []) -> GdUnitFuncAssert:
+	return GdUnitFuncAssertImpl.new(instance, func_name, args)
 
 
 func await_signal(signal_name :String, args := [], timeout := 2000 ):
@@ -241,15 +241,26 @@ func maximize_view() -> GdUnitSceneRunner:
 	return self
 
 
-func get_property(name :String):
-	var property = _current_scene.get(name)
-	if property != null:
-		return property
-	return  "The property '%s' not exist checked loaded scene." % name
+func _property_exists(name :String) -> bool:
+	return _current_scene.get_property_list().any(func(properties :Dictionary) : return properties["name"] == name)
+
+
+func get_property(name :String) -> Variant:
+	if not _property_exists(name):
+		return "The property '%s' not exist checked loaded scene." % name
+	return _current_scene.get(name)
+
+
+func set_property(name :String, value :Variant) -> bool:
+	if not _property_exists(name):
+		push_error("The property named '%s' cannot be set, it does not exist!" % name)
+		return false;
+	_current_scene.set(name, value)
+	return true
 
 
 func invoke(name :String, arg0=NO_ARG, arg1=NO_ARG, arg2=NO_ARG, arg3=NO_ARG, arg4=NO_ARG, arg5=NO_ARG, arg6=NO_ARG, arg7=NO_ARG, arg8=NO_ARG, arg9=NO_ARG):
-	var args = GdObjects.array_filter_value([arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9], NO_ARG)
+	var args = GdArrayTools.filter_value([arg0,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9], NO_ARG)
 	if _current_scene.has_method(name):
 		return _current_scene.callv(name, args)
 	return "The method '%s' not exist checked loaded scene." % name
