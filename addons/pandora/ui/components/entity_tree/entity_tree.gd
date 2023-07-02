@@ -4,6 +4,7 @@ class_name PandoraEntityTree extends Tree
 
 
 signal entity_selected(entity:PandoraEntity)
+signal selection_cleared
 
 
 @onready var loading_spinner = $LoadingSpinner
@@ -30,6 +31,11 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and not event.double_click:
 		if get_selected() != null:
 			get_selected().set_editable(0, false)
+			# make sure to unselect when the child
+			# did not handle this event!
+			if event.is_pressed():
+				deselect_all()
+				selection_cleared.emit()
 	
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:

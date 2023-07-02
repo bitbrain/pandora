@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://clsxp8wg4ctet"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/editor/property_editor/property_editor.gd" id="1_r06w1"]
+[ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="1_vndtp"]
+[ext_resource type="PackedScene" uid="uid://bvabuierlf81k" path="res://addons/pandora/ui/components/property_list/property_list.tscn" id="2_oje5r"]
+
+[node name="PropertyEditor" type="VBoxContainer"]
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+script = ExtResource("1_r06w1")
+
+[node name="PropertyBar" parent="." instance=ExtResource("1_vndtp")]
+layout_mode = 2
+
+[node name="PropertyList" parent="." instance=ExtResource("2_oje5r")]
+layout_mode = 2
+
+[node name="UnselectedContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SpecialLabel" type="Label" parent="UnselectedContainer"]
+layout_mode = 2
+text = "Create or select a category or item to see its properties here."

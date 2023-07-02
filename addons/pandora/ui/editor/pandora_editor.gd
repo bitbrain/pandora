@@ -6,6 +6,7 @@ extends Control
 @onready var save_button:Button = $SaveButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
+@onready var property_editor = $DataContent/PropertyEditor
 
 
 var selected_entity:PandoraEntity
@@ -18,6 +19,8 @@ func _ready() -> void:
 	create_category_button.pressed.connect(_create_category)
 	create_entity_button.disabled = true
 	create_category_button.disabled = true
+	tree.entity_selected.connect(property_editor.set_entity)
+	tree.selection_cleared.connect(func(): property_editor.set_entity(null))
 	
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(tree.add_entity)
