@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=5 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="PackedScene" uid="uid://ctmsh7eg6wypu" path="res://addons/pandora/ui/components/entity_tree/entity_tree.tscn" id="2_symmn"]
+[ext_resource type="Texture2D" uid="uid://b8sd2702bmm7h" path="res://addons/pandora/icons/Save.svg" id="2_wcf01"]
 [ext_resource type="PackedScene" uid="uid://clsxp8wg4ctet" path="res://addons/pandora/ui/editor/property_editor/property_editor.tscn" id="3_8d8dx"]
 
 [node name="PandoraEditor" type="MarginContainer"]
@@ -26,8 +27,15 @@ layout_mode = 2
 
 [node name="SaveButton" type="Button" parent="Contents/HBoxContainer"]
 unique_name_in_owner = true
+self_modulate = Color(0.564706, 0.92549, 0, 1)
 layout_mode = 2
-text = "Up to date!"
+disabled = true
+icon = ExtResource("2_wcf01")
+
+[node name="Label" type="Label" parent="Contents/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.564706, 0.92549, 0, 1)
+text = "Saved!"
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
 layout_mode = 2

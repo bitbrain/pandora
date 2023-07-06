@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://clsxp8wg4ctet"]
+[gd_scene load_steps=6 format=3 uid="uid://clsxp8wg4ctet"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/property_editor/property_editor.gd" id="1_r06w1"]
 [ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="1_vndtp"]
 [ext_resource type="PackedScene" uid="uid://bvabuierlf81k" path="res://addons/pandora/ui/components/property_list/property_list.tscn" id="2_oje5r"]
+[ext_resource type="Texture2D" uid="uid://c8r1klbs37r1b" path="res://addons/pandora/icons/Clear.svg" id="3_p10dw"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="4_y2k2p"]
 
 [node name="PropertyEditor" type="VBoxContainer"]
@@ -22,13 +23,24 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="PropertyBar" parent="PanelContainer/MarginContainer" instance=ExtResource("1_vndtp")]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="PropertyBar" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_vndtp")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="DeleteButton" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("3_p10dw")
+
 [node name="PropertyList" parent="." instance=ExtResource("2_oje5r")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="UnselectedContainer" type="CenterContainer" parent="."]

@@ -1,33 +1,42 @@
-[gd_scene load_steps=2 format=3 uid="uid://8namx0kxhw0"]
+[gd_scene load_steps=6 format=3 uid="uid://8namx0kxhw0"]
 
-[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="1_ugyxp"]
+[ext_resource type="Texture2D" uid="uid://do5tkodyvid10" path="res://addons/pandora/icons/String.svg" id="1_4esni"]
+[ext_resource type="Texture2D" uid="uid://blvy22tu53qxy" path="res://addons/pandora/icons/int.svg" id="2_vpyx8"]
+[ext_resource type="Texture2D" uid="uid://cgupnims1vk7r" path="res://addons/pandora/icons/float.svg" id="3_d0hjc"]
+[ext_resource type="Texture2D" uid="uid://mmkaghs6sbx4" path="res://addons/pandora/icons/bool.svg" id="4_wkogm"]
+[ext_resource type="Texture2D" uid="uid://c2738ylh13lsi" path="res://addons/pandora/icons/Color.svg" id="5_m2x7s"]
 
 [node name="PropertyBar" type="HBoxContainer"]
 offset_right = 35.0
 offset_bottom = 33.0
 theme_override_constants/separation = 10
 
-[node name="AddTextPropertyButton" type="TextureButton" parent="."]
+[node name="AddTextPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
-texture_normal = ExtResource("1_ugyxp")
+tooltip_text = "String property"
+icon = ExtResource("1_4esni")
 
-[node name="AddIntegerPropertyButton" type="TextureButton" parent="."]
+[node name="AddIntegerPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
-texture_normal = ExtResource("1_ugyxp")
+tooltip_text = "Integer property"
+icon = ExtResource("2_vpyx8")
 
-[node name="AddFloatPropertyButton" type="TextureButton" parent="."]
+[node name="AddFloatPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
-texture_normal = ExtResource("1_ugyxp")
+tooltip_text = "Float property"
+icon = ExtResource("3_d0hjc")
 
-[node name="AddBoolPropertyButton" type="TextureButton" parent="."]
+[node name="AddBoolPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
-texture_normal = ExtResource("1_ugyxp")
+tooltip_text = "Bool property"
+icon = ExtResource("4_wkogm")
 
-[node name="AddColorPropertyButton" type="TextureButton" parent="."]
+[node name="AddColorPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
-texture_normal = ExtResource("1_ugyxp")
+tooltip_text = "Color property"
+icon = ExtResource("5_m2x7s")
