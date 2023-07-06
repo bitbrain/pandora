@@ -9,13 +9,28 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 script = ExtResource("1_r06w1")
 
-[node name="PropertyBar" parent="." instance=ExtResource("1_vndtp")]
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="PropertyBar" parent="PanelContainer/MarginContainer" instance=ExtResource("1_vndtp")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="PropertyList" parent="." instance=ExtResource("2_oje5r")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="UnselectedContainer" type="CenterContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 

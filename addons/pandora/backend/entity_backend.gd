@@ -77,6 +77,11 @@ func load_data(data:Dictionary) -> void:
 	_entities = deserialize_entities(data["_entities"])
 	_categories = deserialize_categories(data["_categories"])
 	_properties = deserialize_properties(data["_properties"])
+	for key in _categories:
+		var category = _categories[key] as PandoraCategory
+		if category._category_id:
+			var parent = _categories[category._category_id] as PandoraCategory
+			parent._children.append(category)
 	for key in _entities:
 		var entity = _entities[key] as PandoraEntity
 		var category = _categories[entity._category_id] as PandoraCategory

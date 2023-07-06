@@ -27,9 +27,7 @@ func _ready() -> void:
 
 
 func _enter_tree() -> void:
-	Pandora.data_loaded.connect(_populate_data)
-	if Pandora.is_loaded():
-		_populate_data.call_deferred()
+	_populate_data.call_deferred()
 	
 	
 func _entity_selected(entity:PandoraEntity) -> void:
@@ -51,10 +49,17 @@ func _create_category() -> void:
 	
 
 func _populate_data() -> void:
+	if not Pandora.is_loaded():
+		print("Unable to load data - Pandora not initialised!")
+		return
+		
 	var data = Pandora.get_all_categories()
 	if data.is_empty():
 		Pandora.create_category("Items")
 	tree.set_data(data)
+	
+	if not Pandora.data_loaded.is_connected(_populate_data):
+		Pandora.data_loaded.connect(_populate_data)
 	
 	
 func _save() -> void:

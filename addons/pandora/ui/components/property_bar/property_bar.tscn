@@ -5,6 +5,7 @@
 [node name="PropertyBar" type="HBoxContainer"]
 offset_right = 35.0
 offset_bottom = 33.0
+theme_override_constants/separation = 10
 
 [node name="AddTextPropertyButton" type="TextureButton" parent="."]
 layout_mode = 2

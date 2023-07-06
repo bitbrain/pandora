@@ -115,6 +115,7 @@ func test_save_and_load_data() -> void:
 	var old_categories = backend._categories
 	var category_a = backend.create_category("a")
 	var category_b = backend.create_category("b")
+	var category_c = backend.create_category("c", category_b)
 	backend.create_entity("a", category_a)
 	backend.create_entity("b", category_b)
 	var data = backend.save_data()

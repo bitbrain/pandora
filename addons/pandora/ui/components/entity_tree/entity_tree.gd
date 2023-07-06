@@ -24,23 +24,23 @@ func _ready():
 	
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.double_click:
-		if get_selected() != null:
+		if get_selected():
 			get_selected().set_editable(0, true)
-		edit_selected()
-		accept_event()
+			edit_selected()
+			accept_event()
 	elif event is InputEventMouseButton and not event.double_click:
-		if get_selected() != null:
+		if get_selected():
 			get_selected().set_editable(0, false)
 			# make sure to unselect when the child
 			# did not handle this event!
-			if event.is_pressed():
+			if event.is_pressed() and get_selected():
 				deselect_all()
 				selection_cleared.emit()
 	
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:
 	_populate_tree(category_tree)
-	if loading_spinner != null:
+	if loading_spinner:
 		loading_spinner.visible = false
 	
 	
@@ -60,12 +60,16 @@ func add_entity(entity: PandoraEntity) -> void:
 
 func _clicked() -> void:
 	var selected_item = get_selected()
+	if not selected_item:
+		return
 	var entity = selected_item.get_metadata(0) as PandoraEntity
 	entity_selected.emit(entity)
 	
 	
 func _edited() -> void:
 	var selected_item = get_selected()
+	if not selected_item:
+		return
 	var entity = selected_item.get_metadata(0) as PandoraEntity
 	if entity:
 		entity._name = selected_item.get_text(0)
@@ -76,6 +80,7 @@ func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem =
 	if not parent_item:
 		root_item = create_item()
 	for entity in category_tree:
+		print("parsed ", entity)
 		var new_item = create_item(root_item) as TreeItem
 		new_item.set_metadata(0, entity)
 		new_item.set_text(0, entity.get_entity_name())
