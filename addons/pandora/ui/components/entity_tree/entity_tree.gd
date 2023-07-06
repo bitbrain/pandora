@@ -46,16 +46,15 @@ func set_data(category_tree:Array[PandoraEntity]) -> void:
 	
 func add_entity(entity: PandoraEntity) -> void:
 	var parent_item = entity_items.get(entity._category_id)
-	if parent_item:
-		var entity_item = create_item(parent_item) as TreeItem
-		entity_item.set_metadata(0, entity)
-		entity_item.set_text(0, entity.get_entity_name())
-		entity_item.set_editable(0, true)
-		entity_item.set_selectable(0, true)
-		if entity.get_icon_path() != "":
-			entity_item.set_icon(0, load(entity.get_icon_path()))
-		# add the newly added entity to the entity_items dictionary
-		entity_items[entity._id] = entity_item
+	var entity_item = create_item(parent_item) as TreeItem
+	entity_item.set_metadata(0, entity)
+	entity_item.set_text(0, entity.get_entity_name())
+	entity_item.set_editable(0, true)
+	entity_item.set_selectable(0, true)
+	if entity.get_icon_path() != "":
+		entity_item.set_icon(0, load(entity.get_icon_path()))
+	# add the newly added entity to the entity_items dictionary
+	entity_items[entity._id] = entity_item
 
 
 func _clicked() -> void:
@@ -80,7 +79,6 @@ func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem =
 	if not parent_item:
 		root_item = create_item()
 	for entity in category_tree:
-		print("parsed ", entity)
 		var new_item = create_item(root_item) as TreeItem
 		new_item.set_metadata(0, entity)
 		new_item.set_text(0, entity.get_entity_name())

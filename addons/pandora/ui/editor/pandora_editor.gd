@@ -3,10 +3,10 @@ extends Control
 
 
 @onready var tree:PandoraEntityTree = %EntityTree
-@onready var save_button:Button = $SaveButton
+@onready var save_button:Button = %SaveButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
-@onready var property_editor = $DataContent/PropertyEditor
+@onready var property_editor = $Contents/DataContent/PropertyEditor
 
 
 var selected_entity:PandoraEntity
@@ -15,6 +15,7 @@ var selected_entity:PandoraEntity
 func _ready() -> void:
 	save_button.pressed.connect(_save)
 	tree.entity_selected.connect(_entity_selected)
+	tree.selection_cleared.connect(func(): selected_entity = null)
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
 	create_entity_button.disabled = true
@@ -44,8 +45,9 @@ func _create_entity() -> void:
 	
 func _create_category() -> void:
 	if not selected_entity is PandoraCategory:
-		return
-	Pandora.create_category("New Category", selected_entity)
+		Pandora.create_category("New Category")
+	else:
+		Pandora.create_category("New Category", selected_entity)
 	
 
 func _populate_data() -> void:
