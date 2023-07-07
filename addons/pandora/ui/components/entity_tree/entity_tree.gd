@@ -39,6 +39,7 @@ func _gui_input(event: InputEvent) -> void:
 	
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:
+	clear()
 	_populate_tree(category_tree)
 	if loading_spinner:
 		loading_spinner.visible = false
@@ -76,7 +77,10 @@ func _edited() -> void:
 
 func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem = null) -> void:
 	var root_item = parent_item
-	if not parent_item:
+	if not root_item:
+		# make sure to create an empty parent
+		# so we can hide it -> need to support
+		# multiple root levels!
 		root_item = create_item()
 	for entity in category_tree:
 		var new_item = create_item(root_item) as TreeItem

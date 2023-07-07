@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://clsxp8wg4ctet" path="res://addons/pandora/ui/editor/property_editor/property_editor.tscn" id="3_8d8dx"]
 
 [node name="PandoraEditor" type="MarginContainer"]
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,6 +21,7 @@ theme_override_constants/margin_bottom = 8
 script = ExtResource("1_bowve")
 
 [node name="Contents" type="VBoxContainer" parent="."]
+clip_contents = true
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Contents"]
@@ -27,21 +29,22 @@ layout_mode = 2
 
 [node name="SaveButton" type="Button" parent="Contents/HBoxContainer"]
 unique_name_in_owner = true
-self_modulate = Color(0.564706, 0.92549, 0, 1)
 layout_mode = 2
-disabled = true
 icon = ExtResource("2_wcf01")
 
 [node name="Label" type="Label" parent="Contents/HBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.564706, 0.92549, 0, 1)
 text = "Saved!"
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="EntitySelection" type="VBoxContainer" parent="Contents/DataContent"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -70,3 +73,4 @@ text = "Create Category"
 
 [node name="PropertyEditor" parent="Contents/DataContent" instance=ExtResource("3_8d8dx")]
 layout_mode = 2
+size_flags_stretch_ratio = 3.0

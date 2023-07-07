@@ -14,7 +14,7 @@ config/name="Pandora"
 run/main_scene="res://TestScene.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="pandora"
-config/features=PackedStringArray("4.0", "Forward Plus")
+config/features=PackedStringArray("4.1", "Forward Plus")
 boot_splash/image="res://splash.png"
 config/icon="res://addons/pandora/icons/icon.png"
 
