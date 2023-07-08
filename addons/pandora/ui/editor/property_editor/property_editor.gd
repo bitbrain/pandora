@@ -30,9 +30,17 @@ func _add_property(scene:PackedScene) -> void:
 		print("Cannot add custom properties to non-categories!")
 		return
 	var control = scene.instantiate() as PandoraPropertyControl
-	var property = Pandora.create_property(current_entity as PandoraCategory, "property", control.type)
+	var property = Pandora.create_property(current_entity as PandoraCategory, _generate_property_name(control.type, current_entity), control.type)
 	if property != null:
 		var control_kvp = PropertyControlKvp.instantiate()
 		control.init(property)
 		control_kvp.init(property, control)
 		property_list.add_child(control_kvp)
+
+
+func _generate_property_name(type:String, entity:PandoraEntity) -> String:
+	var properties = entity.get_entity_properties()
+	var property_name = type + " property"
+	if properties.is_empty() or not entity.has_entity_property(property_name):
+		return property_name
+	return property_name + str(properties.size())
