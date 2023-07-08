@@ -2,6 +2,9 @@
 extends VBoxContainer
 
 
+const PropertyControlKvp = preload("res://addons/pandora/ui/components/properties/property_control_kvp.tscn")
+
+
 @onready var property_bar:PandoraPropertyBar = %PropertyBar
 @onready var property_list = %PropertyList
 @onready var unselected_container = %UnselectedContainer
@@ -28,5 +31,8 @@ func _add_property(scene:PackedScene) -> void:
 		return
 	var control = scene.instantiate() as PandoraPropertyControl
 	var property = Pandora.create_property(current_entity as PandoraCategory, "property", control.type)
-	property_list.add_child(control)
-	control.set_property(property)
+	if property != null:
+		var control_kvp = PropertyControlKvp.instantiate()
+		control.init(property)
+		control_kvp.init(property, control)
+		property_list.add_child(control_kvp)

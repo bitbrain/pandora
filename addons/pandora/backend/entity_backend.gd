@@ -35,6 +35,9 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	
 	
 func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
+	if on_category.has_entity_property(name):
+		push_error("Unable to create property " + name + " - property with the same name exists.")
+		return null
 	var property = PandoraProperty.new(id_generator.generate(), name, type, PandoraProperty.default_value_of(type))
 	_properties[property._id] = property
 	on_category._properties.append(property)

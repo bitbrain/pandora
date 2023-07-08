@@ -6,6 +6,7 @@
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_eti8o")
+type = "string"
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2

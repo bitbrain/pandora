@@ -34,6 +34,17 @@ func get_category_id() -> String:
 	return _category_id
 	
 	
+func get_entity_property(name:String) -> PandoraProperty:
+	for property in _properties:
+		if property.get_property_name() == name:
+			return property
+	return null
+	
+	
+func has_entity_property(name:String) -> bool:
+	return get_entity_property(name) != null
+	
+	
 func get_entity_properties() -> Array[PandoraProperty]:
 	return _properties
 	

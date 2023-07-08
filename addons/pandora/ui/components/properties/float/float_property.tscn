@@ -11,6 +11,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_8lonj")
+type = "float"
 
 [node name="SpinBox" type="SpinBox" parent="."]
 layout_mode = 2
