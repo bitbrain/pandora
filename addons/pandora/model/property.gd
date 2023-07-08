@@ -4,6 +4,7 @@ var _id: String
 var _name: String
 var _type: String
 var _default_value: Variant
+var _category_id:String
 
 
 func _init(id:String, name:String, type:String, default_value:Variant) -> void:
@@ -11,6 +12,10 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._name = name
 	self._type = type
 	self._default_value = default_value
+	
+	
+func set_default_value(value:Variant) -> void:
+	_default_value = value
 	
 	
 func get_property_id() -> String:
@@ -34,13 +39,15 @@ func load_data(data:Dictionary) -> void:
 	_name = data["_name"]
 	_type = data["_type"]
 	_default_value = parse_value(data["_default_value"], _type)
+	_category_id = data["_category_id"]
 
 func save_data() -> Dictionary:
 	return {
 		"_id": _id,
 		"_name": _name,
 		"_type": _type,
-		"_default_value": str(_default_value)
+		"_default_value": str(_default_value),
+		"_category_id": _category_id
 	}
 
 

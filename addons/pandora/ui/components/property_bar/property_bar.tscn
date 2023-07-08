@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://blvy22tu53qxy" path="res://addons/pandora/icons/int.svg" id="2_vpyx8"]
 [ext_resource type="Texture2D" uid="uid://cgupnims1vk7r" path="res://addons/pandora/icons/float.svg" id="3_d0hjc"]
 [ext_resource type="Script" path="res://addons/pandora/ui/components/property_bar/property_button.gd" id="3_kwfh5"]
-[ext_resource type="PackedScene" uid="uid://d02rt6sxqqha6" path="res://addons/pandora/ui/components/properties/text/string_property.tscn" id="4_noo0c"]
+[ext_resource type="PackedScene" uid="uid://d02rt6sxqqha6" path="res://addons/pandora/ui/components/properties/string/string_property.tscn" id="4_noo0c"]
 [ext_resource type="Texture2D" uid="uid://mmkaghs6sbx4" path="res://addons/pandora/icons/bool.svg" id="4_wkogm"]
 [ext_resource type="Texture2D" uid="uid://c2738ylh13lsi" path="res://addons/pandora/icons/Color.svg" id="5_m2x7s"]
 [ext_resource type="PackedScene" uid="uid://kgit41uva08d" path="res://addons/pandora/ui/components/properties/integer/integer_property.tscn" id="6_bgkni"]

@@ -34,11 +34,12 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	return category
 	
 	
-func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
+func create_property(on_category:PandoraCategory, name:String, type:String, defaultValue:Variant = null) -> PandoraProperty:
 	if on_category.has_entity_property(name):
 		push_error("Unable to create property " + name + " - property with the same name exists.")
 		return null
-	var property = PandoraProperty.new(id_generator.generate(), name, type, PandoraProperty.default_value_of(type))
+	var property = PandoraProperty.new(id_generator.generate(), name, type, defaultValue if defaultValue else PandoraProperty.default_value_of(type))
+	property._category_id = on_category._id
 	_properties[property._id] = property
 	on_category._properties.append(property)
 	_invalidate_properties(on_category)
@@ -89,6 +90,10 @@ func load_data(data:Dictionary) -> void:
 		var entity = _entities[key] as PandoraEntity
 		var category = _categories[entity._category_id] as PandoraCategory
 		category._children.append(entity)
+	for key in _properties:
+		var property = _properties[key] as PandoraProperty
+		var category = _categories[property._category_id] as PandoraCategory
+		category._properties.append(property)
 	
 func save_data() -> Dictionary:
 	return {
@@ -140,8 +145,7 @@ func deserialize_properties(data:Array) -> Dictionary:
 func serialize_data(data:Dictionary) -> Array[Dictionary]:
 	var serialized_data:Array[Dictionary] = []
 	for key in data:
-		var entity = data[key] as PandoraEntity
-		serialized_data.append(entity.save_data())
+		serialized_data.append(data[key].save_data())
 	return serialized_data
 	
 
