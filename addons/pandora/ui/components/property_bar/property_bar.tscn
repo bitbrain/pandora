@@ -1,42 +1,60 @@
-[gd_scene load_steps=6 format=3 uid="uid://8namx0kxhw0"]
+[gd_scene load_steps=13 format=3 uid="uid://8namx0kxhw0"]
 
+[ext_resource type="Script" path="res://addons/pandora/ui/components/property_bar/property_bar.gd" id="1_0r2cp"]
 [ext_resource type="Texture2D" uid="uid://do5tkodyvid10" path="res://addons/pandora/icons/String.svg" id="1_4esni"]
 [ext_resource type="Texture2D" uid="uid://blvy22tu53qxy" path="res://addons/pandora/icons/int.svg" id="2_vpyx8"]
 [ext_resource type="Texture2D" uid="uid://cgupnims1vk7r" path="res://addons/pandora/icons/float.svg" id="3_d0hjc"]
+[ext_resource type="Script" path="res://addons/pandora/ui/components/property_bar/property_button.gd" id="3_kwfh5"]
+[ext_resource type="PackedScene" uid="uid://d02rt6sxqqha6" path="res://addons/pandora/ui/components/properties/text/string_property.tscn" id="4_noo0c"]
 [ext_resource type="Texture2D" uid="uid://mmkaghs6sbx4" path="res://addons/pandora/icons/bool.svg" id="4_wkogm"]
 [ext_resource type="Texture2D" uid="uid://c2738ylh13lsi" path="res://addons/pandora/icons/Color.svg" id="5_m2x7s"]
+[ext_resource type="PackedScene" uid="uid://kgit41uva08d" path="res://addons/pandora/ui/components/properties/integer/integer_property.tscn" id="6_bgkni"]
+[ext_resource type="PackedScene" uid="uid://75nkqyavb3aj" path="res://addons/pandora/ui/components/properties/float/float_property.tscn" id="8_7fghm"]
+[ext_resource type="PackedScene" uid="uid://brp6oodbm37gk" path="res://addons/pandora/ui/components/properties/bool/bool_property.tscn" id="10_jsvgc"]
+[ext_resource type="PackedScene" uid="uid://chj1ateikyk5" path="res://addons/pandora/ui/components/properties/color/color_property.tscn" id="12_xjj7h"]
 
 [node name="PropertyBar" type="HBoxContainer"]
 offset_right = 35.0
 offset_bottom = 33.0
 theme_override_constants/separation = 10
+script = ExtResource("1_0r2cp")
 
 [node name="AddTextPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "String property"
 icon = ExtResource("1_4esni")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("4_noo0c")
 
 [node name="AddIntegerPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Integer property"
 icon = ExtResource("2_vpyx8")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("6_bgkni")
 
 [node name="AddFloatPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Float property"
 icon = ExtResource("3_d0hjc")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("8_7fghm")
 
 [node name="AddBoolPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Bool property"
 icon = ExtResource("4_wkogm")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("10_jsvgc")
 
 [node name="AddColorPropertyButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Color property"
 icon = ExtResource("5_m2x7s")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("12_xjj7h")

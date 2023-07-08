@@ -34,8 +34,8 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	return category
 	
 	
-func create_property(on_category:PandoraCategory, name:String, default_value:Variant) -> PandoraProperty:
-	var property = PandoraProperty.new(id_generator.generate(), name, PandoraProperty.type_of(default_value), default_value)
+func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
+	var property = PandoraProperty.new(id_generator.generate(), name, type, PandoraProperty.default_value_of(type))
 	_properties[property._id] = property
 	on_category._properties.append(property)
 	_invalidate_properties(on_category)

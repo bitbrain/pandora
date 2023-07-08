@@ -1,9 +1,19 @@
-[gd_scene format=3 uid="uid://chj1ateikyk5"]
+[gd_scene load_steps=2 format=3 uid="uid://chj1ateikyk5"]
 
-[node name="color_property" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control.gd" id="1_bk5l3"]
+
+[node name="ColorProperty" type="MarginContainer"]
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_bk5l3")
+type = "color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="."]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2

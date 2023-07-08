@@ -1,9 +1,15 @@
-[gd_scene format=3 uid="uid://kgit41uva08d"]
+[gd_scene load_steps=2 format=3 uid="uid://kgit41uva08d"]
 
-[node name="integer_property" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control.gd" id="1_onr21"]
+
+[node name="IntegerProperty" type="MarginContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_onr21")
+type = "int"
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+max_value = 99999.0
+rounded = true
+select_all_on_focus = true

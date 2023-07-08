@@ -59,16 +59,16 @@ static func parse_value(value:String, type:String) -> Variant:
 	return ""
 	
 	
-static func type_of(variant:Variant) -> String:
-	if variant is String:
-		return "string"
-	if variant is int:
-		return "int"
-	if variant is bool:
-		return "bool"
-	if variant is float:
-		return "float"
-	if variant is Color:
-		return "color"
-	push_error("Unsupported variant type of value %s" % str(variant))
+static func default_value_of(type:String) -> Variant:
+	if type == "string":
+		return "Property Value"
+	if type == "int":
+		return 0
+	if type == "bool":
+		return false
+	if type == "float":
+		return 0.0
+	if type == "color":
+		return Color.WHITE
+	push_error("Unsupported variant type %s" % str(type))
 	return ""

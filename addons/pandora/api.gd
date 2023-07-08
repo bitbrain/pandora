@@ -54,8 +54,8 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	return _entity_backend.create_category(name, parent_category)
 	
 	
-func create_property(on_category:PandoraCategory, name:String, default_value:Variant) -> PandoraProperty:
-	return _entity_backend.create_property(on_category, name, default_value)
+func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
+	return _entity_backend.create_property(on_category, name, type)
 	
 	
 func get_entity(entity_id:String) -> PandoraEntity:

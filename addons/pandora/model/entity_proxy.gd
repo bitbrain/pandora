@@ -14,14 +14,14 @@ func get_entity_id() -> String:
 	
 func get_entity_name() -> String:
 	if _get_entity() == null:
-		push_error("Pandora - data not loaded yet.")
+		push_error("Pandora - entity not found!")
 		return ""
 	return _get_entity().get_entity_name()
 	
 	
 func get_icon_path() -> String:
 	if _get_entity() == null:
-		push_error("Pandora - data not loaded yet.")
+		push_error("Pandora - entity not found!")
 		return ""
 	return _get_entity().get_icon_path()
 	
