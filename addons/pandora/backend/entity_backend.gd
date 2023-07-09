@@ -16,7 +16,7 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	var entity = PandoraEntity.new(id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
-	_invalidate_properties(category)
+	_propagate_properties(category)
 	entity_added.emit(entity)
 	return entity
 
@@ -42,7 +42,7 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 	property._category_id = on_category._id
 	_properties[property._id] = property
 	on_category._properties.append(property)
-	_invalidate_properties(on_category)
+	_propagate_properties(on_category)
 	return property
 	
 	
@@ -94,6 +94,10 @@ func load_data(data:Dictionary) -> void:
 		var property = _properties[key] as PandoraProperty
 		var category = _categories[property._category_id] as PandoraCategory
 		category._properties.append(property)
+		
+	# propagate properties from roots
+	for root_category in _root_categories:
+		_propagate_properties(root_category)
 	
 func save_data() -> Dictionary:
 	return {
@@ -118,7 +122,7 @@ func deserialize_categories(data:Array) -> Dictionary:
 		var category = PandoraCategory.new("", "", "", "")
 		category.load_data(category_data)
 		dict[category._id] = category
-		if category.is_root():
+		if category._category_id == "":
 			# If category has no parent, it's a root category
 			_root_categories.append(category)
 	return dict
@@ -155,44 +159,20 @@ func _clear() -> void:
 	_categories.clear()
 	_properties.clear()
 	_root_categories.clear()
-	
-	
-func _find_root_category(category:PandoraCategory) -> PandoraCategory:
-	if category.is_root():
-		return category
-	var parent_category_id:String = category._category_id
-	while true:
-		var parent_category = get_category(parent_category_id)
-		if parent_category.is_root():
-			return parent_category
-		parent_category_id = parent_category._category_id
-	return null
 
 	
-# recusively recalculates all the current properties for child entities of a given category
-func _invalidate_properties(category:PandoraCategory) -> void:
-	var property_references:Array[PandoraProperty] = []
-	# FIXME we currently have to start from the root category as we
-	# currently do not cache the parent properties on children except
-	# entities themselves.
-	var root_category = _find_root_category(category)
-	_append_properties(root_category, property_references)
-
-
-func _append_properties(category:PandoraCategory, property_references:Array[PandoraProperty]) -> void:
-	for property in category._properties:
-		property_references.append(property)
-	var child_categories:Array[PandoraCategory] = []
+## recusively propagate properties into children
+func _propagate_properties(category:PandoraCategory) -> void:
 	for child in category._children:
+		for property in child.get_entity_properties():
+			if property._category_id != child._id:
+				# property is inherited -> clear it out!
+				child.get_entity_properties().erase(property)
+		for property in category.get_entity_properties():
+			child._properties.append(property)
+		
 		if child is PandoraCategory:
-			child_categories.append(child as PandoraCategory)
-		else:
-			# child is just a plain entity -> set properties
-			child._properties.clear()
-			for property in property_references:
-				child._properties.append(property)
-	for child in child_categories:
-		_append_properties(child, property_references)
+			_propagate_properties(child)
 
 
 func _compare_entities(entity1:PandoraEntity, entity2:PandoraEntity) -> bool:

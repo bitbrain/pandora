@@ -69,7 +69,3 @@ func save_data() -> Dictionary:
 		"_icon_path": _icon_path,
 		"_category_id": _category_id
 	}
-
-
-func is_root() -> bool:
-	return _category_id == "" or _category_id == null
