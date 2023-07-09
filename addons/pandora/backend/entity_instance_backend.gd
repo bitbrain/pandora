@@ -7,7 +7,7 @@ var _instances:Dictionary = {}
 	
 	
 func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
-	var entity_instance = PandoraEntityInstance.new(id_generator.generate(), of_entity.get_entity_id(), _create_properties(of_entity.get_entity_properties()))
+	var entity_instance = PandoraEntityInstance.new(id_generator.generate(), of_entity.get_entity_id(), _create_properties(of_entity))
 	_instances[entity_instance._id] = entity_instance
 	return entity_instance
 	
@@ -57,11 +57,11 @@ func _clear() -> void:
 	_instances.clear()
 	
 	
-func _create_properties(properties:Array[PandoraProperty]) -> Array[PandoraPropertyInstance]:
+func _create_properties(entity:PandoraEntity) -> Array[PandoraPropertyInstance]:
 	var property_instances:Array[PandoraPropertyInstance] = []
-	for property in properties:
+	for property in entity.get_entity_properties():
 		var id = id_generator.generate()
 		var property_id = property.get_property_id()
-		var default_value = property.get_default_value()
+		var default_value = property.get_default_value(entity)
 		property_instances.append(PandoraPropertyInstance.new(id, property, default_value))
 	return property_instances

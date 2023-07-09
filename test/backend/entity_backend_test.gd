@@ -119,7 +119,7 @@ func test_save_and_load_data() -> void:
 	var category_c = backend.create_category("c", category_b)
 	backend.create_entity("a", category_a)
 	backend.create_entity("b", category_b)
-	var property = backend.create_property(category_c, "property1", "string", "Hello World")
+	backend.create_property(category_c, "property1", "string", "Hello World")
 	var data = backend.save_data()
 	assert_that(data._categories).is_not_null()
 	assert_that(data._entities).is_not_null()
@@ -128,7 +128,7 @@ func test_save_and_load_data() -> void:
 	
 	assert_that(old_entities).is_equal(backend._entities)
 	assert_that(old_categories).is_equal(backend._categories)
-
+	
 
 func test_inherit_correct_properties() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
@@ -138,7 +138,12 @@ func test_inherit_correct_properties() -> void:
 	var category_b = backend.create_category("category B", root_category)
 	
 	backend.create_property(root_category, "root property", "string", "foobar")
+	
+	assert_that(category_a.get_entity_property("root property")).is_not_null()
+	assert_that(category_b.get_entity_property("root property")).is_not_null()
+	
 	backend.create_property(category_a, "cat a property1", "string", "foobar1")
+	
 	backend.create_property(category_a, "cat a property2", "string", "foobar2")
 	
 	var entity_a = backend.create_entity("Entity A", category_a)

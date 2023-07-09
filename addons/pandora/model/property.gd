@@ -6,6 +6,8 @@ var _name: String
 var _type: String
 var _default_value: Variant
 var _category_id:String
+# entity id -> Variant
+var _default_value_overrides = {}
 
 
 func _init(id:String, name:String, type:String, default_value:Variant) -> void:
@@ -15,8 +17,13 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._default_value = default_value
 	
 	
-func set_default_value(value:Variant) -> void:
-	_default_value = value
+func set_default_value(entity:PandoraEntity, value:Variant) -> void:
+	# ensure to not override properties that do not belong
+	# to this category
+	if entity._id != _category_id:
+		_default_value_overrides[entity._id] = value
+	else:
+		_default_value = value
 	
 	
 func get_property_id() -> String:
@@ -29,10 +36,13 @@ func get_property_name() -> String:
 	
 func get_property_type() -> String:
 	return _type
-	
-	
-func get_default_value() -> Variant:
-	return _default_value
+
+
+## returns the default value for a given entity
+func get_default_value(entity:PandoraEntity) -> Variant:
+	if _default_value_overrides.has(entity._id):
+		return _default_value_overrides[entity._id]
+	return _default_value	
 
 
 func load_data(data:Dictionary) -> void:
@@ -41,6 +51,7 @@ func load_data(data:Dictionary) -> void:
 	_type = data["_type"]
 	_default_value = parse_value(data["_default_value"], _type)
 	_category_id = data["_category_id"]
+	_default_value_overrides = _read_overrides(data["_default_value_overrides"])
 
 
 func save_data() -> Dictionary:
@@ -49,7 +60,8 @@ func save_data() -> Dictionary:
 		"_name": _name,
 		"_type": _type,
 		"_default_value": write_value(_default_value),
-		"_category_id": _category_id
+		"_default_value_overrides": _write_overrides(_default_value_overrides),
+		"_category_id": _category_id,
 	}
 
 	
@@ -90,3 +102,19 @@ static func default_value_of(type:String) -> Variant:
 		return Color.WHITE
 	push_error("Unsupported variant type %s" % str(type))
 	return ""
+	
+	
+func _read_overrides(overrides:Dictionary) -> Dictionary:
+	var dictionary = {}
+	for key in overrides:
+		var value = overrides[key]
+		dictionary[key] = parse_value(value, _type)
+	return dictionary
+	
+	
+func _write_overrides(overrides:Dictionary) -> Dictionary:
+	var dictionary = {}
+	for key in overrides:
+		var value = overrides[key]
+		dictionary[key] = write_value(value)
+	return dictionary

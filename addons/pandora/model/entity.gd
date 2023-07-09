@@ -7,6 +7,8 @@ var _icon_path:String
 var _category_id:String
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
+# property id -> Property
+var _property_map = {}
 
 
 func _init(id:String, name:String, icon_path:String, category_id:String) -> void:
@@ -33,13 +35,18 @@ func get_icon_path() -> String:
 func get_category_id() -> String:
 	return _category_id
 	
-	
+
 func get_entity_property(name:String) -> PandoraProperty:
-	for property in _properties:
-		if property.get_property_name() == name:
-			return property
+	if _property_map.has(name):
+		return _property_map[name] as PandoraProperty
+	else:
+		for property in get_entity_properties():
+			if property.get_property_name() == name:
+				if not _property_map.has(name):
+					_property_map[name] = property
+				return property
 	return null
-	
+
 	
 func has_entity_property(name:String) -> bool:
 	return get_entity_property(name) != null

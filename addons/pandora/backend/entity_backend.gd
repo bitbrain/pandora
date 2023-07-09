@@ -30,6 +30,7 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 		# If category has no parent, it's a root category
 		_root_categories.append(category)
 	_categories[category._id] = category
+	_propagate_properties(category)
 	entity_added.emit(category)
 	return category
 	
@@ -165,12 +166,19 @@ func _clear() -> void:
 func _propagate_properties(category:PandoraCategory) -> void:
 	for child in category._children:
 		for property in child.get_entity_properties():
-			if property._category_id != child._id:
-				# property is inherited -> clear it out!
+			if property._category_id != child._id and not category.has_entity_property(property.get_property_name()):
+				# property is inherited but does not seem to exist any longer!
+				# -> clear it out!
+				if property._default_value_overrides.has(child._id):
+					property._default_value_overrides.erase(child._id)
+				if child._property_map.has(property._id):
+					child._property_map.erase(property._id)
 				child.get_entity_properties().erase(property)
 		for property in category.get_entity_properties():
-			child._properties.append(property)
-		
+			# only propagate if not already existing!
+			# e.g. it could have an override already in place
+			if not child.has_entity_property(property.get_property_name()):
+				child._properties.append(property)
 		if child is PandoraCategory:
 			_propagate_properties(child)
 

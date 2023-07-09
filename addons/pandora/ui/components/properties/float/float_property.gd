@@ -6,5 +6,5 @@ extends PandoraPropertyControl
 
 
 func _ready() -> void:
-	spin_box.value = _property.get_default_value() as float
-	spin_box.value_changed.connect(func(value:float): _property.set_default_value(value))
+	spin_box.value = _property.get_default_value(_entity) as float
+	spin_box.value_changed.connect(func(value:float): _property.set_default_value(_entity, value))
