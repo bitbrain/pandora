@@ -1,5 +1,6 @@
 class_name PandoraProperty extends Resource
 
+
 var _id: String
 var _name: String
 var _type: String
@@ -41,14 +42,24 @@ func load_data(data:Dictionary) -> void:
 	_default_value = parse_value(data["_default_value"], _type)
 	_category_id = data["_category_id"]
 
+
 func save_data() -> Dictionary:
 	return {
 		"_id": _id,
 		"_name": _name,
 		"_type": _type,
-		"_default_value": str(_default_value),
+		"_default_value": write_value(_default_value),
 		"_category_id": _category_id
 	}
+
+	
+static func write_value(value:Variant) -> String:
+	if value is Color:
+		var color = value as Color
+		return color.to_html()
+	if value is bool:
+		return "1" if value else "0"
+	return str(value)
 
 
 static func parse_value(value:String, type:String) -> Variant:

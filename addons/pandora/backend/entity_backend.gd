@@ -118,7 +118,7 @@ func deserialize_categories(data:Array) -> Dictionary:
 		var category = PandoraCategory.new("", "", "", "")
 		category.load_data(category_data)
 		dict[category._id] = category
-		if category._category_id == "":
+		if category.is_root():
 			# If category has no parent, it's a root category
 			_root_categories.append(category)
 	return dict
@@ -158,13 +158,12 @@ func _clear() -> void:
 	
 	
 func _find_root_category(category:PandoraCategory) -> PandoraCategory:
-	if category._category_id == "":
-		# this category has no parent- it is the root!
+	if category.is_root():
 		return category
 	var parent_category_id:String = category._category_id
 	while true:
 		var parent_category = get_category(parent_category_id)
-		if parent_category._category_id == "":
+		if parent_category.is_root():
 			return parent_category
 		parent_category_id = parent_category._category_id
 	return null

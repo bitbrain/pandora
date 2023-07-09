@@ -109,6 +109,7 @@ func test_entity_instance_data_type_lookup_color() -> void:
 	var instance = instance_backend.create_entity_instance(entity)
 	assert_that(instance.get_color("some-property")).is_equal(Color.RED)
 
+
 func test_save_and_load_data() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var old_entities = backend._entities
@@ -127,3 +128,28 @@ func test_save_and_load_data() -> void:
 	
 	assert_that(old_entities).is_equal(backend._entities)
 	assert_that(old_categories).is_equal(backend._categories)
+	
+	
+func test_inherit_correct_properties() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	
+	var root_category = backend.create_category("root")
+	var category_a = backend.create_category("category A", root_category)
+	var category_b = backend.create_category("category B", root_category)
+	
+	backend.create_property(root_category, "root property", "string", "foobar")
+	backend.create_property(category_a, "cat a property1", "string", "foobar1")
+	backend.create_property(category_a, "cat a property2", "string", "foobar2")
+	
+	var entity_a = backend.create_entity("Entity A", category_a)
+	var entity_b = backend.create_entity("Entity B", category_b)
+	
+	assert_that(entity_a.get_entity_property("root_property")).is_not_null()
+	assert_that(entity_a.get_entity_property("cat a property1")).is_not_null()
+	assert_that(entity_a.get_entity_property("cat a property2")).is_not_null()
+	
+	assert_that(entity_b.get_entity_property("root_property")).is_not_null()
+	assert_that(entity_b.get_entity_property("cat a property1")).is_null()
+	assert_that(entity_b.get_entity_property("cat a property2")).is_null()
+	
+	
