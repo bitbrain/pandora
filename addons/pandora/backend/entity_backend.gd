@@ -11,7 +11,9 @@ var _properties:Dictionary = {}
 var _categories:Dictionary = {}
 var _root_categories:Array[PandoraEntity] = []
 	
-	
+# FIXME: property overrides are not inherited correctly
+# as overrides are only applied at a per-entity level
+# at the moment.
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	var entity = PandoraEntity.new(id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
@@ -30,7 +32,7 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 		# If category has no parent, it's a root category
 		_root_categories.append(category)
 	_categories[category._id] = category
-	_propagate_properties(category)
+	_propagate_properties(parent_category)
 	entity_added.emit(category)
 	return category
 	
