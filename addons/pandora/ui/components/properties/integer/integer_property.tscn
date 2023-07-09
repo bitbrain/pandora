@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://kgit41uva08d"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control.gd" id="1_onr21"]
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/integer/integer_property.gd" id="1_82ywy"]
 
 [node name="IntegerProperty" type="MarginContainer"]
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_onr21")
+script = ExtResource("1_82ywy")
 type = "int"
 
 [node name="SpinBox" type="SpinBox" parent="."]

@@ -4,6 +4,7 @@ class_name PandoraPropertyControl extends MarginContainer
 
 @export var type:String
 
+
 var _property:PandoraProperty
 
 

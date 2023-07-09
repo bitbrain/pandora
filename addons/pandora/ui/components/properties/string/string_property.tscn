@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://d02rt6sxqqha6"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control.gd" id="1_eti8o"]
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/string/string_property.gd" id="1_d17kv"]
 
 [node name="StringProperty" type="MarginContainer"]
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_eti8o")
+script = ExtResource("1_d17kv")
 type = "string"
 
 [node name="LineEdit" type="LineEdit" parent="."]

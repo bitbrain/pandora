@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://chj1ateikyk5"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control.gd" id="1_bk5l3"]
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/color/color_property.gd" id="1_tgtmt"]
 
 [node name="ColorProperty" type="MarginContainer"]
 offset_right = 8.0
@@ -11,7 +11,7 @@ theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
-script = ExtResource("1_bk5l3")
+script = ExtResource("1_tgtmt")
 type = "color"
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="."]
