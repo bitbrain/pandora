@@ -166,6 +166,8 @@ func _clear() -> void:
 	
 ## recusively propagate properties into children
 func _propagate_properties(category:PandoraCategory) -> void:
+	if category == null:
+		return
 	for child in category._children:
 		for property in child.get_entity_properties():
 			if property._category_id != child._id and not category.has_entity_property(property.get_property_name()):
