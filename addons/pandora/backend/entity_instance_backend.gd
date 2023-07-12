@@ -62,6 +62,6 @@ func _create_properties(entity:PandoraEntity) -> Array[PandoraPropertyInstance]:
 	for property in entity.get_entity_properties():
 		var id = id_generator.generate()
 		var property_id = property.get_property_id()
-		var default_value = property.get_default_value(entity)
+		var default_value = property.get_default_value()
 		property_instances.append(PandoraPropertyInstance.new(id, property, default_value))
 	return property_instances

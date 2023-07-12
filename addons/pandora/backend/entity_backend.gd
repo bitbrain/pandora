@@ -11,9 +11,7 @@ var _properties:Dictionary = {}
 var _categories:Dictionary = {}
 var _root_categories:Array[PandoraEntity] = []
 	
-# FIXME: property overrides are not inherited correctly
-# as overrides are only applied at a per-entity level
-# at the moment.
+
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	var entity = PandoraEntity.new(id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
@@ -173,8 +171,6 @@ func _propagate_properties(category:PandoraCategory) -> void:
 			if property._category_id != child._id and not category.has_entity_property(property.get_property_name()):
 				# property is inherited but does not seem to exist any longer!
 				# -> clear it out!
-				if property._default_value_overrides.has(child._id):
-					property._default_value_overrides.erase(child._id)
 				if child._property_map.has(property._id):
 					child._property_map.erase(property._id)
 				child.get_entity_properties().erase(property)

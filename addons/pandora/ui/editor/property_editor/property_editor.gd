@@ -48,7 +48,7 @@ func _add_property(scene:PackedScene) -> void:
 	
 func _add_property_control(control:PandoraPropertyControl, property:PandoraProperty) -> void:
 	var control_kvp = PropertyControlKvp.instantiate()
-	control.init(property, current_entity)
+	control.init(property)
 	control_kvp.init(property, control)
 	property_list.add_child(control_kvp)
 

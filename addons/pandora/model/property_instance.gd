@@ -9,7 +9,7 @@ var _property:PandoraProperty
 func _init(id:String, _property:PandoraProperty, value:Variant) -> void:
 	self._id = id
 	if _property != null:
-		self._property_id = _property._id
+		self._property_id = _property.get_property_id()
 	self._value = value
 	self._property = _property
 	
@@ -19,7 +19,7 @@ func get_property_instance_id() -> String:
 	
 	
 func get_property_name() -> String:
-	return _property._name
+	return _property.get_property_name()
 
 
 func get_property_id() -> String:

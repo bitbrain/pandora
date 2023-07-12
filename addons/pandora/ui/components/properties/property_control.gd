@@ -6,9 +6,7 @@ class_name PandoraPropertyControl extends MarginContainer
 
 
 var _property:PandoraProperty
-var _entity:PandoraEntity
 
 
-func init(property:PandoraProperty, entity:PandoraEntity) -> void:
+func init(property:PandoraProperty) -> void:
 	self._property = property
-	self._entity = entity
