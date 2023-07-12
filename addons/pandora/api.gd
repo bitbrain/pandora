@@ -73,6 +73,7 @@ func get_property(property_id:String) -> PandoraProperty:
 func get_all_categories() -> Array[PandoraEntity]:
 	return _entity_backend.get_all_categories()
 	
+	
 func get_all_entities() -> Array[PandoraEntity]:
 	return _entity_backend.get_all_entities()
 	
@@ -127,7 +128,7 @@ func _load_object_data() -> void:
 func _load_instance_data() -> void:
 	var all_instance_data = get_instance_storage().get_all_data(_context_manager.get_context_id())
 	if all_instance_data.has("_entity_instance_data"):
-		_entity_instance_backend.load_data(all_instance_data["_entity_instance_data"])
+		_entity_instance_backend.load_data(all_instance_data["_entity_instance_data"], _entity_backend)
 
 
 func _save_object_data() -> void:

@@ -25,8 +25,8 @@ func delete_entity_instance(instance_id:String) -> bool:
 	return true
 	
 	
-func load_data(data:Dictionary) -> void:
-	_instances = deserialize_instances(data["_instances"])
+func load_data(data:Dictionary, backend:PandoraEntityBackend) -> void:
+	_instances = deserialize_instances(data["_instances"], backend)
 	
 	
 func save_data() -> Dictionary:
@@ -35,11 +35,11 @@ func save_data() -> Dictionary:
 	}
 	
 	
-func deserialize_instances(data:Array) -> Dictionary:
+func deserialize_instances(data:Array, backend:PandoraEntityBackend) -> Dictionary:
 	var dict = {}
 	for entity_data in data:
 		var entity = PandoraEntityInstance.new("", "", [])
-		entity.load_data(entity_data)
+		entity.load_data(entity_data, backend)
 		dict[entity._id] = entity
 	return dict
 

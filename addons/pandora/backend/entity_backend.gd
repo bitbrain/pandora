@@ -129,15 +129,6 @@ func deserialize_categories(data:Array) -> Dictionary:
 	return dict
 	
 	
-func deserialize_instances(data:Array) -> Dictionary:
-	var dict = {}
-	for entity_data in data:
-		var entity = PandoraEntityInstance.new("", "", [])
-		entity.load_data(entity_data)
-		dict[entity._id] = entity
-	return dict
-	
-	
 func deserialize_properties(data:Array) -> Dictionary:
 	var dict = {}
 	for property_data in data:

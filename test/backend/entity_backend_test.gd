@@ -298,3 +298,37 @@ func test_entity_instance_does_not_inherit_late_properties() -> void:
 	var entity_instance = instance_backend.create_entity_instance(entity)
 	backend.create_property(category, "late property", "string", "lateValue")
 	assert_that(entity_instance.get_string("late property")).is_equal("")
+	
+	
+func test_save_and_load_instance_data() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var instance_backend = create_instance_backend() as PandoraEntityInstanceBackend
+	var category = backend.create_category("category")
+	backend.create_property(category, "property", "string", "Hello World")
+	var entity = backend.create_entity("Test", category)
+	var old_instance = instance_backend.create_entity_instance(entity)
+	var data = instance_backend.save_data()
+
+	assert_that(data._instances).is_not_null()
+
+	instance_backend.load_data(data, backend)
+	var new_instance = instance_backend.get_entity_instance(old_instance.get_entity_instance_id())
+
+	assert_that(old_instance.get_entity_instance_id()).is_equal(new_instance.get_entity_instance_id())
+
+
+func test_load_correct_instance_properties_after_save() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var instance_backend = create_instance_backend() as PandoraEntityInstanceBackend
+	var category = backend.create_category("category")
+	backend.create_property(category, "property", "string", "Hello World")
+	var entity = backend.create_entity("Test", category)
+	var old_instance = instance_backend.create_entity_instance(entity)
+	print("instance id", old_instance.get_entity_instance_id())
+	old_instance.set_string("property", "Override")
+	
+	var data = instance_backend.save_data()
+	instance_backend.load_data(data, backend)
+	var new_instance = instance_backend.get_entity_instance(old_instance.get_entity_instance_id())
+	
+	assert_that(new_instance.get_string("property")).is_equal("Override")
