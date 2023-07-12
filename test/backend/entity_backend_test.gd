@@ -204,3 +204,97 @@ func test_property_override() -> void:
 	root_property.set_default_value("override")
 	
 	assert_that(root_property.get_default_value()).is_equal("override")
+
+
+func test_inherit_property_from_parent_category() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var root_category = backend.create_category("root")
+	backend.create_property(root_category, "root property", "string", "foobar")
+
+	var category_a = backend.create_category("category A", root_category)
+	var entity_a = backend.create_entity("Entity A", category_a)
+	var root_property = entity_a.get_entity_property("root property")
+
+	assert_that(root_property.get_default_value()).is_equal("foobar")
+
+
+func test_override_property_value() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var root_category = backend.create_category("root")
+	backend.create_property(root_category, "root property", "string", "foobar")
+
+	var category_a = backend.create_category("category A", root_category)
+	var entity_a = backend.create_entity("Entity A", category_a)
+	var root_property = entity_a.get_entity_property("root property")
+
+	root_property.set_default_value("override1")
+	assert_that(root_property.get_default_value()).is_equal("override1")
+
+
+func test_inherit_overridden_property() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var root_category = backend.create_category("root")
+	backend.create_property(root_category, "root property", "string", "foobar")
+
+	var category_a = backend.create_category("category A", root_category)
+	backend.create_property(category_a, "cat a property", "string", "override1")
+
+	var entity_a = backend.create_entity("Entity A", category_a)
+	var cat_a_property = entity_a.get_entity_property("cat a property")
+
+	var category_b = backend.create_category("category B", category_a)
+	var entity_b = backend.create_entity("Entity B", category_b)
+	var cat_a_property_b = entity_b.get_entity_property("cat a property")
+
+	assert_that(cat_a_property_b.get_default_value()).is_equal(cat_a_property.get_default_value())
+
+
+func test_override_inherited_property() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var root_category = backend.create_category("root")
+	backend.create_property(root_category, "root property", "string", "foobar")
+
+	var category_a = backend.create_category("category A", root_category)
+	var entity_a = backend.create_entity("Entity A", category_a)
+	var root_property = entity_a.get_entity_property("root property")
+	root_property.set_default_value("override1")
+
+	var category_b = backend.create_category("category B", category_a)
+	var entity_b = backend.create_entity("Entity B", category_b)
+	var root_property_b = entity_b.get_entity_property("root property")
+
+	root_property_b.set_default_value("override2")
+	assert_that(root_property_b.get_default_value()).is_equal("override2")
+
+
+func test_entity_instance_inherits_properties() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("category")
+	backend.create_property(category, "property1", "string", "value1")
+	var entity = backend.create_entity("Test", category)
+	var entity_instance = instance_backend.create_entity_instance(entity)
+	assert_that(entity_instance.get_string("property1")).is_equal("value1")
+
+
+func test_entity_instance_inherits_overridden_properties() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var root_category = backend.create_category("root")
+	backend.create_property(root_category, "root property", "string", "rootValue")
+	var child_category = backend.create_category("child", root_category)
+	var entity = backend.create_entity("Test", child_category)
+	var root_property = entity.get_entity_property("root property")
+	root_property.set_default_value("override")
+	var entity_instance = instance_backend.create_entity_instance(entity)
+	assert_that(entity_instance.get_string("root property")).is_equal("override")
+
+
+func test_entity_instance_does_not_inherit_late_properties() -> void:
+	var backend = create_object_backend()
+	var instance_backend = create_instance_backend()
+	var category = backend.create_category("category")
+	var entity = backend.create_entity("Test", category)
+	var entity_instance = instance_backend.create_entity_instance(entity)
+	backend.create_property(category, "late property", "string", "lateValue")
+	assert_that(entity_instance.get_string("late property")).is_equal("")
