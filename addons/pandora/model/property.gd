@@ -1,6 +1,9 @@
 class_name PandoraProperty extends Resource
 
 
+signal name_changed
+
+
 var _id: String
 var _name: String
 var _type: String
@@ -32,7 +35,13 @@ func get_property_type() -> String:
 
 
 func get_default_value() -> Variant:
-	return _default_value	
+	return _default_value
+	
+
+## true in case this property is the original definition
+## of a property. (not inherited)
+func is_original() -> bool:
+	return true
 
 
 func load_data(data:Dictionary) -> void:

@@ -32,6 +32,10 @@ class OverridingProperty extends PandoraProperty:
 
 	func get_property_type() -> String:
 		return _property.get_property_type()
+		
+	
+	func is_original() -> bool:
+		return _property._category_id == _parent_entity._id
 
 
 var _id:String
