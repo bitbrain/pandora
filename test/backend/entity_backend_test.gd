@@ -188,7 +188,29 @@ func test_inherit_correct_properties_after_reloading() -> void:
 	assert_that(entity_b.get_entity_property("root property")).is_not_null()
 	assert_that(entity_b.get_entity_property("cat a property1")).is_null()
 	assert_that(entity_b.get_entity_property("cat a property2")).is_null()
-	
+
+
+func test_inherit_overridden_properties_after_reloading() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+
+	var root_category = backend.create_category("root")
+	backend.create_property(root_category, "root property", "string", "foobar")
+
+	var category_a = backend.create_category("category A", root_category)
+	var overridden_property = category_a.get_entity_property("root property")
+	overridden_property.set_default_value("override")
+
+	var entity_a_old = backend.create_entity("Entity A", category_a)
+	var entity_a_id = entity_a_old.get_entity_id()
+
+	var data = backend.save_data()
+	backend.load_data(data)
+
+	var entity_a = backend.get_entity(entity_a_id)
+
+	assert_that(entity_a.get_entity_property("root property")).is_not_null()
+	assert_that(entity_a.get_entity_property("root property").get_default_value()).is_equal("override")
+
 	
 func test_property_override() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend

@@ -14,11 +14,11 @@ class OverridingProperty extends PandoraProperty:
 
 
 	func set_default_value(value: Variant) -> void:
-		_parent_entity._property_overrides[_property.get_property_id()] = value
+		_parent_entity._property_overrides[_property.get_property_name()] = value
 
 	func get_default_value() -> Variant:
-		if _parent_entity._property_overrides.has(_property.get_property_id()):
-			return _parent_entity._property_overrides[_property.get_property_id()]
+		if _parent_entity._property_overrides.has(_property.get_property_name()):
+			return _parent_entity._property_overrides[_property.get_property_name()]
 		return _property.get_default_value()
 
 
@@ -40,9 +40,9 @@ var _icon_path:String
 var _category_id:String
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
-# property id -> Property
+# property name -> Property
 var _property_map = {}
-# property id -> InheritedProperty (cache)
+# property name -> InheritedProperty (cache)
 var _inherited_properties = {}
 var _property_overrides = {}
 
@@ -116,6 +116,7 @@ func load_data(data:Dictionary) -> void:
 	_name = data["_name"]
 	_icon_path = data["_icon_path"]
 	_category_id = data["_category_id"]
+	_property_overrides = _load_overrides(data["_property_overrides"])
 	
 	
 func save_data() -> Dictionary:
@@ -123,5 +124,25 @@ func save_data() -> Dictionary:
 		"_id": _id,
 		"_name": _name,
 		"_icon_path": _icon_path,
-		"_category_id": _category_id
+		"_category_id": _category_id,
+		"_property_overrides": _save_overrides()
 	}
+
+
+func _save_overrides() -> Dictionary:
+	var output = {}
+	for property_name in _property_overrides:
+		var value = _property_overrides[property_name]
+		output[property_name] = {
+			"type": _inherited_properties[property_name].get_property_type(),
+			"value": PandoraProperty.write_value(value)
+		}
+	return output
+	
+	
+func _load_overrides(data:Dictionary) -> Dictionary:
+	var output = {}
+	for property_name in data:
+		var unparsed_data = data[property_name]
+		output[property_name] = PandoraProperty.parse_value(unparsed_data["value"], unparsed_data["type"])
+	return output
