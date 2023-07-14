@@ -11,6 +11,7 @@ class OverridingProperty extends PandoraProperty:
 	func _init(parent_entity: PandoraEntity, property: PandoraProperty) -> void:
 		self._property = property
 		self._parent_entity = parent_entity
+		self._property.name_changed.connect(_change_name)
 
 
 	func set_default_value(value: Variant) -> void:
@@ -36,6 +37,25 @@ class OverridingProperty extends PandoraProperty:
 	
 	func is_original() -> bool:
 		return _property._category_id == _parent_entity._id
+		
+		
+	func reset_to_default() -> void:
+		_parent_entity._property_overrides.erase(_property.get_property_name())
+		
+	
+	func _change_name(old_name:String, new_name:String) -> void:
+		if _parent_entity._property_overrides.has(old_name):
+			var value = _parent_entity._property_overrides[old_name]
+			_parent_entity._property_overrides.erase(old_name)
+			_parent_entity._property_overrides[new_name] = value
+		if _parent_entity._property_map.has(old_name):
+			var old_property = _parent_entity._property_map[old_name]
+			_parent_entity._property_map.erase(old_name)
+			_parent_entity._property_map[new_name] = old_property
+		var old_inherited_property = _parent_entity._inherited_properties[old_name]
+		_parent_entity._inherited_properties.erase(old_name)
+		_parent_entity._inherited_properties[new_name] = old_inherited_property
+		
 
 
 var _id:String

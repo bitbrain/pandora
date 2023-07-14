@@ -210,6 +210,28 @@ func test_inherit_overridden_properties_after_reloading() -> void:
 
 	assert_that(entity_a.get_entity_property("root property")).is_not_null()
 	assert_that(entity_a.get_entity_property("root property").get_default_value()).is_equal("override")
+	
+	
+func test_save_parent_changed_property_name() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+
+	var root_category = backend.create_category("root")
+	var root_property = backend.create_property(root_category, "root property", "string", "foobar")
+
+	var child_category = backend.create_category("category child", root_category)
+	var child_child_category = backend.create_category("category child child", child_category)
+	var entity = backend.create_entity("Child Entity", child_child_category)
+	var overridden_property = child_category.get_entity_property("root property")
+	overridden_property.set_default_value("override")
+	
+	root_property._name = "changed property"
+	
+	var data = backend.save_data()
+	backend.load_data(data)
+	
+	var loaded_entity = backend.get_entity(entity.get_entity_id())
+	var loaded_property = loaded_entity.get_entity_property("changed property")
+	assert_that(loaded_property.get_default_value()).is_equal("override")
 
 	
 func test_property_override() -> void:

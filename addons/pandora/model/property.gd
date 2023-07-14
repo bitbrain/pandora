@@ -1,11 +1,16 @@
 class_name PandoraProperty extends Resource
 
 
-signal name_changed
+signal name_changed(old_name:String, new_name:String)
 
 
 var _id: String
-var _name: String
+var _name: String:
+	set(n):
+		var old = _name
+		_name = n
+		if _name != old:
+			name_changed.emit(old, _name)
 var _type: String
 var _default_value: Variant
 var _category_id:String
@@ -36,6 +41,12 @@ func get_property_type() -> String:
 
 func get_default_value() -> Variant:
 	return _default_value
+	
+
+## resets this property to its original
+## default value in case it was overridden
+func reset_to_default() -> void:
+	pass
 	
 
 ## true in case this property is the original definition
