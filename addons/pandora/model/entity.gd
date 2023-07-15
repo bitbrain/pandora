@@ -36,11 +36,14 @@ class OverridingProperty extends PandoraProperty:
 		
 	
 	func get_category_id() -> String:
-		return _property.get_category_id()
+		if _parent_entity is PandoraCategory:
+			return _parent_entity._id
+		else:
+			return _property.get_category_id()
 
 
 	func is_original() -> bool:
-		return _property._category_id == _parent_entity._id
+		return _property.get_category_id() == _parent_entity._id
 		
 		
 	func is_overridden() -> bool:
@@ -111,7 +114,7 @@ func get_category_id() -> String:
 func get_entity_property(name:String) -> PandoraProperty:
 	if _property_map.has(name):
 		var property = _property_map[name] as PandoraProperty
-		if property._category_id != _id:
+		if property.get_category_id() != _id:
 			if not _inherited_properties.has(name):
 				_inherited_properties[name] = OverridingProperty.new(self, property)
 			return _inherited_properties[name]
@@ -132,7 +135,7 @@ func has_entity_property(name:String) -> bool:
 func get_entity_properties() -> Array[PandoraProperty]:
 	var properties:Array[PandoraProperty] = []
 	for property in _properties:
-		if property._category_id != _id:
+		if property.get_category_id() != _id:
 			if not _inherited_properties.has(property.get_property_name()):
 				_inherited_properties[property.get_property_name()] = OverridingProperty.new(self, property)
 			properties.append(_inherited_properties[property.get_property_name()])

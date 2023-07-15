@@ -8,3 +8,9 @@ func get_icon_path() -> String:
 	if _icon_path == "":
 		return "res://addons/pandora/icons/Folder.svg"
 	return _icon_path
+
+
+func _delete_property(name:String) -> void:
+	super._delete_property(name)
+	for child in _children:
+		child._delete_property(name)
