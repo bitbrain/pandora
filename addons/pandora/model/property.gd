@@ -47,6 +47,13 @@ func get_category_id() -> String:
 	return _category_id
 	
 
+## the original category id specifies
+## the category where this property has
+## been originally defined (and inherited down)
+func get_original_category_id() -> String:
+	return _category_id
+	
+
 ## resets this property to its original
 ## default value in case it was overridden
 func reset_to_default() -> void:

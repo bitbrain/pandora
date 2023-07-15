@@ -40,6 +40,10 @@ class OverridingProperty extends PandoraProperty:
 			return _parent_entity._id
 		else:
 			return _property.get_category_id()
+			
+	
+	func get_original_category_id() -> String:
+		return _property.get_original_category_id()
 
 
 	func is_original() -> bool:
