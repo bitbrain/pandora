@@ -1,10 +1,14 @@
-@tool
-extends Node
+class_name PandoraSettings extends RefCounted
 
 
-@onready var _object_storage:PandoraDataStorage = PandoraJsonDataStorage.new("res://")
-@onready var _instance_storage:PandoraDataStorage = PandoraJsonDataStorage.new("user://")
+var _object_storage:PandoraDataStorage
+var _instance_storage:PandoraDataStorage
 
+
+func _init() -> void:
+	self._object_storage = PandoraJsonDataStorage.new("res://")
+	self._instance_storage = PandoraJsonDataStorage.new("user://")
+	
 
 func get_object_storage() -> PandoraDataStorage:
 	return _object_storage

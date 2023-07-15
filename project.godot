@@ -14,15 +14,18 @@ config/name="Pandora"
 run/main_scene="res://TestScene.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="pandora"
-config/features=PackedStringArray("4.0", "Forward Plus")
+config/features=PackedStringArray("4.1", "Forward Plus")
 boot_splash/image="res://splash.png"
-config/icon="res://icon.png"
+config/icon="res://addons/pandora/icons/icon.png"
 
 [autoload]
 
-Pandora="*res://addons/pandora/api.tscn"
-PandoraSettings="*res://addons/pandora/settings/settings.gd"
+Pandora="*res://addons/pandora/api.gd"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/pandora/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false

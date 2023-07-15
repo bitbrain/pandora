@@ -124,7 +124,7 @@ func simulate_until_object_signal(source :Object, signal_name :String, arg0=NO_A
 ## Waits for the function return value until specified timeout or fails.[br]
 ## [member args] : optional function arguments
 @warning_ignore("unused_parameter")
-func await_func(func_name :String, args := [], expeced := GdUnitAssert.EXPECT_SUCCESS) -> GdUnitFuncAssert:
+func await_func(func_name :String, args := []) -> GdUnitFuncAssert:
 	return null
 
 
@@ -132,7 +132,7 @@ func await_func(func_name :String, args := [], expeced := GdUnitAssert.EXPECT_SU
 ## [member source : the object where implements the function[br]
 ## [member args] : optional function arguments
 @warning_ignore("unused_parameter")
-func await_func_on(source :Object, func_name :String, args := [], expeced := GdUnitAssert.EXPECT_SUCCESS) -> GdUnitFuncAssert:
+func await_func_on(source :Object, func_name :String, args := []) -> GdUnitFuncAssert:
 	return null
 
 
@@ -167,6 +167,13 @@ func maximize_view() -> GdUnitSceneRunner:
 @warning_ignore("unused_parameter")
 func get_property(name :String) -> Variant:
 	return null
+
+## Set the  value <value> of the property with the name <name>.[br]
+## [member name] : name of property[br]
+## [member value] : value of property[br]
+## [member return] : true|false depending on valid property name.
+func set_property(name :String, value :Variant) -> bool:
+	return false
 
 
 ## executes the function specified by <name> in the scene and returns the result.[br]

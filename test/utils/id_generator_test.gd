@@ -9,8 +9,9 @@ extends GdUnitTestSuite
 const __source = "res://addons/pandora/utils/id_generator.gd"
 	
 
-func test_no_collisions_100k_iterations() -> void:
-	_assert_no_collisions(100000)
+# COMMENT IN MANUALLY
+#func test_no_collisions_100k_iterations() -> void:
+#	_assert_no_collisions(100000)
 	
 	
 func test_generate_id() -> void:

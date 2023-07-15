@@ -1,4 +1,4 @@
-class_name PandoraEntityInstance extends Resource
+class_name PandoraEntityInstance extends RefCounted
 
 
 var _id:String
@@ -12,6 +12,10 @@ func _init(id:String, entity_id:String, properties:Array[PandoraPropertyInstance
 	self._entity_id = entity_id
 	for property in properties:
 		self._properties[property.get_property_name()] = property
+
+
+func get_entity_instance_id() -> String:
+	return _id
 
 
 func get_entity() -> PandoraEntity:
@@ -70,12 +74,47 @@ func get_color(property_name:String) -> Color:
 		push_error("property %s on instance %s is not a bool" % [property_name, _id])
 		return Color.WHITE
 	return _get_property_value(property_name) as Color
+	
+	
+func set_string(property_name:String, value:String) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown string property %s on instance %s" % [property_name, _id])
+	else:
+		_properties[property_name].set_property_value(value)
 
 
-func load_data(data:Dictionary) -> void:
+func set_integer(property_name:String, value:int) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown integer property %s on instance %s" % [property_name, _id])
+	else:
+		_properties[property_name].set_property_value(value)
+
+
+func set_float(property_name:String, value:float) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown float property %s on instance %s" % [property_name, _id])
+	else:
+		_properties[property_name].set_property_value(value)
+
+
+func set_bool(property_name:String, value:bool) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown bool property %s on instance %s" % [property_name, _id])
+	else:
+		_properties[property_name].set_property_value(value)
+
+
+func set_color(property_name:String, value:Color) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown color property %s on instance %s" % [property_name, _id])
+	else:
+		_properties[property_name].set_property_value(value)
+
+
+func load_data(data:Dictionary, backend:PandoraEntityBackend) -> void:
 	_id = data["_id"]
 	_entity_id = data["_entity_id"]
-	_properties = _load_properties(data["_properties"])
+	_properties = _load_properties(data["_properties"], backend)
 	
 	
 func save_data() -> Dictionary:
@@ -93,13 +132,12 @@ func _save_properties(data:Dictionary) -> Array[Dictionary]:
 	return properties
 	
 	
-func _load_properties(data:Array) -> Dictionary:
+func _load_properties(data:Array, backend:PandoraEntityBackend) -> Dictionary:
 	var properties:Dictionary = {}
 	for property_dict in data:
 		var property = PandoraPropertyInstance.new("", null, "")
 		property.load_data(property_dict)
-		# ensure to populate the original property
-		property._property = Pandora.get_property(property.get_property_id())
+		property._property = backend.get_property(property._property_id)
 		properties[property.get_property_name()] = property
 	return properties
 	

@@ -1,9 +1,19 @@
 class_name PandoraProperty extends Resource
 
+
+signal name_changed(old_name:String, new_name:String)
+
+
 var _id: String
-var _name: String
+var _name: String:
+	set(n):
+		var old = _name
+		_name = n
+		if _name != old:
+			name_changed.emit(old, _name)
 var _type: String
 var _default_value: Variant
+var _category_id:String
 
 
 func _init(id:String, name:String, type:String, default_value:Variant) -> void:
@@ -11,6 +21,10 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._name = name
 	self._type = type
 	self._default_value = default_value
+	
+	
+func set_default_value(value:Variant) -> void:
+	_default_value = value
 	
 	
 func get_property_id() -> String:
@@ -23,10 +37,38 @@ func get_property_name() -> String:
 	
 func get_property_type() -> String:
 	return _type
-	
-	
+
+
 func get_default_value() -> Variant:
 	return _default_value
+	
+
+func get_category_id() -> String:
+	return _category_id
+	
+
+## the original category id specifies
+## the category where this property has
+## been originally defined (and inherited down)
+func get_original_category_id() -> String:
+	return _category_id
+	
+
+## resets this property to its original
+## default value in case it was overridden
+func reset_to_default() -> void:
+	pass
+	
+
+## true in case this property is the original definition
+## of a property. (not inherited)
+func is_original() -> bool:
+	return true
+	
+
+## returns true when this property is currently overridden
+func is_overridden() -> bool:
+	return false
 
 
 func load_data(data:Dictionary) -> void:
@@ -34,14 +76,26 @@ func load_data(data:Dictionary) -> void:
 	_name = data["_name"]
 	_type = data["_type"]
 	_default_value = parse_value(data["_default_value"], _type)
+	_category_id = data["_category_id"]
+
 
 func save_data() -> Dictionary:
 	return {
 		"_id": _id,
 		"_name": _name,
 		"_type": _type,
-		"_default_value": str(_default_value)
+		"_default_value": write_value(_default_value),
+		"_category_id": _category_id,
 	}
+
+	
+static func write_value(value:Variant) -> String:
+	if value is Color:
+		var color = value as Color
+		return color.to_html()
+	if value is bool:
+		return "1" if value else "0"
+	return str(value)
 
 
 static func parse_value(value:String, type:String) -> Variant:
@@ -59,16 +113,16 @@ static func parse_value(value:String, type:String) -> Variant:
 	return ""
 	
 	
-static func type_of(variant:Variant) -> String:
-	if variant is String:
-		return "string"
-	if variant is int:
-		return "int"
-	if variant is bool:
-		return "bool"
-	if variant is float:
-		return "float"
-	if variant is Color:
-		return "color"
-	push_error("Unsupported variant type of value %s" % str(variant))
+static func default_value_of(type:String) -> Variant:
+	if type == "string":
+		return "Property Value"
+	if type == "int":
+		return 0
+	if type == "bool":
+		return false
+	if type == "float":
+		return 0.0
+	if type == "color":
+		return Color.WHITE
+	push_error("Unsupported variant type %s" % str(type))
 	return ""

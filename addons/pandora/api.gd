@@ -6,28 +6,36 @@ signal data_loaded
 signal entity_added(entity:PandoraEntity)
 
 
-@onready var _context_manager:PandoraContextManager = $PandoraContextManager
-@onready var _entity_backend:PandoraEntityBackend = PandoraEntityBackend.new()
-@onready var _entity_instance_backend:PandoraEntityInstanceBackend = PandoraEntityInstanceBackend.new()
+var _context_manager:PandoraContextManager
+var _entity_backend:PandoraEntityBackend
+var _entity_instance_backend:PandoraEntityInstanceBackend
+var _settings:PandoraSettings
 
 
 var _loaded = false
 
-
-func _ready() -> void:
-	_entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
 	
-	# initialise data the next frame so nodes get the chance
-	# to connect to required signals!
-	call_deferred("load_data")
+func _enter_tree() -> void:
+	self._settings = PandoraSettings.new()
+	self._context_manager = PandoraContextManager.new()
+	self._entity_backend = PandoraEntityBackend.new()
+	self._entity_instance_backend = PandoraEntityInstanceBackend.new()
+	
+	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
+	
+	load_data()
+
+
+func _exit_tree() -> void:
+	_clear()
 
 
 func get_object_storage() -> PandoraDataStorage:
-	return PandoraSettings.get_object_storage()
+	return _settings.get_object_storage()
 	
 
 func get_instance_storage() -> PandoraDataStorage:
-	return PandoraSettings.get_instance_storage()
+	return _settings.get_instance_storage()
 
 
 func get_context_id() -> String:
@@ -46,8 +54,8 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	return _entity_backend.create_category(name, parent_category)
 	
 	
-func create_property(on_category:PandoraCategory, name:String, default_value:Variant) -> PandoraProperty:
-	return _entity_backend.create_property(on_category, name, default_value)
+func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
+	return _entity_backend.create_property(on_category, name, type)
 	
 	
 func get_entity(entity_id:String) -> PandoraEntity:
@@ -65,6 +73,7 @@ func get_property(property_id:String) -> PandoraProperty:
 func get_all_categories() -> Array[PandoraEntity]:
 	return _entity_backend.get_all_categories()
 	
+	
 func get_all_entities() -> Array[PandoraEntity]:
 	return _entity_backend.get_all_entities()
 	
@@ -75,6 +84,10 @@ func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
 	
 func get_entity_instance(instance_id:String) -> PandoraEntityInstance:
 	return _entity_instance_backend.get_entity_instance(instance_id)
+
+
+func delete_entity_instance(entity_instance_id:String) -> bool:
+	return _entity_instance_backend.delete_entity_instance(entity_instance_id)
 
 
 func load_data_async() -> void:
@@ -100,6 +113,10 @@ func save_data() -> void:
 		_save_object_data()
 	else:
 		_save_instance_data()
+		
+		
+func is_loaded() -> bool:
+	return _loaded
 
 
 func _load_object_data() -> void:
@@ -111,7 +128,7 @@ func _load_object_data() -> void:
 func _load_instance_data() -> void:
 	var all_instance_data = get_instance_storage().get_all_data(_context_manager.get_context_id())
 	if all_instance_data.has("_entity_instance_data"):
-		_entity_instance_backend.load_data(all_instance_data["_entity_instance_data"])
+		_entity_instance_backend.load_data(all_instance_data["_entity_instance_data"], _entity_backend)
 
 
 func _save_object_data() -> void:

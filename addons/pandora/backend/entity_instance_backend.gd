@@ -7,7 +7,7 @@ var _instances:Dictionary = {}
 	
 	
 func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
-	var entity_instance = PandoraEntityInstance.new(id_generator.generate(), of_entity.get_entity_id(), _create_properties(of_entity.get_entity_properties()))
+	var entity_instance = PandoraEntityInstance.new(id_generator.generate(), of_entity.get_entity_id(), _create_properties(of_entity))
 	_instances[entity_instance._id] = entity_instance
 	return entity_instance
 	
@@ -18,8 +18,15 @@ func get_entity_instance(instance_id:String) -> PandoraEntityInstance:
 	return _instances[instance_id]
 	
 	
-func load_data(data:Dictionary) -> void:
-	_instances = deserialize_instances(data["_instances"])
+func delete_entity_instance(instance_id:String) -> bool:
+	if not _instances.has(instance_id):
+		return false
+	_instances.erase(instance_id)
+	return true
+	
+	
+func load_data(data:Dictionary, backend:PandoraEntityBackend) -> void:
+	_instances = deserialize_instances(data["_instances"], backend)
 	
 	
 func save_data() -> Dictionary:
@@ -28,11 +35,11 @@ func save_data() -> Dictionary:
 	}
 	
 	
-func deserialize_instances(data:Array) -> Dictionary:
+func deserialize_instances(data:Array, backend:PandoraEntityBackend) -> Dictionary:
 	var dict = {}
 	for entity_data in data:
 		var entity = PandoraEntityInstance.new("", "", [])
-		entity.load_data(entity_data)
+		entity.load_data(entity_data, backend)
 		dict[entity._id] = entity
 	return dict
 
@@ -50,9 +57,9 @@ func _clear() -> void:
 	_instances.clear()
 	
 	
-func _create_properties(properties:Array[PandoraProperty]) -> Array[PandoraPropertyInstance]:
+func _create_properties(entity:PandoraEntity) -> Array[PandoraPropertyInstance]:
 	var property_instances:Array[PandoraPropertyInstance] = []
-	for property in properties:
+	for property in entity.get_entity_properties():
 		var id = id_generator.generate()
 		var property_id = property.get_property_id()
 		var default_value = property.get_default_value()

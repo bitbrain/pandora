@@ -13,8 +13,7 @@ func _init() -> void:
 
 
 func _enter_tree() -> void:
-	add_autoload_singleton("PandoraSettings", "res://addons/pandora/settings/pandora_settings.gd")
-	add_autoload_singleton("Pandora", "res://addons/pandora/api.tscn")
+	add_autoload_singleton("Pandora", "res://addons/pandora/api.gd")
 	
 	editor_view = PandoraEditor.instantiate()
 	editor_view.hide()
@@ -31,6 +30,8 @@ func _exit_tree() -> void:
 		remove_control_from_bottom_panel(editor_view)
 		editor_view.queue_free()
 		remove_inspector_plugin(entity_inspector)
+		
+	remove_autoload_singleton("Pandora")
 
 
 func _make_visible(visible:bool) -> void:

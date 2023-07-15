@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://75nkqyavb3aj"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/float/float_property.gd" id="1_1npi1"]
+
+[node name="FloatProperty" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_1npi1")
+type = "float"
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+max_value = 99999.0
+step = 0.001
+select_all_on_focus = true
