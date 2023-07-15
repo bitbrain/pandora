@@ -53,6 +53,11 @@ func reset_to_default() -> void:
 ## of a property. (not inherited)
 func is_original() -> bool:
 	return true
+	
+
+## returns true when this property is currently overridden
+func is_overridden() -> bool:
+	return false
 
 
 func load_data(data:Dictionary) -> void:

@@ -15,6 +15,7 @@ var _control:PandoraPropertyControl:
 @onready var property_key: Label = %PropertyKey
 @onready var property_key_edit: LineEdit = %PropertyKeyEdit
 @onready var property_value: MarginContainer = %PropertyValue
+@onready var reset_button: Button = %ResetButton
 
 
 func init(property:PandoraProperty, control:PandoraPropertyControl) -> void:
@@ -23,8 +24,13 @@ func init(property:PandoraProperty, control:PandoraPropertyControl) -> void:
 	
 	
 func _ready() -> void:
-	_set_edit_name_mode(_property.is_original())
 	property_key_edit.text_changed.connect(_property_name_changed)
+	reset_button.pressed.connect(_property_reset_to_default)
+	_refresh.call_deferred()
+	if _property != null:
+		_set_edit_name_mode(_property.is_original())
+	if _control != null:
+		_control.property_value_changed.connect(_refresh)
 
 
 func _refresh_key() -> void:
@@ -45,3 +51,13 @@ func _set_edit_name_mode(edit_mode:bool) -> void:
 func _property_name_changed(new_name:String) -> void:
 	# FIXME avoid key duplication issue
 	_property._name = new_name
+
+
+func _property_reset_to_default() -> void:
+	_property.reset_to_default()
+	_refresh()
+	
+
+func _refresh() -> void:
+	_control.refresh()
+	reset_button.visible = not _property.is_original() and _property.is_overridden()

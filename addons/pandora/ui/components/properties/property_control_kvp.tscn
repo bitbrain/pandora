@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://tgaigoiiqvmc"]
+[gd_scene load_steps=3 format=3 uid="uid://tgaigoiiqvmc"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control_kvp.gd" id="1_1h35p"]
+[ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="2_718d2"]
 
 [node name="PropertyControlKVP" type="PanelContainer"]
 size_flags_horizontal = 3
@@ -10,18 +11,37 @@ script = ExtResource("1_1h35p")
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="PropertyKey" type="Label" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Container" type="HBoxContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="PropertyKey" type="Label" parent="HBoxContainer/HBoxContainer/Container"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 
-[node name="PropertyKeyEdit" type="LineEdit" parent="HBoxContainer"]
+[node name="PropertyKeyEdit" type="LineEdit" parent="HBoxContainer/HBoxContainer/Container"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = -7
+
+[node name="ResetButton" type="Button" parent="HBoxContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+icon = ExtResource("2_718d2")
 
 [node name="PropertyValue" type="MarginContainer" parent="HBoxContainer"]
 unique_name_in_owner = true

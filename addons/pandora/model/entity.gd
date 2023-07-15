@@ -39,8 +39,16 @@ class OverridingProperty extends PandoraProperty:
 		return _property._category_id == _parent_entity._id
 		
 		
+	func is_overridden() -> bool:
+		var override_exists = _parent_entity._property_overrides.has(_property.get_property_name())
+		return override_exists and _parent_entity._property_overrides[get_property_name()] != _property.get_default_value()
+		
+		
 	func reset_to_default() -> void:
-		_parent_entity._property_overrides.erase(_property.get_property_name())
+		var had_override = _parent_entity._property_overrides.has(_property.get_property_name())
+		if had_override:
+			_parent_entity._property_overrides.erase(_property.get_property_name())
+		
 		
 	
 	func _change_name(old_name:String, new_name:String) -> void:
@@ -158,7 +166,7 @@ func _save_overrides() -> Dictionary:
 	for property_name in _property_overrides:
 		var value = _property_overrides[property_name]
 		output[property_name] = {
-			"type": _inherited_properties[property_name].get_property_type(),
+			"type": _find_property(property_name).get_property_type(),
 			"value": PandoraProperty.write_value(value)
 		}
 	return output
@@ -170,3 +178,12 @@ func _load_overrides(data:Dictionary) -> Dictionary:
 		var unparsed_data = data[property_name]
 		output[property_name] = PandoraProperty.parse_value(unparsed_data["value"], unparsed_data["type"])
 	return output
+	
+	
+func _find_property(name:String) -> PandoraProperty:
+	if _inherited_properties.has(name):
+		return _inherited_properties[name]
+	for property in _properties:
+		if property.get_property_name() == name:
+			return property
+	return null

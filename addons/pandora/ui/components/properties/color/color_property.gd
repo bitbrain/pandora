@@ -6,5 +6,12 @@ extends PandoraPropertyControl
 
 
 func _ready() -> void:
+	refresh()
+	color_picker_button.color_changed.connect(
+		func(color:Color):
+			_property.set_default_value(color)
+			property_value_changed.emit())
+
+
+func refresh() -> void:
 	color_picker_button.color = _property.get_default_value() as Color
-	color_picker_button.color_changed.connect(func(color:Color): _property.set_default_value(color))
