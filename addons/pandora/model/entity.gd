@@ -165,10 +165,12 @@ func _save_overrides() -> Dictionary:
 	var output = {}
 	for property_name in _property_overrides:
 		var value = _property_overrides[property_name]
-		output[property_name] = {
-			"type": _find_property(property_name).get_property_type(),
-			"value": PandoraProperty.write_value(value)
-		}
+		var property = _find_property(property_name)
+		if property != null:
+			output[property_name] = {
+				"type": property.get_property_type(),
+				"value": PandoraProperty.write_value(value)
+			}
 	return output
 	
 	

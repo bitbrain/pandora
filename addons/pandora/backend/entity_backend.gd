@@ -47,6 +47,13 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 	return property
 	
 	
+func delete_property(property:PandoraProperty) -> void:
+	var parent_category = get_category(property._category_id)
+	parent_category._properties.erase(property)
+	_properties.erase(property._id)
+	_propagate_properties(parent_category)
+	
+	
 func get_entity(entity_id:String) -> PandoraEntity:
 	if not _entities.has(entity_id):
 		return null

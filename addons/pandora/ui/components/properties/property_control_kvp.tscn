@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://tgaigoiiqvmc"]
+[gd_scene load_steps=4 format=3 uid="uid://tgaigoiiqvmc"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control_kvp.gd" id="1_1h35p"]
 [ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="2_718d2"]
+[ext_resource type="Texture2D" uid="uid://c8r1klbs37r1b" path="res://addons/pandora/icons/Clear.svg" id="3_dhxsl"]
 
 [node name="PropertyControlKVP" type="PanelContainer"]
 size_flags_horizontal = 3
@@ -47,3 +48,9 @@ icon = ExtResource("2_718d2")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="DeletePropertyButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+icon = ExtResource("3_dhxsl")
