@@ -43,6 +43,10 @@ func get_default_value() -> Variant:
 	return _default_value
 	
 
+func get_category_id() -> String:
+	return _category_id
+	
+
 ## resets this property to its original
 ## default value in case it was overridden
 func reset_to_default() -> void:

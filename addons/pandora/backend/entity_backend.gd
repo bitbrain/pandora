@@ -165,13 +165,12 @@ func _propagate_properties(category:PandoraCategory) -> void:
 	if category == null:
 		return
 	for child in category._children:
-		for property in child.get_entity_properties():
-			if property._category_id != child._id and not category.has_entity_property(property.get_property_name()):
+		var properties = child.get_entity_properties()
+		for property in properties:
+			if property.get_category_id() == category.get_category_id() and not category.has_entity_property(property.get_property_name()):
 				# property is inherited but does not seem to exist any longer!
 				# -> clear it out!
-				if child._property_map.has(property._id):
-					child._property_map.erase(property._id)
-				child.get_entity_properties().erase(property)
+				child._delete_property(property.get_property_name())
 		for property in category.get_entity_properties():
 			# only propagate if not already existing!
 			# e.g. it could have an override already in place

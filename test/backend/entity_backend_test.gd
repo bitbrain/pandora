@@ -376,3 +376,29 @@ func test_load_correct_instance_properties_after_save() -> void:
 	var new_instance = instance_backend.get_entity_instance(old_instance.get_entity_instance_id())
 	
 	assert_that(new_instance.get_string("property")).is_equal("Override")
+	
+	
+func test_delete_propagated_properties_in_children() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+
+	var root_category = backend.create_category("root")
+	var property = backend.create_property(root_category, "root property", "string", "foobar")
+	var property2 = backend.create_property(root_category, "color property", "color", Color.RED)
+	var property3 = backend.create_property(root_category, "bool property", "bool", true)
+
+	var category = backend.create_category("category", root_category)
+	var overridden_property = category.get_entity_property("root property")
+	overridden_property.set_default_value("override")
+	
+	var entity = backend.create_entity("Some entity", category)
+	
+	backend.delete_property(property)
+	backend.delete_property(property2)
+	backend.delete_property(property3)
+	
+	assert_that(root_category.has_entity_property("root property")).is_equal(false)
+	assert_that(entity.has_entity_property("root property")).is_equal(false)
+	assert_that(root_category.has_entity_property("color property")).is_equal(false)
+	assert_that(entity.has_entity_property("color property")).is_equal(false)
+	assert_that(root_category.has_entity_property("bool property")).is_equal(false)
+	assert_that(entity.has_entity_property("bool property")).is_equal(false)
