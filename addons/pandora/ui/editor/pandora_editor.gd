@@ -24,6 +24,7 @@ func _ready() -> void:
 	tree.entity_selected.connect(property_editor.set_entity)
 	tree.selection_cleared.connect(func(): property_editor.set_entity(null))
 	entity_search.text_changed.connect(tree.search)
+	property_editor.original_property_selected.connect(_on_original_property_selected)
 	
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(tree.add_entity)
@@ -37,6 +38,11 @@ func _entity_selected(entity:PandoraEntity) -> void:
 	create_entity_button.disabled = not entity is PandoraCategory
 	create_category_button.disabled = not entity is PandoraCategory
 	selected_entity = entity
+	
+	
+func _on_original_property_selected(category_id:String, property_name:String) -> void:
+	tree.select(category_id)
+	property_editor.edit_key(property_name)
 	
 	
 func _create_entity() -> void:

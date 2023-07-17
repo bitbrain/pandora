@@ -2,6 +2,9 @@
 extends PanelContainer
 
 
+signal original_property_selected(category_id:String, property_name:String)
+
+
 var _property:PandoraProperty:
 	set(p):
 		_property = p
@@ -13,7 +16,7 @@ var _control:PandoraPropertyControl:
 var _backend:PandoraEntityBackend
 
 
-@onready var property_key: Label = %PropertyKey
+@onready var property_key: LinkButton = %PropertyKey
 @onready var property_key_edit: LineEdit = %PropertyKeyEdit
 @onready var property_value: MarginContainer = %PropertyValue
 @onready var reset_button: Button = %ResetButton
@@ -33,9 +36,16 @@ func _ready() -> void:
 	_refresh.call_deferred()
 	if _property != null:
 		_set_edit_name_mode(_property.is_original())
+		property_key.pressed.connect(func():
+			original_property_selected.emit(_property.get_original_category_id(), _property.get_property_name()))
 	if _control != null:
 		_control.property_value_changed.connect(_refresh)
 
+
+func edit_key():
+	if property_key_edit.visible:
+		property_key_edit.grab_focus()
+	
 
 func _refresh_key() -> void:
 	property_key.text = _property.get_property_name()

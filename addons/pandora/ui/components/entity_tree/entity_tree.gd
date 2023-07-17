@@ -32,6 +32,13 @@ func search(text:String) -> void:
 			entity_item.set_collapsed_recursive(entity.get_entity_name().contains(text))
 		else:
 			entity_item.set_collapsed_recursive(false)
+			
+
+## selects the entity with the given ID	
+func select(entity_id:String) -> void:
+	var entity_item = entity_items[entity_id] as TreeItem
+	entity_item.select(0)
+	_clicked()
 
 
 func _gui_input(event: InputEvent) -> void:
