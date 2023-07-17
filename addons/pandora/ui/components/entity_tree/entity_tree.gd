@@ -20,8 +20,20 @@ func _ready():
 	
 	if not entity_items.is_empty():
 		loading_spinner.visible = false
-	
-	
+		
+
+## filters the existing list to the given search term
+## if search term is empty the search gets cleared.
+func search(text:String) -> void:
+	for key in entity_items:
+		var entity_item = entity_items[key] as TreeItem
+		if text != "":
+			var entity = entity_item.get_metadata(0) as PandoraEntity
+			entity_item.set_collapsed_recursive(entity.get_entity_name().contains(text))
+		else:
+			entity_item.set_collapsed_recursive(false)
+
+
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.double_click:
 		if get_selected():
