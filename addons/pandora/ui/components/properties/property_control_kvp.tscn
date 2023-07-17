@@ -21,12 +21,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="PropertyKey" type="Label" parent="HBoxContainer/HBoxContainer/Container"]
+[node name="PropertyKey" type="LinkButton" parent="HBoxContainer/HBoxContainer/Container"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 
 [node name="PropertyKeyEdit" type="LineEdit" parent="HBoxContainer/HBoxContainer/Container"]
 unique_name_in_owner = true

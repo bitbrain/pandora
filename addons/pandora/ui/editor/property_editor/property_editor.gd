@@ -2,6 +2,11 @@
 extends VBoxContainer
 
 
+## called when the user intends to navigate to the 
+## original property of an inherited property.
+signal original_property_selected(category_id:String, property_name:String)
+
+
 const PropertyControlKvp = preload("res://addons/pandora/ui/components/properties/property_control_kvp.tscn")
 const PROPERTY_DEFAULT_NAME = "property"
 
@@ -17,6 +22,14 @@ var current_entity:PandoraEntity
 func _ready() -> void:
 	property_bar.property_added.connect(_add_property)
 	set_entity(null)
+	
+
+## if possible, attempt to edit the given property key.
+func edit_key(property_name:String) -> void:
+	for property_control in property_list.get_children():
+		var property = property_control._property
+		if property != null and property_name == property.get_property_name() and property.is_original():
+			property_control.edit_key()
 
 
 func set_entity(entity:PandoraEntity) -> void:
@@ -50,6 +63,8 @@ func _add_property_control(control:PandoraPropertyControl, property:PandoraPrope
 	var control_kvp = PropertyControlKvp.instantiate()
 	control.init(property)
 	control_kvp.init(property, control, Pandora._entity_backend)
+	control_kvp.original_property_selected.connect(func(category_id:String, property_name:String):
+		original_property_selected.emit(category_id, property_name))
 	property_list.add_child(control_kvp)
 
 
