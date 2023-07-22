@@ -52,10 +52,15 @@ layout_mode = 2
 size_flags_vertical = 0
 placeholder_text = "Search..."
 
-[node name="EntityTree" parent="Contents/DataContent/EntitySelection" instance=ExtResource("3_4ayq8")]
+[node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/EntitySelection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EntityTree" parent="Contents/DataContent/EntitySelection/ScrollContainer" instance=ExtResource("3_4ayq8")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Contents/DataContent/EntitySelection"]
