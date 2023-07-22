@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://ceqq28yvnhs2e"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.gd" id="1_hnn1r"]
+[ext_resource type="PackedScene" uid="uid://dvoxop0o2mlfi" path="res://addons/pandora/ui/components/texture_picker/texture_picker.tscn" id="2_tv6yu"]
+
+[node name="EntityAttributes" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_hnn1r")
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="IconAttribute" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="IconLabel" type="Label" parent="IconAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Icon"
+
+[node name="TexturePicker" parent="IconAttribute" instance=ExtResource("2_tv6yu")]
+unique_name_in_owner = true
+layout_mode = 2

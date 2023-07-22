@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvoxop0o2mlfi"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/texture_picker/texture_picker.gd" id="1_dilp1"]
+[ext_resource type="Texture2D" uid="uid://bd13bip4a1yuy" path="res://splash.png" id="2_lbfpc"]
+
+[node name="TexturePicker" type="HBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_dilp1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_lbfpc")
+expand_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
