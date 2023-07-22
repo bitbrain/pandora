@@ -16,14 +16,12 @@ var selected_entity:PandoraEntity
 func _ready() -> void:
 	save_button.pressed.connect(_save)
 	tree.entity_selected.connect(_entity_selected)
-	tree.selection_cleared.connect(func(): selected_entity = null)
+	tree.selection_cleared.connect(_selection_cleared)
 	tree.entity_selected.connect(property_editor.set_entity)
 	tree.selection_cleared.connect(func(): property_editor.set_entity(null))
 	tree.entity_deletion_issued.connect(_delete_entity)
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
-	create_entity_button.disabled = true
-	create_category_button.disabled = true
 	
 	entity_search.text_changed.connect(tree.search)
 	property_editor.original_property_selected.connect(_on_original_property_selected)
@@ -40,6 +38,12 @@ func _entity_selected(entity:PandoraEntity) -> void:
 	create_entity_button.disabled = not entity is PandoraCategory
 	create_category_button.disabled = not entity is PandoraCategory
 	selected_entity = entity
+	
+	
+func _selection_cleared() -> void:
+	selected_entity = null
+	create_entity_button.disabled = true
+	create_category_button.disabled = false
 	
 	
 func _on_original_property_selected(category_id:String, property_name:String) -> void:
@@ -69,6 +73,9 @@ func _populate_data() -> void:
 	
 	if not Pandora.data_loaded.is_connected(_populate_data):
 		Pandora.data_loaded.connect(_populate_data)
+		
+	create_entity_button.disabled = true
+	create_category_button.disabled = false
 	
 	
 func _save() -> void:
