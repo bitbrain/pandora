@@ -1,3 +1,11 @@
+## Godot is capable of storing resources in .tscn files
+## This is especially useful when assigning resources
+## within the node property editor. However, data in Pandora
+## is usually not stored as part of .tscn files but in a separate
+## data.pandora file.
+## This proxy ensures that we can store the entity id inside the
+## .tscn file and then dynamically look up the actual entity
+## at runtime by accessing Pandora's API.
 class_name PandoraEntityProxy extends PandoraEntity
 
 

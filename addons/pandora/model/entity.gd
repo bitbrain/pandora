@@ -1,6 +1,13 @@
+## An entity acts a container for properties and is used to represent
+## a category or an actual concept in any game.
 class_name PandoraEntity extends Resource
 
 
+## Wrapper around PandoraProperty that is used to manage overrides.
+## This is required to wrap existing properties that were inherited
+## from parents to ensure that a value can be overriden. At the same
+## time, changing the parent property should automatically work independently
+## of this implementation.
 class OverridingProperty extends PandoraProperty:
 	
 	
@@ -16,6 +23,7 @@ class OverridingProperty extends PandoraProperty:
 
 	func set_default_value(value: Variant) -> void:
 		_parent_entity._property_overrides[_property.get_property_name()] = value
+
 
 	func get_default_value() -> Variant:
 		if _parent_entity._property_overrides.has(_property.get_property_name()):
@@ -113,7 +121,7 @@ func get_icon_path() -> String:
 	
 func get_category_id() -> String:
 	return _category_id
-	
+
 
 func get_entity_property(name:String) -> PandoraProperty:
 	if _property_map.has(name):
@@ -154,14 +162,17 @@ func get_category() -> PandoraCategory:
 	return Pandora.get_category(_category_id)
 
 
+## Initializes this entity with the given data dictionary.
+## Dictionary needs to confirm the structure of this entity.
 func load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_name = data["_name"]
 	_icon_path = data["_icon_path"]
 	_category_id = data["_category_id"]
 	_property_overrides = _load_overrides(data["_property_overrides"])
-	
-	
+
+
+## Produces a data dictionary that can be used on load_data()
 func save_data() -> Dictionary:
 	return {
 		"_id": _id,

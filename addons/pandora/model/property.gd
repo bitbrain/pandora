@@ -1,6 +1,12 @@
+## A property contains a Variant that can be accessed
+## across Pandora by id. Properties can be shared between
+## different entities (depending on the way they get inherited).
+## This ensures that changing the original property will automatically
+## apply to any other entity that is using it.
 class_name PandoraProperty extends Resource
 
 
+## Emitted when the name of this property changed.
 signal name_changed(old_name:String, new_name:String)
 
 
@@ -21,31 +27,31 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._name = name
 	self._type = type
 	self._default_value = default_value
-	
-	
+
+
 func set_default_value(value:Variant) -> void:
 	_default_value = value
-	
-	
+
+
 func get_property_id() -> String:
 	return _id
-	
-	
+
+
 func get_property_name() -> String:
 	return _name
-	
-	
+
+
 func get_property_type() -> String:
 	return _type
 
 
 func get_default_value() -> Variant:
 	return _default_value
-	
+
 
 func get_category_id() -> String:
 	return _category_id
-	
+
 
 ## the original category id specifies
 ## the category where this property has
