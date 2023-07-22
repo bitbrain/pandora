@@ -58,6 +58,14 @@ func create_property(on_category:PandoraCategory, name:String, type:String) -> P
 	return _entity_backend.create_property(on_category, name, type)
 	
 	
+func delete_category(category:PandoraCategory) -> void:
+	_entity_backend.delete_category(category)
+	
+	
+func delete_entity(entity:PandoraEntity) -> void:
+	_entity_backend.delete_entity(entity)
+	
+	
 func get_entity(entity_id:String) -> PandoraEntity:
 	return _entity_backend.get_entity(entity_id)
 	

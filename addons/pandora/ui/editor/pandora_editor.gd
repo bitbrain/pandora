@@ -17,12 +17,14 @@ func _ready() -> void:
 	save_button.pressed.connect(_save)
 	tree.entity_selected.connect(_entity_selected)
 	tree.selection_cleared.connect(func(): selected_entity = null)
+	tree.entity_selected.connect(property_editor.set_entity)
+	tree.selection_cleared.connect(func(): property_editor.set_entity(null))
+	tree.entity_deletion_issued.connect(_delete_entity)
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
 	create_entity_button.disabled = true
 	create_category_button.disabled = true
-	tree.entity_selected.connect(property_editor.set_entity)
-	tree.selection_cleared.connect(func(): property_editor.set_entity(null))
+	
 	entity_search.text_changed.connect(tree.search)
 	property_editor.original_property_selected.connect(_on_original_property_selected)
 	
@@ -63,10 +65,7 @@ func _populate_data() -> void:
 		print("Unable to load data - Pandora not initialised!")
 		return
 		
-	var data = Pandora.get_all_categories()
-	if data.is_empty():
-		Pandora.create_category("Items")
-	tree.set_data(data)
+	tree.set_data(Pandora.get_all_categories())
 	
 	if not Pandora.data_loaded.is_connected(_populate_data):
 		Pandora.data_loaded.connect(_populate_data)
@@ -75,3 +74,7 @@ func _populate_data() -> void:
 func _save() -> void:
 	Pandora.save_data()
 	print("Saved successfully.")
+
+
+func _delete_entity(entity:PandoraEntity) -> void:
+	Pandora.delete_entity(entity)

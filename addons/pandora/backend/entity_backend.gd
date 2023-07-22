@@ -45,6 +45,34 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 	on_category._properties.append(property)
 	_propagate_properties(on_category)
 	return property
+
+
+func delete_category(category:PandoraCategory) -> void:
+	for child in category._children:
+		if child is PandoraCategory:
+			delete_category(child as PandoraCategory)
+		else:
+			delete_entity(child)
+	category._children.clear()
+	category._property_map.clear()
+	category._inherited_properties.clear()
+	for property in category._properties:
+		_properties.erase(property._id)
+	category._properties.clear()
+	_categories.erase(category._id)
+	if _root_categories.has(category):
+		_root_categories.erase(category)
+
+
+func delete_entity(entity:PandoraEntity) -> void:
+	if entity is PandoraCategory:
+		delete_category(entity as PandoraCategory)
+		return
+	var parent_category = get_category(entity._category_id)
+	parent_category._children.erase(entity)
+	entity._property_map.clear()
+	entity._inherited_properties.clear()
+	_entities.erase(entity._id)
 	
 	
 func delete_property(property:PandoraProperty) -> void:

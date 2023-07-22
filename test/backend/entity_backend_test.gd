@@ -402,3 +402,31 @@ func test_delete_propagated_properties_in_children() -> void:
 	assert_that(entity.has_entity_property("color property")).is_equal(false)
 	assert_that(root_category.has_entity_property("bool property")).is_equal(false)
 	assert_that(entity.has_entity_property("bool property")).is_equal(false)
+
+
+func test_entity_deletion() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var entity = backend.create_entity("root", category)
+	backend.delete_entity(entity)
+	assert_that(backend.get_entity(entity.get_entity_id())).is_null()
+	assert_that(category.get_child(entity.get_entity_id())).is_null()
+	
+func test_category_deletion() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var property = backend.create_property(category, "property", "string", "foobar")
+	backend.delete_category(category)
+	assert_that(backend.get_category(category.get_entity_id())).is_null()
+	assert_that(backend.get_property(property.get_property_id())).is_null()
+	
+	
+func test_category_deletion_propagation() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var child_category = backend.create_category("child", category)
+	var entity = backend.create_entity("root", child_category)
+	backend.delete_category(category)
+	assert_that(backend.get_entity(entity.get_entity_id())).is_null()
+	assert_that(backend.get_entity(child_category.get_entity_id())).is_null()
+	assert_that(backend.get_entity(category.get_entity_id())).is_null()
