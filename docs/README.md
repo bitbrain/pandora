@@ -4,46 +4,42 @@
 
 ---
 
-**Welcome to _Pandora_, a powerful and user-friendly solution that elevates the way you manage, organize, and maintain crucial RPG elements within your Godot Engine 4.0 projects.** Say goodbye to tedious data management tasks, and harness the true potential of your RPG game with this all-in-one addon.
+**Meet _Pandora_, an addon for the Godot Engine that simplifies the handling of RPG data.** Pandora allows you to easily manage RPG elements like items, spells, abilities, characters, monsters, and loot tables. Whether you're building a traditional turn-based RPG or a fast-paced action game, this addon can help.
 
-With this addon, you can effortlessly manage items, spells, abilities, characters, monsters, and loot tables through a unified and intuitive editor view. Whether you're working on a classic turn-based RPG or an action-packed adventure, this addon will simplify your workflow and provide a seamless experience.
+**🤔 Why Pandora over Godot Resource files?**
 
-**🤔 Why not simply using Godot Resource files?**
+Godot Resources are great for defining RPG data, but they can be challenging to manage, especially for larger projects:
 
-Godot Resources are an excellent choice to define data for your RPG. Especially the way you can define different data points via `@export` allows for maximum flexibility. However, for larger projects this approach has several challenges:
+- Modifying resource files might cause data loss (like changing a field's type or name). This requires fixing associated `.tres` files manually.
+- Storing unique data for specific resource instances is difficult.
+- Searching through resources can be a challenge. Currently, the only way to search through resources in the code is by loading each resource into memory.
 
-- changing resource files may lead to data loss (e.g. changing the type of a field or renaming it) and corresponding `.tres` files need to be fixed manually afterwards
-- difficult to store unique information for specific resource instances - data is generally shared between all resources of the same type. It is possible to make data unique via `.duplicate(DUPLICATE_USE_INSTANTIATION)`, however, in that case changing the original resource will not propagate any longer to the duplicate instances.
-- searching & filtering through all existing resources can be challenging: the only way to search through resources via code is by loading every single resource into memory and then filtering on certain attributes on it.
-
-**Pandora** aims to address all these issues with its centralized approach to data management.
+**Pandora** solves these problems with a centralized approach to data management.
 
 # Features
 
 ### 📚 Centralized data management
 
-Centralize and manage all your RPG data in one unified editor view. Easily create, edit, and delete items, spells, abilities, characters, monsters, and loot tables. All data can be accessed directly in code via the Pandora API - alternatively you can add nodes to your scene (e.g. `PandoraInventory`).
-
-### 🎒 Inventory
-
-This addon allows you to create inventories that come with maximum stack sizes or infinite sizes. Pandora aims to completely seperate between data and UI concepts, so you will have to create the UI yourself. However, there are UI node examples in this project that you can use freely in your project to get started.
-
+Manage all your RPG data in one place. Create, edit, and delete items, spells, abilities, characters, monsters, and loot tables easily. Access all data directly in the code via the `Pandora` API.
 
 ### 🔧 Customizable and Modular
 
-The addon's architecture allows you to extend and modify its functionality to suit your game's specific needs, making it an ideal choice for any RPG project. By default, data is stored inside .json files, however, you can implement your own data backend to store the RPG data in.
+Adjust Pandora to fit your game's needs. By default, data is stored in .json files, but you can implement your own data backend.
 
+### 🧪 Tested
 
-### 🧪 Tested - any functionality of this addon is covered by test automation
-
-In order to avoid bugs creeping into the codebase, every feature is covered by unit tests.
+To keep the codebase clean, we cover every feature with unit tests.
 
 # 📦 Installation
 
 1. [Download for Godot 4.x](https://github.com/bitbrain/pandora/archive/refs/heads/godot-4.x.zip)
-2. Unpack the `pandora` folder into your `/addons` folder within the Godot project
-3. Enable this addon within the Godot settings: `Project > Project Settings > Plugins`
+2. Extract the `pandora` folder into your `/addons` folder within the Godot project.
+3. Activate the addon in the Godot settings: `Project > Project Settings > Plugins`
+
+
+# 🐲 Create your first entity!
+
 
 # 🥰 Credits
 
-- logo designs by [@NathanHoad](https://twitter.com/nathanhoad)
+- Logo designs by [@NathanHoad](https://twitter.com/nathanhoad)
