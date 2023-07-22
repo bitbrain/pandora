@@ -3,7 +3,11 @@
 class_name PandoraEntityTree extends Tree
 
 
+const CLEAR_ICON = preload("res://addons/pandora/icons/Clear.svg")
+
+
 signal entity_selected(entity:PandoraEntity)
+signal entity_deletion_issued(entity:PandoraEntity)
 signal selection_cleared
 
 
@@ -21,6 +25,8 @@ func _ready():
 	if not entity_items.is_empty():
 		loading_spinner.visible = false
 		
+	button_clicked.connect(_on_button_clicked)
+
 
 ## filters the existing list to the given search term
 ## if search term is empty the search gets cleared.
@@ -66,13 +72,7 @@ func set_data(category_tree:Array[PandoraEntity]) -> void:
 	
 func add_entity(entity: PandoraEntity) -> void:
 	var parent_item = entity_items.get(entity._category_id)
-	var entity_item = create_item(parent_item) as TreeItem
-	entity_item.set_metadata(0, entity)
-	entity_item.set_text(0, entity.get_entity_name())
-	entity_item.set_editable(0, true)
-	entity_item.set_selectable(0, true)
-	if entity.get_icon_path() != "":
-		entity_item.set_icon(0, load(entity.get_icon_path()))
+	var entity_item = _create_item(parent_item, entity)
 	# add the newly added entity to the entity_items dictionary
 	entity_items[entity._id] = entity_item
 
@@ -102,13 +102,7 @@ func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem =
 		# multiple root levels!
 		root_item = create_item()
 	for entity in category_tree:
-		var new_item = create_item(root_item) as TreeItem
-		new_item.set_metadata(0, entity)
-		new_item.set_text(0, entity.get_entity_name())
-		new_item.set_selectable(0, true)
-		new_item.set_editable(0, true)
-		if entity.get_icon_path() != "":
-			new_item.set_icon(0, load(entity.get_icon_path()))
+		var new_item = _create_item(root_item, entity)
 		# Add every entity to the dictionary, not just PandoraCategory entities
 		entity_items[entity._id] = new_item
 		if entity is PandoraCategory and entity._children and entity._children.size() > 0:
@@ -117,12 +111,24 @@ func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem =
 
 func _populate_tree_item(parent_item: TreeItem, parent_entity: PandoraEntity) -> void:
 	for child in parent_entity._children:
-		var child_item = create_item(parent_item)
-		child_item.set_metadata(0, child)
-		child_item.set_text(0, child.get_entity_name())
-		child_item.set_selectable(0, true)
-		child_item.set_editable(0, true)
-		if child.get_icon_path() != "":
-			child_item.set_icon(0, load(child.get_icon_path()))
+		var child_item = _create_item(parent_item, child)
 		if child is PandoraCategory:
 			_populate_tree_item(child_item, child)
+
+
+func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
+	var item = create_item(parent_item)
+	item.set_metadata(0, entity)
+	item.set_text(0, entity.get_entity_name())
+	item.set_selectable(0, true)
+	item.set_editable(0, true)
+	if entity.get_icon_path() != "":
+		item.set_icon(0, load(entity.get_icon_path()))
+	item.add_button(1, CLEAR_ICON, -1, false, "Delete entity")
+	return item
+	
+
+func _on_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
+	var entity = item.get_metadata(0) as PandoraEntity
+	entity_deletion_issued.emit(entity)
+	item.get_parent().remove_child(item)

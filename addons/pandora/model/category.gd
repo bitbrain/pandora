@@ -4,6 +4,13 @@ class_name PandoraCategory extends PandoraEntity
 var _children:Array[PandoraEntity] = []
 
 
+func get_child(entity_id:String) -> PandoraEntity:
+	for child in _children:
+		if child.get_entity_id() == entity_id:
+			return child
+	return null
+
+
 func get_icon_path() -> String:
 	if _icon_path == "":
 		return "res://addons/pandora/icons/Folder.svg"
