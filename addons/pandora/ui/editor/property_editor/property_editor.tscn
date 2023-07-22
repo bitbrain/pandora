@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://clsxp8wg4ctet"]
+[gd_scene load_steps=4 format=3 uid="uid://clsxp8wg4ctet"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/property_editor/property_editor.gd" id="1_r06w1"]
 [ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="1_vndtp"]
-[ext_resource type="PackedScene" uid="uid://bvabuierlf81k" path="res://addons/pandora/ui/components/property_list/property_list.tscn" id="2_oje5r"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="4_y2k2p"]
 
 [node name="PropertyEditor" type="VBoxContainer"]
@@ -30,22 +29,34 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="PropertyList" parent="." instance=ExtResource("2_oje5r")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="UnselectedContainer" type="CenterContainer" parent="."]
-unique_name_in_owner = true
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UnselectedContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PropertyList" type="VBoxContainer" parent="ScrollContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="UnselectedContainer" type="CenterContainer" parent="ScrollContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/HBoxContainer/UnselectedContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="UnselectedContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/HBoxContainer/UnselectedContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 250)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -54,7 +65,7 @@ texture = ExtResource("4_y2k2p")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="SpecialLabel" type="Label" parent="UnselectedContainer/VBoxContainer"]
+[node name="SpecialLabel" type="Label" parent="ScrollContainer/HBoxContainer/UnselectedContainer/VBoxContainer"]
 layout_mode = 2
 text = "Create or select a category or item to see its properties here."
 horizontal_alignment = 1

@@ -6,7 +6,7 @@ extends Control
 @onready var save_button:Button = %SaveButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
-@onready var property_editor = $Contents/DataContent/PropertyEditor
+@onready var property_editor = %PropertyEditor
 @onready var entity_search: LineEdit = %EntitySearch
 
 
