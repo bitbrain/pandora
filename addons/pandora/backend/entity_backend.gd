@@ -49,7 +49,15 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 
 func delete_category(category:PandoraCategory) -> void:
 	for child in category._children:
-		delete_entity(child)
+		if child is PandoraCategory:
+			delete_category(child as PandoraCategory)
+		else:
+			# do not use delete_entity here as we do not want
+			# to modify the list of children that we are currently
+			# iterating through!
+			child._property_map.clear()
+			child._inherited_properties.clear()
+			_entities.erase(child._id)
 	category._children.clear()
 	category._property_map.clear()
 	category._inherited_properties.clear()
