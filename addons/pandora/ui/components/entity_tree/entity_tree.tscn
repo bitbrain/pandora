@@ -17,3 +17,7 @@ script = ExtResource("1_0uafu")
 
 [node name="LoadingSpinner" parent="." instance=ExtResource("2_dokdi")]
 layout_mode = 1
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+initial_position = 2
+dialog_text = "Are you sure you want to delete?"

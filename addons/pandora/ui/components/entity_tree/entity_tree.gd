@@ -12,6 +12,7 @@ signal selection_cleared
 
 
 @onready var loading_spinner = $LoadingSpinner
+@onready var confirmation_dialog = $ConfirmationDialog
 
 
 var entity_items: Dictionary
@@ -130,9 +131,13 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	
 
 func _on_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
-	var entity = item.get_metadata(0) as PandoraEntity
-	entity_deletion_issued.emit(entity)
-	item.get_parent().remove_child(item)
+	confirmation_dialog.confirmed.connect(
+		func():
+			var entity = item.get_metadata(0) as PandoraEntity
+			entity_deletion_issued.emit(entity)
+			if item.get_parent() != null:
+				item.get_parent().remove_child(item))
+	confirmation_dialog.popup()
 
 
 func _on_icon_changed(entity_id:String, new_path:String) -> void:
