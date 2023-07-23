@@ -10,11 +10,11 @@ const __source = "res://addons/pandora/backend/entity_backend.gd"
 
 
 func create_object_backend() -> PandoraEntityBackend:
-	return PandoraEntityBackend.new()
+	return PandoraEntityBackend.new(PandoraIdGenerator.new())
 	
 	
 func create_instance_backend() -> PandoraEntityInstanceBackend:
-	return PandoraEntityInstanceBackend.new()
+	return PandoraEntityInstanceBackend.new(PandoraIdGenerator.new())
 
 
 func test_create_entity() -> void:
