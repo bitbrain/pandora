@@ -6,28 +6,22 @@ extends GdUnitTestSuite
 
 
 # TestSuite generated from
-const __source = "res://addons/pandora/utils/id_generator.gd"
+const __source = "res://addons/pandora/util/id_generator.gd"
 	
 
-# COMMENT IN MANUALLY
-#func test_no_collisions_100k_iterations() -> void:
-#	_assert_no_collisions(100000)
-	
-	
 func test_generate_id() -> void:
-	var id_generator = preload(__source)
-	assert_that(id_generator.generate(123)).is_equal("12312312343782474")
-	assert_that(id_generator.generate(9876)).is_equal("98769876987684013760")
+	var id_generator = preload(__source).new()
+	assert_that(id_generator.generate()).is_equal("1")
+	assert_that(id_generator.generate()).is_equal("2")
+	assert_that(id_generator.generate("other-context")).is_equal("1")
+
+
+func test_load_save_state() -> void:
+	var id_generator = preload(__source).new()
+	assert_that(id_generator.generate()).is_equal("1")
+	assert_that(id_generator.generate("other-context")).is_equal("1")
 	
-	
-func _assert_no_collisions(iterations: int) -> void:
-	var id_generator = preload(__source)
-	var generated_ids:Array[String] = []
-	var collisions = 0
-	for i in range(0, iterations):
-		var id = id_generator.generate()
-		if generated_ids.has(id):
-			collisions += 1
-		else:
-			generated_ids.append(id)
-	assert_that(collisions).is_equal(0)
+	var other_id_generator = preload(__source).new()
+	other_id_generator.load_data(id_generator.save_data())
+	assert_that(other_id_generator.generate()).is_equal("2")
+	assert_that(other_id_generator.generate("other-context")).is_equal("2")

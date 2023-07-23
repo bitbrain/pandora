@@ -8,9 +8,6 @@ class_name PandoraEntityBackend extends RefCounted
 signal entity_added(entity:PandoraEntity)
 
 
-const id_generator = preload("res://addons/pandora/utils/id_generator.gd")
-
-
 # entity id -> PandoraEntity
 var _entities:Dictionary = {}
 # property id -> PandoraProperty
@@ -19,11 +16,17 @@ var _properties:Dictionary = {}
 var _categories:Dictionary = {}
 # list of categories on the root level
 var _root_categories:Array[PandoraEntity] = []
+# generates ids for new entities
+var _id_generator:PandoraIdGenerator
+
+
+func _init(id_generator:PandoraIdGenerator) -> void:
+	self._id_generator = id_generator
 
 
 ## Creates a new entity on the given PandoraCategory
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
-	var entity = PandoraEntity.new(id_generator.generate(), name, "", category._id)
+	var entity = PandoraEntity.new(_id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_propagate_properties(category)
@@ -33,7 +36,7 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 
 ## Creates a new category on an optional parent category
 func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
-	var category = PandoraCategory.new(id_generator.generate(), name, "", "")
+	var category = PandoraCategory.new(_id_generator.generate(), name, "", "")
 	if parent_category != null:
 		parent_category._children.append(category)
 		category._category_id = parent_category._id
@@ -51,7 +54,7 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 	if on_category.has_entity_property(name):
 		push_error("Unable to create property " + name + " - property with the same name exists.")
 		return null
-	var property = PandoraProperty.new(id_generator.generate(), name, type, defaultValue if defaultValue else PandoraProperty.default_value_of(type))
+	var property = PandoraProperty.new(_id_generator.generate(), name, type, defaultValue if defaultValue else PandoraProperty.default_value_of(type))
 	property._category_id = on_category._id
 	_properties[property._id] = property
 	on_category._properties.append(property)
