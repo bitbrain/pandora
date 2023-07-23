@@ -3,6 +3,9 @@
 class_name PandoraEntity extends Resource
 
 
+signal icon_changed(new_icon_path:String)
+
+
 ## Wrapper around PandoraProperty that is used to manage overrides.
 ## This is required to wrap existing properties that were inherited
 ## from parents to ensure that a value can be overriden. At the same
@@ -117,6 +120,11 @@ func get_icon_path() -> String:
 	if _icon_path == "":
 		return "res://addons/pandora/icons/KeyValue.svg"
 	return _icon_path
+	
+	
+func set_icon_path(new_path:String) -> void:
+	self._icon_path = new_path
+	icon_changed.emit(new_path)
 	
 	
 func get_category_id() -> String:

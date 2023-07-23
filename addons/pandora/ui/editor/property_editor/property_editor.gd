@@ -14,6 +14,7 @@ const PROPERTY_DEFAULT_NAME = "property"
 @onready var property_bar:PandoraPropertyBar = %PropertyBar
 @onready var property_list = %PropertyList
 @onready var unselected_container = %UnselectedContainer
+@onready var entity_attributes = %EntityAttributes
 
 
 var current_entity:PandoraEntity
@@ -39,8 +40,10 @@ func set_entity(entity:PandoraEntity) -> void:
 	property_bar.visible = entity != null and entity is PandoraCategory
 	property_list.visible = entity != null
 	unselected_container.visible = entity == null
+	entity_attributes.visible = entity != null
 	
 	if entity != null:
+		entity_attributes.init(entity)
 		var properties = entity.get_entity_properties()
 		
 		for property in properties:

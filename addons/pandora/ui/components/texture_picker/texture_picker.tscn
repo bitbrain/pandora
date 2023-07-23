@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvoxop0o2mlfi"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/texture_picker/texture_picker.gd" id="1_dilp1"]
+[ext_resource type="Texture2D" uid="uid://bd13bip4a1yuy" path="res://splash.png" id="2_lbfpc"]
+[ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_0esgd"]
+
+[node name="TexturePicker" type="HBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_dilp1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_lbfpc")
+expand_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LoadFileButton" type="Button" parent="."]
+layout_mode = 2
+icon = ExtResource("3_0esgd")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(784, 324)
+visible = true
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.svg", "*.jpg", "*.png", "*.jpeg")

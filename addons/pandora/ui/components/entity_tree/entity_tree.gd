@@ -117,7 +117,7 @@ func _populate_tree_item(parent_item: TreeItem, parent_entity: PandoraEntity) ->
 
 
 func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
-	var item = create_item(parent_item)
+	var item = create_item(parent_item) as TreeItem
 	item.set_metadata(0, entity)
 	item.set_text(0, entity.get_entity_name())
 	item.set_selectable(0, true)
@@ -125,6 +125,7 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	if entity.get_icon_path() != "":
 		item.set_icon(0, load(entity.get_icon_path()))
 	item.add_button(1, CLEAR_ICON, -1, false, "Delete entity")
+	entity.icon_changed.connect(func(new_path): _on_icon_changed(entity.get_entity_id(), new_path))
 	return item
 	
 
@@ -132,3 +133,8 @@ func _on_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:in
 	var entity = item.get_metadata(0) as PandoraEntity
 	entity_deletion_issued.emit(entity)
 	item.get_parent().remove_child(item)
+
+
+func _on_icon_changed(entity_id:String, new_path:String) -> void:
+	var item = entity_items[entity_id] as TreeItem
+	item.set_icon(0, load(new_path))
