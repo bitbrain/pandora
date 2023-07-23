@@ -2,6 +2,9 @@
 extends Node
 
 
+const EntityIdFileGenerator = preload("res://addons/pandora/util/entity_id_file_generator.gd")
+
+
 signal data_loaded
 signal entity_added(entity:PandoraEntity)
 
@@ -120,7 +123,9 @@ func save_data() -> void:
 			"_id_generator": _id_generator.save_data()
 		}
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
-		
+
+	EntityIdFileGenerator.regenerate_entity_id_file(_entity_backend.get_all_entities(), "entity_ids.gd")
+
 		
 func is_loaded() -> bool:
 	return _loaded
