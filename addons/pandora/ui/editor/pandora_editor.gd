@@ -84,7 +84,6 @@ func _populate_data() -> void:
 	
 func _save() -> void:
 	Pandora.save_data()
-	print("Saved successfully.")
 
 
 func _delete_entity(entity:PandoraEntity) -> void:

@@ -95,16 +95,22 @@ func save_data() -> Dictionary:
 	}
 
 	
-static func write_value(value:Variant) -> String:
+static func write_value(value:Variant):
+	if value == null:
+		return null
 	if value is Color:
 		var color = value as Color
 		return color.to_html()
 	if value is bool:
 		return "1" if value else "0"
+	if value is PandoraReference:
+		return value.save_data()
 	return str(value)
 
 
-static func parse_value(value:String, type:String) -> Variant:
+static func parse_value(value, type:String) -> Variant:
+	if value == null:
+		return null
 	if type == "string":
 		return value
 	if type == "int":
@@ -115,6 +121,10 @@ static func parse_value(value:String, type:String) -> Variant:
 		return float(value)
 	if type == "color":
 		return Color.from_string(value, Color.WHITE)
+	if type == "reference":
+		var reference = PandoraReference.new("")
+		reference.load_data(value)
+		return reference
 	push_error("Unsupported variant type of value %s" % str(type))
 	return ""
 	
@@ -130,5 +140,7 @@ static func default_value_of(type:String) -> Variant:
 		return 0.0
 	if type == "color":
 		return Color.WHITE
+	if type == "reference":
+		return PandoraReference.new("1234")
 	push_error("Unsupported variant type %s" % str(type))
 	return ""
