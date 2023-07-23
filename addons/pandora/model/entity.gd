@@ -118,7 +118,7 @@ func get_entity_name() -> String:
 	
 func get_icon_path() -> String:
 	if _icon_path == "":
-		return "res://addons/pandora/icons/KeyValue.svg"
+		return "res://addons/pandora/icons/Object.svg"
 	return _icon_path
 	
 	

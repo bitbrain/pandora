@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv43ytfd0mlq1"
-path="res://.godot/imported/Search.svg-a90a8090ed63d36963e355a62f2bc45a.ctex"
+uid="uid://dojpd3ptnta4m"
+path="res://.godot/imported/Object.svg-cc61fbab643ed4cbb8bfe8ae40e25621.ctex"
 metadata={
 "has_editor_variant": true,
 "vram_texture": false
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/pandora/icons/Search.svg"
-dest_files=["res://.godot/imported/Search.svg-a90a8090ed63d36963e355a62f2bc45a.ctex"]
+source_file="res://addons/pandora/icons/Object.svg"
+dest_files=["res://.godot/imported/Object.svg-cc61fbab643ed4cbb8bfe8ae40e25621.ctex"]
 
 [params]
 
