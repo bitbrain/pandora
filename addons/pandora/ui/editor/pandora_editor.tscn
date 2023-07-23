@@ -59,29 +59,33 @@ clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EntitySelection" type="VBoxContainer" parent="Contents/DataContent"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Contents/DataContent"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EntitySearch" type="LineEdit" parent="Contents/DataContent/EntitySelection"]
+[node name="EntitySelection" type="VBoxContainer" parent="Contents/DataContent/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EntitySearch" type="LineEdit" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 placeholder_text = "Search..."
 right_icon = ExtResource("5_4i0xc")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/EntitySelection"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EntityTree" parent="Contents/DataContent/EntitySelection/ScrollContainer" instance=ExtResource("3_4ayq8")]
+[node name="EntityTree" parent="Contents/DataContent/HSplitContainer/EntitySelection/ScrollContainer" instance=ExtResource("3_4ayq8")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PropertyEditor" parent="Contents/DataContent" instance=ExtResource("3_8d8dx")]
+[node name="PropertyEditor" parent="Contents/DataContent/HSplitContainer" instance=ExtResource("3_8d8dx")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_stretch_ratio = 3.0
+size_flags_stretch_ratio = 2.5
