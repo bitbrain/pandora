@@ -80,14 +80,6 @@ func get_all_entities() -> Array[PandoraEntity]:
 
 func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
 	return _entity_instance_backend.create_entity_instance(of_entity)
-	
-	
-func get_entity_instance(instance_id:String) -> PandoraEntityInstance:
-	return _entity_instance_backend.get_entity_instance(instance_id)
-
-
-func delete_entity_instance(entity_instance_id:String) -> bool:
-	return _entity_instance_backend.delete_entity_instance(entity_instance_id)
 
 
 func load_data_async() -> void:
@@ -122,5 +114,4 @@ func is_loaded() -> bool:
 # used for testing only and shutting down the addon
 func _clear() -> void:
 	_entity_backend._clear()
-	_entity_instance_backend._clear()
 	_loaded = false

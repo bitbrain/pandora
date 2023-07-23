@@ -29,18 +29,8 @@ func test_create_category() -> void:
 	var backend = create_object_backend()
 	var category = backend.create_category("Test")
 	assert_that(category._id).is_not_null()
-	
-	
-func test_delete_entity_instance() -> void:
-	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
-	var category = backend.create_category("a")
-	var entity = backend.create_entity("Test", category)
-	var instance = instance_backend.create_entity_instance(entity)
-	instance_backend.delete_entity_instance(instance.get_entity_instance_id())
-	assert_that(instance_backend.get_entity_instance(instance.get_entity_instance_id())).is_null()
-	
-	
+
+
 func test_create_property_after_entity_creation() -> void:
 	var backend = create_object_backend()
 	var instance_backend = create_instance_backend()
@@ -342,42 +332,8 @@ func test_entity_instance_does_not_inherit_late_properties() -> void:
 	var entity_instance = instance_backend.create_entity_instance(entity)
 	backend.create_property(category, "late property", "string", "lateValue")
 	assert_that(entity_instance.get_string("late property")).is_equal("")
-	
-	
-func test_save_and_load_instance_data() -> void:
-	var backend = create_object_backend() as PandoraEntityBackend
-	var instance_backend = create_instance_backend() as PandoraEntityInstanceBackend
-	var category = backend.create_category("category")
-	backend.create_property(category, "property", "string", "Hello World")
-	var entity = backend.create_entity("Test", category)
-	var old_instance = instance_backend.create_entity_instance(entity)
-	var data = instance_backend.save_data()
-
-	assert_that(data._instances).is_not_null()
-
-	instance_backend.load_data(data, backend)
-	var new_instance = instance_backend.get_entity_instance(old_instance.get_entity_instance_id())
-
-	assert_that(old_instance.get_entity_instance_id()).is_equal(new_instance.get_entity_instance_id())
 
 
-func test_load_correct_instance_properties_after_save() -> void:
-	var backend = create_object_backend() as PandoraEntityBackend
-	var instance_backend = create_instance_backend() as PandoraEntityInstanceBackend
-	var category = backend.create_category("category")
-	backend.create_property(category, "property", "string", "Hello World")
-	var entity = backend.create_entity("Test", category)
-	var old_instance = instance_backend.create_entity_instance(entity)
-	print("instance id", old_instance.get_entity_instance_id())
-	old_instance.set_string("property", "Override")
-	
-	var data = instance_backend.save_data()
-	instance_backend.load_data(data, backend)
-	var new_instance = instance_backend.get_entity_instance(old_instance.get_entity_instance_id())
-	
-	assert_that(new_instance.get_string("property")).is_equal("Override")
-	
-	
 func test_delete_propagated_properties_in_children() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 
@@ -411,7 +367,8 @@ func test_entity_deletion() -> void:
 	backend.delete_entity(entity)
 	assert_that(backend.get_entity(entity.get_entity_id())).is_null()
 	assert_that(category.get_child(entity.get_entity_id())).is_null()
-	
+
+
 func test_category_deletion() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")
@@ -419,8 +376,8 @@ func test_category_deletion() -> void:
 	backend.delete_category(category)
 	assert_that(backend.get_category(category.get_entity_id())).is_null()
 	assert_that(backend.get_property(property.get_property_id())).is_null()
-	
-	
+
+
 func test_category_deletion_propagation() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")

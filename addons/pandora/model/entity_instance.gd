@@ -111,10 +111,10 @@ func set_color(property_name:String, value:Color) -> void:
 		_properties[property_name].set_property_value(value)
 
 
-func load_data(data:Dictionary, backend:PandoraEntityBackend) -> void:
+func load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_entity_id = data["_entity_id"]
-	_properties = _load_properties(data["_properties"], backend)
+	_properties = _load_properties(data["_properties"])
 	
 	
 func save_data() -> Dictionary:
@@ -132,12 +132,11 @@ func _save_properties(data:Dictionary) -> Array[Dictionary]:
 	return properties
 	
 	
-func _load_properties(data:Array, backend:PandoraEntityBackend) -> Dictionary:
+func _load_properties(data:Array) -> Dictionary:
 	var properties:Dictionary = {}
 	for property_dict in data:
 		var property = PandoraPropertyInstance.new("", null, "")
 		property.load_data(property_dict)
-		property._property = backend.get_property(property._property_id)
 		properties[property.get_property_name()] = property
 	return properties
 	
