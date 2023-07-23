@@ -82,6 +82,18 @@ func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
 	return _entity_instance_backend.create_entity_instance(of_entity)
 
 
+## Deserializes data into an entity instance
+func deserialize_entity_instance(data:Dictionary) -> PandoraEntityInstance:
+	var instance = PandoraEntityInstance.new("", "", [])
+	instance._load_data(data)
+	return instance
+
+
+## Serializes an instance for further saving 
+func serialize_entity_instance(instance:PandoraEntityInstance) -> Dictionary:
+	return instance._save_data()
+
+
 func load_data_async() -> void:
 	var thread = Thread.new()
 	if thread.start(load_data) != 0:

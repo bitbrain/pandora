@@ -143,15 +143,3 @@ func _load_properties(data:Array) -> Dictionary:
 	
 func _get_property_value(name:String) -> Variant:
 	return _properties[name].get_property_value()
-	
-
-## Deserializes data into an entity instance
-static func deserialize(data:Dictionary) -> PandoraEntityInstance:
-	var instance = PandoraEntityInstance.new("", "", [])
-	instance._load_data(data)
-	return instance
-
-
-## Serializes an instance for further saving 
-static func serialize(instance:PandoraEntityInstance) -> Dictionary:
-	return instance._save_data()
