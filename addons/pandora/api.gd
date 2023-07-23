@@ -9,14 +9,14 @@ signal entity_added(entity:PandoraEntity)
 var _context_manager:PandoraContextManager
 var _entity_backend:PandoraEntityBackend
 var _entity_instance_backend:PandoraEntityInstanceBackend
-var _settings:PandoraSettings
+var _storage:PandoraJsonDataStorage
 
 
 var _loaded = false
 
 	
 func _enter_tree() -> void:
-	self._settings = PandoraSettings.new()
+	self._storage = PandoraJsonDataStorage.new("res://")
 	self._context_manager = PandoraContextManager.new()
 	self._entity_backend = PandoraEntityBackend.new()
 	self._entity_instance_backend = PandoraEntityInstanceBackend.new()
@@ -28,14 +28,6 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	_clear()
-
-
-func get_object_storage() -> PandoraDataStorage:
-	return _settings.get_object_storage()
-	
-
-func get_instance_storage() -> PandoraDataStorage:
-	return _settings.get_instance_storage()
 
 
 func get_context_id() -> String:
@@ -109,49 +101,23 @@ func load_data() -> void:
 		print("Skipping loading data - loaded already!")
 		data_loaded.emit()
 		return
-	_load_object_data()
-	if not Engine.is_editor_hint():
-		_load_instance_data()
+	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
+	if all_object_data.has("_entity_data"):
+		_entity_backend.load_data(all_object_data["_entity_data"])
 	_loaded = true
 	data_loaded.emit()
 
 
 func save_data() -> void:
-	if Engine.is_editor_hint():
-		_save_object_data()
-	else:
-		_save_instance_data()
+	var all_object_data = {
+			"_entity_data": _entity_backend.save_data()
+		}
+	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 		
 		
 func is_loaded() -> bool:
 	return _loaded
-
-
-func _load_object_data() -> void:
-	var all_object_data = get_object_storage().get_all_data(_context_manager.get_context_id())
-	if all_object_data.has("_entity_data"):
-		_entity_backend.load_data(all_object_data["_entity_data"])
-	
-	
-func _load_instance_data() -> void:
-	var all_instance_data = get_instance_storage().get_all_data(_context_manager.get_context_id())
-	if all_instance_data.has("_entity_instance_data"):
-		_entity_instance_backend.load_data(all_instance_data["_entity_instance_data"], _entity_backend)
-
-
-func _save_object_data() -> void:
-	var all_object_data = {
-			"_entity_data": _entity_backend.save_data()
-		}
-	get_object_storage().store_all_data(all_object_data, _context_manager.get_context_id())
 		
-		
-func _save_instance_data() -> void:
-	var all_instance_data = {
-			"_entity_instance_data": _entity_instance_backend.save_data()
-		}
-	get_instance_storage().store_all_data(all_instance_data, _context_manager.get_context_id())
-
 
 # used for testing only and shutting down the addon
 func _clear() -> void:
