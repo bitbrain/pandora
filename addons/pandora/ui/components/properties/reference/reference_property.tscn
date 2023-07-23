@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://b22vuf1tui0q3"]
+[gd_scene load_steps=3 format=3 uid="uid://b22vuf1tui0q3"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/properties/reference/reference_property.gd" id="1_euup8"]
+[ext_resource type="PackedScene" uid="uid://bfhqt0xa4a2fh" path="res://addons/pandora/ui/components/entity_picker/entity_picker.tscn" id="2_kp4gb"]
 
 [node name="ReferenceProperty" type="MarginContainer"]
 script = ExtResource("1_euup8")
 type = "reference"
+
+[node name="EntityPicker" parent="." instance=ExtResource("2_kp4gb")]
+layout_mode = 2

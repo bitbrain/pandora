@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfhqt0xa4a2fh"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/entity_picker/entity_picker.gd" id="1_cjsnj"]
+
+[node name="EntityPicker" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cjsnj")
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0

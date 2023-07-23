@@ -3,6 +3,7 @@
 class_name PandoraEntity extends Resource
 
 
+signal name_changed(new_name:String)
 signal icon_changed(new_icon_path:String)
 
 
@@ -120,6 +121,11 @@ func get_icon_path() -> String:
 	if _icon_path == "":
 		return "res://addons/pandora/icons/Object.svg"
 	return _icon_path
+	
+	
+func set_entity_name(new_name:String) -> void:
+	self._name = new_name
+	name_changed.emit(new_name)
 	
 	
 func set_icon_path(new_path:String) -> void:

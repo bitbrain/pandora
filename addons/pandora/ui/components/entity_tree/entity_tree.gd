@@ -92,7 +92,7 @@ func _edited() -> void:
 		return
 	var entity = selected_item.get_metadata(0) as PandoraEntity
 	if entity:
-		entity._name = selected_item.get_text(0)
+		entity.set_entity_name(selected_item.get_text(0))
 
 
 func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem = null) -> void:

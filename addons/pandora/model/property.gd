@@ -111,17 +111,17 @@ static func write_value(value:Variant):
 static func parse_value(value, type:String) -> Variant:
 	if value == null:
 		return null
-	if type == "string":
+	if type == "string" and value is String:
 		return value
-	if type == "int":
+	if type == "int" and value is String:
 		return int(value)
-	if type == "bool":
+	if type == "bool" and value is String:
 		return bool(int(value))
-	if type == "float":
+	if type == "float" and value is String:
 		return float(value)
-	if type == "color":
+	if type == "color" and value is String:
 		return Color.from_string(value, Color.WHITE)
-	if type == "reference":
+	if type == "reference" and value is Dictionary:
 		var reference = PandoraReference.new("")
 		reference.load_data(value)
 		return reference

@@ -4,7 +4,6 @@ var hint_string:String
 
 # The main control for editing the property.
 var property_control := OptionButton.new()
-var current_instance:PandoraEntityInstance
 var ids_to_entities = {}
 
 
