@@ -73,7 +73,8 @@ func _property_reset_to_default() -> void:
 
 
 func _refresh() -> void:
-	_control.refresh()
+	if _control != null:
+		_control.refresh()
 	reset_button.visible = not _property.is_original() and _property.is_overridden()
 	delete_property_button.disabled =  not _property.is_original()
 	delete_property_button.tooltip_text = "Inherited property cannot be deleted" if delete_property_button.disabled else "Delete property"
