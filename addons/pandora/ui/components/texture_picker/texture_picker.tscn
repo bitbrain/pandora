@@ -26,7 +26,6 @@ icon = ExtResource("3_0esgd")
 title = "Open a File"
 initial_position = 2
 size = Vector2i(784, 324)
-visible = true
 ok_button_text = "Open"
 file_mode = 0
 filters = PackedStringArray("*.svg", "*.jpg", "*.png", "*.jpeg")

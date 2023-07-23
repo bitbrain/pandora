@@ -28,6 +28,10 @@ func _ready() -> void:
 	
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(tree.add_entity)
+	
+	
+func apply_changes() -> void:
+	Pandora.save_data()
 
 
 func _enter_tree() -> void:

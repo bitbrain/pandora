@@ -23,10 +23,15 @@ func _enter_tree() -> void:
 	add_inspector_plugin(entity_inspector)
 	
 	_make_visible(false)
+	
+	
+func _apply_changes() -> void:
+	if is_instance_valid(editor_view):
+		editor_view.apply_changes()
 
 
 func _exit_tree() -> void:
-	if editor_view:
+	if is_instance_valid(editor_view):
 		remove_control_from_bottom_panel(editor_view)
 		editor_view.queue_free()
 		remove_inspector_plugin(entity_inspector)
@@ -35,7 +40,7 @@ func _exit_tree() -> void:
 
 
 func _make_visible(visible:bool) -> void:
-	if editor_view:
+	if is_instance_valid(editor_view):
 		editor_view.visible = visible
 
 
