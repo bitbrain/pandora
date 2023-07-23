@@ -111,13 +111,13 @@ func set_color(property_name:String, value:Color) -> void:
 		_properties[property_name].set_property_value(value)
 
 
-func load_data(data:Dictionary) -> void:
+func _load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_entity_id = data["_entity_id"]
 	_properties = _load_properties(data["_properties"])
 	
 	
-func save_data() -> Dictionary:
+func _save_data() -> Dictionary:
 	return {
 		"_id": _id,
 		"_entity_id": _entity_id,
@@ -143,3 +143,15 @@ func _load_properties(data:Array) -> Dictionary:
 	
 func _get_property_value(name:String) -> Variant:
 	return _properties[name].get_property_value()
+	
+
+## Deserializes data into an entity instance
+static func deserialize(data:Dictionary) -> PandoraEntityInstance:
+	var instance = PandoraEntityInstance.new("", "", [])
+	instance._load_data(data)
+	return instance
+
+
+## Serializes an instance for further saving 
+static func serialize(instance:PandoraEntityInstance) -> Dictionary:
+	return instance._save_data()

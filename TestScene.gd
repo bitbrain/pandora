@@ -6,4 +6,5 @@ extends CenterContainer
 
 
 func _ready() -> void:
-	print(entity.get_entity_name())
+	var instance = Pandora.create_entity_instance(entity)
+	print(PandoraEntityInstance.serialize(instance))
