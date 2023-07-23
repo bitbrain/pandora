@@ -2,8 +2,6 @@
 class_name EntityIds
 
 
-const NEW_ENTITY = "5"
-const NEW_ENTITY1 = "6"
-const NEW_ENTITY2 = "7"
-const NEW_ENTITY3 = "8"
-const NEW_ENTITY4 = "9"
+const COPPER_PICKAXE = "19"
+const GOLD_PICKAXE = "21"
+const IRON_PICKAXE = "20"
