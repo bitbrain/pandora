@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=8 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
+[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="2_bh1wi"]
 [ext_resource type="Texture2D" uid="uid://b8sd2702bmm7h" path="res://addons/pandora/icons/Save.svg" id="2_wcf01"]
 [ext_resource type="PackedScene" uid="uid://ctmsh7eg6wypu" path="res://addons/pandora/ui/components/entity_tree/entity_tree.tscn" id="3_4ayq8"]
 [ext_resource type="PackedScene" uid="uid://clsxp8wg4ctet" path="res://addons/pandora/ui/editor/property_editor/property_editor.tscn" id="3_8d8dx"]
+[ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_ehaql"]
+[ext_resource type="Texture2D" uid="uid://bv43ytfd0mlq1" path="res://addons/pandora/icons/Search.svg" id="5_4i0xc"]
 
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
@@ -27,6 +30,19 @@ layout_mode = 2
 [node name="HeaderBar" type="HBoxContainer" parent="Contents"]
 layout_mode = 2
 
+[node name="CreateEntityButton" type="Button" parent="Contents/HeaderBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Create entity"
+disabled = true
+icon = ExtResource("2_bh1wi")
+
+[node name="CreateCategoryButton" type="Button" parent="Contents/HeaderBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Create category"
+icon = ExtResource("3_ehaql")
+
 [node name="SaveButton" type="Button" parent="Contents/HeaderBar"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -45,12 +61,14 @@ size_flags_vertical = 3
 
 [node name="EntitySelection" type="VBoxContainer" parent="Contents/DataContent"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="EntitySearch" type="LineEdit" parent="Contents/DataContent/EntitySelection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 placeholder_text = "Search..."
+right_icon = ExtResource("5_4i0xc")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/EntitySelection"]
 layout_mode = 2
@@ -62,22 +80,6 @@ clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Contents/DataContent/EntitySelection"]
-layout_mode = 2
-
-[node name="CreateEntityButton" type="Button" parent="Contents/DataContent/EntitySelection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-disabled = true
-text = "Create Entity"
-
-[node name="CreateCategoryButton" type="Button" parent="Contents/DataContent/EntitySelection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Create Category"
 
 [node name="PropertyEditor" parent="Contents/DataContent" instance=ExtResource("3_8d8dx")]
 unique_name_in_owner = true
