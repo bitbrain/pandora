@@ -15,4 +15,6 @@ func _ready() -> void:
 
 func refresh() -> void:
 	if _property != null:
-		line_edit.text = _property.get_default_value() as String
+		var value = _property.get_default_value() as String
+		if value != line_edit.text:
+			line_edit.text = value
