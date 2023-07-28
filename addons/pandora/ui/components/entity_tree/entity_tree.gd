@@ -54,7 +54,7 @@ func _gui_input(event: InputEvent) -> void:
 			get_selected().set_editable(0, true)
 			edit_selected()
 			accept_event()
-	elif event is InputEventMouseButton and not event.double_click:
+	elif event is InputEventMouseButton and not event.double_click and event.button_index == MouseButton.MOUSE_BUTTON_LEFT:
 		if get_selected():
 			get_selected().set_editable(0, false)
 			# make sure to unselect when the child
