@@ -14,6 +14,10 @@ class_name PandoraEntityProxy extends PandoraEntity
 
 func _init() -> void:
 	super._init("", "", "", "")
+	
+	
+func instantiate() -> PandoraEntityInstance:
+	return _get_entity().instantiate()
 
 
 func get_entity_id() -> String:

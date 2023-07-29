@@ -12,7 +12,7 @@ extends Node2D
 @onready var sprite = $Sprite2D
 
 
-var item_instance:ItemInstance:
+var item_instance:PandoraEntityInstance:
 	set(ii):
 		item_instance = ii
 		if sprite != null:
