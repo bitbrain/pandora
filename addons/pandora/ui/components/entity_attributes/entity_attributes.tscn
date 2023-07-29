@@ -30,14 +30,42 @@ text = "Icon"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="ScriptAttribute" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="ScriptAttribute"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Script"
 
-[node name="ScriptPicker" parent="HBoxContainer" instance=ExtResource("3_e2peg")]
+[node name="ScriptPicker" parent="ScriptAttribute" instance=ExtResource("3_e2peg")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="IdGenerationAttribute" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="IdGenerationAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Generate id constants"
+
+[node name="IdGenerationEnabled" type="CheckButton" parent="IdGenerationAttribute"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IdGenerationPathAttribute" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="IdGenerationPathLabel" type="Label" parent="IdGenerationPathAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "id constant file"
+
+[node name="IdGenerationPathPicker" parent="IdGenerationPathAttribute" instance=ExtResource("3_e2peg")]
 unique_name_in_owner = true
 layout_mode = 2

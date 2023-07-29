@@ -6,6 +6,8 @@ class_name PandoraEntity extends Resource
 signal name_changed(new_name:String)
 signal icon_changed(new_icon_path:String)
 signal script_path_changed(new_script_path:String)
+signal generate_ids_changed(new_generate_ids:bool)
+signal id_generation_class_changed(new_id_generation_path:String)
 
 
 ## Wrapper around PandoraProperty that is used to manage overrides.
@@ -106,7 +108,7 @@ var _property_overrides = {}
 # there is the option to generate child entity
 # ids + category ids into a file for easier access.
 var _generate_ids = false 
-var _ids_generation_path = ""
+var _ids_generation_class = ""
 
 
 func _init(id:String, name:String, icon_path:String, category_id:String) -> void:
@@ -139,8 +141,8 @@ func get_icon_path() -> String:
 func get_script_path() -> String:
 	if _script_path != "":
 		return _script_path
-	if _category_id != "" and get_category()._script_path != "":
-		return get_category()._script_path
+	if _category_id != "":
+		return get_category().get_script_path()
 	return "res://addons/pandora/model/entity.gd"
 
 
@@ -158,6 +160,27 @@ func set_script_path(new_path:String) -> void:
 	self._script_path = new_path
 	script_path_changed.emit(new_path)
 	
+	
+func set_generate_ids(generate_ids:bool) -> void:
+	self._generate_ids = generate_ids
+	generate_ids_changed.emit(_generate_ids)
+	
+func is_generate_ids() -> bool:
+	return self._generate_ids
+
+
+func set_id_generation_class(id_generation_class:String) -> void:
+	self._ids_generation_class = id_generation_class
+	id_generation_class_changed.emit(id_generation_class)
+
+
+func get_id_generation_class() -> String:
+	if _ids_generation_class != "":
+		return _ids_generation_class
+	if _category_id != "":
+		return get_category().get_id_generation_class()
+	return "EntityIds"
+
 	
 func get_category_id() -> String:
 	return _category_id
@@ -214,6 +237,10 @@ func load_data(data:Dictionary) -> void:
 		_property_overrides = _load_overrides(data["_property_overrides"])
 	if data.has("_script_path"):
 		_script_path = data["_script_path"]
+	if data.has("_generate_ids"):
+		_generate_ids = data["_generate_ids"]
+	if data.has("_ids_generation_class"):
+		_ids_generation_class = data["_ids_generation_class"]
 
 
 ## Produces a data dictionary that can be used on load_data()
@@ -229,6 +256,10 @@ func save_data() -> Dictionary:
 		dict["_property_overrides"] = _save_overrides()
 	if _script_path != "":
 		dict["_script_path"] = _script_path
+	if _generate_ids:
+		dict["_generate_ids"] = _generate_ids
+	if _ids_generation_class != "":
+		dict["_ids_generation_class"] = _ids_generation_class
 	return dict
 
 

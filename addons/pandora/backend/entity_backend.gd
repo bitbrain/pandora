@@ -15,7 +15,7 @@ var _properties:Dictionary = {}
 # category id -> PandoraCategory
 var _categories:Dictionary = {}
 # list of categories on the root level
-var _root_categories:Array[PandoraEntity] = []
+var _root_categories:Array[PandoraCategory] = []
 # generates ids for new entities
 var _id_generator:PandoraIdGenerator
 
@@ -128,7 +128,7 @@ func get_property(property_id:String) -> PandoraProperty:
 
 
 ## Returns a list of all root categories
-func get_all_categories() -> Array[PandoraEntity]:
+func get_all_categories() -> Array[PandoraCategory]:
 	return _root_categories
 
 

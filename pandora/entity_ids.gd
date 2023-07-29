@@ -1,5 +1,7 @@
 # Do not modify! Auto-generated file.
-class_name EntityIds
+class_name EntityIds 
 
 
-const NEW_ENTITY = "3"
+
+const NEW ENTITY = "2"
+const NEW ENTITY1 = "5"

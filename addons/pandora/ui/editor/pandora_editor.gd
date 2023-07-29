@@ -72,8 +72,10 @@ func _populate_data() -> void:
 	if not Pandora.is_loaded():
 		print("Unable to load data - Pandora not initialised!")
 		return
-		
-	tree.set_data(Pandora.get_all_categories())
+	
+	var data:Array[PandoraEntity] = []
+	data.assign(Pandora.get_all_categories())
+	tree.set_data(data)
 	
 	if not Pandora.data_loaded.is_connected(_populate_data):
 		Pandora.data_loaded.connect(_populate_data)
