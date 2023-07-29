@@ -4,8 +4,6 @@ static func regenerate_id_files(root_categories:Array[PandoraCategory]) -> void:
 	# class name  -> Array[Entity]
 	var class_to_entity_map = {}
 	for category in root_categories:
-		#if not category.is_generate_ids():
-		#	continue
 		regenerate_id_files_for_category(category, class_to_entity_map)
 		
 	for entity_class in class_to_entity_map:
@@ -17,10 +15,11 @@ static func regenerate_id_files_for_category(category:PandoraCategory, class_to_
 		if child is PandoraCategory:
 			regenerate_id_files_for_category(child as PandoraCategory, class_to_entity_map)
 		else:
-			if not class_to_entity_map.has(category.get_id_generation_class()):
-				var entities:Array[PandoraEntity] = []
-				class_to_entity_map[category.get_id_generation_class()] = entities
-			class_to_entity_map[category.get_id_generation_class()].append(child)
+			if category.is_generate_ids():
+				if not class_to_entity_map.has(category.get_id_generation_class()):
+					var entities:Array[PandoraEntity] = []
+					class_to_entity_map[category.get_id_generation_class()] = entities
+				class_to_entity_map[category.get_id_generation_class()].append(child)
 
 
 static func regenerate_entity_id_file(entity_class_name:String, entities:Array[PandoraEntity]) -> void:

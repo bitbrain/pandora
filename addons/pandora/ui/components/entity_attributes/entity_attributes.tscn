@@ -52,20 +52,23 @@ layout_mode = 2
 [node name="Label" type="Label" parent="IdGenerationAttribute"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Generate id constants"
+text = "Generate ID Class"
 
 [node name="IdGenerationEnabled" type="CheckButton" parent="IdGenerationAttribute"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="IdGenerationPathAttribute" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="IdGenerationPathLabel" type="Label" parent="IdGenerationPathAttribute"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "id constant file"
-
-[node name="IdGenerationPathPicker" parent="IdGenerationPathAttribute" instance=ExtResource("3_e2peg")]
+[node name="IdClassNameAttribute" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="IdClassNameLabel" type="Label" parent="IdClassNameAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ID Class Name"
+
+[node name="ClassNameEdit" type="LineEdit" parent="IdClassNameAttribute"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "SomeClassName"

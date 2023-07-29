@@ -164,9 +164,14 @@ func set_script_path(new_path:String) -> void:
 func set_generate_ids(generate_ids:bool) -> void:
 	self._generate_ids = generate_ids
 	generate_ids_changed.emit(_generate_ids)
-	
+
+
 func is_generate_ids() -> bool:
-	return self._generate_ids
+	if self._generate_ids:
+		return _generate_ids
+	if _category_id != "":
+		return get_category().is_generate_ids()
+	return false
 
 
 func set_id_generation_class(id_generation_class:String) -> void:
