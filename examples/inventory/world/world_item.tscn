@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvlu4t2j1cd4t"]
+
+[ext_resource type="Script" path="res://examples/inventory/world/world_item.gd" id="1_27fbm"]
+
+[node name="WorldItem" type="Node2D"]
+script = ExtResource("1_27fbm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

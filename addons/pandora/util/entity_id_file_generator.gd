@@ -38,6 +38,6 @@ static func regenerate_entity_id_file(entity_class_name:String, entities:Array[P
 		if not name_usages.has(entity.get_entity_name()):
 			name_usages[entity.get_entity_name()] = 0
 		var entity_name = entity.get_entity_name() if name_usages[entity.get_entity_name()] == 0 else entity.get_entity_name() + str(name_usages[entity.get_entity_name()])
-		file_access.store_line("const " + entity_name.to_upper() + " = " + "\"" + entity.get_entity_id() + "\"")
+		file_access.store_line("const " + entity_name.to_upper().replace(" ", "_") + " = " + "\"" + entity.get_entity_id() + "\"")
 		name_usages[entity.get_entity_name()] += 1
 	file_access.close()

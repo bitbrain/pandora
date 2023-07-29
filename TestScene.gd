@@ -1,10 +1,12 @@
 extends CenterContainer
 
- 
-@export var entity:PandoraEntity
-@export var texture:Texture2D
-
 
 func _ready() -> void:
-	var instance = Pandora.create_entity_instance(entity)
-	print(Pandora.serialize_entity_instance(instance))
+	var copper_ore = Pandora.get_entity(Ores.COPPER_ORE) as Item
+	print(copper_ore.get_entity_name())
+	
+	var copper_instance = copper_ore.instantiate()
+	
+	print(copper_instance.get_string("Description"))
+	
+	print(copper_ore.get_rarity())

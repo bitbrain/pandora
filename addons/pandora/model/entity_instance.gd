@@ -16,8 +16,24 @@ func get_entity() -> PandoraEntity:
 	return Pandora.get_entity(_entity_id)
 	
 	
+func get_icon() -> Texture:
+	return load(get_entity().get_icon_path())
+	
+	
+func get_entity_name() -> String:
+	return get_entity().get_entity_name()
+	
+	
+func get_entity_id() -> String:
+	return get_entity().get_entity_id()
+	
+	
 func get_category() -> PandoraCategory:
 	return get_entity().get_category()
+	
+	
+func has_same_entity(instance:PandoraEntityInstance) -> bool:
+	return get_entity_id() == instance.get_entity_id()
 
 		
 func get_string(property_name:String) -> String:

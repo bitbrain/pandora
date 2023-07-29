@@ -1,5 +1,5 @@
 # Do not modify! Auto-generated file.
-class_name Rarity 
+class_name Rarities 
 
 
 const COMMON = "17"
