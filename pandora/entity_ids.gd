@@ -2,4 +2,4 @@
 class_name EntityIds
 
 
-const ZWEIHANDER = "2"
+const NEW_ENTITY = "3"

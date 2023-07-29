@@ -103,6 +103,11 @@ var _property_map = {}
 var _inherited_properties = {}
 var _property_overrides = {}
 
+# there is the option to generate child entity
+# ids + category ids into a file for easier access.
+var _generate_ids = false 
+var _ids_generation_path = ""
+
 
 func _init(id:String, name:String, icon_path:String, category_id:String) -> void:
 	self._id = id
@@ -126,15 +131,17 @@ func get_entity_name() -> String:
 	
 	
 func get_icon_path() -> String:
-	if _icon_path == "":
-		return "res://addons/pandora/icons/Object.svg"
-	return _icon_path
+	if _icon_path != "":
+		return _icon_path
+	return "res://addons/pandora/icons/Object.svg"
 	
 	
 func get_script_path() -> String:
-	if _script_path == "":
-		return "res://addons/pandora/model/entity.gd"
-	return _script_path
+	if _script_path != "":
+		return _script_path
+	if _category_id != "" and get_category()._script_path != "":
+		return get_category()._script_path
+	return "res://addons/pandora/model/entity.gd"
 
 
 func set_entity_name(new_name:String) -> void:
@@ -200,22 +207,29 @@ func get_category() -> PandoraCategory:
 func load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_name = data["_name"]
-	_icon_path = data["_icon_path"]
 	_category_id = data["_category_id"]
-	_property_overrides = _load_overrides(data["_property_overrides"])
-	_script_path = data["_script_path"]
+	if data.has("_icon_path"):
+		_icon_path = data["_icon_path"]
+	if data.has("_property_overrides"):
+		_property_overrides = _load_overrides(data["_property_overrides"])
+	if data.has("_script_path"):
+		_script_path = data["_script_path"]
 
 
 ## Produces a data dictionary that can be used on load_data()
 func save_data() -> Dictionary:
-	return {
+	var dict = {
 		"_id": _id,
 		"_name": _name,
-		"_icon_path": _icon_path,
-		"_category_id": _category_id,
-		"_property_overrides": _save_overrides(),
-		"_script_path": _script_path
+		"_category_id": _category_id
 	}
+	if _icon_path != "":
+		dict["_icon_path"] = _icon_path
+	if not _property_overrides.is_empty():
+		dict["_property_overrides"] = _save_overrides()
+	if _script_path != "":
+		dict["_script_path"] = _script_path
+	return dict
 
 
 func _save_overrides() -> Dictionary:

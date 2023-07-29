@@ -21,7 +21,7 @@ func _init(data_dir: String):
 
 func store_all_data(data:Dictionary, context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
-	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	var file = FileAccess.open_compressed(file_path, FileAccess.WRITE)
 	var json = JSON.new()
 	file.store_string(json.stringify(data))
 	file.close()
@@ -30,7 +30,7 @@ func store_all_data(data:Dictionary, context_id: String) -> Dictionary:
 
 func get_all_data(context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
-	var file = FileAccess.open(file_path, FileAccess.READ)
+	var file = FileAccess.open_compressed(file_path, FileAccess.READ)
 	var json = JSON.new()
 	if file != null:
 		var text = file.get_as_text()
