@@ -20,6 +20,8 @@ func init(entity:PandoraEntity) -> void:
 	self._entity = entity
 	texture_picker.set_texture_path(entity.get_icon_path())
 	script_picker.set_script_path(entity.get_script_path())
+	# ensure selected script extends PandoraEntity!
+	script_picker.set_filter(_is_entity)
 	class_name_edit.text = entity.get_id_generation_class()
 	id_generation_enabled.button_pressed = entity._generate_ids
 	class_name_edit.editable = entity._generate_ids
@@ -54,3 +56,11 @@ func _set_id_generation(toggled:bool) -> void:
 
 func _set_class_name(name:String) -> void:
 	_entity.set_id_generation_class(name.to_pascal_case())
+
+
+func _is_entity(path:String) -> bool:
+	var EntityClass = load(path)
+	if not EntityClass:
+		return false
+	var entity = EntityClass.new("", "", "", "")
+	return (entity as PandoraEntity) != null

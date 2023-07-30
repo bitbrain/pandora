@@ -6,6 +6,7 @@
 ## This proxy ensures that we can store the entity id inside the
 ## .tscn file and then dynamically look up the actual entity
 ## at runtime by accessing Pandora's API.
+@tool
 class_name PandoraEntityProxy extends PandoraEntity
 
 
