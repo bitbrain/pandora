@@ -8,6 +8,7 @@ extends GdUnitTestSuite
 # TestSuite generated from
 const __source = "res://test/mock/mock_scene.tscn"
 const TEST_DIR = "testdata"
+const CUSTOM_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
 
 func before() -> void:
 	Pandora.set_context_id(TEST_DIR)
@@ -20,6 +21,7 @@ func after() -> void:
 
 func test_initialize_scene() -> void:
 	var category = Pandora.create_category("Swords")
+	category.set_script_path(CUSTOM_ENTITY_PATH)
 	var entity = Pandora.create_entity("Iron Sword", category)
 	var scene = load(__source).instantiate()
 	scene.entity = entity
