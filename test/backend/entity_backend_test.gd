@@ -7,6 +7,8 @@ extends GdUnitTestSuite
 
 # TestSuite generated from
 const __source = "res://addons/pandora/backend/entity_backend.gd"
+const MOCK_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
+const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
 
 
 func create_object_backend() -> PandoraEntityBackend:
@@ -374,3 +376,27 @@ func test_category_deletion_propagation() -> void:
 	assert_that(backend.get_entity(entity.get_entity_id())).is_null()
 	assert_that(backend.get_entity(child_category.get_entity_id())).is_null()
 	assert_that(backend.get_entity(category.get_entity_id())).is_null()
+	
+	
+func test_custom_entity_category_script_save_load() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var entity = backend.create_entity("root", category)
+	var entity_id = entity.get_entity_id()
+	category.set_script_path(MOCK_ENTITY_PATH)
+	var data = backend.save_data()
+	backend.load_data(data)
+	assert_that(backend.get_entity(entity_id) as CustomMockEntity).is_not_null()
+	
+	
+func test_custom_entity_script_save_load() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var entity = backend.create_entity("root", category)
+	entity.set_script_path(MOCK_ENTITY_ALT_PATH)
+	var entity_id = entity.get_entity_id()
+	category.set_script_path(MOCK_ENTITY_PATH)
+	var data = backend.save_data()
+	backend.load_data(data)
+	assert_that(backend.get_entity(entity_id) as CustomMockEntity).is_null()
+	assert_that(backend.get_entity(entity_id) as CustomMockAltEntity).is_not_null()
