@@ -11,7 +11,7 @@ func _ready():
 		child.pick_up.connect(func(item): _pick_up(child, item))
 
 
-func _pick_up(world_item:WorldItem, item_instance:ItemInstance) -> void:
+func _pick_up(world_item, item_instance:ItemInstance) -> void:
 	world_item.queue_free()
 	inventory.add_item(item_instance)
 	

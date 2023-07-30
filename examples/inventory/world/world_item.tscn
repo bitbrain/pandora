@@ -22,6 +22,7 @@ item = SubResource("Resource_8jsvs")
 texture = ExtResource("3_2sqi8")
 
 [node name="WorldItemBody" type="StaticBody2D" parent="."]
+input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_cvj7m")
 script = ExtResource("4_3qh7b")
 
