@@ -18,9 +18,11 @@ proxied_entity_id = "9"
 script = ExtResource("1_0vujp")
 
 [node name="Inventory" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_atbtv")
 
 [node name="WorldItems" type="Node2D" parent="."]
+unique_name_in_owner = true
 
 [node name="CopperOre" parent="WorldItems" instance=ExtResource("3_rot7y")]
 position = Vector2(424, 228)

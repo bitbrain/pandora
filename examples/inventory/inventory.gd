@@ -3,13 +3,24 @@ class_name Inventory extends Node
 
 signal item_added(item:ItemInstance, index:int)
 signal item_removed(item:ItemInstance, index:int)
+
+
+@export var size = 9
 	
 
 # id -> ItemInstance
 var _slots = {}
 
 
-func add_item(item:ItemInstance, index:int) -> void:
+func add_item(item:ItemInstance, index:int = -1) -> void:
+	if index >= size:
+		print("Index is out of bounds! Maximum index is ", (index - 1))
+		return
+	if index == -1:
+		index = _find_next_index(item)
+		if index == -1:
+			print("No more space in inventory!")
+			return
 	if not _slots.has(index):
 		_slots[index] = item
 		item_added.emit(item, index)
@@ -34,3 +45,13 @@ func remove_item(index:int) -> ItemInstance:
 		return item
 	print("No item to remove at index ", index)
 	return null
+
+
+func _find_next_index(item:ItemInstance) -> int:
+	for i in range(0, size):
+		if not _slots.has(i):
+			return i
+		var existing_item = _slots[i]
+		if existing_item.has_same_entity(item):
+			return i
+	return -1

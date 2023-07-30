@@ -1,8 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://bvlu4t2j1cd4t"]
+[gd_scene load_steps=8 format=3 uid="uid://bvlu4t2j1cd4t"]
 
 [ext_resource type="Script" path="res://examples/inventory/world/world_item.gd" id="1_27fbm"]
+[ext_resource type="Script" path="res://addons/pandora/model/entity_proxy.gd" id="2_4mojp"]
+[ext_resource type="Texture2D" uid="uid://bxu0a47efem5s" path="res://examples/inventory/icons/crystal-growth.svg" id="3_2sqi8"]
+[ext_resource type="Script" path="res://examples/inventory/world/world_item_body.gd" id="4_3qh7b"]
+
+[sub_resource type="Resource" id="Resource_8jsvs"]
+script = ExtResource("2_4mojp")
+proxied_entity_id = "14"
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cvj7m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_adf60"]
+radius = 19.0263
 
 [node name="WorldItem" type="Node2D"]
 script = ExtResource("1_27fbm")
+item = SubResource("Resource_8jsvs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_2sqi8")
+
+[node name="WorldItemBody" type="StaticBody2D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_cvj7m")
+script = ExtResource("4_3qh7b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldItemBody"]
+shape = SubResource("CircleShape2D_adf60")
