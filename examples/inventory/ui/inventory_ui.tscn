@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://2meu4gdjnodt"]
+
+[ext_resource type="Script" path="res://examples/inventory/ui/inventory_ui.gd" id="1_0oe7e"]
+[ext_resource type="Texture2D" uid="uid://cb6str3hxrsdi" path="res://addons/pandora/icons/KeyValue.svg" id="2_hk48w"]
+
+[node name="InventoryUI" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+script = ExtResource("1_0oe7e")
+
+[node name="Slot1" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot2" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot3" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot4" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot5" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot6" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot7" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot8" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")
+
+[node name="Slot9" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_hk48w")

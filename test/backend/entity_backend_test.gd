@@ -7,14 +7,12 @@ extends GdUnitTestSuite
 
 # TestSuite generated from
 const __source = "res://addons/pandora/backend/entity_backend.gd"
+const MOCK_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
+const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
 
 
 func create_object_backend() -> PandoraEntityBackend:
 	return PandoraEntityBackend.new(PandoraIdGenerator.new())
-	
-	
-func create_instance_backend() -> PandoraEntityInstanceBackend:
-	return PandoraEntityInstanceBackend.new(PandoraIdGenerator.new())
 
 
 func test_create_entity() -> void:
@@ -33,27 +31,25 @@ func test_create_category() -> void:
 
 func test_create_property_after_entity_creation() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("a")
 	backend.create_property(category, "key1", "string", "foobar1")
 	var entity = backend.create_entity("Test", category)
 	backend.create_property(category, "key2", "string", "foobar2")
-	var entity_instance = instance_backend.create_entity_instance(entity)
+	var entity_instance = entity.instantiate()
 	assert_that(entity_instance.get_string("key1")).is_equal("foobar1")
 	assert_that(entity_instance.get_string("key2")).is_equal("foobar2")
 	
 	
 func test_entity_inherits_properties_from_category_hierarchy() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category_parent = backend.create_category("parent-category")
 	var parent_entity = backend.create_entity("parent_entity", category_parent)
 	var category_child = backend.create_category("child-category", category_parent)
 	var child_entity = backend.create_entity("child_entity", category_child)
 	backend.create_property(category_parent, "key1", "string", "foobar1")
 	backend.create_property(category_child, "key2", "string", "foobar2")
-	var parent_instance = instance_backend.create_entity_instance(parent_entity)
-	var child_instance = instance_backend.create_entity_instance(child_entity)
+	var parent_instance = parent_entity.instantiate()
+	var child_instance = child_entity.instantiate()
 	assert_that(parent_instance.get_string("key1")).is_equal("foobar1")
 	assert_that(child_instance.get_string("key1")).is_equal("foobar1")
 	assert_that(parent_instance.get_string("key2")).is_equal("")
@@ -62,41 +58,37 @@ func test_entity_inherits_properties_from_category_hierarchy() -> void:
 	
 func test_entity_instance_data_type_lookup_bool() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("entity", category)
 	backend.create_property(category, "some-property", "bool", true)
-	var instance = instance_backend.create_entity_instance(entity)
+	var instance = entity.instantiate()
 	assert_that(instance.get_bool("some-property")).is_equal(true)
 	
 	
 func test_entity_instance_data_type_lookup_int() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("entity", category)
 	backend.create_property(category, "some-property", "int", 42)
-	var instance = instance_backend.create_entity_instance(entity)
+	var instance = entity.instantiate()
 	assert_that(instance.get_integer("some-property")).is_equal(42)
 	
 	
 func test_entity_instance_data_type_lookup_float() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("entity", category)
 	backend.create_property(category, "some-property", "float", 42.0)
-	var instance = instance_backend.create_entity_instance(entity)
+	var instance = entity.instantiate()
 	assert_that(instance.get_float("some-property")).is_equal(42.0)
 
 
 func test_entity_instance_data_type_lookup_color() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("entity", category)
 	backend.create_property(category, "some-property", "color", Color.RED)
-	var instance = instance_backend.create_entity_instance(entity)
+	var instance = entity.instantiate()
 	assert_that(instance.get_color("some-property")).is_equal(Color.RED)
 
 
@@ -303,33 +295,30 @@ func test_override_inherited_property() -> void:
 
 func test_entity_instance_inherits_properties() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("category")
 	backend.create_property(category, "property1", "string", "value1")
 	var entity = backend.create_entity("Test", category)
-	var entity_instance = instance_backend.create_entity_instance(entity)
+	var entity_instance = entity.instantiate()
 	assert_that(entity_instance.get_string("property1")).is_equal("value1")
 
 
 func test_entity_instance_inherits_overridden_properties() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var root_category = backend.create_category("root")
 	backend.create_property(root_category, "root property", "string", "rootValue")
 	var child_category = backend.create_category("child", root_category)
 	var entity = backend.create_entity("Test", child_category)
 	var root_property = entity.get_entity_property("root property")
 	root_property.set_default_value("override")
-	var entity_instance = instance_backend.create_entity_instance(entity)
+	var entity_instance = entity.instantiate()
 	assert_that(entity_instance.get_string("root property")).is_equal("override")
 
 
 func test_entity_instance_does_not_inherit_late_properties() -> void:
 	var backend = create_object_backend()
-	var instance_backend = create_instance_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("Test", category)
-	var entity_instance = instance_backend.create_entity_instance(entity)
+	var entity_instance = entity.instantiate()
 	backend.create_property(category, "late property", "string", "lateValue")
 	assert_that(entity_instance.get_string("late property")).is_equal("")
 
@@ -387,3 +376,27 @@ func test_category_deletion_propagation() -> void:
 	assert_that(backend.get_entity(entity.get_entity_id())).is_null()
 	assert_that(backend.get_entity(child_category.get_entity_id())).is_null()
 	assert_that(backend.get_entity(category.get_entity_id())).is_null()
+	
+	
+func test_custom_entity_category_script_save_load() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var entity = backend.create_entity("root", category)
+	var entity_id = entity.get_entity_id()
+	category.set_script_path(MOCK_ENTITY_PATH)
+	var data = backend.save_data()
+	backend.load_data(data)
+	assert_that(backend.get_entity(entity_id) as CustomMockEntity).is_not_null()
+	
+	
+func test_custom_entity_script_save_load() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var entity = backend.create_entity("root", category)
+	entity.set_script_path(MOCK_ENTITY_ALT_PATH)
+	var entity_id = entity.get_entity_id()
+	category.set_script_path(MOCK_ENTITY_PATH)
+	var data = backend.save_data()
+	backend.load_data(data)
+	assert_that(backend.get_entity(entity_id) as CustomMockEntity).is_null()
+	assert_that(backend.get_entity(entity_id) as CustomMockAltEntity).is_not_null()

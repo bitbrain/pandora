@@ -13,7 +13,6 @@ var _context_manager:PandoraContextManager
 var _storage:PandoraJsonDataStorage
 var _id_generator:PandoraIdGenerator
 var _entity_backend:PandoraEntityBackend
-var _entity_instance_backend:PandoraEntityInstanceBackend
 
 
 var _loaded = false
@@ -24,7 +23,6 @@ func _enter_tree() -> void:
 	self._context_manager = PandoraContextManager.new()
 	self._id_generator = PandoraIdGenerator.new()
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
-	self._entity_instance_backend = PandoraEntityInstanceBackend.new(_id_generator)
 	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
 	load_data()
 
@@ -73,28 +71,12 @@ func get_property(property_id:String) -> PandoraProperty:
 	return _entity_backend.get_property(property_id)
 	
 	
-func get_all_categories() -> Array[PandoraEntity]:
+func get_all_categories() -> Array[PandoraCategory]:
 	return _entity_backend.get_all_categories()
 	
 	
 func get_all_entities() -> Array[PandoraEntity]:
 	return _entity_backend.get_all_entities()
-	
-
-func create_entity_instance(of_entity:PandoraEntity) -> PandoraEntityInstance:
-	return _entity_instance_backend.create_entity_instance(of_entity)
-
-
-## Deserializes data into an entity instance
-func deserialize_entity_instance(data:Dictionary) -> PandoraEntityInstance:
-	var instance = PandoraEntityInstance.new("", "", [])
-	instance._load_data(data)
-	return instance
-
-
-## Serializes an instance for further saving 
-func serialize_entity_instance(instance:PandoraEntityInstance) -> Dictionary:
-	return instance._save_data()
 
 
 func load_data_async() -> void:
@@ -124,7 +106,7 @@ func save_data() -> void:
 		}
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
-	EntityIdFileGenerator.regenerate_entity_id_file(_entity_backend.get_all_entities(), "entity_ids.gd")
+	EntityIdFileGenerator.regenerate_id_files(get_all_categories())
 
 		
 func is_loaded() -> bool:

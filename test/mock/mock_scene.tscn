@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3j2xs0rnqdst"]
+
+[ext_resource type="Script" path="res://test/mock/mock_scene.gd" id="1_m4lrk"]
+
+[node name="MockScene" type="Node2D"]
+script = ExtResource("1_m4lrk")

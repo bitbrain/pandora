@@ -5,6 +5,9 @@ class_name PandoraEntity extends Resource
 
 signal name_changed(new_name:String)
 signal icon_changed(new_icon_path:String)
+signal script_path_changed(new_script_path:String)
+signal generate_ids_changed(new_generate_ids:bool)
+signal id_generation_class_changed(new_id_generation_path:String)
 
 
 ## Wrapper around PandoraProperty that is used to manage overrides.
@@ -93,6 +96,7 @@ var _id:String
 var _name:String
 var _icon_path:String
 var _category_id:String
+var _script_path:String
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -101,12 +105,23 @@ var _property_map = {}
 var _inherited_properties = {}
 var _property_overrides = {}
 
+# there is the option to generate child entity
+# ids + category ids into a file for easier access.
+var _generate_ids = false 
+var _ids_generation_class = ""
+
 
 func _init(id:String, name:String, icon_path:String, category_id:String) -> void:
 	self._id = id
 	self._name = name
 	self._icon_path = icon_path
 	self._category_id = category_id
+	
+
+## Creates an instance of this entity.
+func instantiate() -> PandoraEntityInstance:
+	var instance_properties = _create_instance_properties()
+	return PandoraEntityInstance.new(get_entity_id(), instance_properties)
 
 	
 func get_entity_id() -> String:
@@ -118,11 +133,19 @@ func get_entity_name() -> String:
 	
 	
 func get_icon_path() -> String:
-	if _icon_path == "":
-		return "res://addons/pandora/icons/Object.svg"
-	return _icon_path
+	if _icon_path != "":
+		return _icon_path
+	return "res://addons/pandora/icons/Object.svg"
 	
 	
+func get_script_path() -> String:
+	if _script_path != "":
+		return _script_path
+	if _category_id != "":
+		return get_category().get_script_path()
+	return "res://addons/pandora/model/entity.gd"
+
+
 func set_entity_name(new_name:String) -> void:
 	self._name = new_name
 	name_changed.emit(new_name)
@@ -132,6 +155,37 @@ func set_icon_path(new_path:String) -> void:
 	self._icon_path = new_path
 	icon_changed.emit(new_path)
 	
+	
+func set_script_path(new_path:String) -> void:
+	self._script_path = new_path
+	script_path_changed.emit(new_path)
+	
+	
+func set_generate_ids(generate_ids:bool) -> void:
+	self._generate_ids = generate_ids
+	generate_ids_changed.emit(_generate_ids)
+
+
+func is_generate_ids() -> bool:
+	if self._generate_ids:
+		return _generate_ids
+	if _category_id != "":
+		return get_category().is_generate_ids()
+	return false
+
+
+func set_id_generation_class(id_generation_class:String) -> void:
+	self._ids_generation_class = id_generation_class
+	id_generation_class_changed.emit(id_generation_class)
+
+
+func get_id_generation_class() -> String:
+	if _ids_generation_class != "":
+		return _ids_generation_class
+	if _category_id != "":
+		return get_category().get_id_generation_class()
+	return "EntityIds"
+
 	
 func get_category_id() -> String:
 	return _category_id
@@ -181,20 +235,37 @@ func get_category() -> PandoraCategory:
 func load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_name = data["_name"]
-	_icon_path = data["_icon_path"]
 	_category_id = data["_category_id"]
-	_property_overrides = _load_overrides(data["_property_overrides"])
+	if data.has("_icon_path"):
+		_icon_path = data["_icon_path"]
+	if data.has("_property_overrides"):
+		_property_overrides = _load_overrides(data["_property_overrides"])
+	if data.has("_script_path"):
+		_script_path = data["_script_path"]
+	if data.has("_generate_ids"):
+		_generate_ids = data["_generate_ids"]
+	if data.has("_ids_generation_class"):
+		_ids_generation_class = data["_ids_generation_class"]
 
 
 ## Produces a data dictionary that can be used on load_data()
 func save_data() -> Dictionary:
-	return {
+	var dict = {
 		"_id": _id,
 		"_name": _name,
-		"_icon_path": _icon_path,
-		"_category_id": _category_id,
-		"_property_overrides": _save_overrides()
+		"_category_id": _category_id
 	}
+	if _icon_path != "":
+		dict["_icon_path"] = _icon_path
+	if not _property_overrides.is_empty():
+		dict["_property_overrides"] = _save_overrides()
+	if _script_path != "":
+		dict["_script_path"] = _script_path
+	if _generate_ids:
+		dict["_generate_ids"] = _generate_ids
+	if _ids_generation_class != "":
+		dict["_ids_generation_class"] = _ids_generation_class
+	return dict
 
 
 func _save_overrides() -> Dictionary:
@@ -227,3 +298,15 @@ func _delete_property(name:String) -> void:
 		if property.get_property_name() == name:
 			original_property = property
 	_properties.erase(original_property)
+
+
+## Generates instanced properties from an existing entity.
+## A property that is instanced can be change its value independently
+## of the original property.
+func _create_instance_properties() -> Array[PandoraPropertyInstance]:
+	var property_instances:Array[PandoraPropertyInstance] = []
+	for property in get_entity_properties():
+		var property_id = property.get_property_id()
+		var default_value = property.get_default_value()
+		property_instances.append(PandoraPropertyInstance.new(property, default_value))
+	return property_instances

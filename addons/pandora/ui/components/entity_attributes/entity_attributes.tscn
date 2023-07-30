@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ceqq28yvnhs2e"]
+[gd_scene load_steps=4 format=3 uid="uid://ceqq28yvnhs2e"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.gd" id="1_hnn1r"]
 [ext_resource type="PackedScene" uid="uid://dvoxop0o2mlfi" path="res://addons/pandora/ui/components/texture_picker/texture_picker.tscn" id="2_tv6yu"]
+[ext_resource type="PackedScene" uid="uid://bp0gaqyb10bns" path="res://addons/pandora/ui/components/script_picker/script_picker.tscn" id="3_e2peg"]
 
 [node name="EntityAttributes" type="VBoxContainer"]
 anchors_preset = 15
@@ -28,3 +29,46 @@ text = "Icon"
 [node name="TexturePicker" parent="IconAttribute" instance=ExtResource("2_tv6yu")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="ScriptAttribute" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScriptAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Script"
+
+[node name="ScriptPicker" parent="ScriptAttribute" instance=ExtResource("3_e2peg")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="IdGenerationAttribute" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="IdGenerationAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Generate ID Class"
+
+[node name="IdGenerationEnabled" type="CheckButton" parent="IdGenerationAttribute"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IdClassNameAttribute" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IdClassNameLabel" type="Label" parent="IdClassNameAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ID Class Name"
+
+[node name="ClassNameEdit" type="LineEdit" parent="IdClassNameAttribute"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "SomeClassName"

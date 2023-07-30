@@ -12,9 +12,11 @@ func get_child(entity_id:String) -> PandoraEntity:
 
 
 func get_icon_path() -> String:
-	if _icon_path == "":
-		return "res://addons/pandora/icons/Folder.svg"
-	return _icon_path
+	if _icon_path != "":
+		return _icon_path
+	if _category_id != "" and get_category()._icon_path != "":
+		return get_category().get_icon_path()
+	return "res://addons/pandora/icons/Folder.svg"
 
 
 func _delete_property(name:String) -> void:

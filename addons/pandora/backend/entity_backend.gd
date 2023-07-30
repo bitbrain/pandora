@@ -15,7 +15,7 @@ var _properties:Dictionary = {}
 # category id -> PandoraCategory
 var _categories:Dictionary = {}
 # list of categories on the root level
-var _root_categories:Array[PandoraEntity] = []
+var _root_categories:Array[PandoraCategory] = []
 # generates ids for new entities
 var _id_generator:PandoraIdGenerator
 
@@ -26,7 +26,8 @@ func _init(id_generator:PandoraIdGenerator) -> void:
 
 ## Creates a new entity on the given PandoraCategory
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
-	var entity = PandoraEntity.new(_id_generator.generate(), name, "", category._id)
+	var EntityClass = load(category.get_script_path())
+	var entity = EntityClass.new(_id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_propagate_properties(category)
@@ -128,7 +129,7 @@ func get_property(property_id:String) -> PandoraProperty:
 
 
 ## Returns a list of all root categories
-func get_all_categories() -> Array[PandoraEntity]:
+func get_all_categories() -> Array[PandoraCategory]:
 	return _root_categories
 
 
@@ -146,8 +147,8 @@ func get_all_entities() -> Array[PandoraEntity]:
 ## the save_data() method.
 func load_data(data:Dictionary) -> void:
 	_root_categories.clear()
-	_entities = _deserialize_entities(data["_entities"])
 	_categories = _deserialize_categories(data["_categories"])
+	_entities = _deserialize_entities(data["_entities"])
 	_properties = _deserialize_properties(data["_properties"])
 	for key in _categories:
 		var category = _categories[key] as PandoraCategory
@@ -181,9 +182,19 @@ func save_data() -> Dictionary:
 func _deserialize_entities(data:Array) -> Dictionary:
 	var dict = {}
 	for entity_data in data:
-		var entity = PandoraEntity.new("", "", "", "")
-		entity.load_data(entity_data)
-		dict[entity._id] = entity
+		# only when entity has an overridden class, initialise it.
+		# otherwise rely on the script path of the parent category.
+		if entity_data.has("_script_path"):
+			var ScriptClass = load(entity_data["_script_path"])
+			var entity = ScriptClass.new("", "", "", "")
+			entity.load_data(entity_data)
+			dict[entity._id] = entity
+		else:
+			var parent_category = _categories[entity_data["_category_id"]]
+			var ScriptClass = load(parent_category.get_script_path())
+			var entity = ScriptClass.new("", "", "", "")
+			entity.load_data(entity_data)
+			dict[entity._id] = entity
 	return dict
 	
 	
