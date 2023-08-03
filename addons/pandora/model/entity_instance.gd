@@ -90,6 +90,26 @@ func get_color(property_name:String) -> Color:
 	return _get_property_value(property_name) as Color
 	
 	
+func get_reference(property_name:String) -> PandoraEntity:
+	if not _properties.has(property_name):
+		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
+		return null
+	if not _get_property_value(property_name) is PandoraEntity:
+		push_error("property %s on instance %s is not a reference" % [property_name, get_instance_id()])
+		return null
+	return _get_property_value(property_name) as PandoraEntity
+	
+	
+func get_resource(property_name:String) -> Resource:
+	if not _properties.has(property_name):
+		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
+		return null
+	if not _get_property_value(property_name) is Resource:
+		push_error("property %s on instance %s is not a resource" % [property_name, get_instance_id()])
+		return null
+	return _get_property_value(property_name) as Resource
+	
+	
 func set_string(property_name:String, value:String) -> void:
 	if not _properties.has(property_name):
 		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
@@ -121,6 +141,20 @@ func set_bool(property_name:String, value:bool) -> void:
 func set_color(property_name:String, value:Color) -> void:
 	if not _properties.has(property_name):
 		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
+	else:
+		_properties[property_name].set_property_value(value)
+		
+		
+func set_reference(property_name:String, value:PandoraEntity) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
+	else:
+		_properties[property_name].set_property_value(value)
+		
+		
+func set_resource(property_name:String, value:Resource) -> void:
+	if not _properties.has(property_name):
+		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
 	else:
 		_properties[property_name].set_property_value(value)
 

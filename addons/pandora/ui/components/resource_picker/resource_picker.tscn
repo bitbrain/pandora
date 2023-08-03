@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvg3w88lp8uuc"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/resource_picker/resource_picker.gd" id="1_hjkiw"]
+[ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_51u7n"]
+
+[node name="ResourcePicker" type="HBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_hjkiw")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LoadFileButton" type="Button" parent="."]
+layout_mode = 2
+icon = ExtResource("3_51u7n")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(784, 324)
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.tres", "*.jpg", "*.png", "*.jpeg", "*.wav", "*.mp3", "*.ogg")

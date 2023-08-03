@@ -105,6 +105,8 @@ static func write_value(value:Variant):
 		return "1" if value else "0"
 	if value is PandoraReference:
 		return value.save_data()
+	if value is Resource:
+		return value.resource_path
 	return str(value)
 
 
@@ -125,6 +127,8 @@ static func parse_value(value, type:String) -> Variant:
 		var reference = PandoraReference.new("")
 		reference.load_data(value)
 		return reference
+	if type == "resource" and value is String:
+		return load(value)
 	push_error("Unsupported variant type of value %s" % str(type))
 	return ""
 	
@@ -142,5 +146,7 @@ static func default_value_of(type:String) -> Variant:
 		return Color.WHITE
 	if type == "reference":
 		return PandoraReference.new("1234")
+	if type == "resource":
+		return null
 	push_error("Unsupported variant type %s" % str(type))
 	return ""
