@@ -100,3 +100,19 @@ func test_unknown_type() -> void:
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
 	assert_that(new_property).is_not_equal(property)
+	
+	
+func test_resource_property() -> void:
+	var resource = load("res://splash.png")
+	var property = PandoraProperty.new("123", "property", "resource", resource)
+	var new_property = PandoraProperty.new("", "", "", "")
+	new_property.load_data(property.save_data())
+	assert_that(new_property).is_equal(property)
+	
+	
+func test_resource_property_wrong_type() -> void:
+	var resource = load("res://splash.png")
+	var property = PandoraProperty.new("123", "property", "string", resource)
+	var new_property = PandoraProperty.new("", "", "", "")
+	new_property.load_data(property.save_data())
+	assert_that(new_property).is_not_equal(property)

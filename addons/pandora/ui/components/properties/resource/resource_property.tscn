@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://yhwimtiw711n"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/resource/resource_property.gd" id="1_j84fe"]
+[ext_resource type="PackedScene" uid="uid://bvg3w88lp8uuc" path="res://addons/pandora/ui/components/resource_picker/resource_picker.tscn" id="2_5l2jx"]
+
+[node name="ResourceProperty" type="MarginContainer"]
+script = ExtResource("1_j84fe")
+type = "resource"
+
+[node name="ResourcePicker" parent="." instance=ExtResource("2_5l2jx")]
+layout_mode = 2
