@@ -141,7 +141,7 @@ func get_icon_path() -> String:
 func get_script_path() -> String:
 	if _script_path != "":
 		return _script_path
-	if _category_id != "":
+	if _category_id != "" and get_category() != null:
 		return get_category().get_script_path()
 	return "res://addons/pandora/model/entity.gd"
 
@@ -169,7 +169,7 @@ func set_generate_ids(generate_ids:bool) -> void:
 func is_generate_ids() -> bool:
 	if self._generate_ids:
 		return _generate_ids
-	if _category_id != "":
+	if _category_id != "" and get_category() != null:
 		return get_category().is_generate_ids()
 	return false
 
@@ -182,7 +182,7 @@ func set_id_generation_class(id_generation_class:String) -> void:
 func get_id_generation_class() -> String:
 	if _ids_generation_class != "":
 		return _ids_generation_class
-	if _category_id != "":
+	if _category_id != "" and get_category() != null:
 		return get_category().get_id_generation_class()
 	return "EntityIds"
 
