@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=9 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://clsxp8wg4ctet" path="res://addons/pandora/ui/editor/property_editor/property_editor.tscn" id="3_8d8dx"]
 [ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_ehaql"]
 [ext_resource type="Texture2D" uid="uid://bv43ytfd0mlq1" path="res://addons/pandora/icons/Search.svg" id="5_4i0xc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5enwx"]
+font_color = Color(1, 1, 1, 0.403922)
 
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
@@ -30,29 +33,59 @@ layout_mode = 2
 [node name="HeaderBar" type="HBoxContainer" parent="Contents"]
 layout_mode = 2
 
-[node name="CreateEntityButton" type="Button" parent="Contents/HeaderBar"]
+[node name="Actions" type="HBoxContainer" parent="Contents/HeaderBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CreateEntityButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Create entity"
 disabled = true
 icon = ExtResource("2_aj8uc")
 
-[node name="CreateCategoryButton" type="Button" parent="Contents/HeaderBar"]
+[node name="CreateCategoryButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Create category"
 icon = ExtResource("3_ehaql")
 
-[node name="SaveButton" type="Button" parent="Contents/HeaderBar"]
+[node name="SaveButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
 icon = ExtResource("2_wcf01")
 
-[node name="Label" type="Label" parent="Contents/HeaderBar"]
+[node name="Label" type="Label" parent="Contents/HeaderBar/Actions"]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.564706, 0.92549, 0, 1)
 text = "Saved!"
+
+[node name="Links" type="HBoxContainer" parent="Contents/HeaderBar"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+theme_override_constants/separation = 15
+
+[node name="Version" type="Label" parent="Contents/HeaderBar/Links"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.27451)
+theme_override_font_sizes/font_size = 12
+label_settings = SubResource("LabelSettings_5enwx")
+horizontal_alignment = 2
+vertical_alignment = 1
+justification_flags = 0
+
+[node name="Learn" type="LinkButton" parent="Contents/HeaderBar/Links"]
+layout_mode = 2
+text = "Learn"
+uri = "https://bitbra.in/pandora"
+
+[node name="Contribute" type="LinkButton" parent="Contents/HeaderBar/Links"]
+layout_mode = 2
+text = "Contribute"
+uri = "https://github.com/bitbrain/pandora"
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
 clip_contents = true
