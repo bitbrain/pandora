@@ -8,6 +8,7 @@ extends Control
 @onready var create_category_button:Button = %CreateCategoryButton
 @onready var property_editor = %PropertyEditor
 @onready var entity_search: LineEdit = %EntitySearch
+@onready var version = %Version
 
 
 var selected_entity:PandoraEntity
@@ -22,6 +23,11 @@ func _ready() -> void:
 	tree.entity_deletion_issued.connect(_delete_entity)
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
+	
+	# set version
+	var plugin_config:ConfigFile = ConfigFile.new()
+	plugin_config.load("res://addons/pandora/plugin.cfg")
+	version.text = "Pandora v" + plugin_config.get_value("plugin", "version")
 	
 	entity_search.text_changed.connect(tree.search)
 	property_editor.original_property_selected.connect(_on_original_property_selected)
