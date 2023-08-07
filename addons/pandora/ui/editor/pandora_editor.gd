@@ -4,6 +4,7 @@ extends Control
 
 @onready var tree:PandoraEntityTree = %EntityTree
 @onready var save_button:Button = %SaveButton
+@onready var reset_button = %ResetButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
 @onready var property_editor = %PropertyEditor
@@ -23,6 +24,7 @@ func _ready() -> void:
 	tree.entity_deletion_issued.connect(_delete_entity)
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
+	reset_button.pressed.connect(_reset_to_saved_file)
 	
 	# set version
 	var plugin_config:ConfigFile = ConfigFile.new()
@@ -96,3 +98,15 @@ func _save() -> void:
 
 func _delete_entity(entity:PandoraEntity) -> void:
 	Pandora.delete_entity(entity)
+
+
+func _reset_to_saved_file() -> void:
+	Pandora._clear()
+	Pandora.load_data()
+	var data:Array[PandoraEntity] = []
+	data.assign(Pandora.get_all_categories())
+	tree.set_data(data)
+	create_entity_button.disabled = true
+	create_category_button.disabled = false
+	property_editor.set_entity(null)
+	_selection_cleared()

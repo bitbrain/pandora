@@ -7,9 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://clsxp8wg4ctet" path="res://addons/pandora/ui/editor/property_editor/property_editor.tscn" id="3_8d8dx"]
 [ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_ehaql"]
 [ext_resource type="Texture2D" uid="uid://bv43ytfd0mlq1" path="res://addons/pandora/icons/Search.svg" id="5_4i0xc"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_5enwx"]
-font_color = Color(1, 1, 1, 0.403922)
+[ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="5_qbvn0"]
 
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
@@ -55,6 +53,12 @@ unique_name_in_owner = true
 layout_mode = 2
 icon = ExtResource("2_wcf01")
 
+[node name="ResetButton" type="Button" parent="Contents/HeaderBar/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Reset data"
+icon = ExtResource("5_qbvn0")
+
 [node name="Label" type="Label" parent="Contents/HeaderBar/Actions"]
 visible = false
 layout_mode = 2
@@ -64,28 +68,34 @@ text = "Saved!"
 [node name="Links" type="HBoxContainer" parent="Contents/HeaderBar"]
 layout_mode = 2
 size_flags_horizontal = 10
-size_flags_vertical = 0
 theme_override_constants/separation = 15
-
-[node name="Version" type="Label" parent="Contents/HeaderBar/Links"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.27451)
-theme_override_font_sizes/font_size = 12
-label_settings = SubResource("LabelSettings_5enwx")
-horizontal_alignment = 2
-vertical_alignment = 1
-justification_flags = 0
 
 [node name="Learn" type="LinkButton" parent="Contents/HeaderBar/Links"]
 layout_mode = 2
 text = "Learn"
+underline = 1
 uri = "https://bitbra.in/pandora"
 
 [node name="Contribute" type="LinkButton" parent="Contents/HeaderBar/Links"]
 layout_mode = 2
 text = "Contribute"
+underline = 1
 uri = "https://github.com/bitbrain/pandora"
+
+[node name="ReportBug" type="LinkButton" parent="Contents/HeaderBar/Links"]
+layout_mode = 2
+text = "🐛 Report a bug!"
+underline = 1
+uri = "https://github.com/bitbrain/pandora/issues/new?assignees=&labels=%F0%9F%90%9B+bug&projects=&template=bug_report.md&title="
+
+[node name="Version" type="Label" parent="Contents/HeaderBar/Links"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.27451)
+text = "Pandora v1.0-alpha1"
+horizontal_alignment = 2
+justification_flags = 0
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
 clip_contents = true
