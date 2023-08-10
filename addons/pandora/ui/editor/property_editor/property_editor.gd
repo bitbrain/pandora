@@ -23,7 +23,6 @@ var current_entity:PandoraEntity
 
 func _ready() -> void:
 	property_bar.property_added.connect(_add_property)
-	property_settings_container.visible = false
 	set_entity(null)
 	
 
@@ -36,6 +35,8 @@ func edit_key(property_name:String) -> void:
 
 
 func set_entity(entity:PandoraEntity) -> void:
+	property_settings_container.visible = entity is PandoraCategory
+	property_settings_container.set_property(null)
 	for child in property_list.get_children():
 		child.queue_free()
 	self.current_entity = entity
@@ -71,6 +72,7 @@ func _add_property_control(control:PandoraPropertyControl, property:PandoraPrope
 	control_kvp.inherited_property_selected.connect(func(category_id:String, property_name:String):
 		inherited_property_selected.emit(category_id, property_name))
 	property_list.add_child(control_kvp)
+	control_kvp.original_property_selected.connect(property_settings_container.set_property)
 
 
 func _generate_property_name(type:String, entity:PandoraEntity) -> String:

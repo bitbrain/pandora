@@ -5,6 +5,9 @@ extends PanelContainer
 ## invoked when a property was selected that is inherited.
 signal inherited_property_selected(category_id:String, property_name:String)
 
+## called when an original property was selected
+signal original_property_selected(property:PandoraProperty)
+
 
 var _property:PandoraProperty:
 	set(p):
@@ -31,6 +34,7 @@ func init(property:PandoraProperty, control:PandoraPropertyControl, backend:Pand
 	
 	
 func _ready() -> void:
+	property_key_edit.focus_entered.connect(func(): original_property_selected.emit(_property))
 	property_key_edit.text_changed.connect(_property_name_changed)
 	reset_button.pressed.connect(_property_reset_to_default)
 	delete_property_button.pressed.connect(_delete_property)
