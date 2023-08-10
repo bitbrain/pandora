@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=10 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_ehaql"]
 [ext_resource type="Texture2D" uid="uid://bv43ytfd0mlq1" path="res://addons/pandora/icons/Search.svg" id="5_4i0xc"]
 [ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="5_qbvn0"]
+[ext_resource type="PackedScene" uid="uid://dsqfuyjkcdwvu" path="res://addons/pandora/ui/components/notification_label/notification_label.tscn" id="6_ftkgr"]
 
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
@@ -59,11 +60,9 @@ layout_mode = 2
 tooltip_text = "Reset data"
 icon = ExtResource("5_qbvn0")
 
-[node name="Label" type="Label" parent="Contents/HeaderBar/Actions"]
-visible = false
+[node name="SaveLabel" parent="Contents/HeaderBar/Actions" instance=ExtResource("6_ftkgr")]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.564706, 0.92549, 0, 1)
-text = "Saved!"
 
 [node name="Links" type="HBoxContainer" parent="Contents/HeaderBar"]
 layout_mode = 2

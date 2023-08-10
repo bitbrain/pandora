@@ -2,7 +2,8 @@
 extends PanelContainer
 
 
-signal original_property_selected(category_id:String, property_name:String)
+## invoked when a property was selected that is inherited.
+signal inherited_property_selected(category_id:String, property_name:String)
 
 
 var _property:PandoraProperty:
@@ -37,7 +38,7 @@ func _ready() -> void:
 	if _property != null:
 		_set_edit_name_mode(_property.is_original())
 		property_key.pressed.connect(func():
-			original_property_selected.emit(_property.get_original_category_id(), _property.get_property_name()))
+			inherited_property_selected.emit(_property.get_original_category_id(), _property.get_property_name()))
 	if _control != null:
 		_control.property_value_changed.connect(_refresh)
 

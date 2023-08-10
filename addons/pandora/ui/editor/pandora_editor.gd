@@ -10,6 +10,7 @@ extends Control
 @onready var property_editor = %PropertyEditor
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var version = %Version
+@onready var save_label = %SaveLabel
 
 
 var selected_entity:PandoraEntity
@@ -32,14 +33,14 @@ func _ready() -> void:
 	version.text = "Pandora v" + plugin_config.get_value("plugin", "version")
 	
 	entity_search.text_changed.connect(tree.search)
-	property_editor.original_property_selected.connect(_on_original_property_selected)
+	property_editor.inherited_property_selected.connect(_on_inherited_property_selected)
 	
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(tree.add_entity)
 	
 	
 func apply_changes() -> void:
-	Pandora.save_data()
+	_save()
 
 
 func _enter_tree() -> void:
@@ -58,7 +59,7 @@ func _selection_cleared() -> void:
 	create_category_button.disabled = false
 	
 	
-func _on_original_property_selected(category_id:String, property_name:String) -> void:
+func _on_inherited_property_selected(category_id:String, property_name:String) -> void:
 	tree.select(category_id)
 	property_editor.edit_key(property_name)
 	
@@ -94,6 +95,7 @@ func _populate_data() -> void:
 	
 func _save() -> void:
 	Pandora.save_data()
+	save_label.popup()
 
 
 func _delete_entity(entity:PandoraEntity) -> void:

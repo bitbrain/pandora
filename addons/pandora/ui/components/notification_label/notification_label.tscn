@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsqfuyjkcdwvu"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/notification_label/notification_label.gd" id="1_vp8r6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ue3du"]
+line_spacing = 0.0
+font_size = 22
+font_color = Color(0.537255, 0.952941, 0, 1)
+outline_size = 2
+outline_color = Color(0, 0.866667, 0.541176, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.627451, 0.772549, 0.14902)
+shadow_offset = Vector2(0, 0)
+
+[node name="SaveLabel" type="Label"]
+theme_override_colors/font_color = Color(0.564706, 0.92549, 0, 1)
+text = "Data saved!"
+label_settings = SubResource("LabelSettings_ue3du")
+script = ExtResource("1_vp8r6")

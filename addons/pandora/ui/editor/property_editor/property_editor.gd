@@ -1,10 +1,10 @@
 @tool
-extends VBoxContainer
+extends HSplitContainer
 
 
 ## called when the user intends to navigate to the 
 ## original property of an inherited property.
-signal original_property_selected(category_id:String, property_name:String)
+signal inherited_property_selected(category_id:String, property_name:String)
 
 
 const PropertyControlKvp = preload("res://addons/pandora/ui/components/properties/property_control_kvp.tscn")
@@ -15,6 +15,7 @@ const PROPERTY_DEFAULT_NAME = "property"
 @onready var property_list = %PropertyList
 @onready var unselected_container = %UnselectedContainer
 @onready var entity_attributes = %EntityAttributes
+@onready var property_settings_container = %PropertySettingsContainer
 
 
 var current_entity:PandoraEntity
@@ -22,6 +23,7 @@ var current_entity:PandoraEntity
 
 func _ready() -> void:
 	property_bar.property_added.connect(_add_property)
+	property_settings_container.visible = false
 	set_entity(null)
 	
 
@@ -66,8 +68,8 @@ func _add_property_control(control:PandoraPropertyControl, property:PandoraPrope
 	var control_kvp = PropertyControlKvp.instantiate()
 	control.init(property)
 	control_kvp.init(property, control, Pandora._entity_backend)
-	control_kvp.original_property_selected.connect(func(category_id:String, property_name:String):
-		original_property_selected.emit(category_id, property_name))
+	control_kvp.inherited_property_selected.connect(func(category_id:String, property_name:String):
+		inherited_property_selected.emit(category_id, property_name))
 	property_list.add_child(control_kvp)
 
 
