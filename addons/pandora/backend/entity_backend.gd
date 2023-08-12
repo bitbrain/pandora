@@ -134,19 +134,24 @@ func get_all_roots() -> Array[PandoraCategory]:
 	
 
 ## Returns a list of all categories
-func get_all_categories() -> Array[PandoraEntity]:
+func get_all_categories(parent:PandoraCategory = null) -> Array[PandoraEntity]:
 	var categories:Array[PandoraEntity] = []
-	for key in _categories:
-		categories.append(_categories[key])
+	if parent:
+		_collect_categories_recursive(parent, categories)
+	else:
+		for key in _categories:
+			categories.append(_categories[key])
 	categories.sort_custom(_compare_entities)
-	return categories 
+	return categories
 
 
-## Returns a list of all entities (except categories)
-func get_all_entities() -> Array[PandoraEntity]:
+func get_all_entities(parent:PandoraCategory = null) -> Array[PandoraEntity]:
 	var entities:Array[PandoraEntity] = []
-	for key in _entities:
-		entities.append(_entities[key])
+	if parent:
+		_collect_entities_recursive(parent, entities)
+	else:
+		for key in _entities:
+			entities.append(_entities[key])
 	entities.sort_custom(_compare_entities)
 	return entities
 
@@ -259,3 +264,18 @@ func _propagate_properties(category:PandoraCategory) -> void:
 
 func _compare_entities(entity1:PandoraEntity, entity2:PandoraEntity) -> bool:
 	return entity1.get_entity_name() < entity2.get_entity_name()
+
+
+func _collect_categories_recursive(category:PandoraCategory, list:Array[PandoraEntity]) -> void:
+	for child in category._children:
+		if child is PandoraCategory:
+			list.append(child)
+			_collect_categories_recursive(child, list)
+
+
+func _collect_entities_recursive(category:PandoraCategory, list:Array[PandoraEntity]) -> void:
+	for child in category._children:
+		if child is PandoraEntity and not (child is PandoraCategory):
+			list.append(child)
+		elif child is PandoraCategory:
+			_collect_entities_recursive(child, list)
