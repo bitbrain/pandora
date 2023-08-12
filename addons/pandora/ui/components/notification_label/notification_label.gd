@@ -4,6 +4,10 @@ extends Label
 
 var tween:Tween
 
+func _ready() -> void:
+	self_modulate.a = 0.0
+
+
 func popup() -> void:
 	if tween and tween.is_running():
 		tween.stop()

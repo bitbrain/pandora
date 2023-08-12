@@ -15,3 +15,11 @@ func _ready() -> void:
 
 func refresh() -> void:
 	spin_box.value = _property.get_default_value() as int
+
+
+func get_default_settings() -> Dictionary:
+	return {
+		"Steps": 2,
+		"Min": -9999999999,
+		"Max": 9999999999
+	}

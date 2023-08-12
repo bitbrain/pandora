@@ -21,3 +21,11 @@ func refresh() -> void:
 			var entity = default_value.get_entity()
 			if entity != null:
 				entity_picker.select(entity)
+
+
+
+func get_default_settings() -> Dictionary:
+	return {
+		"Category Mode": false,
+		"Category Filter": -1,
+	}

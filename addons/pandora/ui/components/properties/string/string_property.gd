@@ -18,3 +18,10 @@ func refresh() -> void:
 		var value = _property.get_default_value() as String
 		if value != line_edit.text:
 			line_edit.text = value
+
+
+func get_default_settings() -> Dictionary:
+	return {
+		"Min length": -1,
+		"Max Length": -1,
+	}

@@ -20,6 +20,8 @@ var _name: String:
 var _type: String
 var _default_value: Variant
 var _category_id:String
+# setting name -> Variant
+var _setting_overrides:Dictionary = {}
 
 
 func _init(id:String, name:String, type:String, default_value:Variant) -> void:
@@ -83,16 +85,21 @@ func load_data(data:Dictionary) -> void:
 	_type = data["_type"]
 	_default_value = parse_value(data["_default_value"], _type)
 	_category_id = data["_category_id"]
+	if data.has("_setting_overrides"):
+		_setting_overrides = data["_setting_overrides"]
 
 
 func save_data() -> Dictionary:
-	return {
+	var data = {
 		"_id": _id,
 		"_name": _name,
 		"_type": _type,
 		"_default_value": write_value(_default_value),
 		"_category_id": _category_id,
 	}
+	if not _setting_overrides.is_empty():
+		data["_setting_overrides"] = _setting_overrides
+	return data
 
 	
 static func write_value(value:Variant):

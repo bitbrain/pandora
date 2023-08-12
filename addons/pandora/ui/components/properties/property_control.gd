@@ -17,3 +17,7 @@ func init(property:PandoraProperty) -> void:
 	
 func refresh() -> void:
 	pass
+
+
+func get_default_settings() -> Dictionary:
+	return {}
