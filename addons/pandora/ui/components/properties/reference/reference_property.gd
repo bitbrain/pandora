@@ -16,6 +16,8 @@ func _ready() -> void:
 
 func refresh() -> void:
 	if _property != null:
+		entity_picker.set_filter(_get_setting("Category Filter") as String)
+		entity_picker.categories_only = _get_setting("Category Mode") as bool
 		var default_value = _property.get_default_value() as PandoraReference
 		if default_value != null:
 			var entity = default_value.get_entity()
@@ -35,3 +37,4 @@ func get_default_settings() -> Dictionary:
 			"value": ""
 		}
 	}
+	

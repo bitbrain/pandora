@@ -19,11 +19,21 @@ var categories_only:bool:
 var _ids_to_entities = {}
 var _entity_ids_to_ids = {}
 var _entities:Array[PandoraEntity]
+var _category_id_filter:String:
+	set(v):
+		var old_value = _category_id_filter
+		_category_id_filter = v
+		if old_value != _category_id_filter:
+			_invalidate.call_deferred()
 
 
 func _ready() -> void:
 	option_button.get_popup().id_pressed.connect(_on_id_selected)
 	_invalidate()
+	
+	
+func set_filter(category_id:String) -> void:
+	self._category_id_filter = category_id
 	
 
 func set_data(entities:Array[PandoraEntity]) -> void:
@@ -40,8 +50,9 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 		
 
 func select(entity:PandoraEntity) -> void:
-	var id = _entity_ids_to_ids[entity.get_entity_id()]
-	option_button.select(id)
+	if _entity_ids_to_ids.has(entity.get_entity_id()):
+		var id = _entity_ids_to_ids[entity.get_entity_id()]
+		option_button.select(id)
 
 
 func _on_id_selected(id:int) -> void:
@@ -49,7 +60,8 @@ func _on_id_selected(id:int) -> void:
 	
 	
 func _invalidate() -> void:
+	var filter = Pandora.get_category(_category_id_filter) if _category_id_filter else null
 	if categories_only:
-		set_data(Pandora.get_all_categories())
+		set_data(Pandora.get_all_categories(filter))
 	else:
-		set_data(Pandora.get_all_entities())
+		set_data(Pandora.get_all_entities(filter))
