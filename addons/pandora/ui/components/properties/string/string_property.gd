@@ -22,6 +22,12 @@ func refresh() -> void:
 
 func get_default_settings() -> Dictionary:
 	return {
-		"Min length": -1,
-		"Max Length": -1,
+		"Min length": {
+			"type": "int",
+			"value": -1
+		},
+		"Max Length": {
+			"type": "int",
+			"value": -1
+		}
 	}

@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://bfhqt0xa4a2fh"]
+[gd_scene load_steps=6 format=3 uid="uid://bfhqt0xa4a2fh"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/entity_picker/entity_picker.gd" id="1_cjsnj"]
+[ext_resource type="Texture2D" uid="uid://dsjhy4k010xqc" path="res://examples/inventory/icons/stars-stack.svg" id="2_0vtc0"]
+[ext_resource type="Texture2D" uid="uid://bxu0a47efem5s" path="res://examples/inventory/icons/crystal-growth.svg" id="3_kyj7p"]
+[ext_resource type="Texture2D" uid="uid://djvd2lpmrfjr1" path="res://examples/inventory/icons/shield.svg" id="4_6hmwt"]
+[ext_resource type="Texture2D" uid="uid://dti8h0nahv43w" path="res://examples/inventory/icons/war-pick.svg" id="5_l0uj3"]
 
 [node name="EntityPicker" type="HBoxContainer"]
 anchors_preset = 15
@@ -14,3 +18,25 @@ script = ExtResource("1_cjsnj")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+item_count = 7
+popup/item_0/text = "Common"
+popup/item_0/icon = ExtResource("2_0vtc0")
+popup/item_0/id = 0
+popup/item_1/text = "Copper Ore"
+popup/item_1/icon = ExtResource("3_kyj7p")
+popup/item_1/id = 1
+popup/item_2/text = "Epic"
+popup/item_2/icon = ExtResource("2_0vtc0")
+popup/item_2/id = 2
+popup/item_3/text = "Iron Shield"
+popup/item_3/icon = ExtResource("4_6hmwt")
+popup/item_3/id = 3
+popup/item_4/text = "Legendary"
+popup/item_4/icon = ExtResource("2_0vtc0")
+popup/item_4/id = 4
+popup/item_5/text = "Pickaxe"
+popup/item_5/icon = ExtResource("5_l0uj3")
+popup/item_5/id = 5
+popup/item_6/text = "Rare"
+popup/item_6/icon = ExtResource("2_0vtc0")
+popup/item_6/id = 6

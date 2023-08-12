@@ -19,7 +19,16 @@ func refresh() -> void:
 
 func get_default_settings() -> Dictionary:
 	return {
-		"Steps": 2,
-		"Min": -9999999999,
-		"Max": 9999999999
+		"Steps": {
+			"type": "int",
+			"value": 2
+		},
+		"Min": {
+			"type": "int",
+			"value": -9999999999
+		},
+		"Max": {
+			"type": "int",
+			"value": 9999999999
+		}
 	}

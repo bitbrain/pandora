@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="1_vndtp"]
 [ext_resource type="PackedScene" uid="uid://ceqq28yvnhs2e" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.tscn" id="3_tosw7"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="4_y2k2p"]
-[ext_resource type="PackedScene" uid="uid://c34sacps74dk3" path="res://addons/pandora/ui/editor/property_config_editor/property_config_editor.tscn" id="5_u6s37"]
+[ext_resource type="PackedScene" uid="uid://c34sacps74dk3" path="res://addons/pandora/ui/editor/property_settings_editor/property_settings_editor.tscn" id="5_u6s37"]
 
 [node name="PropertyEditor" type="HSplitContainer"]
 offset_right = 519.0
@@ -94,3 +94,4 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+size_flags_stretch_ratio = 0.5

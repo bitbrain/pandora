@@ -26,6 +26,12 @@ func refresh() -> void:
 
 func get_default_settings() -> Dictionary:
 	return {
-		"Category Mode": false,
-		"Category Filter": -1,
+		"Category Mode": {
+			"type": "bool",
+			"value": false
+		},
+		"Category Filter": {
+			"type": "reference",
+			"value": ""
+		}
 	}

@@ -29,6 +29,24 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._name = name
 	self._type = type
 	self._default_value = default_value
+	
+	
+func get_setting_override(name:String) -> Variant:
+	if _setting_overrides.has(name):
+		return _setting_overrides[name]
+	return null
+	
+	
+func has_setting_override(name:String) -> Variant:
+	return _setting_overrides.has(name)
+	
+	
+func set_setting_override(name:String, override:Variant) -> void:
+	_setting_overrides[name] = override
+	
+	
+func clear_setting_override(name:String) -> void:
+	_setting_overrides.erase(name)
 
 
 func set_default_value(value:Variant) -> void:

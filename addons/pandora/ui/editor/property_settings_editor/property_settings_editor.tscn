@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c34sacps74dk3"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/editor/property_config_editor/property_config_editor.gd" id="1_drmqk"]
+[ext_resource type="Script" path="res://addons/pandora/ui/editor/property_settings_editor/property_settings_editor.gd" id="1_drmqk"]
 
 [node name="PropertySettingsContainer" type="VBoxContainer"]
 size_flags_horizontal = 3
@@ -14,3 +14,11 @@ text = "Select an editable property
 to see its configuration!"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Property Settings"
+
+[node name="PropertiesSettings" type="VBoxContainer" parent="."]
+layout_mode = 2

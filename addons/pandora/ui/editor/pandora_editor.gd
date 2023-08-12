@@ -83,7 +83,7 @@ func _populate_data() -> void:
 		return
 	
 	var data:Array[PandoraEntity] = []
-	data.assign(Pandora.get_all_categories())
+	data.assign(Pandora.get_all_roots())
 	tree.set_data(data)
 	
 	if not Pandora.data_loaded.is_connected(_populate_data):
@@ -106,7 +106,7 @@ func _reset_to_saved_file() -> void:
 	Pandora._clear()
 	Pandora.load_data()
 	var data:Array[PandoraEntity] = []
-	data.assign(Pandora.get_all_categories())
+	data.assign(Pandora.get_all_roots())
 	tree.set_data(data)
 	create_entity_button.disabled = true
 	create_category_button.disabled = false

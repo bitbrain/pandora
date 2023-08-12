@@ -129,8 +129,17 @@ func get_property(property_id:String) -> PandoraProperty:
 
 
 ## Returns a list of all root categories
-func get_all_categories() -> Array[PandoraCategory]:
+func get_all_roots() -> Array[PandoraCategory]:
 	return _root_categories
+	
+
+## Returns a list of all categories
+func get_all_categories() -> Array[PandoraEntity]:
+	var categories:Array[PandoraEntity] = []
+	for key in _categories:
+		categories.append(_categories[key])
+	categories.sort_custom(_compare_entities)
+	return categories 
 
 
 ## Returns a list of all entities (except categories)
