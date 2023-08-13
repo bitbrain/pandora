@@ -22,4 +22,4 @@ initial_position = 2
 size = Vector2i(784, 324)
 ok_button_text = "Open"
 file_mode = 0
-filters = PackedStringArray("*.tres", "*.jpg", "*.png", "*.jpeg", "*.wav", "*.mp3", "*.ogg")
+filters = PackedStringArray("*.tres", "*.jpg", "*.png", "*.jpeg", "*.wav", "*.mp3", "*.ogg", "*.tscn", "*.mp4", "*.gif", "*.gd")
