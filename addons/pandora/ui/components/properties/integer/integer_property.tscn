@@ -10,6 +10,7 @@ type = "int"
 
 [node name="SpinBox" type="SpinBox" parent="."]
 layout_mode = 2
+focus_mode = 1
 max_value = 99999.0
 rounded = true
 select_all_on_focus = true

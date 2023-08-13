@@ -13,6 +13,8 @@ func _ready() -> void:
 	refresh()
 	_property.setting_changed.connect(_setting_changed)
 	_property.setting_cleared.connect(_setting_changed)
+	entity_picker.focus_exited.connect(func(): unfocused.emit())
+	entity_picker.focus_entered.connect(func(): focused.emit())
 	entity_picker.entity_selected.connect(
 		func(entity:PandoraEntity):
 			var reference = PandoraReference.new(entity.get_entity_id(), 1 if entity is PandoraCategory else 0)

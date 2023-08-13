@@ -3,6 +3,8 @@ class_name PandoraPropertyControl extends MarginContainer
 
 
 signal property_value_changed
+signal focused
+signal unfocused
 
 
 @export var type:String

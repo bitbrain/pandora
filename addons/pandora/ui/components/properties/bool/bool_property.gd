@@ -7,6 +7,8 @@ extends PandoraPropertyControl
 
 func _ready() -> void:
 	refresh()
+	check_button.focus_exited.connect(func(): unfocused.emit())
+	check_button.focus_entered.connect(func(): focused.emit())
 	check_button.toggled.connect(
 		func(toggled:bool):
 			_property.set_default_value(toggled)

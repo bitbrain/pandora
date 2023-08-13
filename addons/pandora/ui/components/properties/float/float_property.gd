@@ -15,6 +15,8 @@ func _ready() -> void:
 		_property.setting_changed.connect(_setting_changed)
 		_property.setting_cleared.connect(_setting_changed)
 	refresh()
+	spin_box.focus_exited.connect(func(): unfocused.emit())
+	spin_box.focus_entered.connect(func(): focused.emit())
 	spin_box.value_changed.connect(
 		func(value:float):
 			_property.set_default_value(value)
