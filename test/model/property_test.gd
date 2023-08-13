@@ -80,7 +80,7 @@ func test_color_property_wrong_type() -> void:
 	
 	
 func test_reference_property() -> void:
-	var ref = PandoraReference.new("12345")
+	var ref = PandoraReference.new("12345", 0)
 	var property = PandoraProperty.new("123", "property", "reference", ref)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
@@ -88,7 +88,7 @@ func test_reference_property() -> void:
 	
 	
 func test_reference_property_wrong_type() -> void:
-	var ref = PandoraReference.new("12345")
+	var ref = PandoraReference.new("12345", 0)
 	var property = PandoraProperty.new("123", "property", "bool", ref)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
