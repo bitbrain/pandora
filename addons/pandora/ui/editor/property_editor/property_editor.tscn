@@ -1,68 +1,75 @@
-[gd_scene load_steps=5 format=3 uid="uid://clsxp8wg4ctet"]
+[gd_scene load_steps=6 format=3 uid="uid://clsxp8wg4ctet"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/property_editor/property_editor.gd" id="1_r06w1"]
 [ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="1_vndtp"]
 [ext_resource type="PackedScene" uid="uid://ceqq28yvnhs2e" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.tscn" id="3_tosw7"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="4_y2k2p"]
+[ext_resource type="PackedScene" uid="uid://c34sacps74dk3" path="res://addons/pandora/ui/editor/property_settings_editor/property_settings_editor.tscn" id="5_u6s37"]
 
-[node name="PropertyEditor" type="VBoxContainer"]
+[node name="PropertyEditor" type="HSplitContainer"]
 offset_right = 519.0
 offset_bottom = 647.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 script = ExtResource("1_r06w1")
 
-[node name="CaptionLabel" type="Label" parent="."]
+[node name="PropertyContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CaptionLabel" type="Label" parent="PropertyContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Properties"
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="PropertyContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PropertyContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PropertyContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="PropertyBar" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_vndtp")]
+[node name="PropertyBar" parent="PropertyContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_vndtp")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="PropertyContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PropertyContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PropertyList" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="PropertyList" type="VBoxContainer" parent="PropertyContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="UnselectedContainer" type="CenterContainer" parent="ScrollContainer/VBoxContainer"]
+[node name="UnselectedContainer" type="CenterContainer" parent="PropertyContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/UnselectedContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PropertyContainer/ScrollContainer/VBoxContainer/UnselectedContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/UnselectedContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="PropertyContainer/ScrollContainer/VBoxContainer/UnselectedContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 250)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -71,14 +78,20 @@ texture = ExtResource("4_y2k2p")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="SpecialLabel" type="Label" parent="ScrollContainer/VBoxContainer/UnselectedContainer/VBoxContainer"]
+[node name="SpecialLabel" type="Label" parent="PropertyContainer/ScrollContainer/VBoxContainer/UnselectedContainer/VBoxContainer"]
 layout_mode = 2
 text = "Create or select a category or item to see its properties here."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EntityAttributes" parent="ScrollContainer/VBoxContainer" instance=ExtResource("3_tosw7")]
+[node name="EntityAttributes" parent="PropertyContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_tosw7")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="PropertySettingsContainer" parent="." instance=ExtResource("5_u6s37")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_stretch_ratio = 0.5

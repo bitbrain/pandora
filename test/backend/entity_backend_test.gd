@@ -27,6 +27,59 @@ func test_create_category() -> void:
 	var backend = create_object_backend()
 	var category = backend.create_category("Test")
 	assert_that(category._id).is_not_null()
+	
+	
+func test_get_all_categories() -> void:
+	var backend = create_object_backend()
+	var category1 = backend.create_category("Test C")
+	var category2 = backend.create_category("Test B", category1)
+	var category3 = backend.create_category("Test A", category2)
+	
+	assert_that(backend.get_all_categories()).is_equal([
+		category3, category2, category1
+	])
+	
+	
+func test_get_all_categories_of_parent() -> void:
+	var backend = create_object_backend()
+	var category1 = backend.create_category("Test C")
+	var category2 = backend.create_category("Test B", category1)
+	var category3 = backend.create_category("Test A", category2)
+	assert_that(backend.get_all_categories(category1)).is_equal([
+		category3, category2
+	])
+	assert_that(backend.get_all_categories(category2)).is_equal([
+		category3
+	])
+	
+	
+func test_get_all_entities() -> void:
+	var backend = create_object_backend()
+	var category1 = backend.create_category("Test C")
+	var entity1 = backend.create_entity("Entity C", category1)
+	var category2 = backend.create_category("Test B", category1)
+	var entity2 = backend.create_entity("Entity B", category2)
+	var category3 = backend.create_category("Test A", category2)
+	var entity3 = backend.create_entity("Entity A", category3)
+	assert_that(backend.get_all_entities()).is_equal([
+		entity3, entity2, entity1
+	])
+	
+	
+func test_get_all_entities_of_parent() -> void:
+	var backend = create_object_backend()
+	var category1 = backend.create_category("Test C")
+	var entity1 = backend.create_entity("Entity C", category1)
+	var category2 = backend.create_category("Test B", category1)
+	var entity2 = backend.create_entity("Entity B", category2)
+	var category3 = backend.create_category("Test A", category2)
+	var entity3 = backend.create_entity("Entity A", category3)
+	assert_that(backend.get_all_entities(category2)).is_equal([
+		entity3, entity2
+	])
+	assert_that(backend.get_all_entities(category3)).is_equal([
+		entity3
+	])
 
 
 func test_create_property_after_entity_creation() -> void:

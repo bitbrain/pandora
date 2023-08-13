@@ -7,6 +7,8 @@ extends PandoraPropertyControl
 
 func _ready() -> void:
 	refresh()
+	resource_picker.focus_exited.connect(func(): unfocused.emit())
+	resource_picker.focus_entered.connect(func(): focused.emit())
 	resource_picker.resource_changed.connect(
 		func(resource_path:String):
 			_property.set_default_value(load(resource_path))

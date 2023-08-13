@@ -2,7 +2,11 @@
 extends PanelContainer
 
 
-signal original_property_selected(category_id:String, property_name:String)
+## invoked when a property was selected that is inherited.
+signal inherited_property_selected(category_id:String, property_name:String)
+
+## called when an original property was selected
+signal original_property_selected(property:PandoraProperty, default_settings:Dictionary)
 
 
 var _property:PandoraProperty:
@@ -30,6 +34,7 @@ func init(property:PandoraProperty, control:PandoraPropertyControl, backend:Pand
 	
 	
 func _ready() -> void:
+	property_key_edit.focus_entered.connect(_property_key_focused)
 	property_key_edit.text_changed.connect(_property_name_changed)
 	reset_button.pressed.connect(_property_reset_to_default)
 	delete_property_button.pressed.connect(_delete_property)
@@ -37,7 +42,7 @@ func _ready() -> void:
 	if _property != null:
 		_set_edit_name_mode(_property.is_original())
 		property_key.pressed.connect(func():
-			original_property_selected.emit(_property.get_original_category_id(), _property.get_property_name()))
+			inherited_property_selected.emit(_property.get_original_category_id(), _property.get_property_name()))
 	if _control != null:
 		_control.property_value_changed.connect(_refresh)
 
@@ -75,6 +80,11 @@ func _property_reset_to_default() -> void:
 func _refresh() -> void:
 	if _control == null or _property == null:
 		return
+	# FIXME: focused & unfocused signals don't quite work!
+	if not _control.unfocused.is_connected(_control_value_unfocused):
+		_control.unfocused.connect(_control_value_unfocused)
+	if not _control.focused.is_connected(_control_value_focused):
+		_control.focused.connect(_control_value_focused)
 	_control.refresh()
 	reset_button.visible = not _property.is_original() and _property.is_overridden()
 	delete_property_button.disabled =  not _property.is_original()
@@ -84,3 +94,20 @@ func _refresh() -> void:
 func _delete_property() -> void:
 	_backend.delete_property(_property)
 	queue_free()
+	
+
+func _property_key_focused() -> void:
+	original_property_selected.emit(_property, _control.get_default_settings())
+
+
+func _property_key_unfocused() -> void:
+	pass
+
+
+func _control_value_focused() -> void:
+	if property_key_edit.visible:
+		original_property_selected.emit(_property, _control.get_default_settings())
+		
+	
+func _control_value_unfocused() -> void:
+	pass

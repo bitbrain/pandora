@@ -7,6 +7,8 @@ extends PandoraPropertyControl
 
 func _ready() -> void:
 	refresh()
+	color_picker_button.focus_exited.connect(func(): unfocused.emit())
+	color_picker_button.focus_entered.connect(func(): focused.emit())
 	color_picker_button.color_changed.connect(
 		func(color:Color):
 			_property.set_default_value(color)

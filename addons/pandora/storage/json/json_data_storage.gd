@@ -57,7 +57,7 @@ func _get_file_path(context_id: String) -> String:
 
 
 func _load_from_file(file_path: String) -> Dictionary:
-	var file = FileAccess.open(file_path, FileAccess.READ)
+	var file = FileAccess.open_compressed(file_path, FileAccess.READ)
 	if FileAccess.file_exists(file_path) and file != null:
 		var content = file.get_as_text()
 		file.close()

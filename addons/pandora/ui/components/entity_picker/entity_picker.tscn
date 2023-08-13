@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://bfhqt0xa4a2fh"]
+[gd_scene load_steps=6 format=3 uid="uid://bfhqt0xa4a2fh"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/entity_picker/entity_picker.gd" id="1_cjsnj"]
 

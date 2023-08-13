@@ -7,6 +7,8 @@ extends PandoraPropertyControl
 
 func _ready() -> void:
 	refresh()
+	line_edit.focus_exited.connect(func(): unfocused.emit())
+	line_edit.focus_entered.connect(func(): focused.emit())
 	line_edit.text_changed.connect(
 		func(text:String):
 			_property.set_default_value(text)

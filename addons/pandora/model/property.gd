@@ -8,6 +8,8 @@ class_name PandoraProperty extends Resource
 
 ## Emitted when the name of this property changed.
 signal name_changed(old_name:String, new_name:String)
+signal setting_changed(key:String)
+signal setting_cleared(key:String)
 
 
 var _id: String
@@ -20,6 +22,8 @@ var _name: String:
 var _type: String
 var _default_value: Variant
 var _category_id:String
+# setting name -> Variant
+var _setting_overrides:Dictionary = {}
 
 
 func _init(id:String, name:String, type:String, default_value:Variant) -> void:
@@ -27,6 +31,26 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._name = name
 	self._type = type
 	self._default_value = default_value
+	
+	
+func get_setting_override(name:String) -> Variant:
+	if _setting_overrides.has(name):
+		return _setting_overrides[name]
+	return null
+	
+	
+func has_setting_override(name:String) -> Variant:
+	return _setting_overrides.has(name)
+	
+	
+func set_setting_override(name:String, override:Variant) -> void:
+	_setting_overrides[name] = override
+	setting_changed.emit(name)
+	
+	
+func clear_setting_override(name:String) -> void:
+	_setting_overrides.erase(name)
+	setting_cleared.emit(name)
 
 
 func set_default_value(value:Variant) -> void:
@@ -83,16 +107,21 @@ func load_data(data:Dictionary) -> void:
 	_type = data["_type"]
 	_default_value = parse_value(data["_default_value"], _type)
 	_category_id = data["_category_id"]
+	if data.has("_setting_overrides"):
+		_setting_overrides = data["_setting_overrides"]
 
 
 func save_data() -> Dictionary:
-	return {
+	var data = {
 		"_id": _id,
 		"_name": _name,
 		"_type": _type,
 		"_default_value": write_value(_default_value),
 		"_category_id": _category_id,
 	}
+	if not _setting_overrides.is_empty():
+		data["_setting_overrides"] = _setting_overrides
+	return data
 
 	
 static func write_value(value:Variant):
@@ -124,7 +153,7 @@ static func parse_value(value, type:String) -> Variant:
 	if type == "color" and value is String:
 		return Color.from_string(value, Color.WHITE)
 	if type == "reference" and value is Dictionary:
-		var reference = PandoraReference.new("")
+		var reference = PandoraReference.new("", 0)
 		reference.load_data(value)
 		return reference
 	if type == "resource" and value is String:
@@ -145,7 +174,7 @@ static func default_value_of(type:String) -> Variant:
 	if type == "color":
 		return Color.WHITE
 	if type == "reference":
-		return PandoraReference.new("1234")
+		return null
 	if type == "resource":
 		return null
 	push_error("Unsupported variant type %s" % str(type))

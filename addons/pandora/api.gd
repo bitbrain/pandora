@@ -71,12 +71,16 @@ func get_property(property_id:String) -> PandoraProperty:
 	return _entity_backend.get_property(property_id)
 	
 	
-func get_all_categories() -> Array[PandoraCategory]:
-	return _entity_backend.get_all_categories()
+func get_all_roots() -> Array[PandoraCategory]:
+	return _entity_backend.get_all_roots()
 	
 	
-func get_all_entities() -> Array[PandoraEntity]:
-	return _entity_backend.get_all_entities()
+func get_all_categories(filter:PandoraCategory = null) -> Array[PandoraEntity]:
+	return _entity_backend.get_all_categories(filter)
+	
+	
+func get_all_entities(filter:PandoraCategory = null) -> Array[PandoraEntity]:
+	return _entity_backend.get_all_entities(filter)
 
 
 func load_data_async() -> void:
@@ -106,7 +110,7 @@ func save_data() -> void:
 		}
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
-	EntityIdFileGenerator.regenerate_id_files(get_all_categories())
+	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
 		
 func is_loaded() -> bool:

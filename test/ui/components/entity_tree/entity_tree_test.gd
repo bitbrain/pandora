@@ -24,7 +24,7 @@ func test_populate_data() -> void:
 	var child111 = Pandora.create_category("Child111", child11)
 	Pandora.create_entity("Entity111", child111)
 	var all_data:Array[PandoraEntity] = []
-	all_data.assign(Pandora.get_all_categories())
+	all_data.assign(Pandora.get_all_roots())
 	tree.set_data(all_data)
 	assert_that(tree.entity_items.size()).is_equal(5)
 
