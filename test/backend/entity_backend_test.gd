@@ -453,3 +453,15 @@ func test_custom_entity_script_save_load() -> void:
 	backend.load_data(data)
 	assert_that(backend.get_entity(entity_id) as CustomMockEntity).is_null()
 	assert_that(backend.get_entity(entity_id) as CustomMockAltEntity).is_not_null()
+
+
+
+func test_property_setting_gets_inherited() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	var subcategory = backend.create_category("suncategory", category)
+	var entity = backend.create_entity("root", category)
+	var property = backend.create_property(category, "test", "string", "Hello World")
+	property.set_setting_override("foo", "bar")
+	var entity_property = entity.get_entity_property("test")
+	assert_bool(entity_property.has_setting_override("foo")).is_true()

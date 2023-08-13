@@ -26,6 +26,22 @@ class OverridingProperty extends PandoraProperty:
 		self._property = property
 		self._parent_entity = parent_entity
 		self._property.name_changed.connect(_change_name)
+		
+	
+	func get_setting_override(name:String) -> Variant:
+		return _property.get_setting_override(name)
+	
+	
+	func has_setting_override(name:String) -> Variant:
+		return _property.has_setting_override(name)
+		
+		
+	func set_setting_override(name:String, override:Variant) -> void:
+		_property.set_setting_override(name, override)
+		
+		
+	func clear_setting_override(name:String) -> void:
+		_property.clear_setting_override(name)
 
 
 	func set_default_value(value: Variant) -> void:
