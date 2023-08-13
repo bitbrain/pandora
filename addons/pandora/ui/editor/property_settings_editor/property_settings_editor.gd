@@ -50,10 +50,12 @@ func _new_control_for_type(key:String, type:String, default_value:Variant, curre
 		return color_picker
 	if type == "int" or type == "float":
 		var spin_box = SpinBox.new()
-		spin_box.value = current_value as int
-		spin_box.rounded = type == "int"
 		spin_box.min_value = -999999999
 		spin_box.max_value = 999999999
+		spin_box.step = 0.01 if type == "float" else 1
+		spin_box.custom_arrow_step = spin_box.step
+		spin_box.rounded = type == "int"
+		spin_box.value = current_value
 		spin_box.value_changed.connect(func(new): _change_value(key, new, default_value))
 		return spin_box
 	if type == "bool":

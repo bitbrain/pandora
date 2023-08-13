@@ -15,6 +15,8 @@ type = "float"
 
 [node name="SpinBox" type="SpinBox" parent="."]
 layout_mode = 2
-max_value = 99999.0
-step = 0.001
+min_value = -1e+08
+max_value = 1e+08
+step = 0.01
+custom_arrow_step = 0.01
 select_all_on_focus = true
