@@ -222,6 +222,76 @@ func get_entity_property(name:String) -> PandoraProperty:
 					_property_map[name] = property
 				return property
 	return null
+	
+	
+func get_string(property_name:String) -> String:
+	if not has_entity_property(property_name):
+		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
+		return ""
+	if not get_entity_property(property_name).get_default_value() is String:
+		push_error("property %s on instance %s is not a string" % [property_name, get_instance_id()])
+		return ""
+	return get_entity_property(property_name).get_default_value() as String
+	
+	
+func get_integer(property_name:String) -> int:
+	if not has_entity_property(property_name):
+		push_warning("unknown integer property %s on instance %s" % [property_name, get_instance_id()])
+		return 0
+	if not get_entity_property(property_name).get_default_value() is int:
+		push_error("property %s on instance %s is not an int" % [property_name, get_instance_id()])
+		return 0
+	return get_entity_property(property_name).get_default_value() as int
+	
+	
+func get_float(property_name:String) -> float:
+	if not has_entity_property(property_name):
+		push_warning("unknown float property %s on instance %s" % [property_name, get_instance_id()])
+		return 0.0
+	if not get_entity_property(property_name).get_default_value() is float:
+		push_error("property %s on instance %s is not a float" % [property_name, get_instance_id()])
+		return 0.0
+	return get_entity_property(property_name).get_default_value() as float
+	
+	
+func get_bool(property_name:String) -> bool:
+	if not has_entity_property(property_name):
+		push_warning("unknown bool property %s on instance %s" % [property_name, get_instance_id()])
+		return false
+	if not get_entity_property(property_name).get_default_value() is bool:
+		push_error("property %s on instance %s is not a bool" % [property_name, get_instance_id()])
+		return false
+	return get_entity_property(property_name).get_default_value() as bool
+	
+	
+func get_color(property_name:String) -> Color:
+	if not has_entity_property(property_name):
+		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
+		return Color.WHITE
+	if not get_entity_property(property_name).get_default_value() is Color:
+		push_error("property %s on instance %s is not a bool" % [property_name, get_instance_id()])
+		return Color.WHITE
+	return get_entity_property(property_name).get_default_value() as Color
+	
+	
+func get_reference(property_name:String) -> PandoraEntity:
+	if not has_entity_property(property_name):
+		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
+		return null
+	if not get_entity_property(property_name).get_default_value() is PandoraEntity:
+		push_error("property %s on instance %s is not a reference" % [property_name, get_instance_id()])
+		return null
+	return get_entity_property(property_name).get_default_value() as PandoraEntity
+	
+	
+func get_resource(property_name:String) -> Resource:
+	if not has_entity_property(property_name):
+		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
+		return null
+	if not get_entity_property(property_name).get_default_value() is Resource:
+		push_error("property %s on instance %s is not a resource" % [property_name, get_instance_id()])
+		return null
+	return get_entity_property(property_name).get_default_value() as Resource
 
 	
 func has_entity_property(name:String) -> bool:
