@@ -50,9 +50,8 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 		
 
 func select(entity:PandoraEntity) -> void:
-	if _entity_ids_to_ids.has(entity.get_entity_id()):
-		var id = _entity_ids_to_ids[entity.get_entity_id()]
-		option_button.select(id)
+	var id = _entity_ids_to_ids[entity.get_entity_id()]
+	option_button.select(id)
 
 
 func _on_id_selected(id:int) -> void:
