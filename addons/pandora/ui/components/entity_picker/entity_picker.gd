@@ -25,6 +25,7 @@ var _category_id_filter:String:
 		_category_id_filter = v
 		if old_value != _category_id_filter:
 			_invalidate.call_deferred()
+var _sort:Callable = func(a,b): return false
 
 
 func _ready() -> void:
@@ -32,8 +33,14 @@ func _ready() -> void:
 	_invalidate()
 	
 	
+func set_sort(sort:Callable) -> void:
+	self._sort = sort
+	_invalidate()
+	
+	
 func set_filter(category_id:String) -> void:
 	self._category_id_filter = category_id
+	_invalidate()
 	
 
 func set_data(entities:Array[PandoraEntity]) -> void:
@@ -61,6 +68,6 @@ func _on_id_selected(id:int) -> void:
 func _invalidate() -> void:
 	var filter = Pandora.get_category(_category_id_filter) if _category_id_filter else null
 	if categories_only:
-		set_data(Pandora.get_all_categories(filter))
+		set_data(Pandora.get_all_categories(filter, _sort))
 	else:
-		set_data(Pandora.get_all_entities(filter))
+		set_data(Pandora.get_all_entities(filter, _sort))
