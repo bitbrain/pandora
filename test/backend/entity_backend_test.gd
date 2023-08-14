@@ -35,7 +35,7 @@ func test_get_all_categories() -> void:
 	var category2 = backend.create_category("Test B", category1)
 	var category3 = backend.create_category("Test A", category2)
 	
-	assert_that(backend.get_all_categories()).is_equal([
+	assert_that(backend.get_all_categories(null, func(a,b): return true)).is_equal([
 		category3, category2, category1
 	])
 	
@@ -45,10 +45,10 @@ func test_get_all_categories_of_parent() -> void:
 	var category1 = backend.create_category("Test C")
 	var category2 = backend.create_category("Test B", category1)
 	var category3 = backend.create_category("Test A", category2)
-	assert_that(backend.get_all_categories(category1)).is_equal([
+	assert_that(backend.get_all_categories(category1, func(a,b): return true)).is_equal([
 		category3, category2
 	])
-	assert_that(backend.get_all_categories(category2)).is_equal([
+	assert_that(backend.get_all_categories(category2, func(a,b): return true)).is_equal([
 		category3
 	])
 	
@@ -62,7 +62,7 @@ func test_get_all_entities() -> void:
 	var category3 = backend.create_category("Test A", category2)
 	var entity3 = backend.create_entity("Entity A", category3)
 	assert_that(backend.get_all_entities()).is_equal([
-		entity3, entity2, entity1
+		entity1, entity2, entity3
 	])
 	
 	
@@ -75,7 +75,7 @@ func test_get_all_entities_of_parent() -> void:
 	var category3 = backend.create_category("Test A", category2)
 	var entity3 = backend.create_entity("Entity A", category3)
 	assert_that(backend.get_all_entities(category2)).is_equal([
-		entity3, entity2
+		entity2, entity3
 	])
 	assert_that(backend.get_all_entities(category3)).is_equal([
 		entity3

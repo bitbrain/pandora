@@ -75,12 +75,12 @@ func get_all_roots() -> Array[PandoraCategory]:
 	return _entity_backend.get_all_roots()
 	
 	
-func get_all_categories(filter:PandoraCategory = null) -> Array[PandoraEntity]:
-	return _entity_backend.get_all_categories(filter)
+func get_all_categories(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
+	return _entity_backend.get_all_categories(filter, sort)
 	
 	
-func get_all_entities(filter:PandoraCategory = null) -> Array[PandoraEntity]:
-	return _entity_backend.get_all_entities(filter)
+func get_all_entities(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
+	return _entity_backend.get_all_entities(filter, sort)
 
 
 func load_data_async() -> void:

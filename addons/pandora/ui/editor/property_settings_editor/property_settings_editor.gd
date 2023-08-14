@@ -32,23 +32,38 @@ func set_property(property:PandoraProperty, default_settings:Dictionary) -> void
 		setting.add_child(label)
 		var default_setting = default_settings[default_setting_name]
 		var current_value = _property.get_setting_override(default_setting_name) if _property.has_setting_override(default_setting_name) else default_setting.value
-		var control = _new_control_for_type(default_setting_name, default_setting.type, default_setting.value, current_value)
+		var options:Array[Variant] = []
+		options.assign(default_setting["options"] if default_setting.has("options") else [])
+		var control = _new_control_for_type(default_setting_name, default_setting.type, options, default_setting.value, current_value)
 		control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		setting.add_child(control)
 		properties_settings.add_child(setting)
 
 
-func _new_control_for_type(key:String, type:String, default_value:Variant, current_value:Variant) -> Control:
-	if type == "string":
+func _new_control_for_type(key:String, type:String, options:Array[Variant], default_value:Variant, current_value:Variant) -> Control:
+	if options.size() > 0:
+		var option_button = OptionButton.new()
+		var popup = option_button.get_popup()
+		var options_to_index = {}
+		var index = 0
+		for option in options:
+			popup.add_radio_check_item(str(option), index)
+			options_to_index[option] = index
+			index = index + 1
+		option_button.select(options_to_index[current_value])
+		popup.index_pressed.connect(func(index): _change_value(key, options[index], default_value))
+		return option_button
+	elif type == "string":
 		var edit = LineEdit.new()
 		edit.text = current_value as String
 		edit.text_changed.connect(func(new): _change_value(key, new, default_value))
-	if type == "color":
+		return edit
+	elif type == "color":
 		var color_picker = ColorPickerButton.new()
 		color_picker.color = current_value as Color
 		color_picker.color_changed.connect(func(new): _change_value(key, new, default_value))
 		return color_picker
-	if type == "int" or type == "float":
+	elif type == "int" or type == "float":
 		var spin_box = SpinBox.new()
 		spin_box.min_value = -999999999
 		spin_box.max_value = 999999999
@@ -58,12 +73,12 @@ func _new_control_for_type(key:String, type:String, default_value:Variant, curre
 		spin_box.value = current_value
 		spin_box.value_changed.connect(func(new): _change_value(key, new, default_value))
 		return spin_box
-	if type == "bool":
+	elif type == "bool":
 		var check_button = CheckButton.new()
 		check_button.set_pressed(current_value as bool)
 		check_button.toggled.connect(func(new): _change_value(key, new, default_value))
 		return check_button
-	if type == "reference":
+	elif type == "reference":
 		var entity_picker = EntityPicker.instantiate()
 		entity_picker.categories_only = true
 		# pre-select category deferred since
