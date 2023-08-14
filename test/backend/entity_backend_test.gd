@@ -69,7 +69,7 @@ func test_get_all_entities() -> void:
 func test_get_all_entities_of_parent() -> void:
 	var backend = create_object_backend()
 	var category1 = backend.create_category("Test C")
-	var entity1 = backend.create_entity("Entity C", category1)
+	backend.create_entity("Entity C", category1)
 	var category2 = backend.create_category("Test B", category1)
 	var entity2 = backend.create_entity("Entity B", category2)
 	var category3 = backend.create_category("Test A", category2)
@@ -460,7 +460,7 @@ func test_property_setting_gets_inherited() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")
 	var subcategory = backend.create_category("suncategory", category)
-	var entity = backend.create_entity("root", category)
+	var entity = backend.create_entity("root", subcategory)
 	var property = backend.create_property(category, "test", "string", "Hello World")
 	property.set_setting_override("foo", "bar")
 	var entity_property = entity.get_entity_property("test")
