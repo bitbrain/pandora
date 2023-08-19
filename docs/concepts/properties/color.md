@@ -16,4 +16,4 @@ var potion_color = Pandora.get_entity(EntityIds.MY_POTION).get_color("Potion Col
 
 ## Property Settings
 
-No settings for `Color`.
+No settings for `Color`

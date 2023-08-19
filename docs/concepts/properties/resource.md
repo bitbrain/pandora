@@ -16,4 +16,4 @@ var npc_model = Pandora.get_entity(EntityIds.NPC).get_resource("Knight Model") a
 
 ## Property Settings
 
-No additional settings for `Resource`.
+No additional settings for `Resource`

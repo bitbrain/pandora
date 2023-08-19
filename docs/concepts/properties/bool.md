@@ -17,4 +17,4 @@ var is_active = Pandora.get_entity(EntityIds.MY_ENTITY).get_bool("Is Active")
 
 ## Property Settings
 
-No settings for `Bool`.
+No settings for `Bool`

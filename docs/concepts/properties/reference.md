@@ -19,5 +19,5 @@ var npc_weapon = Pandora.get_entity(EntityIds.NPC).get_reference("Weapon")
 |Setting Name|Description|Default Value|
 |---|---|---|
 |**Category Filter**|You can restrict the references to a particular category.|`null`|
-|**List Categories**|Allows populating the reference list with categories instead of entities.|`false`|
-|**Sort**|Defines how results are getting sorted.|`As-Is`|
+|**Categories Only**|Allows populating the reference list with categories instead of entities.|`false`|
+|**Sort List**|Defines how results are getting sorted.|`As-Is`|

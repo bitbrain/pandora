@@ -18,5 +18,5 @@ var arrow_count = Pandora.get_entity(EntityIds.MY_QUIVER).get_int("Arrow Count")
 
 |Setting Name|Description|Default Value|
 |---|---|---|
-|**Min Value**| Sets the lower limit.| `-9999999`|
-|**Max Value**| Sets the upper limit.| `9999999`|
+|**Min Value**| Sets the lower limit.| `-999999999`|
+|**Max Value**| Sets the upper limit.| `999999999`|

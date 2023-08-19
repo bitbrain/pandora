@@ -19,6 +19,6 @@ var item_weight = Pandora.get_entity(EntityIds.MY_ITEM).get_float("Item Weight")
 
 |Setting Name|Description|Default Value|
 |---|---|---|
-|**Min Value**| Sets the lower limit.| `-9999999`|
-|**Max Value**| Sets the upper limit.| `9999999`|
+|**Min Value**| Sets the lower limit.| `-999999999`|
+|**Max Value**| Sets the upper limit.| `999999999`|
 |**Steps**| Determine the number of decimal points.| `2`|
