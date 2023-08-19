@@ -46,6 +46,9 @@ class OverridingProperty extends PandoraProperty:
 
 
 	func set_default_value(value: Variant) -> void:
+		if not is_valid_type(value):
+			print("Pandora error: value " + str(value) + " is incompatible with type ", get_property_type())
+			return
 		# ensure that a supported type is assigned.
 		if value is PandoraEntity:
 			value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY)
