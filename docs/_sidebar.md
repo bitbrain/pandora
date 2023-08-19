@@ -2,6 +2,7 @@
    * [🔹 About Pandora](/)
    * [🔹 Installation](/)
 * [🧩 Core Concepts](/concepts/)
+   * [🔹 Editor Interface](/concepts/editor.md)
    * [🔹 Categories and Entities](/concepts/entities.md)
    * [🔹 Properties](/concepts/properties/)
       * [🔹 String](/concepts/properties/string.md)

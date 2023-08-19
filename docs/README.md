@@ -4,17 +4,9 @@
 
 ---
 
+### ⚠️ THIS ADDON [ IS STILL IN ALPHA](https://github.com/bitbrain/pandora/milestone/1) AND NOT PRODUCTION-READY YET.
+
 **Meet _Pandora_, an addon for the Godot Engine that simplifies the handling of RPG data.** Pandora allows you to easily manage RPG elements like items, spells, abilities, characters, monsters, and loot tables. Whether you're building a traditional turn-based RPG or a fast-paced action game, this addon can help.
-
-**🤔 Why Pandora over Godot Resource files?**
-
-Godot Resources are great for defining RPG data, but they can be challenging to manage, especially for larger projects:
-
-- Modifying resource files might cause data loss (like changing a field's type or name). This requires fixing associated `.tres` files manually.
-- Storing unique data for specific resource instances is difficult - duplicating a resource detaches its state from the original resource file.
-- Searching through resources can be a challenge.
-
-**Pandora** solves these problems with a centralized approach to data management.
 
 # Features
 
