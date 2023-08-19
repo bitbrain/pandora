@@ -8,10 +8,10 @@ class_name PandoraProperty extends Resource
 
 static var _TYPE_CHECKS = {
 	"string": func(variant): return variant is String,
-	"int": func(variant): return variant is int or variant is String,
-	"float": func(variant): return variant is float or variant is String,
+	"int": func(variant): return variant is int,
+	"float": func(variant): return variant is float,
+	"bool": func(variant): return variant is bool,
 	"color": func(variant): return variant is Color or variant is String,
-	"bool": func(variant): return variant is bool or variant is String,
 	"reference": func(variant): return variant is PandoraEntity,
 	"resource": func(variant): return variant is Resource
 }
@@ -162,14 +162,6 @@ static func write_value(value:Variant) -> Variant:
 static func parse_value(value, type:String) -> Variant:
 	if value == null:
 		return null
-	if type == "string" and value is String:
-		return value
-	if type == "int" and value is String:
-		return int(value)
-	if type == "bool" and value is String:
-		return bool(int(value))
-	if type == "float" and value is String:
-		return float(value)
 	if type == "color" and value is String:
 		return Color.from_string(value, Color.WHITE)
 	if type == "reference" and value is Dictionary:
