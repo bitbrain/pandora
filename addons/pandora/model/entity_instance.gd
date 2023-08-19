@@ -159,12 +159,12 @@ func set_resource(property_name:String, value:Resource) -> void:
 		_properties[property_name].set_property_value(value)
 
 
-func load_data(data:Dictionary) -> void:
+func _load_data(data:Dictionary) -> void:
 	_entity_id = data["_entity_id"]
 	_properties = _load_properties(data["_properties"])
 	
 	
-func save_data() -> Dictionary:
+func _save_data() -> Dictionary:
 	return {
 		"_entity_id": _entity_id,
 		"_properties": _save_properties(_properties),

@@ -54,6 +54,9 @@ func clear_setting_override(name:String) -> void:
 
 
 func set_default_value(value:Variant) -> void:
+	# ensure that a supported type is assigned.
+	if value is PandoraEntity:
+		value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY)
 	_default_value = value
 
 
@@ -70,6 +73,8 @@ func get_property_type() -> String:
 
 
 func get_default_value() -> Variant:
+	if _default_value is PandoraReference:
+		return _default_value.get_entity()
 	return _default_value
 
 

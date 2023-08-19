@@ -109,8 +109,10 @@ func delete_property(property:PandoraProperty) -> void:
 
 ## Returns an existing entity (or category) or null otherwise
 func get_entity(entity_id:String) -> PandoraEntity:
-	if not _entities.has(entity_id):
+	if _categories.has(entity_id):
 		return get_category(entity_id)
+	if not _entities.has(entity_id):
+		return null
 	return _entities[entity_id]
 
 
@@ -167,14 +169,23 @@ func load_data(data:Dictionary) -> void:
 	for key in _categories:
 		var category = _categories[key] as PandoraCategory
 		if category._category_id:
+			if not _categories.has(category._category_id):
+				push_error("Pandora error: category " + category._category_id + " on category does not exist")
+				continue
 			var parent = _categories[category._category_id] as PandoraCategory
 			parent._children.append(category)
 	for key in _entities:
 		var entity = _entities[key] as PandoraEntity
+		if not _categories.has(entity._category_id):
+			push_error("Pandora error: category " + entity._category_id + " on entity does not exist")
+			continue
 		var category = _categories[entity._category_id] as PandoraCategory
 		category._children.append(entity)
 	for key in _properties:
 		var property = _properties[key] as PandoraProperty
+		if not _categories.has(property._category_id):
+			push_error("Pandora error: category " + property._category_id + " on property does not exist")
+			continue
 		var category = _categories[property._category_id] as PandoraCategory
 		category._properties.append(property)
 		

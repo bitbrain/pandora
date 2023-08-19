@@ -35,11 +35,9 @@ func refresh() -> void:
 				entity_picker.set_sort(func(a,b): return a.get_entity_name() < b.get_entity_name())
 			SORT_AS_IS:
 				entity_picker.set_sort(func(a,b): return false)
-		var default_value = _property.get_default_value() as PandoraReference
-		if default_value != null:
-			var entity = default_value.get_entity()
-			if entity != null:
-				entity_picker.select.call_deferred(entity)
+		var entity = _property.get_default_value() as PandoraEntity
+		if entity != null:
+			entity_picker.select.call_deferred(entity)
 
 
 
