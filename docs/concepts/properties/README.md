@@ -27,3 +27,7 @@ The following property types are supported:
 |[Color](/concepts/properties/color.md)|`Color`|
 |[Reference](/concepts/properties/reference.md)|`PandoraEntity`|
 |[Resource](/concepts/properties/resource.md)|`Resource`|
+
+## Contribute
+
+[Refer to this link](https://github.com/bitbrain/pandora/issues?q=is%3Aissue+label%3A%22%F0%9F%94%8C+property%22+is%3Aopen) for a complete list of open issues related to properties.

@@ -1,3 +1,3 @@
 # Crafting Fire Spells
 
-todo
+Coming Soon!

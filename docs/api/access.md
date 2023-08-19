@@ -1,5 +1,7 @@
 # Accessing Data
 
+> ⚠️ this functionality is still in alpha state. Exporting custom types is currently not possible. Refer to [#44](https://github.com/bitbrain/pandora/issues/44) for more information.
+
 Within Pandora, data is available at your fingertips, either from a `PandoraCategory` or a `PandoraEntity`. The functions at your disposal are:
 
 - `get_string`

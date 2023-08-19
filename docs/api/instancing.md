@@ -1,5 +1,7 @@
 # Entity Instancing
 
+> ⚠️ this functionality is still in alpha state. Property changes on entities are not correctly migrated into instances. Refer to [#41](https://github.com/bitbrain/pandora/issues/41) for more information.
+
 In the realm of game development, static entities often fall short. They don't account for a dynamic gaming environment where the player's actions can alter the state of an entity. Let's explore this using the example of a sword:
 ```gdscript
 func _ready() -> void:

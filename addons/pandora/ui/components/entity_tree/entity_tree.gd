@@ -133,6 +133,7 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	item.set_text(0, entity.get_entity_name())
 	item.set_selectable(0, true)
 	item.set_editable(0, true)
+	item.set_tooltip_text(0, "Entity ID: " + entity.get_entity_id())
 	if entity.get_icon_path() != "":
 		item.set_icon(0, load(entity.get_icon_path()))
 	entity.icon_changed.connect(func(new_path): _on_icon_changed(entity.get_entity_id(), new_path))
