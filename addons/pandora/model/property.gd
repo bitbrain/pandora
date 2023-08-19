@@ -30,7 +30,7 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._id = id
 	self._name = name
 	self._type = type
-	if self._type != null and not is_valid_type(default_value):
+	if self._type != "" and not is_valid_type(default_value):
 		print("Pandora error: value " + str(default_value) + " is incompatible with type ", type)
 	else:
 		self._default_value = default_value
