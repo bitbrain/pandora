@@ -6,17 +6,6 @@
 class_name PandoraProperty extends Resource
 
 
-static var _TYPE_CHECKS = {
-	"string": func(variant): return variant is String,
-	"int": func(variant): return variant is int,
-	"float": func(variant): return variant is float,
-	"bool": func(variant): return variant is bool,
-	"color": func(variant): return variant is Color or variant is String,
-	"reference": func(variant): return variant is PandoraEntity,
-	"resource": func(variant): return variant is Resource
-}
-
-
 ## Emitted when the name of this property changed.
 signal name_changed(old_name:String, new_name:String)
 signal setting_changed(key:String)
@@ -41,7 +30,7 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._id = id
 	self._name = name
 	self._type = type
-	if self._type and not is_valid_type(default_value):
+	if self._type != null and not is_valid_type(default_value):
 		print("Pandora error: value " + str(default_value) + " is incompatible with type ", type)
 	else:
 		self._default_value = default_value
@@ -193,6 +182,19 @@ static func default_value_of(type:String) -> Variant:
 
 
 func is_valid_type(variant:Variant) -> bool:
-	if not _TYPE_CHECKS or not _TYPE_CHECKS.has(get_property_type()):
+	if not _type_checks().has(get_property_type()):
 		return false
-	return variant == null or _TYPE_CHECKS[get_property_type()].call(variant)
+	return variant == null or _type_checks()[get_property_type()].call(variant)
+
+
+# FIXME: make this a static in future
+func _type_checks() -> Dictionary:
+	return {
+		"string": func(variant): return variant is String,
+		"int": func(variant): return variant is int,
+		"float": func(variant): return variant is float,
+		"bool": func(variant): return variant is bool,
+		"color": func(variant): return variant is Color or variant is String,
+		"reference": func(variant): return variant is PandoraEntity,
+		"resource": func(variant): return variant is Resource
+	}
