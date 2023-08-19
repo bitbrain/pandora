@@ -45,6 +45,10 @@ To keep the codebase clean, we cover every feature with unit tests.
 2. Extract the `pandora` folder into your `/addons` folder within the Godot project.
 3. Activate the addon in the Godot settings: `Project > Project Settings > Plugins`
 
+# Getting started
+
+### [Official Wiki](https://bitbra.in/pandora)
+
 
 # 🥰 Credits
 
