@@ -25,8 +25,6 @@ func _ready():
 	
 	if not entity_items.is_empty():
 		loading_spinner.visible = false
-		
-	button_clicked.connect(_on_button_clicked)
 
 
 ## filters the existing list to the given search term
@@ -39,7 +37,18 @@ func search(text:String) -> void:
 			entity_item.set_collapsed_recursive(entity.get_entity_name().contains(text))
 		else:
 			entity_item.set_collapsed_recursive(false)
-			
+
+
+func queue_delete(entity_id:String) -> void:
+	confirmation_dialog.confirmed.connect(
+		func():
+			var item = entity_items[entity_id]
+			var entity = item.get_metadata(0) as PandoraEntity
+			entity_deletion_issued.emit(entity)
+			if item.get_parent() != null:
+				item.get_parent().remove_child(item))
+	confirmation_dialog.popup()
+
 
 ## selects the entity with the given ID	
 func select(entity_id:String) -> void:
@@ -66,6 +75,7 @@ func _gui_input(event: InputEvent) -> void:
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:
 	clear()
+	entity_items.clear()
 	_populate_tree(category_tree)
 	if loading_spinner:
 		loading_spinner.visible = false
@@ -125,19 +135,8 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	item.set_editable(0, true)
 	if entity.get_icon_path() != "":
 		item.set_icon(0, load(entity.get_icon_path()))
-	item.add_button(1, CLEAR_ICON, -1, false, "Delete entity")
 	entity.icon_changed.connect(func(new_path): _on_icon_changed(entity.get_entity_id(), new_path))
 	return item
-	
-
-func _on_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int) -> void:
-	confirmation_dialog.confirmed.connect(
-		func():
-			var entity = item.get_metadata(0) as PandoraEntity
-			entity_deletion_issued.emit(entity)
-			if item.get_parent() != null:
-				item.get_parent().remove_child(item))
-	confirmation_dialog.popup()
 
 
 func _on_icon_changed(entity_id:String, new_path:String) -> void:

@@ -11,7 +11,6 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 1
 mouse_filter = 1
-columns = 2
 hide_root = true
 script = ExtResource("1_0uafu")
 
