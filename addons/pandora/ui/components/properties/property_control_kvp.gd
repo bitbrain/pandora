@@ -25,6 +25,8 @@ var _backend:PandoraEntityBackend
 @onready var property_value: MarginContainer = %PropertyValue
 @onready var reset_button: Button = %ResetButton
 @onready var delete_property_button: Button = %DeletePropertyButton
+@onready var confirmation_dialog = %ConfirmationDialog
+
 
 
 func init(property:PandoraProperty, control:PandoraPropertyControl, backend:PandoraEntityBackend) -> void:
@@ -37,7 +39,8 @@ func _ready() -> void:
 	property_key_edit.focus_entered.connect(_property_key_focused)
 	property_key_edit.text_changed.connect(_property_name_changed)
 	reset_button.pressed.connect(_property_reset_to_default)
-	delete_property_button.pressed.connect(_delete_property)
+	delete_property_button.pressed.connect(func(): confirmation_dialog.popup())
+	confirmation_dialog.confirmed.connect(_delete_property)
 	_refresh.call_deferred()
 	if _property != null:
 		_set_edit_name_mode(_property.is_original())
@@ -88,6 +91,7 @@ func _refresh() -> void:
 	_control.refresh()
 	reset_button.visible = not _property.is_original() and _property.is_overridden()
 	delete_property_button.disabled =  not _property.is_original()
+	delete_property_button.visible = _property.is_original()
 	delete_property_button.tooltip_text = "Inherited property cannot be deleted" if delete_property_button.disabled else "Delete property"
 
 

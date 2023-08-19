@@ -7,6 +7,7 @@ extends Control
 @onready var reset_button = %ResetButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
+@onready var delete_button = %DeleteButton
 @onready var property_editor = %PropertyEditor
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var version = %Version
@@ -26,6 +27,7 @@ func _ready() -> void:
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
 	reset_button.pressed.connect(_reset_to_saved_file)
+	delete_button.pressed.connect(func(): tree.queue_delete(selected_entity.get_entity_id()))
 	
 	# set version
 	var plugin_config:ConfigFile = ConfigFile.new()
@@ -50,6 +52,7 @@ func _enter_tree() -> void:
 func _entity_selected(entity:PandoraEntity) -> void:
 	create_entity_button.disabled = not entity is PandoraCategory
 	create_category_button.disabled = not entity is PandoraCategory
+	delete_button.disabled = entity == null
 	selected_entity = entity
 	
 	
@@ -57,6 +60,7 @@ func _selection_cleared() -> void:
 	selected_entity = null
 	create_entity_button.disabled = true
 	create_category_button.disabled = false
+	delete_button.disabled = true
 	
 	
 func _on_inherited_property_selected(category_id:String, property_name:String) -> void:
@@ -91,6 +95,7 @@ func _populate_data() -> void:
 		
 	create_entity_button.disabled = true
 	create_category_button.disabled = false
+	delete_button.disabled = true
 	
 	
 func _save() -> void:
@@ -110,5 +115,6 @@ func _reset_to_saved_file() -> void:
 	tree.set_data(data)
 	create_entity_button.disabled = true
 	create_category_button.disabled = false
+	delete_button.disabled = true
 	property_editor.set_entity(null)
 	_selection_cleared()

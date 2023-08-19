@@ -53,3 +53,10 @@ unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 icon = ExtResource("3_dhxsl")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Delete confirmation"
+initial_position = 4
+size = Vector2i(400, 200)
+dialog_text = "Confirm deletion? This can have impact on children!"
