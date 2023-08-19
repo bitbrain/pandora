@@ -46,12 +46,18 @@ class OverridingProperty extends PandoraProperty:
 
 
 	func set_default_value(value: Variant) -> void:
+		# ensure that a supported type is assigned.
+		if value is PandoraEntity:
+			value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY)
 		_parent_entity._property_overrides[_property.get_property_name()] = value
 
 
 	func get_default_value() -> Variant:
 		if _parent_entity._property_overrides.has(_property.get_property_name()):
-			return _parent_entity._property_overrides[_property.get_property_name()]
+			var value = _parent_entity._property_overrides[_property.get_property_name()]
+			if value is PandoraReference:
+				return value.get_entity()
+			return value
 		return _property.get_default_value()
 
 

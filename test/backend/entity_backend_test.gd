@@ -455,7 +455,6 @@ func test_custom_entity_script_save_load() -> void:
 	assert_that(backend.get_entity(entity_id) as CustomMockAltEntity).is_not_null()
 
 
-
 func test_property_setting_gets_inherited() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")

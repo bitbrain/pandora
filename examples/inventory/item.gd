@@ -2,11 +2,11 @@ class_name Item extends PandoraEntity
 
 
 func get_rarity() -> Rarity:
-	return get_entity_property("Rarity").get_default_value() as Rarity
+	return get_reference("Rarity") as Rarity
 
 
 func get_maximum_stack_size() -> int:
-	return get_entity_property("Maximum Stack Size").get_default_value()
+	return get_integer("Maximum Stack Size")
 
 
 func instantiate() -> PandoraEntityInstance:

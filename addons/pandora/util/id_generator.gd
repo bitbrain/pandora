@@ -13,7 +13,11 @@ func generate(context:String = DEFAULT_CONTEXT) -> String:
 	_ids_by_context[context] += 1
 	return str(_ids_by_context[context])
 	
-	
+
+func clear() -> void:
+	_ids_by_context.clear()
+
+
 func load_data(data:Dictionary) -> void:
 	_ids_by_context = data["_ids_by_context"]
 	

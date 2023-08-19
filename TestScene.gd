@@ -9,4 +9,4 @@ func _ready() -> void:
 	
 	print(copper_instance.get_string("Description"))
 	
-	print(copper_ore.get_rarity())
+	print(copper_ore.get_rarity().get_rarity_color())

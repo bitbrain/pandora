@@ -140,4 +140,5 @@ func deserialize(data:Dictionary) -> PandoraEntityInstance:
 # used for testing only and shutting down the addon
 func _clear() -> void:
 	_entity_backend._clear()
+	_id_generator.clear()
 	_loaded = false
