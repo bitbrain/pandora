@@ -115,7 +115,27 @@ func save_data() -> void:
 		
 func is_loaded() -> bool:
 	return _loaded
-		
+	
+	
+func serialize(instance:PandoraEntityInstance) -> Dictionary:
+	return instance.save_data()
+	
+	
+func deserialize(data:Dictionary) -> PandoraEntityInstance:
+	if not data.has("_entity_id"):
+		push_error("Unable to deserialize data! Invalid PandoraEntityInstance format.")
+		return
+	var entity = Pandora.get_entity(data["_entity_id"])
+	if not entity:
+		return
+	var InstanceClass = load(entity.get_instance_script_path())
+	if not InstanceClass:
+		push_error("Unable to deserialize data! Invalid instance script.")
+		return
+	var instance = InstanceClass.new("", [])
+	instance._load_data(data)
+	return instance
+
 
 # used for testing only and shutting down the addon
 func _clear() -> void:

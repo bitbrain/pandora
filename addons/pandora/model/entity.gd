@@ -6,6 +6,7 @@ class_name PandoraEntity extends Resource
 signal name_changed(new_name:String)
 signal icon_changed(new_icon_path:String)
 signal script_path_changed(new_script_path:String)
+signal instance_script_path_changed(new_script_path:String)
 signal generate_ids_changed(new_generate_ids:bool)
 signal id_generation_class_changed(new_id_generation_path:String)
 
@@ -113,6 +114,7 @@ var _name:String
 var _icon_path:String
 var _category_id:String
 var _script_path:String
+var _instance_script_path:String
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -160,6 +162,14 @@ func get_script_path() -> String:
 	if _category_id != "" and get_category() != null:
 		return get_category().get_script_path()
 	return "res://addons/pandora/model/entity.gd"
+	
+	
+func get_instance_script_path() -> String:
+	if _instance_script_path != "":
+		return _instance_script_path
+	if _category_id != "" and get_category() != null:
+		return get_category().get_instance_script_path()
+	return "res://addons/pandora/model/entity_instance.gd"
 
 
 func set_entity_name(new_name:String) -> void:
@@ -170,11 +180,16 @@ func set_entity_name(new_name:String) -> void:
 func set_icon_path(new_path:String) -> void:
 	self._icon_path = new_path
 	icon_changed.emit(new_path)
-	
-	
+
+
 func set_script_path(new_path:String) -> void:
 	self._script_path = new_path
 	script_path_changed.emit(new_path)
+	
+	
+func set_instance_script_path(new_path:String) -> void:
+	self._instance_script_path = new_path
+	instance_script_path_changed.emit(new_path)
 	
 	
 func set_generate_ids(generate_ids:bool) -> void:

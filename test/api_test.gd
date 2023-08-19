@@ -27,4 +27,14 @@ func test_api_save_and_load_objects() -> void:
 	Pandora.load_data()
 	assert_that(Pandora.get_category(category_id)).is_not_null()
 	assert_that(Pandora.get_entity(entity_id)).is_not_null()
+
+
+func _save_load_instance() -> void:
+	var category = Pandora.create_category("Swords")
+	var category_id = category._id
+	var entity = Pandora.create_entity("Zweihander", category)
+	var instance = entity.instantiate()
+	var data = Pandora.serialize(instance)
+	var new_instance = Pandora.deserialize(data)
 	
+	assert_that(instance).is_equal(new_instance)
