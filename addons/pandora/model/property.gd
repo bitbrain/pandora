@@ -6,6 +6,17 @@
 class_name PandoraProperty extends Resource
 
 
+static var _TYPE_CHECKS = {
+	"string": func(variant): return variant is String,
+	"int": func(variant): return variant is int or variant is String,
+	"float": func(variant): return variant is float or variant is String,
+	"color": func(variant): return variant is Color or variant is String,
+	"bool": func(variant): return variant is bool or variant is String,
+	"reference": func(variant): return variant is PandoraEntity,
+	"resource": func(variant): return variant is Resource
+}
+
+
 ## Emitted when the name of this property changed.
 signal name_changed(old_name:String, new_name:String)
 signal setting_changed(key:String)
@@ -30,7 +41,10 @@ func _init(id:String, name:String, type:String, default_value:Variant) -> void:
 	self._id = id
 	self._name = name
 	self._type = type
-	self._default_value = default_value
+	if self._type and not is_valid_type(default_value):
+		print("Pandora error: value " + str(default_value) + " is incompatible with type ", type)
+	else:
+		self._default_value = default_value
 	
 	
 func get_setting_override(name:String) -> Variant:
@@ -54,6 +68,9 @@ func clear_setting_override(name:String) -> void:
 
 
 func set_default_value(value:Variant) -> void:
+	if not is_valid_type(value):
+		print("Pandora error: value " + str(value) + " is incompatible with type ", _type)
+		return
 	# ensure that a supported type is assigned.
 	if value is PandoraEntity:
 		value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY)
@@ -129,19 +146,17 @@ func save_data() -> Dictionary:
 	return data
 
 	
-static func write_value(value:Variant):
+static func write_value(value:Variant) -> Variant:
 	if value == null:
 		return null
 	if value is Color:
 		var color = value as Color
 		return color.to_html()
-	if value is bool:
-		return "1" if value else "0"
 	if value is PandoraReference:
 		return value.save_data()
 	if value is Resource:
 		return value.resource_path
-	return str(value)
+	return value
 
 
 static func parse_value(value, type:String) -> Variant:
@@ -163,8 +178,7 @@ static func parse_value(value, type:String) -> Variant:
 		return reference
 	if type == "resource" and value is String:
 		return load(value)
-	push_error("Unsupported variant type of value %s" % str(type))
-	return ""
+	return value
 	
 	
 static func default_value_of(type:String) -> Variant:
@@ -184,3 +198,9 @@ static func default_value_of(type:String) -> Variant:
 		return null
 	push_error("Unsupported variant type %s" % str(type))
 	return ""
+
+
+func is_valid_type(variant:Variant) -> bool:
+	if not _TYPE_CHECKS or not _TYPE_CHECKS.has(get_property_type()):
+		return false
+	return variant == null or _TYPE_CHECKS[get_property_type()].call(variant)

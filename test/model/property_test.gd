@@ -17,10 +17,10 @@ func test_string_property() -> void:
 	
 	
 func test_string_property_wrong_type() -> void:
-	var property = PandoraProperty.new("123", "property", "int", "Hello World")
+	var property = PandoraProperty.new("123", "property", "reference", "Hello World")
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_int_property() -> void:
@@ -34,7 +34,7 @@ func test_int_property_wrong_type() -> void:
 	var property = PandoraProperty.new("123", "property", "string", 123)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_bool_property() -> void:
@@ -48,7 +48,7 @@ func test_bool_property_wrong_type() -> void:
 	var property = PandoraProperty.new("123", "property", "float", true)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_float_property() -> void:
@@ -62,7 +62,7 @@ func test_float_property_wrong_type() -> void:
 	var property = PandoraProperty.new("123", "property", "int", 1.23)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_color_property() -> void:
@@ -76,7 +76,7 @@ func test_color_property_wrong_type() -> void:
 	var property = PandoraProperty.new("123", "property", "reference", Color.RED)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_reference_property() -> void:
@@ -92,14 +92,14 @@ func test_reference_property_wrong_type() -> void:
 	var property = PandoraProperty.new("123", "property", "bool", ref)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_unknown_type() -> void:
 	var property = PandoraProperty.new("123", "property", "unknown", "123")
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
 	
 	
 func test_resource_property() -> void:
@@ -115,4 +115,4 @@ func test_resource_property_wrong_type() -> void:
 	var property = PandoraProperty.new("123", "property", "string", resource)
 	var new_property = PandoraProperty.new("", "", "", "")
 	new_property.load_data(property.save_data())
-	assert_that(new_property).is_not_equal(property)
+	assert_that(new_property.get_default_value()).is_null()
