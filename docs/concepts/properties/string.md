@@ -1,6 +1,6 @@
 # Property: String
 
-The `String` property in Pandora allows you to store boolean values (`true` or `false`). This type of property is commonly used to define flags or toggles for entities.
+The `String` property in Pandora allows you to store string values. This type of property is commonly used for descriptions, names and translation keys.
 
 ## Value Examples
 
