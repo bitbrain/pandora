@@ -1,6 +1,7 @@
 class_name GdScriptParser
 extends RefCounted
 
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 const ALLOWED_CHARACTERS := "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
 
@@ -565,7 +566,7 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 			"(": bracket_count += 1
 			")":
 				bracket_count -= 1
-				if bracket_count <= 0 and in_array <= 0:
+				if bracket_count < 0 and in_array <= 0:
 					end_of_func = true
 			",":
 				if bracket_count == 0 and in_array == 0:
@@ -664,8 +665,8 @@ func parse_func_name(row :String) -> String:
 	return token._token
 
 
-func parse_functions(rows :PackedStringArray, clazz_name :String, clazz_path :PackedStringArray, included_functions :PackedStringArray = PackedStringArray()) -> Array:
-	var func_descriptors := Array()
+func parse_functions(rows :PackedStringArray, clazz_name :String, clazz_path :PackedStringArray, included_functions := PackedStringArray()) -> Array[GdFunctionDescriptor]:
+	var func_descriptors :Array[GdFunctionDescriptor] = []
 	for rowIndex in rows.size():
 		var row = rows[rowIndex]
 		# step over inner class functions

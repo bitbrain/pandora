@@ -1,9 +1,13 @@
 class_name GdUnitMockBuilder
 extends GdUnitClassDoubler
 
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
+const GdUnitMemoryPool = preload("res://addons/gdUnit4/src/core/GdUnitMemoryPool.gd")
+
 
 # holds mocker runtime configuration
 const KEY_REPORT_PUSH_ERRORS = "report_push_errors"
+
 
 # only for testing
 static func do_push_errors(enabled :bool) -> void:
@@ -64,7 +68,7 @@ static func mock_on_scene(scene :PackedScene, memory_pool :int, debug_write :boo
 	var push_errors := is_push_errors()
 	if not scene.can_instantiate():
 		if push_errors:
-			push_error("Can't instantiate scene '%s'" % scene.resource_path)
+			push_error("Can't instanciate scene '%s'" % scene.resource_path)
 		return null
 	var scene_instance = scene.instantiate()
 	# we can only mock checked a scene with attached script
