@@ -64,7 +64,7 @@ static func mock_on_scene(scene :PackedScene, memory_pool :int, debug_write :boo
 	var push_errors := is_push_errors()
 	if not scene.can_instantiate():
 		if push_errors:
-			push_error("Can't instanciate scene '%s'" % scene.resource_path)
+			push_error("Can't instantiate scene '%s'" % scene.resource_path)
 		return null
 	var scene_instance = scene.instantiate()
 	# we can only mock checked a scene with attached script
