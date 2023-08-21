@@ -292,7 +292,7 @@ func _collect_entities_recursive(category:PandoraCategory, list:Array[PandoraEnt
 			_collect_entities_recursive(child, list)
 			
 			
-func _get_entity_script_class(path:String) -> GDScript:
+func _get_entity_script_class(path:String):
 	var ScriptClass = load(path)
 	if ScriptClass == null:
 		push_warning("Unable to find " + path + " - defaulting to PandoraEntity instead.")
