@@ -4,6 +4,9 @@
 class_name PandoraEntityBackend extends RefCounted
 
 
+const PandoraEntityScript = preload("res://addons/pandora/model/entity.gd")
+
+
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
 
@@ -26,7 +29,7 @@ func _init(id_generator:PandoraIdGenerator) -> void:
 
 ## Creates a new entity on the given PandoraCategory
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
-	var EntityClass = load(category.get_script_path())
+	var EntityClass = _get_entity_script_class(category.get_script_path())
 	var entity = EntityClass.new(_id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
@@ -210,13 +213,14 @@ func _deserialize_entities(data:Array) -> Dictionary:
 		# only when entity has an overridden class, initialise it.
 		# otherwise rely on the script path of the parent category.
 		if entity_data.has("_script_path"):
-			var ScriptClass = load(entity_data["_script_path"])
+			var ScriptClass = _get_entity_script_class(entity_data["_script_path"])
 			var entity = ScriptClass.new("", "", "", "")
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 		else:
 			var parent_category = _categories[entity_data["_category_id"]]
-			var ScriptClass = load(parent_category.get_script_path())
+			var ScriptClass = _get_entity_script_class(parent_category.get_script_path())
+			
 			var entity = ScriptClass.new("", "", "", "")
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
@@ -286,3 +290,11 @@ func _collect_entities_recursive(category:PandoraCategory, list:Array[PandoraEnt
 			list.append(child)
 		elif child is PandoraCategory:
 			_collect_entities_recursive(child, list)
+			
+			
+func _get_entity_script_class(path:String) -> GDScript:
+	var ScriptClass = load(path)
+	if ScriptClass == null:
+		push_warning("Unable to find " + path + " - defaulting to PandoraEntity instead.")
+		ScriptClass = PandoraEntityScript
+	return ScriptClass
