@@ -30,6 +30,6 @@ func set_script_path(script_path:String) -> void:
 	
 func _path_changed(new_path:String) -> void:
 	if new_path.begins_with("res://"):
-		if not _filter or _filter.call(new_path):
+		if _filter == null or _filter.call(new_path):
 			set_script_path(new_path)
 			script_path_changed.emit(new_path)

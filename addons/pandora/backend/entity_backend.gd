@@ -29,10 +29,7 @@ func _init(id_generator:PandoraIdGenerator) -> void:
 
 ## Creates a new entity on the given PandoraCategory
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
-	var EntityClass = load(category.get_script_path())
-	if EntityClass == null:
-		push_warning("Unable to find " + category.get_script_path()+ " - defaulting to PandoraEntity instead.")
-		EntityClass = PandoraEntityScript
+	var EntityClass = get_entity_class(category.get_script_path())
 	var entity = EntityClass.new(_id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
@@ -216,20 +213,13 @@ func _deserialize_entities(data:Array) -> Dictionary:
 		# only when entity has an overridden class, initialise it.
 		# otherwise rely on the script path of the parent category.
 		if entity_data.has("_script_path"):
-			var ScriptClass = load(entity_data["_script_path"])
-			if ScriptClass == null:
-				push_warning("Unable to find " + entity_data["_script_path"] + " - defaulting to PandoraEntity instead.")
-				ScriptClass = PandoraEntityScript
+			var ScriptClass = get_entity_class(entity_data["_script_path"])
 			var entity = ScriptClass.new("", "", "", "")
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 		else:
 			var parent_category = _categories[entity_data["_category_id"]]
-			var ScriptClass = load(parent_category.get_script_path())
-			if ScriptClass == null:
-				push_warning("Unable to find " + parent_category.get_script_path() + " - defaulting to PandoraEntity instead.")
-				ScriptClass = PandoraEntityScript
-			
+			var ScriptClass = get_entity_class(parent_category.get_script_path())
 			var entity = ScriptClass.new("", "", "", "")
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
@@ -299,3 +289,11 @@ func _collect_entities_recursive(category:PandoraCategory, list:Array[PandoraEnt
 			list.append(child)
 		elif child is PandoraCategory:
 			_collect_entities_recursive(child, list)
+
+
+func get_entity_class(path:String) -> GDScript:
+	var EntityClass = load(path)
+	if EntityClass == null or not EntityClass.has_source_code():
+		push_warning("Unable to find " + path + " - defaulting to PandoraEntity instead.")
+		EntityClass = PandoraEntityScript
+	return EntityClass
