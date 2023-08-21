@@ -153,8 +153,8 @@ func await_millis(timeout :int):
 ## The runner will manage the scene instance and release after the runner is released[br]
 ## example:[br]
 ## [codeblock]
-##    # creates a runner by using a instanciated scene
-##    var scene = load("res://foo/my_scne.tscn").instantiate() 
+##    # creates a runner by using a instantiated scene
+##    var scene = load("res://foo/my_scne.tscn").instantiate()
 ##    var runner := scene_runner(scene)
 ##
 ##    # or simply creates a runner by using the scene resource path
