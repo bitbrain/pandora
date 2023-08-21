@@ -464,3 +464,24 @@ func test_property_setting_gets_inherited() -> void:
 	property.set_setting_override("foo", "bar")
 	var entity_property = entity.get_entity_property("test")
 	assert_bool(entity_property.has_setting_override("foo")).is_true()
+	
+	
+func test_create_invalid_entity() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	category.set_script_path("res://invalid-path.gd")
+	var entity = backend.create_entity("root", category)
+	assert_that(entity).is_not_null()
+	assert_bool(entity is PandoraEntity).is_true()
+	
+	
+func test_saveload_invalid_entity() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	category.set_script_path("res://invalid-path.gd")
+	var entity_id = backend.create_entity("root", category).get_entity_id()
+	var data = backend.save_data()
+	backend.load_data(data)
+	var loaded_entity = backend.get_entity(entity_id)
+	assert_that(loaded_entity).is_not_null()
+	assert_bool(loaded_entity is PandoraEntity).is_true()

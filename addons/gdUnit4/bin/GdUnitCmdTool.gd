@@ -1,6 +1,8 @@
 #!/usr/bin/env -S godot -s
 extends SceneTree
 
+const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
+
 #warning-ignore-all:return_value_discarded
 class CLIRunner extends Node:
 	
@@ -314,6 +316,7 @@ class CLIRunner extends Node:
 					event.is_failed(),
 					event.is_warning(),
 					event.is_skipped(),
+					event.skipped_count(),
 					event.failed_count(),
 					event.orphan_nodes(),
 					event.reports())
