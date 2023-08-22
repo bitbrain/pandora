@@ -198,3 +198,7 @@ func _type_checks() -> Dictionary:
 		"reference": func(variant): return variant is PandoraEntity,
 		"resource": func(variant): return variant is Resource
 	}
+
+
+func _to_string() -> String:
+	return "<PandoraProperty '" + get_property_name() + "' (" + get_property_type() + ")>"
