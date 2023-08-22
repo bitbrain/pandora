@@ -29,7 +29,7 @@ static func regenerate_entity_id_file(entity_class_name:String, entities:Array[P
 		
 	var file_access = FileAccess.open(file_path, FileAccess.WRITE)
 	file_access.store_line("# Do not modify! Auto-generated file.")
-	file_access.store_line("class_name " + entity_class_name + " \n\n")
+	file_access.store_line("class_name " + entity_class_name + "\n\n")
 	
 	# avoid duplicate constants by counting how often each name has been used
 	var name_usages = {}
