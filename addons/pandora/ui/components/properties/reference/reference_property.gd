@@ -21,8 +21,7 @@ func _ready() -> void:
 	entity_picker.focus_entered.connect(func(): focused.emit())
 	entity_picker.entity_selected.connect(
 		func(entity:PandoraEntity):
-			var reference = PandoraReference.new(entity.get_entity_id(), 1 if entity is PandoraCategory else 0)
-			_property.set_default_value(reference)
+			_property.set_default_value(entity)
 			property_value_changed.emit())
 
 
