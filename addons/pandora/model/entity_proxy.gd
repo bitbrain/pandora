@@ -71,3 +71,7 @@ func save_data() -> Dictionary:
 
 func _get_entity() -> PandoraEntity:
 	return Pandora.get_entity(proxied_entity_id)
+
+
+func _to_string() -> String:
+	return "<PandoraEntityProxy '" + _name + "'>"

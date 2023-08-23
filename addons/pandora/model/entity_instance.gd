@@ -189,3 +189,7 @@ func _load_properties(data:Array) -> Dictionary:
 	
 func _get_property_value(name:String) -> Variant:
 	return _properties[name].get_property_value()
+	
+	
+func _to_string() -> String:
+	return "<PandoraEntityInstance '" + get_entity_name() + "'>"

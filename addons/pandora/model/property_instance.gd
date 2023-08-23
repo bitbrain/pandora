@@ -42,3 +42,6 @@ func save_data() -> Dictionary:
 		"_value": _value,
 		"_property_id": _property_id
 	}
+
+func _to_string() -> String:
+	return "<PandoraPropertyInstance '" + get_property_name() + "'>"

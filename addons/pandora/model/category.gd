@@ -23,3 +23,6 @@ func _delete_property(name:String) -> void:
 	super._delete_property(name)
 	for child in _children:
 		child._delete_property(name)
+
+func _to_string() -> String:
+	return "<PandoraCategory " + str(_children) + ">"
