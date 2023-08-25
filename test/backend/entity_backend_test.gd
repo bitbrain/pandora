@@ -485,3 +485,39 @@ func test_saveload_invalid_entity() -> void:
 	var loaded_entity = backend.get_entity(entity_id)
 	assert_that(loaded_entity).is_not_null()
 	assert_bool(loaded_entity is PandoraEntity).is_true()
+	
+	
+func test_saveload_non_entity() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	category.set_script_path("res://test/mock/non-entity.gd")
+	var entity_id = backend.create_entity("root", category).get_entity_id()
+	var data = backend.save_data()
+	backend.load_data(data)
+	var loaded_entity = backend.get_entity(entity_id)
+	assert_that(loaded_entity).is_not_null()
+	assert_bool(loaded_entity is PandoraEntity).is_true()
+	
+	
+func test_saveload_wrong_init() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	category.set_script_path("res://test/mock/entity-wrong-init.gd")
+	var entity_id = backend.create_entity("root", category).get_entity_id()
+	var data = backend.save_data()
+	backend.load_data(data)
+	var loaded_entity = backend.get_entity(entity_id)
+	assert_that(loaded_entity).is_not_null()
+	assert_bool(loaded_entity is PandoraEntity).is_true()
+	
+	
+func test_saveload_compilation_error_on_script() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("root")
+	category.set_script_path("res://test/mock/entity-compilation-error.gd")
+	var entity_id = backend.create_entity("root", category).get_entity_id()
+	var data = backend.save_data()
+	backend.load_data(data)
+	var loaded_entity = backend.get_entity(entity_id)
+	assert_that(loaded_entity).is_not_null()
+	assert_bool(loaded_entity is PandoraEntity).is_true()
