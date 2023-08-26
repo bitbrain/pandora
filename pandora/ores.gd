@@ -2,4 +2,4 @@
 class_name Ores
 
 
-const COPPER_ORE = "14"
+const COPPER_ORE = "50"

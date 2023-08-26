@@ -1,5 +1,6 @@
 ## An entity acts a container for properties and is used to represent
 ## a category or an actual concept in any game.
+@tool
 class_name PandoraEntity extends Resource
 
 
@@ -9,6 +10,10 @@ signal script_path_changed(new_script_path:String)
 signal instance_script_path_changed(new_script_path:String)
 signal generate_ids_changed(new_generate_ids:bool)
 signal id_generation_class_changed(new_id_generation_path:String)
+
+
+## used for export/import from scenes
+@export var _id:String
 
 
 ## Wrapper around PandoraProperty that is used to manage overrides.
@@ -117,8 +122,6 @@ class OverridingProperty extends PandoraProperty:
 		_parent_entity._inherited_properties[new_name] = old_inherited_property
 		
 
-
-var _id:String
 var _name:String
 var _icon_path:String
 var _category_id:String
@@ -136,6 +139,11 @@ var _property_overrides = {}
 # ids + category ids into a file for easier access.
 var _generate_ids = false 
 var _ids_generation_class = ""
+
+
+func _init() -> void:
+	# TODO initialise entity if ID was saved
+	pass
 
 
 ## do not rely on _init as it breaks .tres files that may still

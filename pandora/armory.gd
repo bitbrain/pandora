@@ -2,4 +2,4 @@
 class_name Armory
 
 
-const IRON_SHIELD = "9"
+const SHIELD = "49"
