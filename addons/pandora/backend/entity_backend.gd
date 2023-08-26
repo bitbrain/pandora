@@ -39,7 +39,8 @@ func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 
 ## Creates a new category on an optional parent category
 func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
-	var category = PandoraCategory.new(_id_generator.generate(), name, "", "")
+	var category = PandoraCategory.new()
+	category.init_entity(_id_generator.generate(), name, "", "")
 	if parent_category != null:
 		parent_category._children.append(category)
 		category._category_id = parent_category._id
@@ -226,7 +227,7 @@ func _deserialize_entities(data:Array) -> Dictionary:
 func _deserialize_categories(data:Array) -> Dictionary:
 	var dict = {}
 	for category_data in data:
-		var category = PandoraCategory.new("", "", "", "")
+		var category = PandoraCategory.new()
 		category.load_data(category_data)
 		dict[category._id] = category
 		if category._category_id == "":
@@ -298,18 +299,25 @@ func _get_entity_class(path:String) -> GDScript:
 
 func _create_entity_from_script(path:String, id:String, name:String, icon_path:String, category_id:String):
 	var clazz = _get_entity_class(path)
-	var new_method = _find_first_method_of_script(clazz, "_init")
+	var new_method = _find_first_method_of_script(clazz, "init_entity")
 	if not new_method.has("args"):
 		push_error("ERROR - Pandora is unable to correctly resolve new() method.")
-		return PandoraEntityScript.new(id, name, icon_path, category_id)
-	var expected_method = _find_first_method_of_script(PandoraEntityScript, "_init")
+		var entity = PandoraEntityScript.new()
+		entity.init_entity(id, name, icon_path, category_id)
+		return entity
+	var expected_method = _find_first_method_of_script(PandoraEntityScript, "init_entity")
 	if new_method["args"].size() != expected_method["args"].size():
-		push_warning("_init() method has incorrect signature! Requires " + str(expected_method["args"].size()) + " arguments - defaulting to PandoraEntity instead.")
-		return PandoraEntityScript.new(id, name, icon_path, category_id)
-	var entity = clazz.new(id, name, icon_path, category_id)
+		push_warning("init_entity() method has incorrect signature! Requires " + str(expected_method["args"].size()) + " arguments - defaulting to PandoraEntity instead.")
+		var entity = PandoraEntityScript.new()
+		entity.init_entity(id, name, icon_path, category_id)
+		return entity
+		
+	var entity = clazz.new()
 	if not entity is PandoraEntity:
 		push_warning("Script '" + path + "' must extend PandoraEntity - defaulting to PandoraEntity instead.")
-		entity = PandoraEntityScript.new(id, name, icon_path, category_id)
+		entity = PandoraEntityScript.new()
+	
+	entity.init_entity(id, name, icon_path, category_id)
 	return entity
 
 

@@ -138,7 +138,9 @@ var _generate_ids = false
 var _ids_generation_class = ""
 
 
-func _init(id:String, name:String, icon_path:String, category_id:String) -> void:
+## do not rely on _init as it breaks .tres files that may still
+## point to a migrated PandoraEntity custom script.
+func init_entity(id:String, name:String, icon_path:String, category_id:String) -> void:
 	self._id = id
 	self._name = name
 	self._icon_path = icon_path
