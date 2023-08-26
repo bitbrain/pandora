@@ -1,11 +1,12 @@
 extends CenterContainer
 
 
-@export var test:Item
+@export var item:Item
+@export var entity:PandoraEntity
 
 
 func _ready() -> void:
-	print(test.get_entity_name())
+	print(item.get_entity_id(), " - ", item.get_entity_name())
 	var copper_ore = Pandora.get_entity(Ores.COPPER_ORE) as Item
 	print(copper_ore.get_entity_name())
 	

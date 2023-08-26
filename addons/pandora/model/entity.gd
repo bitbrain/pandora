@@ -142,8 +142,7 @@ var _ids_generation_class = ""
 
 
 func _init() -> void:
-	# TODO initialise entity if ID was saved
-	pass
+	print_stack()
 
 
 ## do not rely on _init as it breaks .tres files that may still
