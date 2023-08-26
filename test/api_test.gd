@@ -64,4 +64,14 @@ func test_save_and_load_reference() -> void:
 	var loaded_iron_sword = Pandora.get_entity(iron_sword.get_entity_id())
 	var referenced_material = loaded_iron_sword.get_reference("Material")
 	assert_that(referenced_material).is_equal(iron)
+
+
+func test_entity_is_category() -> void:
+	var items = Pandora.create_category("items")
+	var weapons = Pandora.create_category("weapons", items)
+	var quests = Pandora.create_category("quests")
+	var sword = Pandora.create_entity("Sword", weapons)
 	
+	assert_bool(sword.is_category(items.get_entity_id())).is_true()
+	assert_bool(sword.is_category(weapons.get_entity_id())).is_true()
+	assert_bool(sword.is_category(quests.get_entity_id())).is_false()
