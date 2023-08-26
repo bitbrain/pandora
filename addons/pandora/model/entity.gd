@@ -420,3 +420,7 @@ func _create_instance_properties() -> Array[PandoraPropertyInstance]:
 		var default_value = property.get_default_value()
 		property_instances.append(PandoraPropertyInstance.new(property, default_value))
 	return property_instances
+
+
+func _to_string() -> String:
+	return "<PandoraEntity '" + _name + "'>"

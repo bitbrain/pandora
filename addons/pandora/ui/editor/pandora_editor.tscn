@@ -53,11 +53,13 @@ icon = ExtResource("3_ehaql")
 [node name="DeleteButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Delete selected entry"
 icon = ExtResource("4_c68uu")
 
 [node name="SaveButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Save current changes"
 icon = ExtResource("2_wcf01")
 
 [node name="ResetButton" type="Button" parent="Contents/HeaderBar/Actions"]
