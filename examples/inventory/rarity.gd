@@ -1,3 +1,4 @@
+@tool
 class_name Rarity extends PandoraEntity
 
 
