@@ -1,7 +1,5 @@
 # Accessing Data
 
-> ⚠️ this functionality is still in alpha state. Exporting custom types is currently not possible. Refer to [#44](https://github.com/bitbrain/pandora/issues/44) for more information.
-
 Within Pandora, data is available at your fingertips, either from a `PandoraCategory` or a `PandoraEntity`. The functions at your disposal are:
 
 - `get_string`
@@ -26,16 +24,24 @@ In this example, the `Damage` property of the `SWORD` entity is fetched, demonst
 
 ## Entity Exports
 
-Pandora allows you to define entities on nodes directly inside the editor. This can be done as follows:
+Pandora allows you to define entities on nodes directly inside the editor:
+
+- The exported type **must** extend `PandoraEntity` 
+- The exported type **must** be a `@tool` script
+
+This can be done as follows:
 ```gdscript
 extends Node2D
 
-@export var sword:PandoraEntity
+@export var item:Item
+@export var entity:PandoraEntity
 
 func _ready() -> void:
-   var instance:PandoraEntityInstance = sword.instantiate()
+   var instance:PandoraEntityInstance = item.instantiate()
 ```
-Within the Godot node editor properties, then select the entity of your choice from the list!
+Within the Godot node editor properties, then select the entity of your choice from the list. Pandora automatically filters the entities depending on the type provided:
+
+![custom-type-exports](../assets/custom_type_exports.gif)
 
 ## Type checks
 
