@@ -141,10 +141,6 @@ var _generate_ids = false
 var _ids_generation_class = ""
 
 
-func _init() -> void:
-	print_stack()
-
-
 ## do not rely on _init as it breaks .tres files that may still
 ## point to a migrated PandoraEntity custom script.
 func init_entity(id:String, name:String, icon_path:String, category_id:String) -> void:
@@ -161,20 +157,24 @@ func instantiate() -> PandoraEntityInstance:
 
 	
 func get_entity_id() -> String:
+	_initialize_if_not_loaded()
 	return _id
 	
 	
 func get_entity_name() -> String:
+	_initialize_if_not_loaded()
 	return tr(_name)
 	
 	
 func get_icon_path() -> String:
+	_initialize_if_not_loaded()
 	if _icon_path != "":
 		return _icon_path
 	return "res://addons/pandora/icons/Object.svg"
 	
 	
 func get_script_path() -> String:
+	_initialize_if_not_loaded()
 	if _script_path != "":
 		return _script_path
 	if _category_id != "" and get_category() != null:
@@ -183,6 +183,7 @@ func get_script_path() -> String:
 	
 	
 func get_instance_script_path() -> String:
+	_initialize_if_not_loaded()
 	if _instance_script_path != "":
 		return _instance_script_path
 	if _category_id != "" and get_category() != null:
@@ -216,6 +217,7 @@ func set_generate_ids(generate_ids:bool) -> void:
 
 
 func is_generate_ids() -> bool:
+	_initialize_if_not_loaded()
 	if self._generate_ids:
 		return _generate_ids
 	if _category_id != "" and get_category() != null:
@@ -229,6 +231,7 @@ func set_id_generation_class(id_generation_class:String) -> void:
 
 
 func get_id_generation_class() -> String:
+	_initialize_if_not_loaded()
 	if _ids_generation_class != "":
 		return _ids_generation_class
 	if _category_id != "" and get_category() != null:
@@ -237,10 +240,12 @@ func get_id_generation_class() -> String:
 
 	
 func get_category_id() -> String:
+	_initialize_if_not_loaded()
 	return _category_id
 
 
 func get_entity_property(name:String) -> PandoraProperty:
+	_initialize_if_not_loaded()
 	if _property_map.has(name):
 		var property = _property_map[name] as PandoraProperty
 		if property.get_category_id() != _id:
@@ -328,6 +333,7 @@ func get_resource(property_name:String) -> Resource:
 
 	
 func has_entity_property(name:String) -> bool:
+	_initialize_if_not_loaded()
 	return get_entity_property(name) != null
 	
 
@@ -344,6 +350,7 @@ func get_entity_properties() -> Array[PandoraProperty]:
 	
 	
 func get_category() -> PandoraCategory:
+	_initialize_if_not_loaded()
 	if _category_id == null or _category_id == "":
 		return null
 	return Pandora.get_category(_category_id)
@@ -433,3 +440,31 @@ func _create_instance_properties() -> Array[PandoraPropertyInstance]:
 
 func _to_string() -> String:
 	return "<PandoraEntity '" + _name + "'>"
+
+
+## FIXME: there is currently no signal for when resources
+## are loaded via scenes. Therefore we have to load data
+## lazily at runtime.
+func _initialize_if_not_loaded() -> void:
+	if _id == "":
+		return
+	
+	if _name != "" or _category_id != "" or _script_path != "":
+		# entity initialized already
+		return
+		
+	var entity = Pandora.get_entity(_id) as PandoraEntity
+	if entity == null:
+		# entity got removed
+		push_warning("Unable to initialize entity with id=" + _id + " from scene: got removed!")
+		return
+	
+	init_entity(_id, entity._name, entity._icon_path, entity._category_id)
+	
+	## Be vary that PandoraEntity objects initialised from scene exports
+	## are just a copy but with the same attributes. This is fine since
+	## at runtime entities are read-only!
+	self._properties = entity._properties
+	self._property_map = entity._property_map
+	self._inherited_properties = entity._inherited_properties
+	self._property_overrides = entity._property_overrides
