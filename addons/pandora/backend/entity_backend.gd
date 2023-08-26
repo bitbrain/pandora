@@ -29,8 +29,7 @@ func _init(id_generator:PandoraIdGenerator) -> void:
 
 ## Creates a new entity on the given PandoraCategory
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
-	var EntityClass = get_entity_class(category.get_script_path())
-	var entity = EntityClass.new(_id_generator.generate(), name, "", category._id)
+	var entity = _create_entity_from_script(category.get_script_path(), _id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_propagate_properties(category)
@@ -213,14 +212,12 @@ func _deserialize_entities(data:Array) -> Dictionary:
 		# only when entity has an overridden class, initialise it.
 		# otherwise rely on the script path of the parent category.
 		if entity_data.has("_script_path"):
-			var ScriptClass = get_entity_class(entity_data["_script_path"])
-			var entity = ScriptClass.new("", "", "", "")
+			var entity = _create_entity_from_script(entity_data["_script_path"], "", "", "", "")
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 		else:
 			var parent_category = _categories[entity_data["_category_id"]]
-			var ScriptClass = get_entity_class(parent_category.get_script_path())
-			var entity = ScriptClass.new("", "", "", "")
+			var entity = _create_entity_from_script(parent_category.get_script_path(), "", "", "", "")
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 	return dict
@@ -291,9 +288,35 @@ func _collect_entities_recursive(category:PandoraCategory, list:Array[PandoraEnt
 			_collect_entities_recursive(child, list)
 
 
-func get_entity_class(path:String) -> GDScript:
+func _get_entity_class(path:String) -> GDScript:
 	var EntityClass = load(path)
 	if EntityClass == null or not EntityClass.has_source_code():
 		push_warning("Unable to find " + path + " - defaulting to PandoraEntity instead.")
 		EntityClass = PandoraEntityScript
 	return EntityClass
+
+
+func _create_entity_from_script(path:String, id:String, name:String, icon_path:String, category_id:String):
+	var clazz = _get_entity_class(path)
+	var new_method = _find_first_method_of_script(clazz, "_init")
+	if not new_method.has("args"):
+		push_error("ERROR - Pandora is unable to correctly resolve new() method.")
+		return PandoraEntityScript.new(id, name, icon_path, category_id)
+	var expected_method = _find_first_method_of_script(PandoraEntityScript, "_init")
+	if new_method["args"].size() != expected_method["args"].size():
+		push_warning("_init() method has incorrect signature! Requires " + str(expected_method["args"].size()) + " arguments - defaulting to PandoraEntity instead.")
+		return PandoraEntityScript.new(id, name, icon_path, category_id)
+	var entity = clazz.new(id, name, icon_path, category_id)
+	if not entity is PandoraEntity:
+		push_warning("Script '" + path + "' must extend PandoraEntity - defaulting to PandoraEntity instead.")
+		entity = PandoraEntityScript.new(id, name, icon_path, category_id)
+	return entity
+
+
+## searches for the first occurence of the method.
+## methods can occur multiple times in the order of inheritance.
+func _find_first_method_of_script(script:GDScript, method_name:String) -> Dictionary: 
+	for method in script.get_script_method_list():
+		if method.name == method_name:
+			return method
+	return {}
