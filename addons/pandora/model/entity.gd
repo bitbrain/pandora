@@ -356,6 +356,20 @@ func get_category() -> PandoraCategory:
 	return Pandora.get_category(_category_id)
 
 
+func is_category(category_id:String) -> bool:
+	if self._category_id == category_id:
+		return true
+	# find parent category with id
+	var category = Pandora.get_category(self._category_id)
+	var parent_id = category._category_id
+	while parent_id != "":
+		if parent_id == category_id:
+			return true
+		category = Pandora.get_category(parent_id)
+		parent_id = category._category_id
+	return false
+
+
 ## Initializes this entity with the given data dictionary.
 ## Dictionary needs to confirm the structure of this entity.
 func load_data(data:Dictionary) -> void:

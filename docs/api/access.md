@@ -36,3 +36,48 @@ func _ready() -> void:
    var instance:PandoraEntityInstance = sword.instantiate()
 ```
 Within the Godot node editor properties, then select the entity of your choice from the list!
+
+## Type checks
+
+Pandora provides various ways to check if an entity is of a specific "type".
+
+### Static Type Check
+
+```gdscript
+if entity is CustomType:
+   # entity is CustomType, only works if:
+   # 1. a parent category of entity has the CustomType script set
+   # 2. CustomType extends PandoraEntity
+```
+✅ **Advantage**: type-safe and allows for auto-completion</br>
+😕 **Downside**: requires extra scripts to do type-checks
+
+### Direct Category Check
+
+```gdscript
+if entity.get_category().get_entity_name() == "Category Name":
+   # entity is of category with name
+```
+
+✅ **Advantage**: no additional setup required (quick)</br>
+😕 **Downside**: can be unsafe, in case category gets renamed. Also, can only check for direct parent.
+
+### Is Category Check
+
+```gdscript
+if entity.is_category("42"):
+   # any parent category of entity has id "42"
+```
+
+✅ **Advantage**: no additional setup required (quick)</br>
+😕 **Downside**: requires "guessing" of parent category id (can be checked in the editor by hovering the category name).
+
+### Is Category Check (by name constant)
+
+```gdscript
+if entity.is_category(Items.CATEGORY_ORES):
+   # entity is under the Ores category
+```
+
+✅ **Advantage**: no additional setup required (quick)</br>
+😕 **Downside**: currently not possible, requires [#63](https://github.com/bitbrain/pandora/issues/63) to be done first!
