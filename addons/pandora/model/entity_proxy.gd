@@ -11,10 +11,6 @@ class_name PandoraEntityProxy extends PandoraEntity
 
 
 @export var proxied_entity_id:String
-
-
-func _init() -> void:
-	super._init("", "", "", "")
 	
 	
 func instantiate() -> PandoraEntityInstance:
