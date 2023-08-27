@@ -27,5 +27,6 @@
 * [🍻 Contribute](/contribute/)
    * [🔹 Architecture](/contribute/architecture.md)
    * [🔹 Property Inheritance](/contribute/inheritance.md)
+   * [🔹 Adding New Properties](/contribute/adding-new-property.md)
    * [🔹 Lifecycle Addon State](/contribute/lifecycle.md)
    * [🔹 UI Components](/contribute/ui-components.md)
