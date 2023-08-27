@@ -41,7 +41,8 @@ To keep the codebase clean, we cover every feature with unit tests.
 
 # 📦 Installation
 
-1. [Download for Godot 4.x](https://github.com/bitbrain/pandora/archive/refs/heads/godot-4.x.zip)
+1. [Download Latest Release](https://github.com/bitbrain/pandora/releases/latest)
+    - (optional) access latest build for [Godot 4.x](https://github.com/bitbrain/pandora/archive/refs/heads/godot-4.x.zip)
 2. Extract the `pandora` folder into your `/addons` folder within the Godot project.
 3. Activate the addon in the Godot settings: `Project > Project Settings > Plugins`
 
