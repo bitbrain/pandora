@@ -268,6 +268,8 @@ func get_entity_property(name:String) -> PandoraProperty:
 	
 	
 func get_string(property_name:String) -> String:
+	if get_entity_property(property_name).get_default_value() == null:
+		return ""
 	if not has_entity_property(property_name):
 		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
 		return ""
@@ -293,6 +295,8 @@ func get_integer(property_name:String) -> int:
 	
 	
 func get_float(property_name:String) -> float:
+	if get_entity_property(property_name).get_default_value() == null:
+		return 0.0
 	if not has_entity_property(property_name):
 		push_warning("unknown float property %s on instance %s" % [property_name, get_instance_id()])
 		return 0.0
@@ -303,6 +307,8 @@ func get_float(property_name:String) -> float:
 	
 	
 func get_bool(property_name:String) -> bool:
+	if get_entity_property(property_name).get_default_value() == null:
+		return false
 	if not has_entity_property(property_name):
 		push_warning("unknown bool property %s on instance %s" % [property_name, get_instance_id()])
 		return false
@@ -313,6 +319,8 @@ func get_bool(property_name:String) -> bool:
 	
 	
 func get_color(property_name:String) -> Color:
+	if get_entity_property(property_name).get_default_value() == null:
+		return Color.WHITE
 	if not has_entity_property(property_name):
 		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
 		return Color.WHITE
@@ -323,6 +331,8 @@ func get_color(property_name:String) -> Color:
 	
 	
 func get_reference(property_name:String) -> PandoraEntity:
+	if get_entity_property(property_name).get_default_value() == null:
+		return null
 	if not has_entity_property(property_name):
 		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
 		return null
@@ -333,6 +343,8 @@ func get_reference(property_name:String) -> PandoraEntity:
 	
 	
 func get_resource(property_name:String) -> Resource:
+	if get_entity_property(property_name).get_default_value() == null:
+		return null
 	if not has_entity_property(property_name):
 		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
 		return null
