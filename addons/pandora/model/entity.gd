@@ -281,10 +281,15 @@ func get_integer(property_name:String) -> int:
 	if not has_entity_property(property_name):
 		push_warning("unknown integer property %s on instance %s" % [property_name, get_instance_id()])
 		return 0
-	if not get_entity_property(property_name).get_default_value() is int:
+	# check if property is either int or float, as loading from json
+	# auto-converts to float type
+	var default_value = get_entity_property(property_name).get_default_value()
+	if not default_value is int and not default_value is float:
 		push_error("property %s on instance %s is not an int" % [property_name, get_instance_id()])
 		return 0
-	return get_entity_property(property_name).get_default_value() as int
+	if default_value is float:
+		return int(default_value)
+	return default_value as int
 	
 	
 func get_float(property_name:String) -> float:

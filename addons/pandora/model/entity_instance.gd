@@ -54,9 +54,12 @@ func get_integer(property_name:String) -> int:
 	if not _properties.has(property_name):
 		push_warning("unknown integer property %s on instance %s" % [property_name, get_instance_id()])
 		return 0
-	if not _get_property_value(property_name) is int:
+	var value = _get_property_value(property_name)
+	if not value is int and not value is float:
 		push_error("property %s on instance %s is not an int" % [property_name, get_instance_id()])
 		return 0
+	if value is float:
+		return float(value)
 	return _get_property_value(property_name) as int
 	
 	
