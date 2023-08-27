@@ -24,13 +24,16 @@ func after() -> void:
 func test_api_save_and_load_objects() -> void:
 	var category = Pandora.create_category("Swords")
 	var category_id = category._id
-	var entity = Pandora.create_entity("Zweihander", category)
+	var entity = Pandora.create_entity("Zweihander", category) as PandoraEntity
+	var weight = Pandora.create_property(category, "Weight", "int")
+	entity.get_entity_property("Weight").set_default_value(42)
 	var entity_id = entity._id
 	Pandora.save_data()
 	Pandora._clear()
 	Pandora.load_data()
 	assert_that(Pandora.get_category(category_id)).is_not_null()
 	assert_that(Pandora.get_entity(entity_id)).is_not_null()
+	assert_that(Pandora.get_entity(entity_id).get_integer("Weight")).is_equal(42)
 
 
 func _save_load_instance() -> void:
