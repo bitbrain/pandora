@@ -59,7 +59,7 @@ func get_integer(property_name:String) -> int:
 		push_error("property %s on instance %s is not an int" % [property_name, get_instance_id()])
 		return 0
 	if value is float:
-		return float(value)
+		return int(value)
 	return _get_property_value(property_name) as int
 	
 	
