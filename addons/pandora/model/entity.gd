@@ -4,6 +4,9 @@
 class_name PandoraEntity extends Resource
 
 
+const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
+
+
 signal name_changed(new_name:String)
 signal icon_changed(new_icon_path:String)
 signal script_path_changed(new_script_path:String)
@@ -14,6 +17,25 @@ signal id_generation_class_changed(new_id_generation_path:String)
 
 ## used for export/import from scenes
 @export var _id:String
+
+
+var _name:String
+var _icon_path:String
+var _category_id:String
+var _script_path:String
+var _instance_script_path:String
+# not persisted but computed at runtime
+var _properties:Array[PandoraProperty] = []
+# property name -> Property
+var _property_map = {}
+# property name -> InheritedProperty (cache)
+var _inherited_properties = {}
+var _property_overrides = {}
+
+# there is the option to generate child entity
+# ids + category ids into a file for easier access.
+var _generate_ids = false 
+var _ids_generation_class = ""
 
 
 ## Wrapper around PandoraProperty that is used to manage overrides.
@@ -120,25 +142,6 @@ class OverridingProperty extends PandoraProperty:
 		var old_inherited_property = _parent_entity._inherited_properties[old_name]
 		_parent_entity._inherited_properties.erase(old_name)
 		_parent_entity._inherited_properties[new_name] = old_inherited_property
-		
-
-var _name:String
-var _icon_path:String
-var _category_id:String
-var _script_path:String
-var _instance_script_path:String
-# not persisted but computed at runtime
-var _properties:Array[PandoraProperty] = []
-# property name -> Property
-var _property_map = {}
-# property name -> InheritedProperty (cache)
-var _inherited_properties = {}
-var _property_overrides = {}
-
-# there is the option to generate child entity
-# ids + category ids into a file for easier access.
-var _generate_ids = false 
-var _ids_generation_class = ""
 
 
 ## do not rely on _init as it breaks .tres files that may still
@@ -170,6 +173,8 @@ func get_icon_path() -> String:
 	_initialize_if_not_loaded()
 	if _icon_path != "":
 		return _icon_path
+	if get_category().get_icon_path() != CATEGORY_ICON_PATH:
+		return get_category().get_icon_path()
 	return "res://addons/pandora/icons/Object.svg"
 	
 	
@@ -354,8 +359,8 @@ func get_category() -> PandoraCategory:
 	if _category_id == null or _category_id == "":
 		return null
 	return Pandora.get_category(_category_id)
-
-
+	
+	
 func is_category(category_id:String) -> bool:
 	if self._category_id == category_id:
 		return true
@@ -368,6 +373,7 @@ func is_category(category_id:String) -> bool:
 		category = Pandora.get_category(parent_id)
 		parent_id = category._category_id
 	return false
+	
 
 
 ## Initializes this entity with the given data dictionary.
