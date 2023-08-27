@@ -54,6 +54,7 @@ icon = ExtResource("3_ehaql")
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete selected entry"
+disabled = true
 icon = ExtResource("4_c68uu")
 
 [node name="SaveButton" type="Button" parent="Contents/HeaderBar/Actions"]
@@ -104,7 +105,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 0.27451)
-text = "Pandora v1.0-alpha1"
+text = "Pandora v1.0-alpha3"
 horizontal_alignment = 2
 vertical_alignment = 1
 justification_flags = 0

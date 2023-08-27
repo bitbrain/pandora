@@ -17,7 +17,7 @@ func _ready() -> void:
 	line_edit.text_submitted.connect(_path_changed)
 	load_file_button.pressed.connect(file_dialog.popup)
 	file_dialog.file_selected.connect(_path_changed)
-	
+
 	
 func set_resource_path(path:String) -> void:
 	var resource = load(path) as Resource
