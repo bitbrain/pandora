@@ -25,20 +25,6 @@ var _id_generator:PandoraIdGenerator
 
 func _init(id_generator:PandoraIdGenerator) -> void:
 	self._id_generator = id_generator
-	
-	
-func free() -> void:
-	_root_categories.clear()
-	for key in _properties:
-		_properties[key].free()
-	for key in _entities:
-		_entities[key].free()
-	for key in _categories:
-		_categories[key].free()
-	_properties.clear()
-	_entities.clear()
-	_categories.clear()
-	super()
 
 
 ## Creates a new entity on the given PandoraCategory

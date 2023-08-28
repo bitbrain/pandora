@@ -16,6 +16,7 @@ func before() -> void:
 
 func before_test() -> void:
 	Pandora._clear()
+	Pandora.load_data()
 
 	
 func after() -> void:
@@ -36,7 +37,7 @@ func test_editor_loads() -> void:
 	var scene = auto_free(load(__source).instantiate())
 	var runner = scene_runner(scene)
 
-	runner.simulate_frames(3)
+	await runner.simulate_frames(3)
 	
 	var tree = scene.tree as PandoraEntityTree
 	assert_that(tree.entity_items.size()).is_equal(3)

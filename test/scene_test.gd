@@ -27,6 +27,6 @@ func test_initialize_scene() -> void:
 	scene.entity = entity
 	var runner := scene_runner(scene)
 	
-	runner.simulate_frames(1)
+	await runner.simulate_frames(1)
 	
 	assert_that(scene.get_entity_instance()).is_not_null()
