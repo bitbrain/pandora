@@ -30,6 +30,8 @@ var _backend:PandoraEntityBackend
 
 
 func init(property:PandoraProperty, control:PandoraPropertyControl, backend:PandoraEntityBackend) -> void:
+	if self._control != null:
+		_control.queue_free()
 	self._property = property
 	self._control = control
 	self._backend = backend
@@ -61,6 +63,8 @@ func _refresh_key() -> void:
 
 
 func _refresh_value() -> void:
+	for child in property_value.get_children():
+		child.queue_free()
 	property_value.get_children().clear()
 	property_value.add_child(_control)
 

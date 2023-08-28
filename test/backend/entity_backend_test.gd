@@ -12,7 +12,7 @@ const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
 
 
 func create_object_backend() -> PandoraEntityBackend:
-	return PandoraEntityBackend.new(PandoraIdGenerator.new())
+	return auto_free(PandoraEntityBackend.new(PandoraIdGenerator.new()))
 
 
 func test_create_entity() -> void:

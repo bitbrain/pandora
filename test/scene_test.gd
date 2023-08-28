@@ -23,7 +23,7 @@ func test_initialize_scene() -> void:
 	var category = Pandora.create_category("Swords")
 	category.set_script_path(CUSTOM_ENTITY_PATH)
 	var entity = Pandora.create_entity("Iron Sword", category)
-	var scene = load(__source).instantiate()
+	var scene = auto_free(load(__source).instantiate())
 	scene.entity = entity
 	var runner := scene_runner(scene)
 	
