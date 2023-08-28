@@ -1,7 +1,7 @@
 extends Node2D
 
 
-@export var entity:PandoraEntity
+@export var entity:CustomMockEntity
 
 
 var _instance:CustomMockEntityInstance

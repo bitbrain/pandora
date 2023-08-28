@@ -29,7 +29,10 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	_clear()
-
+	_entity_backend = null
+	_context_manager = null
+	_id_generator = null
+	_storage = null
 
 func get_context_id() -> String:
 	return _context_manager.get_context_id()

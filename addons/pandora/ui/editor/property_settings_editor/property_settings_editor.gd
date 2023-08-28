@@ -18,6 +18,7 @@ var _default_settings:Dictionary
 func set_property(property:PandoraProperty, default_settings:Dictionary) -> void:
 	for child in properties_settings.get_children():
 		child.queue_free()
+	properties_settings.get_children().clear()
 	self._property = property
 	self._default_settings = default_settings
 	info_label.visible = property == null or not property.is_original()
@@ -35,9 +36,13 @@ func set_property(property:PandoraProperty, default_settings:Dictionary) -> void
 		var options:Array[Variant] = []
 		options.assign(default_setting["options"] if default_setting.has("options") else [])
 		var control = _new_control_for_type(default_setting_name, default_setting.type, options, default_setting.value, current_value)
-		control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		setting.add_child(control)
-		properties_settings.add_child(setting)
+		if control != null:
+			control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			setting.add_child(control)
+			properties_settings.add_child(setting)
+		else:
+			setting.queue_free()
+			push_warning("Unsupported property setting type for " + str(default_setting_name))
 
 
 func _new_control_for_type(key:String, type:String, options:Array[Variant], default_value:Variant, current_value:Variant) -> Control:

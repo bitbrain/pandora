@@ -1,5 +1,5 @@
 @tool
-extends Control
+class_name PandoraEditor extends Control
 
 
 @onready var tree:PandoraEntityTree = %EntityTree
