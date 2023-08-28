@@ -10,12 +10,13 @@ signal property_added(scene:PackedScene)
 
 var type_to_scene = {}
 
-
+	
 func _ready() -> void:
 	for button in _buttons:
 		button.pressed.connect(_pressed.bind(button as PandoraPropertyButton))
 		var scene_instance = button.scene.instantiate()
 		type_to_scene[scene_instance.type] = button.scene
+		scene_instance.queue_free()
 		
 
 func _pressed(button:PandoraPropertyButton) -> void:
