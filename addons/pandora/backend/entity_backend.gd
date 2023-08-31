@@ -54,11 +54,12 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 
 
 ## Creates a new property on the given category parent
-func create_property(on_category:PandoraCategory, name:String, type:String, defaultValue:Variant = null) -> PandoraProperty:
+func create_property(on_category:PandoraCategory, name:String, type:String, default_value:Variant = null) -> PandoraProperty:
 	if on_category.has_entity_property(name):
 		push_error("Unable to create property " + name + " - property with the same name exists.")
 		return null
-	var property = PandoraProperty.new(_id_generator.generate(), name, type, defaultValue if defaultValue else PandoraProperty.default_value_of(type))
+	var property = PandoraProperty.new(_id_generator.generate(), name, type)
+	property.set_default_value(default_value)
 	property._category_id = on_category._id
 	_properties[property._id] = property
 	on_category._properties.append(property)
@@ -239,7 +240,7 @@ func _deserialize_categories(data:Array) -> Dictionary:
 func _deserialize_properties(data:Array) -> Dictionary:
 	var dict = {}
 	for property_data in data:
-		var property = PandoraProperty.new("", "", "", "")
+		var property = PandoraProperty.new("", "", "")
 		property.load_data(property_data)
 		dict[property._id] = property
 	return dict

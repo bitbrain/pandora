@@ -1,4 +1,4 @@
-class_name PandoraReference extends Resource
+class_name PandoraReference extends RefCounted
 
 
 enum Type {

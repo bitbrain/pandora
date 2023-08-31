@@ -53,12 +53,12 @@ func test_create_settings_ui() -> void:
 	var id_generator = PandoraIdGenerator.new()
 	var backend = PandoraEntityBackend.new(id_generator)
 	var root_category = backend.create_category("root")
-	var property = backend.create_property(root_category, "Weight", "float")
+	var property = backend.create_property(root_category, "Weight", "reference")
 	var control = auto_free(load(__source).instantiate())
 	var runner = scene_runner(control)
-	control.set_property(property, EXAMPLE_SETTINGS)
+	control.set_property(property)
 	
-	assert_that(control.properties_settings.get_child_count()).is_equal(7)
+	assert_that(control.properties_settings.get_child_count()).is_equal(3)
 	
 	
 	
