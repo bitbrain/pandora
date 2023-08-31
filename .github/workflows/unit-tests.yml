@@ -34,7 +34,7 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: "📦 Checkout Beehave Repository"
+      - name: "📦 Checkout Pandora Repository"
         uses: actions/checkout@v3
         with:
           lfs: true
