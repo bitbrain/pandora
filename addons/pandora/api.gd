@@ -11,7 +11,7 @@ signal entity_added(entity:PandoraEntity)
 
 var _context_manager:PandoraContextManager
 var _storage:PandoraJsonDataStorage
-var _id_generator:PandoraIdGenerator
+var _id_generator:NanoIDGenerator
 var _entity_backend:PandoraEntityBackend
 
 
@@ -21,7 +21,7 @@ var _loaded = false
 func _enter_tree() -> void:
 	self._storage = PandoraJsonDataStorage.new("res://")
 	self._context_manager = PandoraContextManager.new()
-	self._id_generator = PandoraIdGenerator.new()
+	self._id_generator = NanoIDGenerator.new(NanoIDAlphabets.URL, 10)
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
 	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
 	load_data()
@@ -100,16 +100,13 @@ func load_data() -> void:
 	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
 	if all_object_data.has("_entity_data"):
 		_entity_backend.load_data(all_object_data["_entity_data"])
-	if all_object_data.has("_id_generator"):
-		_id_generator.load_data(all_object_data["_id_generator"])
 	_loaded = true
 	data_loaded.emit()
 
 
 func save_data() -> void:
 	var all_object_data = {
-			"_entity_data": _entity_backend.save_data(),
-			"_id_generator": _id_generator.save_data()
+			"_entity_data": _entity_backend.save_data()
 		}
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
@@ -143,5 +140,4 @@ func deserialize(data:Dictionary) -> PandoraEntityInstance:
 # used for testing only and shutting down the addon
 func _clear() -> void:
 	_entity_backend._clear()
-	_id_generator.clear()
 	_loaded = false
