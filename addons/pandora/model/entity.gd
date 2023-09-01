@@ -58,9 +58,13 @@ class OverridingProperty extends PandoraProperty:
 	
 	func get_setting_override(name:String) -> Variant:
 		return _property.get_setting_override(name)
+		
+		
+	func get_setting(name:String) -> Variant:
+		return _property.get_setting(name)
 	
 	
-	func has_setting_override(name:String) -> Variant:
+	func has_setting_override(name:String) -> bool:
 		return _property.has_setting_override(name)
 		
 		
@@ -73,7 +77,7 @@ class OverridingProperty extends PandoraProperty:
 
 
 	func set_default_value(value: Variant) -> void:
-		if not is_valid_type(value):
+		if not get_property_type().is_valid(value):
 			print("Pandora error: value " + str(value) + " is incompatible with type ", get_property_type())
 			return
 		# ensure that a supported type is assigned.
@@ -99,7 +103,7 @@ class OverridingProperty extends PandoraProperty:
 		return _property.get_property_name()
 
 
-	func get_property_type() -> String:
+	func get_property_type() -> PandoraPropertyType:
 		return _property.get_property_type()
 		
 	
@@ -436,9 +440,10 @@ func _save_overrides() -> Dictionary:
 	for property_name in _property_overrides:
 		var value = _property_overrides[property_name]
 		var property = get_entity_property(property_name)
+		var type = property.get_property_type()
 		output[property_name] = {
-			"type": property.get_property_type(),
-			"value": PandoraProperty.write_value(value)
+			"type": type.get_type_name(),
+			"value": type.write_value(value)
 			}
 	return output
 	
@@ -447,7 +452,8 @@ func _load_overrides(data:Dictionary) -> Dictionary:
 	var output = {}
 	for property_name in data:
 		var unparsed_data = data[property_name]
-		output[property_name] = PandoraProperty.parse_value(unparsed_data["value"], unparsed_data["type"])
+		var type = PandoraPropertyType.lookup(unparsed_data["type"])
+		output[property_name] = type.parse_value(unparsed_data["value"])
 	return output
 
 

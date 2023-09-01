@@ -2,19 +2,36 @@
 
 In this section you will learn how to introduce new property types to Pandora. [Refer to these docs](http://localhost:3000/#/concepts/properties/) to see a list of all currently available properties.
 
-## Step 1: Make `PandoraProperty` aware of new type
+## Step 1: Add new subclass of `PandoraPropertyType`
 
-Head to `res://addons/pandora/model/property.gd` and open up the file. The `PandoraProperty` is responsible for storing and providing property information to Godot. This type has a few responsibilities:
+Head to `res://addons/pandora/model/types` and create a new script with the name of your type that extends `PandoraPropertyType`:
+```gdscript
+extends PandoraPropertyType
 
-- define what properties are valid
-- define how to load/read properties from json
-- provide methods to access and update the property values via GDScript
+const SETTINGS = {}
 
-Search for the `_type_checks()` method that defines which variants are actually valid and allowed by Pandora. Add your new type there. Make sure you choose a name for your property type that is concise and makes sense.
 
-> `Dictionary` and `Array` may be special cases here, e.g. an `Array` may still be of type `reference` but instead of a single value, its `Variant` is an array of references.
+func _init() -> void:
+   super("identifier", SETTINGS, null)
+```
+The parent `_init()` function takes the following parameters:
 
-Also ensure to define a default value if deemed necessary in this script. Further up you will find methods regarding parsing and writing data - some properties like `"color"` need to be stored somehow to JSON, which is handled there.
+- the `name` of a type, e.g. `"identifier"` with which the type is identified across Pandora
+- the `settings` this type provides - this is especially useful if you want to make this type customizable
+- the `default` value that this type provides, in case the user does not specify one.
+
+### Validation
+
+Ensure to override the `is_valid(variant:Variant)` method to ensure variants used in combination with this type are valid, e.g.:
+```gdscript
+func is_valid(variant:Variant) -> bool:
+   # ensures only arrays are supported
+   return variant is Array
+```
+
+### Parsing & Saving
+
+Some types require custom parsing - e.g. inside Pandora, the `"color"` type variant is of type `Color` - however, it gets stored as its HTML representation to disk. Override the `parse_value` (reading from file) and `write_value` (writing to file) functions to customise serialization.
 
 ## Step 2: Build Property Picker Component
 

@@ -6,7 +6,7 @@ extends PanelContainer
 signal inherited_property_selected(category_id:String, property_name:String)
 
 ## called when an original property was selected
-signal original_property_selected(property:PandoraProperty, default_settings:Dictionary)
+signal original_property_selected(property:PandoraProperty)
 
 
 var _property:PandoraProperty:
@@ -105,7 +105,7 @@ func _delete_property() -> void:
 	
 
 func _property_key_focused() -> void:
-	original_property_selected.emit(_property, _control.get_default_settings())
+	original_property_selected.emit(_property)
 
 
 func _property_key_unfocused() -> void:
@@ -114,7 +114,7 @@ func _property_key_unfocused() -> void:
 
 func _control_value_focused() -> void:
 	if property_key_edit.visible:
-		original_property_selected.emit(_property, _control.get_default_settings())
+		original_property_selected.emit(_property)
 		
 	
 func _control_value_unfocused() -> void:

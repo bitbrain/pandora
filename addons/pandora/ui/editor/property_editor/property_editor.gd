@@ -36,7 +36,7 @@ func edit_key(property_name:String) -> void:
 
 func set_entity(entity:PandoraEntity) -> void:
 	property_settings_container.visible = entity is PandoraCategory
-	property_settings_container.set_property(null, {})
+	property_settings_container.set_property(null)
 	for child in property_list.get_children():
 		child.queue_free()
 	self.current_entity = entity
@@ -50,7 +50,7 @@ func set_entity(entity:PandoraEntity) -> void:
 		var properties = entity.get_entity_properties()
 		
 		for property in properties:
-			var scene = property_bar.get_scene_by_type(property.get_property_type())
+			var scene = property_bar.get_scene_by_type(property.get_property_type().get_type_name())
 			var control = scene.instantiate() as PandoraPropertyControl
 			_add_property_control(control, property)
 

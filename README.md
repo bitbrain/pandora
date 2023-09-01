@@ -1,6 +1,6 @@
 ![logo](docs/assets/logo.svg)
 
-[![pandora-ci](https://github.com/bitbrain/pandora/actions/workflows/pandora-ci.yml/badge.svg)](https://github.com/bitbrain/pandora/actions/workflows/pandora-ci.yml) [![](https://img.shields.io/discord/785246324793540608.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/CKBuE5djXe)
+[![pandora-ci](https://github.com/bitbrain/pandora/actions/workflows/pandora-ci.yml/badge.svg)](https://github.com/bitbrain/pandora/actions/workflows/pandora-ci.yml) [![](https://img.shields.io/discord/785246324793540608.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/CKBuE5djXe) [![](https://img.shields.io/badge/%20%F0%9F%93%A6%20swag!%20-shop.bitbra.in-blueviolet)](https://shop.bitbra.in)
 
 ---
 

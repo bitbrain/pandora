@@ -2,9 +2,7 @@
 extends PandoraPropertyControl
 
 
-const MIN_VALUE = "Min Value"
-const MAX_VALUE = "Max Value"
-const STEPS = "Steps"
+const FloatType = preload("res://addons/pandora/model/types/float.gd")
 
 
 @onready var spin_box: SpinBox = $SpinBox
@@ -26,28 +24,11 @@ func _ready() -> void:
 func refresh() -> void:
 	spin_box.rounded = false
 	spin_box.value = _property.get_default_value() as float
-	spin_box.min_value = _get_setting(MIN_VALUE) as int
-	spin_box.max_value = _get_setting(MAX_VALUE) as int
-	spin_box.step = _get_setting(STEPS) as float
-
-
-func get_default_settings() -> Dictionary:
-	return {
-		STEPS: {
-			"type": "float",
-			"value": 0.01
-		},
-		MIN_VALUE: {
-			"type": "int",
-			"value": -9999999999
-		},
-		MAX_VALUE: {
-			"type": "int",
-			"value": 9999999999
-		}
-	}
+	spin_box.min_value = _property.get_setting(FloatType.SETTING_MIN_VALUE) as int
+	spin_box.max_value = _property.get_setting(FloatType.SETTING_MAX_VALUE) as int
+	spin_box.step = _property.get_setting(FloatType.SETTING_STEPS) as float
 
 
 func _setting_changed(key:String) -> void:
-	if key == MIN_VALUE || key == MAX_VALUE || key == STEPS:
+	if key == FloatType.SETTING_MIN_VALUE || key == FloatType.SETTING_MAX_VALUE || key == FloatType.SETTING_STEPS:
 		refresh()
