@@ -1,4 +1,4 @@
-# NanoID class from github.com/eth0net/nanoid-godot (MIT)
+# NanoID class from github.com/eth0net/nanoid-godot (MIT) v0.2.0
 class_name NanoID
 
 
