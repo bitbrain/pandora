@@ -10,15 +10,21 @@ const __source = "res://addons/pandora/ui/components/entity_tree/entity_tree.tsc
 
 var tree:PandoraEntityTree
 var runner: GdUnitSceneRunner
+var _backend_ref: PandoraEntityBackend
 
 func before_test() -> void:
 	tree = auto_free(load(__source).instantiate())
 	runner = scene_runner(tree)
+	_backend_ref = Pandora._entity_backend
+	Pandora._entity_backend = PandoraEntityBackend.new(NanoIDGenerator.new(NanoIDAlphabets.URL, 9))
+
+
+func after_test() -> void:
+	Pandora._entity_backend = _backend_ref
 
 
 func test_populate_data() -> void:
-	var id_generator = PandoraIdGenerator.new()
-	var backend = PandoraEntityBackend.new(id_generator)
+	var backend = Pandora._entity_backend
 	var parent = backend.create_category("Parent")
 	var child1 = backend.create_category("Child1", parent)
 	var child11 = backend.create_category("Child11", child1)

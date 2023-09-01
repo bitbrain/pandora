@@ -20,10 +20,10 @@ var _categories:Dictionary = {}
 # list of categories on the root level
 var _root_categories:Array[PandoraCategory] = []
 # generates ids for new entities
-var _id_generator:PandoraIdGenerator
+var _id_generator:NanoIDGenerator
 
 
-func _init(id_generator:PandoraIdGenerator) -> void:
+func _init(id_generator:NanoIDGenerator) -> void:
 	self._id_generator = id_generator
 
 
