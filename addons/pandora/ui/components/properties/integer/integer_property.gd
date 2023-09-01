@@ -1,8 +1,8 @@
 @tool
 extends PandoraPropertyControl
 
-const MIN_VALUE = "Min Value"
-const MAX_VALUE = "Max Value"
+
+const IntType = preload("res://addons/pandora/model/types/int.gd")
 
 
 @onready var spin_box: SpinBox = $SpinBox
@@ -24,23 +24,10 @@ func _ready() -> void:
 func refresh() -> void:
 	if _property != null:
 		spin_box.value = _property.get_default_value() as int
-	spin_box.min_value = _get_setting(MIN_VALUE) as int
-	spin_box.max_value = _get_setting(MAX_VALUE) as int
-
-
-func get_default_settings() -> Dictionary:
-	return {
-		MIN_VALUE: {
-			"type": "int",
-			"value": -9999999999
-		},
-		MAX_VALUE: {
-			"type": "int",
-			"value": 9999999999
-		}
-	}
+	spin_box.min_value = _property.get_setting(IntType.SETTING_MIN_VALUE) as int
+	spin_box.max_value = _property.get_setting(IntType.SETTING_MAX_VALUE) as int
 
 
 func _setting_changed(key:String) -> void:
-	if key == MIN_VALUE || key == MAX_VALUE:
+	if key == IntType.SETTING_MIN_VALUE || key == IntType.SETTING_MAX_VALUE:
 		refresh()

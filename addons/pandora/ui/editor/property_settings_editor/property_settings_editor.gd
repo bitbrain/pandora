@@ -15,23 +15,23 @@ var _default_settings:Dictionary
 
 
 
-func set_property(property:PandoraProperty, default_settings:Dictionary) -> void:
+func set_property(property:PandoraProperty) -> void:
 	for child in properties_settings.get_children():
 		child.queue_free()
 	properties_settings.get_children().clear()
 	self._property = property
-	self._default_settings = default_settings
+	self._default_settings = property.get_property_type().get_settings() if property != null else {}
 	info_label.visible = property == null or not property.is_original()
 	header_label.visible = not info_label.visible
 
-	for default_setting_name in default_settings:
+	for default_setting_name in _default_settings:
 		var setting = HBoxContainer.new()
 		setting.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var label = Label.new()
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		label.text = default_setting_name
 		setting.add_child(label)
-		var default_setting = default_settings[default_setting_name]
+		var default_setting = _default_settings[default_setting_name]
 		var current_value = _property.get_setting_override(default_setting_name) if _property.has_setting_override(default_setting_name) else default_setting.value
 		var options:Array[Variant] = []
 		options.assign(default_setting["options"] if default_setting.has("options") else [])
