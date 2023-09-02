@@ -11,7 +11,6 @@ _id = "49"
 
 [sub_resource type="Resource" id="Resource_oemo8"]
 script = ExtResource("3_jp02v")
-_id = "51"
 
 [node name="TestScene" type="CenterContainer"]
 anchors_preset = 15

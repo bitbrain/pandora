@@ -22,6 +22,7 @@ func after() -> void:
 	Pandora._clear()
 	Pandora.load_data()
 
+
 func test_api_save_and_load_objects() -> void:
 	var category = Pandora.create_category("Swords")
 	var category_id = category._id
@@ -37,10 +38,12 @@ func test_api_save_and_load_objects() -> void:
 	assert_that(Pandora.get_entity(entity_id).get_integer("Weight")).is_equal(42)
 
 
-func _save_load_instance() -> void:
+func test_save_load_instance() -> void:
 	var category = Pandora.create_category("Swords")
 	var entity = Pandora.create_entity("Zweihander", category)
+	var property = Pandora.create_property(category, "ref", "reference")
 	var instance = entity.instantiate()
+	instance.set_reference("ref", entity)
 	var data = Pandora.serialize(instance)
 	var new_instance = Pandora.deserialize(data)
 	

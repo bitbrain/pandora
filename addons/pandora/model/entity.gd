@@ -3,7 +3,7 @@
 @tool
 class_name PandoraEntity extends Resource
 
-
+const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
 
 
@@ -23,7 +23,6 @@ var _name:String
 var _icon_path:String
 var _category_id:String
 var _script_path:String
-var _instance_script_path:String
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -31,11 +30,14 @@ var _property_map = {}
 # property name -> InheritedProperty (cache)
 var _inherited_properties = {}
 var _property_overrides = {}
-
 # there is the option to generate child entity
 # ids + category ids into a file for easier access.
 var _generate_ids = false 
 var _ids_generation_class = ""
+
+# String -> PandoraPropertyInstance
+var _instance_properties:Dictionary
+var _instanced_from_id:String
 
 
 ## Wrapper around PandoraProperty that is used to manage overrides.
@@ -158,22 +160,35 @@ func init_entity(id:String, name:String, icon_path:String, category_id:String) -
 	
 
 ## Creates an instance of this entity.
-func instantiate() -> PandoraEntityInstance:
-	var instance_properties = _create_instance_properties()
-	return PandoraEntityInstance.new(get_entity_id(), instance_properties)
-
+func instantiate() -> PandoraEntity:
+	var entity = ScriptUtil.create_entity_from_script(_script_path, "", "", "", "")
+	if entity != null:
+		entity._instanced_from_id = _id
+		entity._instance_properties = _create_instance_properties()
+	return entity
 	
+	
+func is_instance() -> bool:
+	return _instanced_from_id != ""
+
+
 func get_entity_id() -> String:
+	if is_instance() and _id == "":
+		return _get_instanced_from_entity().get_entity_id()
 	_initialize_if_not_loaded()
 	return _id
 	
 	
 func get_entity_name() -> String:
+	if is_instance() and _name == "":
+		return _get_instanced_from_entity().get_entity_name()
 	_initialize_if_not_loaded()
 	return tr(_name)
 	
 	
 func get_icon_path() -> String:
+	if is_instance() and _icon_path == "":
+		return _get_instanced_from_entity().get_icon_path()
 	_initialize_if_not_loaded()
 	if _icon_path != "":
 		return _icon_path
@@ -183,21 +198,14 @@ func get_icon_path() -> String:
 	
 	
 func get_script_path() -> String:
+	if is_instance():
+		return _get_instanced_from_entity().get_script_path()
 	_initialize_if_not_loaded()
 	if _script_path != "":
 		return _script_path
 	if _category_id != "" and get_category() != null:
 		return get_category().get_script_path()
 	return "res://addons/pandora/model/entity.gd"
-	
-	
-func get_instance_script_path() -> String:
-	_initialize_if_not_loaded()
-	if _instance_script_path != "":
-		return _instance_script_path
-	if _category_id != "" and get_category() != null:
-		return get_category().get_instance_script_path()
-	return "res://addons/pandora/model/entity_instance.gd"
 
 
 func set_entity_name(new_name:String) -> void:
@@ -215,17 +223,14 @@ func set_script_path(new_path:String) -> void:
 	script_path_changed.emit(new_path)
 	
 	
-func set_instance_script_path(new_path:String) -> void:
-	self._instance_script_path = new_path
-	instance_script_path_changed.emit(new_path)
-	
-	
 func set_generate_ids(generate_ids:bool) -> void:
 	self._generate_ids = generate_ids
 	generate_ids_changed.emit(_generate_ids)
 
 
 func is_generate_ids() -> bool:
+	if is_instance():
+		return _get_instanced_from_entity().is_generate_ids()
 	_initialize_if_not_loaded()
 	if self._generate_ids:
 		return _generate_ids
@@ -249,11 +254,15 @@ func get_id_generation_class() -> String:
 
 	
 func get_category_id() -> String:
+	if is_instance():
+		return _get_instanced_from_category().get_entity_id()
 	_initialize_if_not_loaded()
 	return _category_id
 
 
 func get_entity_property(name:String) -> PandoraProperty:
+	if is_instance():
+		return _get_instanced_from_entity().get_entity_property(name)
 	_initialize_if_not_loaded()
 	if _property_map.has(name):
 		var property = _property_map[name] as PandoraProperty
@@ -272,98 +281,83 @@ func get_entity_property(name:String) -> PandoraProperty:
 	
 	
 func get_string(property_name:String) -> String:
-	if get_entity_property(property_name).get_default_value() == null:
-		return ""
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as String
 	if not has_entity_property(property_name):
 		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
-		return ""
-	if not get_entity_property(property_name).get_default_value() is String:
-		push_error("property %s on instance %s is not a string" % [property_name, get_instance_id()])
 		return ""
 	return get_entity_property(property_name).get_default_value() as String
 	
 	
 func get_integer(property_name:String) -> int:
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as int
 	if not has_entity_property(property_name):
 		push_warning("unknown integer property %s on instance %s" % [property_name, get_instance_id()])
 		return 0
 	# check if property is either int or float, as loading from json
 	# auto-converts to float type
 	var default_value = get_entity_property(property_name).get_default_value()
-	if not default_value is int and not default_value is float:
-		push_error("property %s on instance %s is not an int" % [property_name, get_instance_id()])
-		return 0
 	if default_value is float:
 		return int(default_value)
 	return default_value as int
 	
 	
 func get_float(property_name:String) -> float:
-	if get_entity_property(property_name).get_default_value() == null:
-		return 0.0
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as float
 	if not has_entity_property(property_name):
 		push_warning("unknown float property %s on instance %s" % [property_name, get_instance_id()])
-		return 0.0
-	if not get_entity_property(property_name).get_default_value() is float:
-		push_error("property %s on instance %s is not a float" % [property_name, get_instance_id()])
 		return 0.0
 	return get_entity_property(property_name).get_default_value() as float
 	
 	
 func get_bool(property_name:String) -> bool:
-	if get_entity_property(property_name).get_default_value() == null:
-		return false
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as bool
 	if not has_entity_property(property_name):
 		push_warning("unknown bool property %s on instance %s" % [property_name, get_instance_id()])
-		return false
-	if not get_entity_property(property_name).get_default_value() is bool:
-		push_error("property %s on instance %s is not a bool" % [property_name, get_instance_id()])
 		return false
 	return get_entity_property(property_name).get_default_value() as bool
 	
 	
 func get_color(property_name:String) -> Color:
-	if get_entity_property(property_name).get_default_value() == null:
-		return Color.WHITE
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as Color
 	if not has_entity_property(property_name):
 		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
-		return Color.WHITE
-	if not get_entity_property(property_name).get_default_value() is Color:
-		push_error("property %s on instance %s is not a bool" % [property_name, get_instance_id()])
 		return Color.WHITE
 	return get_entity_property(property_name).get_default_value() as Color
 	
 	
 func get_reference(property_name:String) -> PandoraEntity:
-	if get_entity_property(property_name).get_default_value() == null:
-		return null
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as PandoraEntity
 	if not has_entity_property(property_name):
 		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
-		return null
-	if not get_entity_property(property_name).get_default_value() is PandoraEntity:
-		push_error("property %s on instance %s is not a reference" % [property_name, get_instance_id()])
 		return null
 	return get_entity_property(property_name).get_default_value() as PandoraEntity
 	
 	
 func get_resource(property_name:String) -> Resource:
-	if get_entity_property(property_name).get_default_value() == null:
-		return null
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as Resource
 	if not has_entity_property(property_name):
 		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
-		return null
-	if not get_entity_property(property_name).get_default_value() is Resource:
-		push_error("property %s on instance %s is not a resource" % [property_name, get_instance_id()])
 		return null
 	return get_entity_property(property_name).get_default_value() as Resource
 
 	
 func has_entity_property(name:String) -> bool:
+	if is_instance():
+		return not _instance_properties.has(name) and not _get_instanced_from_entity().has_entity_property(name)
 	_initialize_if_not_loaded()
 	return get_entity_property(name) != null
 	
 
 func get_entity_properties() -> Array[PandoraProperty]:
+	if is_instance():
+		return _get_instanced_from_entity().get_entity_properties()
 	var properties:Array[PandoraProperty] = []
 	for property in _properties:
 		if property.get_category_id() != _id:
@@ -376,6 +370,8 @@ func get_entity_properties() -> Array[PandoraProperty]:
 	
 	
 func get_category() -> PandoraCategory:
+	if is_instance():
+		return _get_instanced_from_category()
 	_initialize_if_not_loaded()
 	if _category_id == null or _category_id == "":
 		return null
@@ -383,6 +379,8 @@ func get_category() -> PandoraCategory:
 	
 	
 func is_category(category_id:String) -> bool:
+	if is_instance():
+		return false
 	if self._category_id == category_id:
 		return true
 	# find parent category with id
@@ -482,7 +480,10 @@ func _create_instance_properties() -> Array[PandoraPropertyInstance]:
 
 
 func _to_string() -> String:
-	return "<PandoraEntity '" + _name + "'>"
+	if is_instance():
+		return "<PandoraEntity '" + _name + "' instance='true'>"
+	else:
+		return "<PandoraEntity '" + _name + "'>"
 
 
 ## FIXME: there is currently no signal for when resources
@@ -511,3 +512,17 @@ func _initialize_if_not_loaded() -> void:
 	self._property_map = entity._property_map
 	self._inherited_properties = entity._inherited_properties
 	self._property_overrides = entity._property_overrides
+
+
+func _get_instanced_from_entity() -> PandoraEntity:
+	if not is_instance():
+		return self
+	return Pandora.get_entity(self._instanced_from_id)
+	
+	
+func _get_instanced_from_category() -> PandoraCategory:
+	return _get_instanced_from_entity().get_category()
+
+
+func _get_instance_property_value(name:String) -> Variant:
+	return _instance_properties[name].get_property_value()
