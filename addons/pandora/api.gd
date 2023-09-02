@@ -6,6 +6,7 @@ const EntityIdFileGenerator = preload("res://addons/pandora/util/entity_id_file_
 
 
 signal data_loaded
+signal data_loaded_failure
 signal entity_added(entity:PandoraEntity)
 
 
@@ -16,6 +17,7 @@ var _entity_backend:PandoraEntityBackend
 
 
 var _loaded = false
+var _backend_load_state:PandoraEntityBackend.LoadState = PandoraEntityBackend.LoadState.NOT_LOADED
 
 	
 func _enter_tree() -> void:
@@ -98,13 +100,20 @@ func load_data() -> void:
 		data_loaded.emit()
 		return
 	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
-	if all_object_data.has("_entity_data"):
-		_entity_backend.load_data(all_object_data["_entity_data"])
-	_loaded = true
-	data_loaded.emit()
+	if all_object_data.has("_entity_data") and not all_object_data.is_empty():
+		_backend_load_state = _entity_backend.load_data(all_object_data["_entity_data"])
+	if all_object_data.is_empty() or _backend_load_state == PandoraEntityBackend.LoadState.LOADED:
+		_backend_load_state = PandoraEntityBackend.LoadState.LOADED
+		_loaded = true
+		data_loaded.emit()
+	else:
+		data_loaded_failure.emit()
 
 
 func save_data() -> void:
+	if not _loaded:
+		push_warning("Pandora: Skip saving data - data not loaded yet.")
+		return
 	var all_object_data = {
 			"_entity_data": _entity_backend.save_data()
 		}
@@ -122,6 +131,9 @@ func serialize(instance:PandoraEntityInstance) -> Dictionary:
 	
 	
 func deserialize(data:Dictionary) -> PandoraEntityInstance:
+	if not _loaded:
+		push_warning("Pandora - cannot deserialize: data not initialized yet.")
+		return null
 	if not data.has("_entity_id"):
 		push_error("Unable to deserialize data! Invalid PandoraEntityInstance format.")
 		return
@@ -141,3 +153,4 @@ func deserialize(data:Dictionary) -> PandoraEntityInstance:
 func _clear() -> void:
 	_entity_backend._clear()
 	_loaded = false
+	_backend_load_state = PandoraEntityBackend.LoadState.NOT_LOADED
