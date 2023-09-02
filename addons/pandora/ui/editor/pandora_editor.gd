@@ -2,7 +2,7 @@
 class_name PandoraEditor extends Control
 
 
-var selected_entity:PandoraEntity
+var selected_entity: PandoraEntity
 
 
 @onready var create_category_button: Button = %CreateCategoryButton
@@ -36,7 +36,7 @@ func _ready() -> void:
 	entity_tree.entity_deletion_issued.connect(_delete_entity)
 
 	# set version
-	var plugin_config:ConfigFile = ConfigFile.new()
+	var plugin_config: ConfigFile = ConfigFile.new()
 	plugin_config.load("res://addons/pandora/plugin.cfg")
 	version.text = "Pandora v" + plugin_config.get_value("plugin", "version")
 
@@ -68,7 +68,7 @@ func _regenerate_id(entity: PandoraEntity) -> void:
 	Pandora.regenerate_entity_id(entity)
 
 
-func _entity_selected(entity:PandoraEntity) -> void:
+func _entity_selected(entity: PandoraEntity) -> void:
 	create_category_button.disabled = not entity is PandoraCategory
 	create_entity_button.disabled = not entity is PandoraCategory
 	regenerate_id_button.disabled = not entity is PandoraEntity
@@ -84,7 +84,7 @@ func _selection_cleared() -> void:
 	delete_button.disabled = true
 
 
-func _on_inherited_property_selected(category_id:String, property_name:String) -> void:
+func _on_inherited_property_selected(category_id: String, property_name: String) -> void:
 	entity_tree.select(category_id)
 	property_editor.edit_key(property_name)
 
@@ -94,7 +94,7 @@ func _populate_data() -> void:
 		print("Unable to load data - Pandora not initialised!")
 		return
 
-	var data:Array[PandoraEntity] = []
+	var data: Array[PandoraEntity] = []
 	data.assign(Pandora.get_all_roots())
 	entity_tree.set_data(data)
 
@@ -107,7 +107,7 @@ func _populate_data() -> void:
 	delete_button.disabled = true
 
 
-func _delete_entity(entity:PandoraEntity) -> void:
+func _delete_entity(entity: PandoraEntity) -> void:
 	Pandora.delete_entity(entity)
 
 
@@ -119,7 +119,7 @@ func _save() -> void:
 func _reset_to_saved_file() -> void:
 	Pandora._clear()
 	Pandora.load_data()
-	var data:Array[PandoraEntity] = []
+	var data: Array[PandoraEntity] = []
 	data.assign(Pandora.get_all_roots())
 	entity_tree.set_data(data)
 	create_category_button.disabled = false
