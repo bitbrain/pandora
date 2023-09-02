@@ -13,8 +13,13 @@ class_name PandoraEditor extends Control
 @onready var version = %Version
 @onready var save_label = %SaveLabel
 
+@onready var data_content = %DataContent
+@onready var error_content = %ErrorContent
+
+
 
 var selected_entity:PandoraEntity
+var _load_error = false
 
 
 func _ready() -> void:
@@ -39,6 +44,13 @@ func _ready() -> void:
 	
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(tree.add_entity)
+	Pandora.data_loaded.connect(self._data_load_success)
+	Pandora.data_loaded_failure.connect(self._data_load_failure)
+
+
+func reattempt_load_on_error() -> void:
+	if _load_error:
+		_reset_to_saved_file()
 	
 	
 func apply_changes() -> void:
@@ -118,3 +130,15 @@ func _reset_to_saved_file() -> void:
 	delete_button.disabled = true
 	property_editor.set_entity(null)
 	_selection_cleared()
+	
+	
+func _data_load_success() -> void:
+	data_content.visible = true
+	error_content.visible = false
+	_load_error = false
+	
+	
+func _data_load_failure() -> void:
+	data_content.visible = false
+	error_content.visible = true
+	_load_error = true

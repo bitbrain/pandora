@@ -12,6 +12,7 @@ const TEST_DIR = "testdata"
 func before() -> void:
 	Pandora.set_context_id(TEST_DIR)
 	Pandora._clear()
+	Pandora.load_data()
 	
 	
 func after() -> void:
@@ -25,7 +26,7 @@ func test_api_save_and_load_objects() -> void:
 	var category = Pandora.create_category("Swords")
 	var category_id = category._id
 	var entity = Pandora.create_entity("Zweihander", category) as PandoraEntity
-	var weight = Pandora.create_property(category, "Weight", "int")
+	Pandora.create_property(category, "Weight", "int")
 	entity.get_entity_property("Weight").set_default_value(42)
 	var entity_id = entity._id
 	Pandora.save_data()
