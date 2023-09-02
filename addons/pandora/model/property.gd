@@ -31,8 +31,8 @@ func _init(id:String, name:String, type_name:String) -> void:
 	self._name = name
 	self._type = PandoraPropertyType.lookup(type_name)
 	self._default_value = _type.get_default_value()
-	
-	
+
+
 func get_setting(key:String) -> Variant:
 	if has_setting_override(key):
 		return _setting_overrides[key]
@@ -40,17 +40,17 @@ func get_setting(key:String) -> Variant:
 		return _type.get_settings()[key]["value"]
 	else:
 		return null
-		
-		
+
+
 func has_setting_override(name:String) -> bool:
 	return _setting_overrides.has(name)
-	
-	
+
+
 func set_setting_override(name:String, override:Variant) -> void:
 	_setting_overrides[name] = override
 	setting_changed.emit(name)
-	
-	
+
+
 func clear_setting_override(name:String) -> void:
 	_setting_overrides.erase(name)
 	setting_cleared.emit(name)
@@ -93,19 +93,19 @@ func get_category_id() -> String:
 ## been originally defined (and inherited down)
 func get_original_category_id() -> String:
 	return _category_id
-	
+
 
 ## resets this property to its original
 ## default value in case it was overridden
 func reset_to_default() -> void:
 	pass
-	
+
 
 ## true in case this property is the original definition
 ## of a property. (not inherited)
 func is_original() -> bool:
 	return true
-	
+
 
 ## returns true when this property is currently overridden
 func is_overridden() -> bool:
