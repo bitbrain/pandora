@@ -7,6 +7,7 @@ var selected_entity:PandoraEntity
 
 @onready var create_category_button: Button = %CreateCategoryButton
 @onready var create_entity_button: Button = %CreateEntityButton
+@onready var regenerate_id_button: Button = %RegenerateIDButton
 @onready var delete_button: Button = %DeleteButton
 @onready var save_button: Button = %SaveButton
 @onready var reset_button: Button = %ResetButton
@@ -24,6 +25,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	create_category_button.pressed.connect(_create_category)
 	create_entity_button.pressed.connect(_create_entity)
+	regenerate_id_button.pressed.connect(_regenerate_id)
 	delete_button.pressed.connect(func(): entity_tree.queue_delete(selected_entity.get_entity_id()))
 	reset_button.pressed.connect(_reset_to_saved_file)
 	save_button.pressed.connect(_save)
@@ -62,9 +64,14 @@ func _create_entity() -> void:
 	Pandora.create_entity("New Entity", selected_entity)
 
 
+func _regenerate_id(entity: PandoraEntity) -> void:
+	Pandora.regenerate_entity_id(entity)
+
+
 func _entity_selected(entity:PandoraEntity) -> void:
 	create_category_button.disabled = not entity is PandoraCategory
 	create_entity_button.disabled = not entity is PandoraCategory
+	regenerate_id_button.disabled = not entity is PandoraEntity
 	delete_button.disabled = entity == null
 	selected_entity = entity
 
@@ -73,6 +80,7 @@ func _selection_cleared() -> void:
 	selected_entity = null
 	create_category_button.disabled = false
 	create_entity_button.disabled = true
+	regenerate_id_button.disabled = true
 	delete_button.disabled = true
 
 
@@ -95,6 +103,7 @@ func _populate_data() -> void:
 
 	create_category_button.disabled = false
 	create_entity_button.disabled = true
+	regenerate_id_button.disabled = true
 	delete_button.disabled = true
 
 
@@ -115,6 +124,7 @@ func _reset_to_saved_file() -> void:
 	entity_tree.set_data(data)
 	create_category_button.disabled = false
 	create_entity_button.disabled = true
+	regenerate_id_button.disabled = true
 	delete_button.disabled = true
 	property_editor.set_entity(null)
 	_selection_cleared()
