@@ -35,6 +35,7 @@ func set_property_value(value:Variant) -> void:
 func load_data(data:Dictionary) -> void:
 	_value = data["_value"]
 	_property_id = data["_property_id"]
+	_property = Pandora.get_property(_property_id)
 
 
 func save_data() -> Dictionary:

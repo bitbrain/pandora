@@ -164,7 +164,9 @@ func instantiate() -> PandoraEntity:
 	var entity = ScriptUtil.create_entity_from_script(_script_path, "", "", "", "")
 	if entity != null:
 		entity._instanced_from_id = _id
-		entity._instance_properties = _create_instance_properties()
+		var properties = _create_instance_properties()
+		for property in properties:
+			entity._instance_properties[property.get_property_name()] = property
 	return entity
 	
 	
@@ -350,7 +352,7 @@ func get_resource(property_name:String) -> Resource:
 	
 func has_entity_property(name:String) -> bool:
 	if is_instance():
-		return not _instance_properties.has(name) and not _get_instanced_from_entity().has_entity_property(name)
+		return _get_instanced_from_entity().has_entity_property(name)
 	_initialize_if_not_loaded()
 	return get_entity_property(name) != null
 	
@@ -398,9 +400,14 @@ func is_category(category_id:String) -> bool:
 ## Initializes this entity with the given data dictionary.
 ## Dictionary needs to confirm the structure of this entity.
 func load_data(data:Dictionary) -> void:
-	_id = data["_id"]
-	_name = data["_name"]
-	_category_id = data["_category_id"]
+	if data.has("_id"):
+		_id = data["_id"]
+	if not is_instance():
+		_name = data["_name"]
+		_category_id = data["_category_id"]
+	else:
+		_instanced_from_id = data["_instanced_from_id"]
+		_instance_properties = _load_instance_properties(data["_instance_properties"])
 	if data.has("_icon_path"):
 		_icon_path = data["_icon_path"]
 	if data.has("_property_overrides"):
@@ -415,11 +422,18 @@ func load_data(data:Dictionary) -> void:
 
 ## Produces a data dictionary that can be used on load_data()
 func save_data() -> Dictionary:
-	var dict = {
-		"_id": _id,
-		"_name": _name,
-		"_category_id": _category_id
-	}
+	var dict = {}
+	
+	if _id != "":
+		dict["_id"] = _id
+		
+	if not is_instance():
+		dict["_name"] = _name
+		dict["_category_id"] = _category_id
+	else:
+		dict["_instanced_from_id"] = _instanced_from_id
+		dict["_instance_properties"] = _save_instance_properties()
+	
 	if _icon_path != "":
 		dict["_icon_path"] = _icon_path
 	if not _property_overrides.is_empty():
@@ -453,6 +467,22 @@ func _load_overrides(data:Dictionary) -> Dictionary:
 		var type = PandoraPropertyType.lookup(unparsed_data["type"])
 		output[property_name] = type.parse_value(unparsed_data["value"])
 	return output
+	
+	
+func _save_instance_properties() -> Array[Dictionary]:
+	var properties:Array[Dictionary] = []
+	for key in _instance_properties:
+		properties.append(_instance_properties[key].save_data())
+	return properties
+	
+	
+func _load_instance_properties(data:Array[Dictionary]) -> Dictionary:
+	var properties:Dictionary = {}
+	for property_dict in data:
+		var property = PandoraPropertyInstance.new(null, "")
+		property.load_data(property_dict)
+		properties[property.get_property_name()] = property
+	return properties
 
 
 func _delete_property(name:String) -> void:

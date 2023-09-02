@@ -10,10 +10,21 @@ const __source = "res://addons/pandora/backend/entity_backend.gd"
 const MOCK_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
 const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
 
+var _pandora_backend:PandoraEntityBackend
+
+
+func before():
+	_pandora_backend = Pandora._entity_backend
+	
+	
+func after():
+	Pandora._entity_backend = _pandora_backend
+
 
 func create_object_backend() -> PandoraEntityBackend:
-	return auto_free(PandoraEntityBackend.new(NanoIDGenerator.new(NanoIDAlphabets.URL, 9)))
-
+	var backend = auto_free(PandoraEntityBackend.new(NanoIDGenerator.new(NanoIDAlphabets.URL, 9)))
+	Pandora._entity_backend = backend
+	return backend
 
 func test_create_entity() -> void:
 	var backend = create_object_backend()
