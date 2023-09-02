@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg15"
+   sodipodi:docname="icon2.svg"
+   width="16"
+   height="16"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview17"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="40.96"
+     inkscape:cx="9.4360352"
+     inkscape:cy="8.8867188"
+     inkscape:window-width="2560"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg15" />
+  <defs
+     id="defs5">
+    <clipPath
+       id="a">
+      <path
+         d="m 3,3 h 6 c 3.333,0 5,1.667 5,5 0,3.333 -1.667,5 -5,5 H 3 Z"
+         id="path2" />
+    </clipPath>
+  </defs>
+  <g
+     clip-path="url(#a)"
+     id="g13"
+     transform="matrix(1.2727273,0,0,1.2727273,-2.8181819,-2.1818185)">
+    <path
+       d="m 3,6 h 2 v 7 H 3 Z M 3,3 H 5 V 5 H 3 Z M 7,3 H 9 V 13 H 7 Z m 3,0 h 1 v 10 h -1 z m 2,0 h 2 v 10 h -2 z"
+       id="path11"
+       style="display:inline;fill:#e0e0e0;fill-opacity:1" />
+  </g>
+</svg>
