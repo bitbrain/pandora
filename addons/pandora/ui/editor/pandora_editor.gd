@@ -25,7 +25,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	create_category_button.pressed.connect(_create_category)
 	create_entity_button.pressed.connect(_create_entity)
-	regenerate_id_button.pressed.connect(_regenerate_id)
+	regenerate_id_button.pressed.connect(func(): _regenerate_id(selected_entity))
 	delete_button.pressed.connect(func(): entity_tree.queue_delete(selected_entity.get_entity_id()))
 	reset_button.pressed.connect(_reset_to_saved_file)
 	save_button.pressed.connect(_save)
@@ -65,7 +65,10 @@ func _create_entity() -> void:
 
 
 func _regenerate_id(entity: PandoraEntity) -> void:
-	Pandora.regenerate_entity_id(entity)
+	if selected_entity is PandoraCategory:
+		Pandora.regenerate_category_id(entity)
+	else:
+		Pandora.regenerate_entity_id(entity)
 
 
 func _entity_selected(entity: PandoraEntity) -> void:

@@ -53,6 +53,18 @@ func create_property(on_category: PandoraCategory, name: String, type: String) -
 	return _entity_backend.create_property(on_category, name, type)
 
 
+func regenerate_entity_id(entity: PandoraEntity) -> void:
+	return _entity_backend.regenerate_entity_id(entity)
+
+
+func regenerate_category_id(category: PandoraCategory) -> void:
+	return _entity_backend.regenerate_category_id(category)
+
+
+func regenerate_property_id(property: PandoraProperty) -> void:
+	return _entity_backend.regenerate_property_id(property)
+
+
 func delete_category(category: PandoraCategory) -> void:
 	_entity_backend.delete_category(category)
 
