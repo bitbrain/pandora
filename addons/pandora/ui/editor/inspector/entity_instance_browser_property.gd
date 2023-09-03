@@ -11,10 +11,10 @@ func _init(class_data:Dictionary) -> void:
 	# Make sure the control is able to retain the focus.
 	add_focusable(property_control)
 	property_control.get_popup().id_pressed.connect(_on_id_selected)
-
+	
 	var id_counter = 0
 	var all_entities = _find_all_entities(class_data["path"])
-
+	
 	for entity in all_entities:
 		property_control.get_popup().add_icon_item(load(entity.get_icon_path()), entity.get_entity_name(), id_counter)
 		ids_to_entities[id_counter] = entity
@@ -28,7 +28,7 @@ func _on_id_selected(id:int) -> void:
 	if current_entity != null and entity.get_entity_id() == current_entity.get_entity_id():
 		# skip current entities
 		return
-
+	
 	emit_changed(get_edited_property(), entity)
 
 

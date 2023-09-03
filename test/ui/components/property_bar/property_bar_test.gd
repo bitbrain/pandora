@@ -17,3 +17,6 @@ func test_all_property_scenes_added() -> void:
 	var control = auto_free(load(__source).instantiate())
 	var runner = scene_runner(control)
 	control.property_added.connect(func(scene): print("added!"))
+	
+	
+	

@@ -26,17 +26,18 @@ var _backend:PandoraEntityBackend
 @onready var reset_button: Button = %ResetButton
 @onready var regenerate_id_button: Button = %RegenerateIDButton
 @onready var delete_property_button: Button = %DeletePropertyButton
-@onready var confirmation_dialog: ConfirmationDialog = %ConfirmationDialog
+@onready var confirmation_dialog = %ConfirmationDialog
 
 
-func init(property: PandoraProperty, control: PandoraPropertyControl, backend: PandoraEntityBackend) -> void:
+
+func init(property:PandoraProperty, control:PandoraPropertyControl, backend:PandoraEntityBackend) -> void:
 	if self._control != null:
 		_control.queue_free()
 	self._property = property
 	self._control = control
 	self._backend = backend
-
-
+	
+	
 func _ready() -> void:
 	property_key_edit.focus_entered.connect(_property_key_focused)
 	property_key_edit.text_changed.connect(_property_name_changed)
@@ -56,7 +57,7 @@ func _ready() -> void:
 func edit_key():
 	if property_key_edit.visible:
 		property_key_edit.grab_focus()
-
+	
 
 func _refresh_key() -> void:
 	property_key.text = _property.get_property_name()
@@ -70,12 +71,12 @@ func _refresh_value() -> void:
 	property_value.add_child(_control)
 
 
-func _set_edit_name_mode(edit_mode: bool) -> void:
+func _set_edit_name_mode(edit_mode:bool) -> void:
 	property_key.visible = not edit_mode
 	property_key_edit.visible = edit_mode
-
-
-func _property_name_changed(new_name: String) -> void:
+	
+	
+func _property_name_changed(new_name:String) -> void:
 	# FIXME avoid key duplication issue
 	_property._name = new_name
 
@@ -112,7 +113,7 @@ func _refresh() -> void:
 func _delete_property() -> void:
 	_backend.delete_property(_property)
 	queue_free()
-
+	
 
 func _property_key_focused() -> void:
 	original_property_selected.emit(_property)
@@ -125,7 +126,7 @@ func _property_key_unfocused() -> void:
 func _control_value_focused() -> void:
 	if property_key_edit.visible:
 		original_property_selected.emit(_property)
-
-
+		
+	
 func _control_value_unfocused() -> void:
 	pass

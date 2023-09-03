@@ -37,8 +37,8 @@ func _is_pandora_entity(clazz:String) -> bool:
 	if parent == PANDORA_ENTITY_CLASS:
 		return true
 	return _is_pandora_entity(parent)
-
-
+	
+	
 func _get_parent_class(clazz_name:String) -> String:
 	if not _global_class_cache.has(clazz_name):
 		return ""
