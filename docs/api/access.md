@@ -37,7 +37,7 @@ extends Node2D
 @export var entity:PandoraEntity
 
 func _ready() -> void:
-   var instance:PandoraEntityInstance = item.instantiate()
+   var instance:PandoraEntity = item.instantiate()
 ```
 Within the Godot node editor properties, then select the entity of your choice from the list. Pandora automatically filters the entities depending on the type provided:
 

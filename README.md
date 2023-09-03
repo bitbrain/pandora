@@ -26,7 +26,7 @@ class_name MyScene extends Node2D
 # Entity can be selected in the editor
 @export var entity:PandoraEntity
 
-var instance:PandoraEntityInstance
+var instance:PandoraEntity
 
 func _ready():
    # create a new instance of this entity
