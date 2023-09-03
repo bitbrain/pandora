@@ -14,32 +14,32 @@ func _init(entity_id:String, properties:Array[PandoraPropertyInstance]) -> void:
 
 func get_entity() -> PandoraEntity:
 	return Pandora.get_entity(_entity_id)
-	
-	
+
+
 func has_same_entity(instance:PandoraEntityInstance) -> bool:
 	return get_entity_id() == instance.get_entity_id()
-	
-	
+
+
 func type_of(entity:PandoraEntity) -> bool:
 	return get_entity_id() == entity.get_entity_id()
-	
-	
+
+
 func get_icon() -> Texture:
 	return load(get_entity().get_icon_path())
-	
-	
+
+
 func get_entity_name() -> String:
 	return get_entity().get_entity_name()
-	
-	
+
+
 func get_entity_id() -> String:
 	return get_entity().get_entity_id()
-	
-	
+
+
 func get_category() -> PandoraCategory:
 	return get_entity().get_category()
 
-		
+
 func get_string(property_name:String) -> String:
 	if not _properties.has(property_name):
 		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
@@ -48,8 +48,8 @@ func get_string(property_name:String) -> String:
 		push_error("property %s on instance %s is not a string" % [property_name, get_instance_id()])
 		return ""
 	return _get_property_value(property_name) as String
-	
-	
+
+
 func get_integer(property_name:String) -> int:
 	if not _properties.has(property_name):
 		push_warning("unknown integer property %s on instance %s" % [property_name, get_instance_id()])
@@ -61,8 +61,8 @@ func get_integer(property_name:String) -> int:
 	if value is float:
 		return int(value)
 	return _get_property_value(property_name) as int
-	
-	
+
+
 func get_float(property_name:String) -> float:
 	if not _properties.has(property_name):
 		push_warning("unknown float property %s on instance %s" % [property_name, get_instance_id()])
@@ -71,8 +71,8 @@ func get_float(property_name:String) -> float:
 		push_error("property %s on instance %s is not a float" % [property_name, get_instance_id()])
 		return 0.0
 	return _get_property_value(property_name) as float
-	
-	
+
+
 func get_bool(property_name:String) -> bool:
 	if not _properties.has(property_name):
 		push_warning("unknown bool property %s on instance %s" % [property_name, get_instance_id()])
@@ -81,8 +81,8 @@ func get_bool(property_name:String) -> bool:
 		push_error("property %s on instance %s is not a bool" % [property_name, get_instance_id()])
 		return false
 	return _get_property_value(property_name) as bool
-	
-	
+
+
 func get_color(property_name:String) -> Color:
 	if not _properties.has(property_name):
 		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
@@ -91,8 +91,8 @@ func get_color(property_name:String) -> Color:
 		push_error("property %s on instance %s is not a bool" % [property_name, get_instance_id()])
 		return Color.WHITE
 	return _get_property_value(property_name) as Color
-	
-	
+
+
 func get_reference(property_name:String) -> PandoraEntity:
 	if not _properties.has(property_name):
 		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
@@ -101,8 +101,8 @@ func get_reference(property_name:String) -> PandoraEntity:
 		push_error("property %s on instance %s is not a reference" % [property_name, get_instance_id()])
 		return null
 	return _get_property_value(property_name) as PandoraEntity
-	
-	
+
+
 func get_resource(property_name:String) -> Resource:
 	if not _properties.has(property_name):
 		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
@@ -111,8 +111,8 @@ func get_resource(property_name:String) -> Resource:
 		push_error("property %s on instance %s is not a resource" % [property_name, get_instance_id()])
 		return null
 	return _get_property_value(property_name) as Resource
-	
-	
+
+
 func set_string(property_name:String, value:String) -> void:
 	if not _properties.has(property_name):
 		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
@@ -146,15 +146,15 @@ func set_color(property_name:String, value:Color) -> void:
 		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
 	else:
 		_properties[property_name].set_property_value(value)
-		
-		
+
+
 func set_reference(property_name:String, value:PandoraEntity) -> void:
 	if not _properties.has(property_name):
 		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
 	else:
 		_properties[property_name].set_property_value(value)
-		
-		
+
+
 func set_resource(property_name:String, value:Resource) -> void:
 	if not _properties.has(property_name):
 		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
@@ -165,22 +165,22 @@ func set_resource(property_name:String, value:Resource) -> void:
 func _load_data(data:Dictionary) -> void:
 	_entity_id = data["_entity_id"]
 	_properties = _load_properties(data["_properties"])
-	
-	
+
+
 func _save_data() -> Dictionary:
 	return {
 		"_entity_id": _entity_id,
 		"_properties": _save_properties(_properties),
 	}
-	
-	
+
+
 func _save_properties(data:Dictionary) -> Array[Dictionary]:
 	var properties:Array[Dictionary] = []
 	for key in data:
 		properties.append(data[key].save_data())
 	return properties
-	
-	
+
+
 func _load_properties(data:Array) -> Dictionary:
 	var properties:Dictionary = {}
 	for property_dict in data:
@@ -188,11 +188,11 @@ func _load_properties(data:Array) -> Dictionary:
 		property.load_data(property_dict)
 		properties[property.get_property_name()] = property
 	return properties
-	
-	
+
+
 func _get_property_value(name:String) -> Variant:
 	return _properties[name].get_property_value()
-	
-	
+
+
 func _to_string() -> String:
 	return "<PandoraEntityInstance '" + get_entity_name() + "'>"

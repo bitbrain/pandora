@@ -185,7 +185,7 @@ func get_property(property_id:String) -> PandoraProperty:
 ## Returns a list of all root categories
 func get_all_roots() -> Array[PandoraCategory]:
 	return _root_categories
-	
+
 
 ## Returns a list of all categories
 func get_all_categories(parent:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
@@ -267,11 +267,11 @@ func load_data(data:Dictionary) -> LoadState:
 			return _load_state
 		var category = _categories[property._category_id] as PandoraCategory
 		category._properties.append(property)
-		
+
 	# propagate properties from roots
 	for root_category in _root_categories:
 		_propagate_properties(root_category)
-	
+
 	_load_state = LoadState.LOADED
 	return _load_state
 
@@ -307,8 +307,8 @@ func _deserialize_entities(data:Array) -> Dictionary:
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 	return dict
-	
-	
+
+
 func _deserialize_categories(data:Array) -> Dictionary:
 	var dict = {}
 	for category_data in data:
@@ -319,8 +319,8 @@ func _deserialize_categories(data:Array) -> Dictionary:
 			# If category has no parent, it's a root category
 			_root_categories.append(category)
 	return dict
-	
-	
+
+
 func _deserialize_properties(data:Array) -> Dictionary:
 	var dict = {}
 	for property_data in data:
@@ -335,7 +335,7 @@ func _serialize_data(data:Dictionary) -> Array[Dictionary]:
 	for key in data:
 		serialized_data.append(data[key].save_data())
 	return serialized_data
-	
+
 
 # used for testing only
 func _clear() -> void:
@@ -344,7 +344,7 @@ func _clear() -> void:
 	_properties.clear()
 	_root_categories.clear()
 
-	
+
 ## recusively propagate properties into children
 func _propagate_properties(category:PandoraCategory) -> void:
 	if category == null:
@@ -396,19 +396,19 @@ func _create_entity_from_script(path:String, id:String, name:String, icon_path:S
 		var entity = PandoraEntityScript.new()
 		entity.init_entity(id, name, icon_path, category_id)
 		return entity
-		
+
 	var entity = clazz.new()
 	if not entity is PandoraEntity:
 		push_warning("Script '" + path + "' must extend PandoraEntity - defaulting to PandoraEntity instead.")
 		entity = PandoraEntityScript.new()
-	
+
 	entity.init_entity(id, name, icon_path, category_id)
 	return entity
 
 
 ## searches for the first occurence of the method.
 ## methods can occur multiple times in the order of inheritance.
-func _find_first_method_of_script(script:GDScript, method_name:String) -> Dictionary: 
+func _find_first_method_of_script(script:GDScript, method_name:String) -> Dictionary:
 	for method in script.get_script_method_list():
 		if method.name == method_name:
 			return method

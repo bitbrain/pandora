@@ -19,7 +19,7 @@ var _entity_backend:PandoraEntityBackend
 var _loaded = false
 var _backend_load_state:PandoraEntityBackend.LoadState = PandoraEntityBackend.LoadState.NOT_LOADED
 
-	
+
 func _enter_tree() -> void:
 	self._storage = PandoraJsonDataStorage.new("res://")
 	self._context_manager = PandoraContextManager.new()
@@ -39,24 +39,24 @@ func _exit_tree() -> void:
 
 func get_context_id() -> String:
 	return _context_manager.get_context_id()
-	
-	
+
+
 func set_context_id(context_id:String) -> void:
 	_context_manager.set_context_id(context_id)
-	
-	
+
+
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	return _entity_backend.create_entity(name, category)
 
 
 func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
 	return _entity_backend.create_category(name, parent_category)
-	
-	
+
+
 func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
 	return _entity_backend.create_property(on_category, name, type)
-	
-	
+
+
 func regenerate_all_ids() -> void:
 	_entity_backend.regenerate_all_ids()
 
@@ -75,32 +75,32 @@ func regenerate_property_id(property: PandoraProperty) -> void:
 
 func delete_category(category:PandoraCategory) -> void:
 	_entity_backend.delete_category(category)
-	
-	
+
+
 func delete_entity(entity:PandoraEntity) -> void:
 	_entity_backend.delete_entity(entity)
-	
-	
+
+
 func get_entity(entity_id:String) -> PandoraEntity:
 	return _entity_backend.get_entity(entity_id)
-	
-	
+
+
 func get_category(category_id:String) -> PandoraCategory:
 	return _entity_backend.get_category(category_id)
-	
-	
+
+
 func get_property(property_id:String) -> PandoraProperty:
 	return _entity_backend.get_property(property_id)
-	
-	
+
+
 func get_all_roots() -> Array[PandoraCategory]:
 	return _entity_backend.get_all_roots()
-	
-	
+
+
 func get_all_categories(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
 	return _entity_backend.get_all_categories(filter, sort)
-	
-	
+
+
 func get_all_entities(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
 	return _entity_backend.get_all_entities(filter, sort)
 
@@ -110,7 +110,7 @@ func load_data_async() -> void:
 	if thread.start(load_data) != 0:
 		push_error("Unable to load Pandora data in async mode.")
 
-	
+
 func load_data() -> void:
 	if _loaded:
 		print("Skipping loading data - loaded already!")
@@ -138,15 +138,15 @@ func save_data() -> void:
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
-		
+
 func is_loaded() -> bool:
 	return _loaded
-	
-	
+
+
 func serialize(instance:PandoraEntityInstance) -> Dictionary:
 	return instance.save_data()
-	
-	
+
+
 func deserialize(data:Dictionary) -> PandoraEntityInstance:
 	if not _loaded:
 		push_warning("Pandora - cannot deserialize: data not initialized yet.")

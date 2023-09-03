@@ -2,4 +2,4 @@
 class_name Armory
 
 
-const SHIELD = "gaCdd7y9Jd"
+const SHIELD = "HUSgFdUj5C"
