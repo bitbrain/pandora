@@ -73,6 +73,15 @@ func create_property(on_category: PandoraCategory, name: String, type: String, d
 	return property
 
 
+func regenerate_all_ids() -> void:
+	for category in get_all_categories():
+		regenerate_category_id(category)
+	for entity in get_all_entities():
+		regenerate_entity_id(entity)
+	for property in get_all_properties():
+		regenerate_property_id(property)
+
+
 func regenerate_category_id(category: PandoraCategory) -> void:
 	var new_id := _id_generator.generate()
 	_categories.erase(category._id)
@@ -146,6 +155,17 @@ func get_all_entities(parent: PandoraCategory = null, sort: Callable = func(a, b
 			entities.append(_entities[key])
 	entities.sort_custom(sort)
 	return entities
+
+
+func get_all_properties(parent: PandoraCategory = null, sort: Callable = func(a, b): return false) -> Array[PandoraProperty]:
+	var properties: Array[PandoraProperty] = []
+	if parent:
+		properties.append_array(parent._properties)
+	else:
+		for key in _properties:
+			properties.append(_properties[key])
+	properties.sort_custom(sort)
+	return properties
 
 
 ## Deletes an existing category and all of its children

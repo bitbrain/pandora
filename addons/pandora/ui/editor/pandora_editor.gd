@@ -25,7 +25,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	create_category_button.pressed.connect(_create_category)
 	create_entity_button.pressed.connect(_create_entity)
-	regenerate_id_button.pressed.connect(func(): _regenerate_id(selected_entity))
+	regenerate_id_button.pressed.connect(_on_regenerate_id_button_pressed)
 	delete_button.pressed.connect(func(): entity_tree.queue_delete(selected_entity.get_entity_id()))
 	reset_button.pressed.connect(_reset_to_saved_file)
 	save_button.pressed.connect(_save)
@@ -62,6 +62,10 @@ func _create_entity() -> void:
 	if not selected_entity is PandoraCategory:
 		return
 	Pandora.create_entity("New Entity", selected_entity)
+
+
+func _regenerate_all_ids() -> void:
+	Pandora.regenerate_all_ids()
 
 
 func _regenerate_id(entity: PandoraEntity) -> void:
@@ -131,3 +135,10 @@ func _reset_to_saved_file() -> void:
 	delete_button.disabled = true
 	property_editor.set_entity(null)
 	_selection_cleared()
+
+
+func _on_regenerate_id_button_pressed() -> void:
+	if Input.is_physical_key_pressed(KEY_SHIFT):
+		_regenerate_all_ids()
+	else:
+		_regenerate_id(selected_entity)

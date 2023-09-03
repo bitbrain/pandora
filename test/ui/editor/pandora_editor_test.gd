@@ -12,20 +12,20 @@ const TEST_DIR = "testdata"
 
 func before() -> void:
 	Pandora.set_context_id(TEST_DIR)
-	
+
 
 func before_test() -> void:
 	Pandora._clear()
 	Pandora.load_data()
 
-	
+
 func after() -> void:
 	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
 	DirAccess.remove_absolute("res://" + TEST_DIR)
 	Pandora.set_context_id("")
 	Pandora._clear()
 	Pandora.load_data()
-	
+
 
 func test_editor_loads() -> void:
 	var root = Pandora.create_category("Root")
@@ -38,6 +38,6 @@ func test_editor_loads() -> void:
 	var runner = scene_runner(scene)
 
 	await runner.simulate_frames(3)
-	
-	var tree = scene.tree as PandoraEntityTree
+
+	var tree = scene.entity_tree as PandoraEntityTree
 	assert_that(tree.entity_items.size()).is_equal(3)
