@@ -3,6 +3,7 @@ class_name PandoraEditor extends Control
 
 
 var selected_entity: PandoraEntity
+var _load_error: bool
 
 
 @onready var create_category_button: Button = %CreateCategoryButton
@@ -16,6 +17,8 @@ var selected_entity: PandoraEntity
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var entity_tree: Tree = %EntityTree
 @onready var property_editor: HSplitContainer = %PropertyEditor
+@onready var data_content = %DataContent
+@onready var error_content = %ErrorContent
 
 
 func _enter_tree() -> void:
@@ -45,6 +48,13 @@ func _ready() -> void:
 
 	# Add any newly created entity directly to the tree
 	Pandora.entity_added.connect(entity_tree.add_entity)
+	Pandora.data_loaded.connect(self._data_load_success)
+	Pandora.data_loaded_failure.connect(self._data_load_failure)
+
+
+func reattempt_load_on_error() -> void:
+	if _load_error:
+		_reset_to_saved_file()
 
 
 func apply_changes() -> void:
@@ -142,3 +152,15 @@ func _on_regenerate_id_button_pressed() -> void:
 		_regenerate_all_ids()
 	else:
 		_regenerate_id(selected_entity)
+	
+	
+func _data_load_success() -> void:
+	data_content.visible = true
+	error_content.visible = false
+	_load_error = false
+	
+	
+func _data_load_failure() -> void:
+	data_content.visible = false
+	error_content.visible = true
+	_load_error = true

@@ -3,6 +3,7 @@ extends Node
 
 
 signal data_loaded
+signal data_loaded_failure
 signal entity_added(entity: PandoraEntity)
 
 
@@ -14,6 +15,7 @@ var _storage: PandoraJsonDataStorage
 var _id_generator: NanoIDGenerator
 var _entity_backend: PandoraEntityBackend
 var _loaded = false
+var _backend_load_state:PandoraEntityBackend.LoadState = PandoraEntityBackend.LoadState.NOT_LOADED
 
 
 func _enter_tree() -> void:
@@ -102,12 +104,13 @@ func get_all_entities(filter: PandoraCategory = null, sort: Callable = func(a,b)
 
 
 func save_data() -> void:
+	if not _loaded:
+		push_warning("Pandora: Skip saving data - data not loaded yet.")
+		return
 	var all_object_data = {
 			"_entity_data": _entity_backend.save_data()
 		}
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
-
-	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
 
 func load_data() -> void:
@@ -116,16 +119,14 @@ func load_data() -> void:
 		data_loaded.emit()
 		return
 	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
-	if all_object_data.has("_entity_data"):
-		_entity_backend.load_data(all_object_data["_entity_data"])
-	_loaded = true
-	data_loaded.emit()
-
-
-func load_data_async() -> void:
-	var thread = Thread.new()
-	if thread.start(load_data) != 0:
-		push_error("Unable to load Pandora data in async mode.")
+	if all_object_data.has("_entity_data") and not all_object_data.is_empty():
+		_backend_load_state = _entity_backend.load_data(all_object_data["_entity_data"])
+	if all_object_data.is_empty() or _backend_load_state == PandoraEntityBackend.LoadState.LOADED:
+		_backend_load_state = PandoraEntityBackend.LoadState.LOADED
+		_loaded = true
+		data_loaded.emit()
+	else:
+		data_loaded_failure.emit()
 
 
 func is_loaded() -> bool:
@@ -137,6 +138,9 @@ func serialize(instance:PandoraEntityInstance) -> Dictionary:
 
 
 func deserialize(data: Dictionary) -> PandoraEntityInstance:
+	if not _loaded:
+		push_warning("Pandora - cannot deserialize: data not initialized yet.")
+		return null
 	if not data.has("_entity_id"):
 		push_error("Unable to deserialize data! Invalid PandoraEntityInstance format.")
 		return
@@ -156,3 +160,4 @@ func deserialize(data: Dictionary) -> PandoraEntityInstance:
 func _clear() -> void:
 	_entity_backend._clear()
 	_loaded = false
+	_backend_load_state = PandoraEntityBackend.LoadState.NOT_LOADED
