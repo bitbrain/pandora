@@ -36,7 +36,7 @@ var _generate_ids = false
 var _ids_generation_class = ""
 
 # String -> PandoraPropertyInstance
-var _instance_properties:Dictionary
+var _instance_properties:Dictionary = {}
 var _instanced_from_id:String
 
 
@@ -164,9 +164,6 @@ func instantiate() -> PandoraEntity:
 	var entity = ScriptUtil.create_entity_from_script(get_script_path(), "", "", "", "")
 	if entity != null:
 		entity._instanced_from_id = get_entity_id()
-		var properties = _create_instance_properties()
-		for property in properties:
-			entity._instance_properties[property.get_property_name()] = property
 	return entity
 	
 	
@@ -289,7 +286,7 @@ func set_string(property_name:String, value:String) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown string property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 
 
 func set_integer(property_name:String, value:int) -> void:
@@ -299,7 +296,7 @@ func set_integer(property_name:String, value:int) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown integer property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 
 
 func set_float(property_name:String, value:float) -> void:
@@ -309,7 +306,7 @@ func set_float(property_name:String, value:float) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown float property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 
 
 func set_bool(property_name:String, value:bool) -> void:
@@ -319,7 +316,7 @@ func set_bool(property_name:String, value:bool) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown bool property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 
 
 func set_color(property_name:String, value:Color) -> void:
@@ -329,7 +326,7 @@ func set_color(property_name:String, value:Color) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown color property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 		
 		
 func set_reference(property_name:String, value:PandoraEntity) -> void:
@@ -339,7 +336,7 @@ func set_reference(property_name:String, value:PandoraEntity) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown reference property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 		
 		
 func set_resource(property_name:String, value:Resource) -> void:
@@ -349,7 +346,7 @@ func set_resource(property_name:String, value:Resource) -> void:
 	if not has_entity_property(property_name):
 		push_warning("unknown resource property %s on entity %s" % [property_name, get_entity_id()])
 	else:
-		_instance_properties[property_name].set_property_value(value)
+		_set_instance_property(property_name, value)
 	
 	
 func get_string(property_name:String) -> String:
@@ -546,7 +543,7 @@ func _save_instance_properties() -> Array[Dictionary]:
 	return properties
 	
 	
-func _load_instance_properties(data:Array[Dictionary]) -> Dictionary:
+func _load_instance_properties(data:Array) -> Dictionary:
 	var properties:Dictionary = {}
 	for property_dict in data:
 		var property = PandoraPropertyInstance.new(null, "")
@@ -565,18 +562,6 @@ func _delete_property(name:String) -> void:
 		if property.get_property_name() == name:
 			original_property = property
 	_properties.erase(original_property)
-
-
-## Generates instanced properties from an existing entity.
-## A property that is instanced can be change its value independently
-## of the original property.
-func _create_instance_properties() -> Array[PandoraPropertyInstance]:
-	var property_instances:Array[PandoraPropertyInstance] = []
-	for property in get_entity_properties():
-		var property_id = property.get_property_id()
-		var default_value = property.get_default_value()
-		property_instances.append(PandoraPropertyInstance.new(property, default_value))
-	return property_instances
 
 
 func _to_string() -> String:
@@ -626,3 +611,22 @@ func _get_instanced_from_category() -> PandoraCategory:
 
 func _get_instance_property_value(name:String) -> Variant:
 	return _instance_properties[name].get_property_value()
+
+
+func _set_instance_property(name:String, value:Variant) -> void:
+	if not is_instance():
+		push_error("Cannot set instance property value on a non-instance!")
+		return
+	var property = get_entity_property(name)
+	var default_value = property.get_default_value()
+	# value reset to default - clear instance property!
+	if default_value == value:
+		if _instance_properties.has(name):
+			_instance_properties.erase(name)
+	# instance property does not exist yet -> create it.
+	elif not _instance_properties.has(name):
+		var instance_property = PandoraPropertyInstance.new(property, value)
+		_instance_properties[name] = instance_property
+	else:
+	# just set the value
+		_instance_properties[name].set_property_value(value)

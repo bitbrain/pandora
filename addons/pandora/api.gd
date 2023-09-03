@@ -128,6 +128,12 @@ func is_loaded() -> bool:
 	
 	
 func serialize(instance:PandoraEntity) -> Dictionary:
+	if instance is PandoraCategory:
+		push_warning("Cannot serialize a category!")
+		return {}
+	if not instance.is_instance():
+		var new_instance = instance.instantiate()
+		return new_instance.save_data()
 	return instance.save_data()
 	
 	

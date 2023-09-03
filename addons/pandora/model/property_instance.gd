@@ -33,14 +33,16 @@ func set_property_value(value:Variant) -> void:
 
 
 func load_data(data:Dictionary) -> void:
-	_value = data["_value"]
 	_property_id = data["_property_id"]
-	_property = Pandora.get_property(_property_id)
+	_property = Pandora.get_property(_property_id) as PandoraProperty
+	var type = _property.get_property_type() as PandoraPropertyType
+	_value = type.parse_value(data["_value"])
 
 
 func save_data() -> Dictionary:
+	var type = _property.get_property_type() as PandoraPropertyType
 	return {
-		"_value": _value,
+		"_value": type.write_value(_value),
 		"_property_id": _property_id
 	}
 
