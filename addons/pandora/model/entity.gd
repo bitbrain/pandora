@@ -161,9 +161,9 @@ func init_entity(id:String, name:String, icon_path:String, category_id:String) -
 
 ## Creates an instance of this entity.
 func instantiate() -> PandoraEntity:
-	var entity = ScriptUtil.create_entity_from_script(_script_path, "", "", "", "")
+	var entity = ScriptUtil.create_entity_from_script(get_script_path(), "", "", "", "")
 	if entity != null:
-		entity._instanced_from_id = _id
+		entity._instanced_from_id = get_entity_id()
 		var properties = _create_instance_properties()
 		for property in properties:
 			entity._instance_properties[property.get_property_name()] = property
@@ -282,11 +282,81 @@ func get_entity_property(name:String) -> PandoraProperty:
 	return null
 	
 	
+func set_string(property_name:String, value:String) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown string property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+
+
+func set_integer(property_name:String, value:int) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown integer property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+
+
+func set_float(property_name:String, value:float) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown float property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+
+
+func set_bool(property_name:String, value:bool) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown bool property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+
+
+func set_color(property_name:String, value:Color) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown color property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+		
+		
+func set_reference(property_name:String, value:PandoraEntity) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown reference property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+		
+		
+func set_resource(property_name:String, value:Resource) -> void:
+	if not is_instance():
+		push_warning("Pandora: unable to set property - create instance first via PandoraEntity.instantiate()")
+		return
+	if not has_entity_property(property_name):
+		push_warning("unknown resource property %s on entity %s" % [property_name, get_entity_id()])
+	else:
+		_instance_properties[property_name].set_property_value(value)
+	
+	
 func get_string(property_name:String) -> String:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as String
 	if not has_entity_property(property_name):
-		push_warning("unknown string property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown string property %s on entity %s" % [property_name, get_entity_id()])
 		return ""
 	return get_entity_property(property_name).get_default_value() as String
 	
@@ -295,7 +365,7 @@ func get_integer(property_name:String) -> int:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as int
 	if not has_entity_property(property_name):
-		push_warning("unknown integer property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown integer property %s on entity %s" % [property_name, get_entity_id()])
 		return 0
 	# check if property is either int or float, as loading from json
 	# auto-converts to float type
@@ -309,7 +379,7 @@ func get_float(property_name:String) -> float:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as float
 	if not has_entity_property(property_name):
-		push_warning("unknown float property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown float property %s on entity %s" % [property_name, get_entity_id()])
 		return 0.0
 	return get_entity_property(property_name).get_default_value() as float
 	
@@ -318,7 +388,7 @@ func get_bool(property_name:String) -> bool:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as bool
 	if not has_entity_property(property_name):
-		push_warning("unknown bool property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown bool property %s on entity %s" % [property_name, get_entity_id()])
 		return false
 	return get_entity_property(property_name).get_default_value() as bool
 	
@@ -327,7 +397,7 @@ func get_color(property_name:String) -> Color:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as Color
 	if not has_entity_property(property_name):
-		push_warning("unknown color property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown color property %s on entity %s" % [property_name, get_entity_id()])
 		return Color.WHITE
 	return get_entity_property(property_name).get_default_value() as Color
 	
@@ -336,7 +406,7 @@ func get_reference(property_name:String) -> PandoraEntity:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as PandoraEntity
 	if not has_entity_property(property_name):
-		push_warning("unknown reference property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown reference property %s on entity %s" % [property_name, get_entity_id()])
 		return null
 	return get_entity_property(property_name).get_default_value() as PandoraEntity
 	
@@ -345,7 +415,7 @@ func get_resource(property_name:String) -> Resource:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as Resource
 	if not has_entity_property(property_name):
-		push_warning("unknown resource property %s on instance %s" % [property_name, get_instance_id()])
+		push_warning("unknown resource property %s on entity %s" % [property_name, get_entity_id()])
 		return null
 	return get_entity_property(property_name).get_default_value() as Resource
 
@@ -402,12 +472,12 @@ func is_category(category_id:String) -> bool:
 func load_data(data:Dictionary) -> void:
 	if data.has("_id"):
 		_id = data["_id"]
-	if not is_instance():
-		_name = data["_name"]
-		_category_id = data["_category_id"]
-	else:
+	if data.has("_instanced_from_id"):
 		_instanced_from_id = data["_instanced_from_id"]
 		_instance_properties = _load_instance_properties(data["_instance_properties"])
+	else:
+		_name = data["_name"]
+		_category_id = data["_category_id"]
 	if data.has("_icon_path"):
 		_icon_path = data["_icon_path"]
 	if data.has("_property_overrides"):
@@ -427,12 +497,12 @@ func save_data() -> Dictionary:
 	if _id != "":
 		dict["_id"] = _id
 		
-	if not is_instance():
-		dict["_name"] = _name
-		dict["_category_id"] = _category_id
-	else:
+	if is_instance():
 		dict["_instanced_from_id"] = _instanced_from_id
 		dict["_instance_properties"] = _save_instance_properties()
+	else:
+		dict["_name"] = _name
+		dict["_category_id"] = _category_id
 	
 	if _icon_path != "":
 		dict["_icon_path"] = _icon_path

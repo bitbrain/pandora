@@ -41,13 +41,16 @@ func test_api_save_and_load_objects() -> void:
 func test_save_load_instance() -> void:
 	var category = Pandora.create_category("Swords")
 	var entity = Pandora.create_entity("Zweihander", category)
-	var property = Pandora.create_property(category, "ref", "reference")
+	var property1 = Pandora.create_property(category, "ref", "reference")
+	var property2 = Pandora.create_property(category, "weight", "float")
 	var instance = entity.instantiate()
 	instance.set_reference("ref", entity)
+	instance.set_float("weight", 10.3)
 	var data = Pandora.serialize(instance)
 	var new_instance = Pandora.deserialize(data)
 	
-	assert_that(instance).is_equal(new_instance)
+	assert_that(new_instance.get_reference("ref")).is_equal(entity)
+	assert_that(new_instance.get_float("weight")).is_equal(10.3)
 
 
 # FIXME: currently needs to run as part of Pandora lifecycle

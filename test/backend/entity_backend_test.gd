@@ -378,13 +378,13 @@ func test_entity_instance_inherits_overridden_properties() -> void:
 	assert_that(entity_instance.get_string("root property")).is_equal("override")
 
 
-func test_entity_instance_does_not_inherit_late_properties() -> void:
+func test_entity_instance_does_inherit_late_properties() -> void:
 	var backend = create_object_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("Test", category)
 	var entity_instance = entity.instantiate()
 	backend.create_property(category, "late property", "string", "lateValue")
-	assert_that(entity_instance.get_string("late property")).is_equal("")
+	assert_that(entity_instance.get_string("late property")).is_equal("lateValue")
 
 
 func test_delete_propagated_properties_in_children() -> void:

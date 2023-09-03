@@ -142,7 +142,7 @@ func deserialize(data:Dictionary) -> PandoraEntity:
 	if not entity:
 		return
 	var instance = ScriptUtil.create_entity_from_script(entity.get_script_path(), "", "", "", "")
-	instance._load_data(data)
+	instance.load_data(data)
 	return instance
 
 
