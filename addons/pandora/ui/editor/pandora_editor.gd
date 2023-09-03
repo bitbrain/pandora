@@ -154,6 +154,7 @@ func _on_regenerate_id_button_pressed() -> void:
 		_regenerate_all_ids()
 	else:
 		_regenerate_id(selected_entity)
+	_populate_data()
 
 
 func _data_load_success() -> void:
