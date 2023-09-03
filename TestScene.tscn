@@ -7,9 +7,11 @@
 
 [sub_resource type="Resource" id="Resource_13y72"]
 script = ExtResource("2_racr8")
+_id = ""
 
 [sub_resource type="Resource" id="Resource_oemo8"]
 script = ExtResource("3_jp02v")
+_id = ""
 
 [node name="TestScene" type="CenterContainer"]
 anchors_preset = 15

@@ -8,6 +8,8 @@ extends GdUnitTestSuite
 # TestSuite generated from
 const __source = "res://addons/pandora/api.gd"
 const TEST_DIR = "testdata"
+const CustomTexture = preload("res://docs/assets/logo.svg")
+
 
 func before() -> void:
 	Pandora.set_context_id(TEST_DIR)
@@ -43,14 +45,17 @@ func test_save_load_instance() -> void:
 	var entity = Pandora.create_entity("Zweihander", category)
 	var property1 = Pandora.create_property(category, "ref", "reference")
 	var property2 = Pandora.create_property(category, "weight", "float")
+	var property3 = Pandora.create_property(category, "tex", "texture")
 	var instance = entity.instantiate()
 	instance.set_reference("ref", entity)
 	instance.set_float("weight", 10.3)
+	instance.set_resource("tex", CustomTexture)
 	var data = Pandora.serialize(instance)
 	var new_instance = Pandora.deserialize(data)
 	
 	assert_that(new_instance.get_reference("ref")).is_equal(entity)
 	assert_that(new_instance.get_float("weight")).is_equal(10.3)
+	assert_that(new_instance.get_resource("tex")).is_equal(CustomTexture)
 
 
 # FIXME: currently needs to run as part of Pandora lifecycle
