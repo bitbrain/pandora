@@ -4,6 +4,9 @@
 class_name PandoraEntityBackend extends RefCounted
 
 
+const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
+
+
 enum LoadState {
 	# backend not initialized yet
 	NOT_LOADED,
@@ -14,10 +17,6 @@ enum LoadState {
 	# a problem occured during loading
 	LOAD_ERROR
 }
-
-
-const PandoraEntityScript = preload("res://addons/pandora/model/entity.gd")
-
 
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
@@ -43,7 +42,7 @@ func _init(id_generator:NanoIDGenerator) -> void:
 
 ## Creates a new entity on the given PandoraCategory
 func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
-	var entity = _create_entity_from_script(category.get_script_path(), _id_generator.generate(), name, "", category._id)
+	var entity = ScriptUtil.create_entity_from_script(category.get_script_path(), _id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_propagate_properties(category)
@@ -248,7 +247,7 @@ func _deserialize_entities(data:Array) -> Dictionary:
 		# only when entity has an overridden class, initialise it.
 		# otherwise rely on the script path of the parent category.
 		if entity_data.has("_script_path"):
-			var entity = _create_entity_from_script(entity_data["_script_path"], "", "", "", "")
+			var entity = ScriptUtil.create_entity_from_script(entity_data["_script_path"], "", "", "", "")
 			if entity == null:
 				_load_state = LoadState.LOAD_ERROR
 				return {}
@@ -256,7 +255,7 @@ func _deserialize_entities(data:Array) -> Dictionary:
 			dict[entity._id] = entity
 		else:
 			var parent_category = _categories[entity_data["_category_id"]]
-			var entity = _create_entity_from_script(parent_category.get_script_path(), "", "", "", "")
+			var entity = ScriptUtil.create_entity_from_script(parent_category.get_script_path(), "", "", "", "")
 			if entity == null:
 				_load_state = LoadState.LOAD_ERROR
 				return {}
@@ -328,44 +327,3 @@ func _collect_entities_recursive(category:PandoraCategory, list:Array[PandoraEnt
 			list.append(child)
 		elif child is PandoraCategory:
 			_collect_entities_recursive(child, list)
-
-
-func _get_entity_class(path:String) -> GDScript:
-	var EntityClass = load(path)
-	if EntityClass == null or not EntityClass.has_source_code():
-		push_warning("Unable to find " + path + " - defaulting to PandoraEntity instead.")
-		EntityClass = PandoraEntityScript
-	return EntityClass
-
-
-func _create_entity_from_script(path:String, id:String, name:String, icon_path:String, category_id:String):
-	var clazz = _get_entity_class(path)
-	var new_method = _find_first_method_of_script(clazz, "init_entity")
-	if not new_method.has("args"):
-		push_warning("ERROR - Pandora is unable to correctly resolve new() method.")
-		var entity = PandoraEntityScript.new()
-		entity.init_entity(id, name, icon_path, category_id)
-		return entity
-	var expected_method = _find_first_method_of_script(PandoraEntityScript, "init_entity")
-	if new_method["args"].size() != expected_method["args"].size():
-		push_warning("init_entity() method has incorrect signature! Requires " + str(expected_method["args"].size()) + " arguments - defaulting to PandoraEntity instead.")
-		var entity = PandoraEntityScript.new()
-		entity.init_entity(id, name, icon_path, category_id)
-		return entity
-		
-	var entity = clazz.new()
-	if not entity is PandoraEntity:
-		push_warning("Script '" + path + "' must extend PandoraEntity - defaulting to PandoraEntity instead.")
-		entity = PandoraEntityScript.new()
-	
-	entity.init_entity(id, name, icon_path, category_id)
-	return entity
-
-
-## searches for the first occurence of the method.
-## methods can occur multiple times in the order of inheritance.
-func _find_first_method_of_script(script:GDScript, method_name:String) -> Dictionary: 
-	for method in script.get_script_method_list():
-		if method.name == method_name:
-			return method
-	return {}
