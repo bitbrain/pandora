@@ -50,6 +50,9 @@ To keep the codebase clean, we cover every feature with unit tests.
 
 ### [Official Wiki](https://bitbra.in/pandora)
 
+# Got questions?
+
+Head to the [Discussion Board](https://github.com/bitbrain/pandora/discussions) to ask any question or discuss ideas.
 
 # 🥰 Credits
 
