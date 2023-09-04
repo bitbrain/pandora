@@ -45,7 +45,7 @@ func get_all_data(context_id: String) -> Dictionary:
 		json.parse(text)
 		file.close()
 		# Backwards compatibility for already compressed files
-		if !json.get_data() and OS.is_debug_build():
+		if not json.get_data() and OS.is_debug_build():
 			print("Compressed file detected in debug mode, decompressing...")
 			return get_decompressed_data(file_path)
 		return json.get_data() as Dictionary
