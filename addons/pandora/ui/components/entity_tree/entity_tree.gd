@@ -9,6 +9,7 @@ const CLEAR_ICON = preload("res://addons/pandora/icons/Clear.svg")
 signal entity_selected(entity:PandoraEntity)
 signal entity_deletion_issued(entity:PandoraEntity)
 signal selection_cleared
+signal entity_moved(source: TreeItem, target: TreeItem, shift: int)
 
 
 @onready var loading_spinner = $LoadingSpinner
@@ -40,14 +41,14 @@ func search(text:String) -> void:
 
 
 func queue_delete(entity_id:String) -> void:
-	confirmation_dialog.confirmed.connect(
-		func():
-			var item = entity_items[entity_id]
-			var entity = item.get_metadata(0) as PandoraEntity
-			entity_deletion_issued.emit(entity)
-			if item.get_parent() != null:
-				item.get_parent().remove_child(item))
-	confirmation_dialog.popup()
+	confirm("Please Confirm...", "Are you sure you want to delete?", func():
+		var item = entity_items[entity_id]
+		var entity = item.get_metadata(0) as PandoraEntity
+		entity_deletion_issued.emit(entity)
+		if item.get_parent() != null:
+			item.get_parent().remove_child(item)
+	)
+
 
 
 ## selects the entity with the given ID	
@@ -143,3 +144,38 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 func _on_icon_changed(entity_id:String, new_path:String) -> void:
 	var item = entity_items[entity_id] as TreeItem
 	item.set_icon(0, load(new_path))
+
+func _get_drag_data(at_position):
+	set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)
+	var preview = Label.new()
+	preview.text = get_selected().get_text(0)
+	set_drag_preview(preview)
+	
+	return get_selected()
+
+func _can_drop_data(at_position, data):
+	if not data is TreeItem:
+		return false
+	
+	var entity: PandoraEntity = data.get_metadata(0)
+	if entity is PandoraCategory:
+		return true
+
+func _drop_data(at_position, source):
+	var target = get_item_at_position(at_position)
+	var target_entity: PandoraEntity = target.get_metadata(0)
+	var source_entity: PandoraEntity = source.get_metadata(0)
+
+	# WIP: Validate if properties will change and confirm before moving
+
+	#confirm("Are you sure?", "Are you sure?", func():	
+	#	var shift = get_drop_section_at_position(position)
+	#	entity_moved.emit(source, target, shift)
+	#)
+
+# Make ConfirmationDialog reusable
+func confirm(title: String, body: String, callback: Callable):
+	confirmation_dialog.dialog_text = body
+	confirmation_dialog.title = title
+	confirmation_dialog.confirmed.connect(callback)
+	confirmation_dialog.popup()
