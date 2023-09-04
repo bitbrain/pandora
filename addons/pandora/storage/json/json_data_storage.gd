@@ -21,21 +21,44 @@ func _init(data_dir: String):
 
 func store_all_data(data:Dictionary, context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
-	var file = FileAccess.open_compressed(file_path, FileAccess.WRITE)
-	var json = JSON.new()
-	file.store_string(json.stringify(data))
+	var file: FileAccess
+	if OS.is_debug_build():
+		file = FileAccess.open(file_path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(data, "\t"))
+	else:
+		file = FileAccess.open_compressed(file_path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(data))
 	file.close()
 	return data
 
 
 func get_all_data(context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
-	var file = FileAccess.open_compressed(file_path, FileAccess.READ)
-	var json = JSON.new()
+	var file: FileAccess
+	if OS.is_debug_build():
+		file = FileAccess.open(file_path, FileAccess.READ)
+	else:
+		file = FileAccess.open_compressed(file_path, FileAccess.READ)
+	var json: JSON = JSON.new()
 	if file != null:
 		var text = file.get_as_text()
 		json.parse(text)
 		file.close()
+		# Backwards compatibility for already compressed files
+		if json.get_data() == null and OS.is_debug_build():
+			print("Compressed file detected in debug mode, decompressing...")
+			return get_decompressed_data(file_path)
+		return json.get_data() as Dictionary
+	else:
+		return {}
+
+func get_decompressed_data(file_path : String) -> Dictionary:
+	var file: FileAccess = FileAccess.open_compressed(file_path, FileAccess.READ)
+	if file != null:
+		var text = file.get_as_text()
+		file.close()
+		var json: JSON = JSON.new()
+		json.parse(text)
 		return json.get_data() as Dictionary
 	else:
 		return {}
@@ -57,7 +80,11 @@ func _get_file_path(context_id: String) -> String:
 
 
 func _load_from_file(file_path: String) -> Dictionary:
-	var file = FileAccess.open_compressed(file_path, FileAccess.READ)
+	var file: FileAccess
+	if OS.is_debug_build():
+		file = FileAccess.open(file_path, FileAccess.READ)
+	else:
+		file = FileAccess.open_compressed(file_path, FileAccess.READ)
 	if FileAccess.file_exists(file_path) and file != null:
 		var content = file.get_as_text()
 		file.close()
