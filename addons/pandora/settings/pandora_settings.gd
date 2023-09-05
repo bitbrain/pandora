@@ -9,14 +9,16 @@ enum ID_TYPE {
 }
 
 const CATEGORY_MAIN: StringName = "pandora"
-
 const CATEGORY_CONFIG: StringName = CATEGORY_MAIN + "/config"
+
 const SETTING_ID_TYPE: StringName = CATEGORY_CONFIG + "/id_type"
+const DEFAULT_ID_TYPE: StringName = "sequential"
+const HINT_ID_TYPE: StringName = "sequential,nanoid"
 
 
 static func initialize() -> void:
-	init_setting(SETTING_ID_TYPE, "sequential", TYPE_STRING,
-			PROPERTY_HINT_ENUM, "sequential,nanoid")
+	init_setting(SETTING_ID_TYPE, DEFAULT_ID_TYPE, TYPE_STRING,
+			PROPERTY_HINT_ENUM, HINT_ID_TYPE)
 
 
 static func init_setting(name: String, default: Variant, type := typeof(default),
@@ -31,6 +33,9 @@ static func init_setting(name: String, default: Variant, type := typeof(default)
 		"type": type,
 		"hint": hint,
 		"hint_string": hint_string,
-		"usage": "blah",
 	}
 	ProjectSettings.add_property_info(info)
+
+
+static func get_id_type() -> ID_TYPE:
+	return ProjectSettings.get_setting(SETTING_ID_TYPE, DEFAULT_ID_TYPE)

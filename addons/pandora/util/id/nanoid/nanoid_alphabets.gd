@@ -8,7 +8,7 @@ class_name NanoIDAlphabets
 # `'use`, `andom`, and `rict'`
 # References to the brotli default dictionary:
 # `-26T`, `1983`, `40px`, `75px`, `bush`, `jack`, `mind`, `very`, and `wolf`
-const URL: String = "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict"
+
 
 # These alphabets are from https://github.com/CyberAP/nanoid-dictionary
 const NUMBERS: String = "1234567890"

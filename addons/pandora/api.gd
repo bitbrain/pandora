@@ -12,7 +12,7 @@ signal entity_added(entity:PandoraEntity)
 
 var _context_manager:PandoraContextManager
 var _storage:PandoraJsonDataStorage
-var _id_generator:NanoIDGenerator
+var _id_generator: PandoraIDGenerator
 var _entity_backend:PandoraEntityBackend
 
 
@@ -23,7 +23,16 @@ var _backend_load_state:PandoraEntityBackend.LoadState = PandoraEntityBackend.Lo
 func _enter_tree() -> void:
 	self._storage = PandoraJsonDataStorage.new("res://")
 	self._context_manager = PandoraContextManager.new()
-	self._id_generator = NanoIDGenerator.new(NanoIDAlphabets.URL, 10)
+	
+	var id_type := PandoraSettings.get_id_type()
+	if id_type == PandoraSettings.ID_TYPE.Sequential:
+		self._id_generator = PandoraSequentialIDGenerator.new()
+	elif id_type == PandoraSettings.ID_TYPE.NanoID:
+		self._id_generator = PandoraNanoIDGenerator.new(10)
+	else:
+		push_error("unknown is type: %s" % id_type)
+		self._id_generator = PandoraSequentialIDGenerator.new()
+	
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
 	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
 	load_data()

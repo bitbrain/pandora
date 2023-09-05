@@ -32,12 +32,12 @@ var _categories:Dictionary = {}
 # list of categories on the root level
 var _root_categories:Array[PandoraCategory] = []
 # generates ids for new entities
-var _id_generator:NanoIDGenerator
+var _id_generator:PandoraIDGenerator
 # tracks the current state of loading
 var _load_state:LoadState = LoadState.NOT_LOADED
 
 
-func _init(id_generator:NanoIDGenerator) -> void:
+func _init(id_generator:PandoraIDGenerator) -> void:
 	self._id_generator = id_generator
 
 
@@ -92,7 +92,7 @@ func regenerate_all_ids() -> void:
 
 
 func regenerate_category_id(category: PandoraCategory) -> void:
-	var new_id := _id_generator.generate()
+	var new_id = _id_generator.generate()
 	_categories.erase(category._id)
 	for child in category._children:
 		child._category_id = new_id
