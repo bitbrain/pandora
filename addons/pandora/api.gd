@@ -186,5 +186,7 @@ func deserialize(data:Dictionary) -> PandoraEntity:
 # used for testing only and shutting down the addon
 func _clear() -> void:
 	_entity_backend._clear()
+	if _id_generator.has_method("clear"):
+		_id_generator.clear()
 	_loaded = false
 	_backend_load_state = PandoraEntityBackend.LoadState.NOT_LOADED
