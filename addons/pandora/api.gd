@@ -64,6 +64,8 @@ func delete_category(category:PandoraCategory) -> void:
 func delete_entity(entity:PandoraEntity) -> void:
 	_entity_backend.delete_entity(entity)
 	
+func move_entity(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int) -> void:
+	_entity_backend.move_entity(source, target, entity_tree, shift)
 	
 func get_entity(entity_id:String) -> PandoraEntity:
 	return _entity_backend.get_entity(entity_id)

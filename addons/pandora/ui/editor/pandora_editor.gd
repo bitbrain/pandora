@@ -29,6 +29,7 @@ func _ready() -> void:
 	tree.entity_selected.connect(property_editor.set_entity)
 	tree.selection_cleared.connect(func(): property_editor.set_entity(null))
 	tree.entity_deletion_issued.connect(_delete_entity)
+	tree.entity_moved.connect(_move_entity)
 	create_entity_button.pressed.connect(_create_entity)
 	create_category_button.pressed.connect(_create_category)
 	reset_button.pressed.connect(_reset_to_saved_file)
@@ -117,6 +118,9 @@ func _save() -> void:
 
 func _delete_entity(entity:PandoraEntity) -> void:
 	Pandora.delete_entity(entity)
+
+func _move_entity(entity: PandoraEntity, new_parent: PandoraEntity, entity_tree: Tree, shift: int) -> void:
+	Pandora.move_entity(entity, new_parent, entity_tree, shift)
 
 
 func _reset_to_saved_file() -> void:

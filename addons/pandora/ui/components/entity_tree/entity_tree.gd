@@ -9,7 +9,7 @@ const CLEAR_ICON = preload("res://addons/pandora/icons/Clear.svg")
 signal entity_selected(entity:PandoraEntity)
 signal entity_deletion_issued(entity:PandoraEntity)
 signal selection_cleared
-signal entity_moved(source: TreeItem, target: TreeItem, shift: int)
+signal entity_moved(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int)
 
 
 @onready var loading_spinner = $LoadingSpinner
@@ -17,6 +17,7 @@ signal entity_moved(source: TreeItem, target: TreeItem, shift: int)
 
 
 var entity_items: Dictionary
+var drag_preview_label : Label
 
 
 func _ready():
@@ -47,6 +48,8 @@ func queue_delete(entity_id:String) -> void:
 		entity_deletion_issued.emit(entity)
 		if item.get_parent() != null:
 			item.get_parent().remove_child(item)
+		deselect_all()
+		selection_cleared.emit()
 	)
 
 
@@ -78,6 +81,7 @@ func set_data(category_tree:Array[PandoraEntity]) -> void:
 	clear()
 	entity_items.clear()
 	_populate_tree(category_tree)
+	_sort_tree(get_root())
 	if loading_spinner:
 		loading_spinner.visible = false
 	
@@ -127,6 +131,28 @@ func _populate_tree_item(parent_item: TreeItem, parent_entity: PandoraEntity) ->
 		if child is PandoraCategory:
 			_populate_tree_item(child_item, child)
 
+func _sort_tree(item: TreeItem):
+	var children: Array = []
+	var child = item.get_first_child()
+	while child:
+		children.append(child)
+		child = child.get_next()
+	children.sort_custom(func(a: TreeItem, b: TreeItem) -> int:
+		var a_index = a.get_metadata(0).get_index()
+		var b_index = b.get_metadata(0).get_index()
+		
+		if a_index < b_index:
+			return -1
+		elif a_index > b_index:
+			return 1
+		return 0
+	)
+	
+	for i in range(len(children) - 1):
+		children[i].move_before(children[i + 1])
+		
+	for c in children:
+		_sort_tree(c)
 
 func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	var item = create_item(parent_item) as TreeItem
@@ -146,34 +172,67 @@ func _on_icon_changed(entity_id:String, new_path:String) -> void:
 	item.set_icon(0, load(new_path))
 
 func _get_drag_data(at_position):
-	set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)
-	var preview = Label.new()
-	preview.text = get_selected().get_text(0)
-	set_drag_preview(preview)
-	
-	return get_selected()
+	if get_selected():
+		set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)
 
-func _can_drop_data(at_position, data):
-	if not data is TreeItem:
+		if drag_preview_label == null or drag_preview_label.is_queued_for_deletion():
+			drag_preview_label = Label.new()
+
+		drag_preview_label.text = get_selected().get_text(0)
+		set_drag_preview(drag_preview_label)
+		
+		return get_selected()
+
+func _can_drop_data(at_position, source):
+	if not source is TreeItem:
+		return false
+
+	var target = get_item_at_position(at_position)
+	
+	# Return false if the target is the source
+	if target == source:
+		return false
+
+	# Return false if the source already is a parent of the target
+	if source.get_parent() == target:
 		return false
 	
-	var entity: PandoraEntity = data.get_metadata(0)
-	if entity is PandoraCategory:
-		return true
+	# Return false if the target is a child of the source
+	if not target or target.get_parent() == source:
+		return false
+	
+	var source_entity: PandoraEntity = source.get_metadata(0)
+	var target_entity: PandoraEntity = target.get_metadata(0)
+
+	# If source is an Entity
+	if source_entity is PandoraEntity and not source_entity is PandoraCategory:
+		if target_entity is PandoraCategory or get_drop_section_at_position(at_position) != DROP_MODE_ON_ITEM:
+			return true
+	# If source is a Category
+	elif source_entity is PandoraCategory:
+		if target_entity is PandoraCategory:
+			return true
+	return false
 
 func _drop_data(at_position, source):
 	var target = get_item_at_position(at_position)
-	var target_entity: PandoraEntity = target.get_metadata(0)
+	if not target:
+		return false
 	var source_entity: PandoraEntity = source.get_metadata(0)
+	var target_entity: PandoraEntity = target.get_metadata(0)
 
-	# WIP: Validate if properties will change and confirm before moving
+	var shift = get_drop_section_at_position(at_position)
 
-	#confirm("Are you sure?", "Are you sure?", func():	
-	#	var shift = get_drop_section_at_position(position)
-	#	entity_moved.emit(source, target, shift)
-	#)
+	if shift == 0:
+		source.get_parent().remove_child(source)
+		target.add_child(source)
+	elif shift == -1:
+		source.move_before(target)
+	elif shift == 1:
+		source.move_after(target)
 
-# Make ConfirmationDialog reusable
+	entity_moved.emit(source_entity, target_entity, self, shift)
+
 func confirm(title: String, body: String, callback: Callable):
 	confirmation_dialog.dialog_text = body
 	confirmation_dialog.title = title

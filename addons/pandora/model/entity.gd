@@ -8,6 +8,8 @@ const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
 
 
 signal name_changed(new_name:String)
+signal order_changed(new_index:int)
+signal category_changed(new_category_id:String)
 signal icon_changed(new_icon_path:String)
 signal script_path_changed(new_script_path:String)
 signal instance_script_path_changed(new_script_path:String)
@@ -23,6 +25,7 @@ var _name:String
 var _icon_path:String
 var _category_id:String
 var _script_path:String
+var _index:int
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -226,6 +229,16 @@ func set_generate_ids(generate_ids:bool) -> void:
 	self._generate_ids = generate_ids
 	generate_ids_changed.emit(_generate_ids)
 
+func set_category(category_id: String) -> void:
+	print("Setting category ID to ", category_id)
+	print("ID now: ", self._category_id)
+	self._category_id = category_id
+	print("ID now: ", self._category_id)
+	category_changed.emit(category_id)
+	
+func set_index(order:int) -> void:
+	self._index = order
+	order_changed.emit(order)
 
 func is_generate_ids() -> bool:
 	if is_instance():
@@ -445,6 +458,12 @@ func get_category() -> PandoraCategory:
 	if _category_id == null or _category_id == "":
 		return null
 	return Pandora.get_category(_category_id)
+
+func get_index() -> int:
+	if is_instance():
+		return _get_instanced_from_entity().get_index()
+	_initialize_if_not_loaded()
+	return _index
 	
 	
 func is_category(category_id:String) -> bool:
@@ -485,6 +504,8 @@ func load_data(data:Dictionary) -> void:
 		_generate_ids = data["_generate_ids"]
 	if data.has("_ids_generation_class"):
 		_ids_generation_class = data["_ids_generation_class"]
+	if data.has("_index"):
+		_index = data["_index"]
 
 
 ## Produces a data dictionary that can be used on load_data()
@@ -511,6 +532,8 @@ func save_data() -> Dictionary:
 		dict["_generate_ids"] = _generate_ids
 	if _ids_generation_class != "":
 		dict["_ids_generation_class"] = _ids_generation_class
+	if _index:
+		dict["_index"] = _index
 	return dict
 
 

@@ -124,6 +124,25 @@ func delete_property(property:PandoraProperty) -> void:
 	_properties.erase(property._id)
 	_propagate_properties(parent_category)
 
+func move_entity(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int) -> void:
+	if shift == 0:
+		if not target is PandoraCategory:
+			push_error("Unable to move entity to entity")
+			return
+		source.set_category(target._id)
+	reindex_entities(entity_tree.get_root())
+
+func reindex_entities(item: TreeItem) -> void:
+	while item:
+		var entity: PandoraEntity = item.get_metadata(0)
+		if entity:
+			entity.set_index(item.get_index())
+
+		if item.get_first_child():
+			reindex_entities(item.get_first_child())
+
+		item = item.get_next()
+		
 
 ## Returns an existing entity (or category) or null otherwise
 func get_entity(entity_id:String) -> PandoraEntity:
