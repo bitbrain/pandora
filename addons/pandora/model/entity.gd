@@ -230,6 +230,8 @@ func set_generate_ids(generate_ids:bool) -> void:
 	generate_ids_changed.emit(_generate_ids)
 
 func set_category(category_id: String) -> void:
+	if get_category().get_icon_path() != Pandora.get_category(category_id).get_icon_path():
+		set_icon_path(Pandora.get_category(category_id).get_icon_path())
 	self._category_id = category_id
 	category_changed.emit(category_id)
 	
@@ -503,6 +505,8 @@ func load_data(data:Dictionary) -> void:
 		_ids_generation_class = data["_ids_generation_class"]
 	if data.has("_index"):
 		_index = data["_index"]
+	else:
+		_index = 0
 
 
 ## Produces a data dictionary that can be used on load_data()

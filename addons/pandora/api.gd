@@ -61,11 +61,11 @@ func delete_category(category:PandoraCategory) -> void:
 	_entity_backend.delete_category(category)
 	
 	
-func delete_entity(entity:PandoraEntity, entity_tree: Tree) -> void:
-	_entity_backend.delete_entity(entity, entity_tree)
+func delete_entity(entity:PandoraEntity) -> void:
+	_entity_backend.delete_entity(entity)
 	
-func move_entity(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int) -> void:
-	_entity_backend.move_entity(source, target, entity_tree, shift)
+func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: PandoraEntityBackend.DropSection) -> void:
+	_entity_backend.move_entity(source, target, drop_section)
 	
 func get_entity(entity_id:String) -> PandoraEntity:
 	return _entity_backend.get_entity(entity_id)
@@ -90,6 +90,8 @@ func get_all_categories(filter:PandoraCategory = null, sort:Callable = func(a,b)
 func get_all_entities(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
 	return _entity_backend.get_all_entities(filter, sort)
 
+func check_if_properties_will_change_on_move(source:PandoraEntity, target:PandoraEntity, drop_section:PandoraEntityBackend.DropSection) -> bool:
+	return _entity_backend.check_if_properties_will_change_on_move(source, target, drop_section)
 
 func load_data_async() -> void:
 	var thread = Thread.new()

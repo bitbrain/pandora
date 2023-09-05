@@ -7,10 +7,9 @@ const CLEAR_ICON = preload("res://addons/pandora/icons/Clear.svg")
 
 
 signal entity_selected(entity:PandoraEntity)
-signal entity_deletion_issued(entity:PandoraEntity, entity_tree: Tree)
+signal entity_deletion_issued(entity:PandoraEntity)
 signal selection_cleared
-signal entity_moved(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int)
-
+signal entity_moved(source: PandoraEntity, target: PandoraEntity, drop_section: int)
 
 @onready var loading_spinner = $LoadingSpinner
 @onready var confirmation_dialog = $ConfirmationDialog
@@ -45,7 +44,7 @@ func queue_delete(entity_id:String) -> void:
 	confirm("Please Confirm...", "Are you sure you want to delete?", func():
 		var item = entity_items[entity_id]
 		var entity = item.get_metadata(0) as PandoraEntity
-		entity_deletion_issued.emit(entity, self)
+		entity_deletion_issued.emit(entity)
 		if item.get_parent() != null:
 			item.get_parent().remove_child(item)
 		deselect_all()
@@ -219,20 +218,23 @@ func _drop_data(at_position, source):
 	var target = get_item_at_position(at_position)
 	if not target:
 		return false
+
 	var source_entity: PandoraEntity = source.get_metadata(0)
 	var target_entity: PandoraEntity = target.get_metadata(0)
 
-	var shift = get_drop_section_at_position(at_position)
+	var drop_section: PandoraEntityBackend.DropSection = get_drop_section_at_position(at_position)
 
-	if shift == 0:
+	var will_properties_change: bool = Pandora.check_if_properties_will_change_on_move(source_entity, target_entity, drop_section)
+
+	if drop_section == PandoraEntityBackend.DropSection.INSIDE:
 		source.get_parent().remove_child(source)
 		target.add_child(source)
-	elif shift == -1:
+	elif drop_section == PandoraEntityBackend.DropSection.ABOVE:
 		source.move_before(target)
-	elif shift == 1:
+	elif drop_section == PandoraEntityBackend.DropSection.BELOW:
 		source.move_after(target)
 
-	entity_moved.emit(source_entity, target_entity, self, shift)
+	entity_moved.emit(source_entity, target_entity, drop_section)
 
 func confirm(title: String, body: String, callback: Callable):
 	confirmation_dialog.dialog_text = body

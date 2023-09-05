@@ -533,3 +533,45 @@ func test_saveload_compilation_error_on_script() -> void:
 	var loaded_entity = backend.get_entity(entity_id)
 	assert_that(loaded_entity).is_not_null()
 	assert_bool(loaded_entity is PandoraEntity).is_true()
+
+func test_index_moving_entities_above() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_a)
+	backend.move_entity(entity_2, entity_1, PandoraEntityBackend.DropSection.ABOVE)
+	assert_that(entity_2._index <= entity_1._index).is_true()
+
+func test_index_moving_entities_below() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_a)
+	backend.move_entity(entity_1, entity_2, PandoraEntityBackend.DropSection.BELOW)
+	assert_that(entity_1._index >= entity_2._index).is_true()
+	
+func test_category_moving_entities_above() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_b)
+	backend.move_entity(entity_1, entity_2, PandoraEntityBackend.DropSection.ABOVE)
+	assert_that(entity_1._category_id).is_equal(entity_2._category_id)
+
+func test_category_moving_entities_below() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_b)
+	backend.move_entity(entity_1, entity_2, PandoraEntityBackend.DropSection.BELOW)
+	assert_that(entity_1._category_id).is_equal(entity_2._category_id)
+	
+func test_category_moving_entities_inside() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity = backend.create_entity("Entity 1", category_a)
+	backend.move_entity(entity, category_b, PandoraEntityBackend.DropSection.INSIDE)
+	assert_that(entity._category_id).is_equal(category_b._id)

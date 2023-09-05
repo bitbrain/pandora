@@ -18,6 +18,15 @@ enum LoadState {
 	LOAD_ERROR
 }
 
+enum DropSection {
+	# move source entity above the target
+	ABOVE = -1,
+	# move source entity below the target
+	BELOW = 1,
+	# move source entity to the target
+	INSIDE = 0
+}
+
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
 
@@ -41,19 +50,17 @@ func _init(id_generator:NanoIDGenerator) -> void:
 
 
 ## Creates a new entity on the given PandoraCategory
-func create_entity(name:String, category:PandoraCategory, entity_tree: Tree = null) -> PandoraEntity:
+func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
 	var entity = ScriptUtil.create_entity_from_script(category.get_script_path(), _id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_propagate_properties(category)
 	entity_added.emit(entity)
-	if entity_tree:
-		reindex_entities(entity_tree.get_root())
 	return entity
 
 
 ## Creates a new category on an optional parent category
-func create_category(name:String, parent_category:PandoraCategory = null, entity_tree: Tree = null) -> PandoraCategory:
+func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
 	var category = PandoraCategory.new()
 	category.init_entity(_id_generator.generate(), name, "", "")
 	if parent_category != null:
@@ -65,8 +72,6 @@ func create_category(name:String, parent_category:PandoraCategory = null, entity
 	_categories[category._id] = category
 	_propagate_properties(parent_category)
 	entity_added.emit(category)
-	if entity_tree:
-		reindex_entities(entity_tree.get_root())
 	return category
 
 
@@ -110,7 +115,7 @@ func delete_category(category:PandoraCategory) -> void:
 
 
 ## Deletes an entity (or category)
-func delete_entity(entity:PandoraEntity, entity_tree: Tree = null) -> void:
+func delete_entity(entity:PandoraEntity) -> void:
 	if entity is PandoraCategory:
 		delete_category(entity as PandoraCategory)
 		return
@@ -119,8 +124,6 @@ func delete_entity(entity:PandoraEntity, entity_tree: Tree = null) -> void:
 	entity._property_map.clear()
 	entity._inherited_properties.clear()
 	_entities.erase(entity._id)
-	if entity_tree:
-		reindex_entities(entity_tree.get_root())
 
 
 ## Deletes a property from a parent category
@@ -130,25 +133,43 @@ func delete_property(property:PandoraProperty) -> void:
 	_properties.erase(property._id)
 	_propagate_properties(parent_category)
 
-func move_entity(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int) -> void:
-	if shift == 0:
+## Moves an entity (or category) to a new parent category or reorders
+func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> void:
+	if drop_section == DropSection.INSIDE:
 		if not target is PandoraCategory:
 			push_error("Unable to move entity to entity")
 			return
 		source.set_category(target._id)
-	reindex_entities(entity_tree.get_root())
+		source.set_index(target._children.size())
+	elif drop_section == DropSection.ABOVE:
+		if source._category_id != target._category_id:
+			source.set_category(target._category_id)
+		var old_index = source._index
+		source.set_index(target._index)
+		reorder_entities(source, old_index)
+	elif drop_section == DropSection.BELOW:
+		if source._category_id != target._category_id:
+			source.set_category(target._category_id)
+		var old_index = source._index
+		source.set_index(target._index + 1)
+		reorder_entities(source, old_index)
+	else:
+		push_error("Unknown drop section: " + str(drop_section))
+		return
 
-func reindex_entities(item: TreeItem) -> void:
-	while item:
-		var entity = item.get_metadata(0)
+## Reorder indexes based on the move operation made by move_entity
+func reorder_entities(moved_entity: PandoraEntity, old_index: int) -> void:
+	var new_index = moved_entity.get_index()
+	var direction = 1 if new_index > old_index else -1
+	var current_index = old_index + direction
+
+	while current_index != new_index + direction:
+		var entity: PandoraEntity = get_entity_by_index(get_category(moved_entity._category_id), current_index)
 		if entity:
-			entity.set_index(item.get_index())
+			var _new_index = entity._index - direction
+			entity.set_index(_new_index)
+		current_index += direction
 
-		if item.get_first_child():
-			reindex_entities(item.get_first_child())
-
-		item = item.get_next()
-		
 
 ## Returns an existing entity (or category) or null otherwise
 func get_entity(entity_id:String) -> PandoraEntity:
@@ -158,6 +179,12 @@ func get_entity(entity_id:String) -> PandoraEntity:
 		return null
 	return _entities[entity_id]
 
+## Returns an existing entity (or category) based on its index or null otherwise
+func get_entity_by_index(parent: PandoraCategory, index: int) -> PandoraEntity:
+	for entity in parent._children:
+		if entity._index == index:
+			return entity
+	return null
 
 ## Returns an existing category or null otherwise
 func get_category(category_id:String) -> PandoraCategory:
