@@ -3,6 +3,7 @@ extends Node
 
 
 const EntityIdFileGenerator = preload("res://addons/pandora/util/entity_id_file_generator.gd")
+const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 
 
 signal data_loaded
@@ -155,28 +156,30 @@ func save_data() -> void:
 
 func is_loaded() -> bool:
 	return _loaded
-
-
-func serialize(instance:PandoraEntityInstance) -> Dictionary:
+	
+	
+func serialize(instance:PandoraEntity) -> Dictionary:
+	if instance is PandoraCategory:
+		push_warning("Cannot serialize a category!")
+		return {}
+	if not instance.is_instance():
+		var new_instance = instance.instantiate()
+		return new_instance.save_data()
 	return instance.save_data()
-
-
-func deserialize(data:Dictionary) -> PandoraEntityInstance:
+	
+	
+func deserialize(data:Dictionary) -> PandoraEntity:
 	if not _loaded:
 		push_warning("Pandora - cannot deserialize: data not initialized yet.")
 		return null
-	if not data.has("_entity_id"):
-		push_error("Unable to deserialize data! Invalid PandoraEntityInstance format.")
+	if not data.has("_instanced_from_id"):
+		push_error("Unable to deserialize data! Not an instance! Call PandoraEntity.instantiate() to create instances.")
 		return
-	var entity = Pandora.get_entity(data["_entity_id"])
+	var entity = Pandora.get_entity(data["_instanced_from_id"])
 	if not entity:
 		return
-	var InstanceClass = load(entity.get_instance_script_path())
-	if not InstanceClass:
-		push_error("Unable to deserialize data! Invalid instance script.")
-		return
-	var instance = InstanceClass.new("", [])
-	instance._load_data(data)
+	var instance = ScriptUtil.create_entity_from_script(entity.get_script_path(), "", "", "", "")
+	instance.load_data(data)
 	return instance
 
 

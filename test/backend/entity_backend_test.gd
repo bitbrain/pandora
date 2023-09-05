@@ -11,9 +11,21 @@ const MOCK_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
 const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
 
 
-func create_object_backend() -> PandoraEntityBackend:
-	return auto_free(PandoraEntityBackend.new(PandoraNanoIDGenerator.new(9)))
+var _pandora_backend:PandoraEntityBackend
 
+
+func before():
+	_pandora_backend = Pandora._entity_backend
+	
+	
+func after():
+	Pandora._entity_backend = _pandora_backend
+
+
+func create_object_backend() -> PandoraEntityBackend:
+	var backend = auto_free(PandoraEntityBackend.new(NanoIDGenerator.new(NanoIDAlphabets.URL, 9)))
+	Pandora._entity_backend = backend
+	return backend
 
 func test_create_entity() -> void:
 	var backend = create_object_backend()
@@ -367,13 +379,13 @@ func test_entity_instance_inherits_overridden_properties() -> void:
 	assert_that(entity_instance.get_string("root property")).is_equal("override")
 
 
-func test_entity_instance_does_not_inherit_late_properties() -> void:
+func test_entity_instance_does_inherit_late_properties() -> void:
 	var backend = create_object_backend()
 	var category = backend.create_category("category")
 	var entity = backend.create_entity("Test", category)
 	var entity_instance = entity.instantiate()
 	backend.create_property(category, "late property", "string", "lateValue")
-	assert_that(entity_instance.get_string("late property")).is_equal("")
+	assert_that(entity_instance.get_string("late property")).is_equal("lateValue")
 
 
 func test_delete_propagated_properties_in_children() -> void:

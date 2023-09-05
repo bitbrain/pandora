@@ -26,7 +26,7 @@ class_name MyScene extends Node2D
 # Entity can be selected in the editor
 @export var entity:PandoraEntity
 
-var instance:PandoraEntityInstance
+var instance:PandoraEntity
 
 func _ready():
    # create a new instance of this entity
@@ -50,6 +50,9 @@ To keep the codebase clean, we cover every feature with unit tests.
 
 ### [Official Wiki](https://bitbra.in/pandora)
 
+# Got questions?
+
+Head to the [Discussion Board](https://github.com/bitbrain/pandora/discussions) to ask any question or discuss ideas.
 
 # 🥰 Credits
 

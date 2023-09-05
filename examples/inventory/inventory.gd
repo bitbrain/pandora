@@ -1,20 +1,20 @@
 class_name Inventory extends Node
 
 
-signal item_added(item:ItemInstance, index:int)
-signal item_removed(item:ItemInstance, index:int)
+signal item_added(item:Item, index:int)
+signal item_removed(item:Item, index:int)
 	
 
 # id -> ItemInstance
 var _slots = {}
 
 
-func add_item(item:ItemInstance, index:int) -> void:
+func add_item(item:Item, index:int) -> void:
 	if not _slots.has(index):
 		_slots[index] = item
 		item_added.emit(item, index)
 	else:
-		var existing_item = _slots[index] as ItemInstance
+		var existing_item = _slots[index] as Item
 		if not existing_item.has_same_entity(item):
 			print("Unable to add item! Slot ", index, " already occupied.")
 			return
@@ -26,7 +26,7 @@ func add_item(item:ItemInstance, index:int) -> void:
 		item_added.emit(existing_item, index)
 		
 
-func remove_item(index:int) -> ItemInstance:
+func remove_item(index:int) -> Item:
 	if _slots.has(index):
 		var item = _slots[index]
 		_slots.erase(index)
