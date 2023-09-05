@@ -230,10 +230,7 @@ func set_generate_ids(generate_ids:bool) -> void:
 	generate_ids_changed.emit(_generate_ids)
 
 func set_category(category_id: String) -> void:
-	print("Setting category ID to ", category_id)
-	print("ID now: ", self._category_id)
 	self._category_id = category_id
-	print("ID now: ", self._category_id)
 	category_changed.emit(category_id)
 	
 func set_index(order:int) -> void:
@@ -532,8 +529,7 @@ func save_data() -> Dictionary:
 		dict["_generate_ids"] = _generate_ids
 	if _ids_generation_class != "":
 		dict["_ids_generation_class"] = _ids_generation_class
-	if _index:
-		dict["_index"] = _index
+	dict["_index"] = _index
 	return dict
 
 

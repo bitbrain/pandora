@@ -7,7 +7,7 @@ const CLEAR_ICON = preload("res://addons/pandora/icons/Clear.svg")
 
 
 signal entity_selected(entity:PandoraEntity)
-signal entity_deletion_issued(entity:PandoraEntity)
+signal entity_deletion_issued(entity:PandoraEntity, entity_tree: Tree)
 signal selection_cleared
 signal entity_moved(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree, shift: int)
 
@@ -45,7 +45,7 @@ func queue_delete(entity_id:String) -> void:
 	confirm("Please Confirm...", "Are you sure you want to delete?", func():
 		var item = entity_items[entity_id]
 		var entity = item.get_metadata(0) as PandoraEntity
-		entity_deletion_issued.emit(entity)
+		entity_deletion_issued.emit(entity, self)
 		if item.get_parent() != null:
 			item.get_parent().remove_child(item)
 		deselect_all()
@@ -81,7 +81,6 @@ func set_data(category_tree:Array[PandoraEntity]) -> void:
 	clear()
 	entity_items.clear()
 	_populate_tree(category_tree)
-	_sort_tree(get_root())
 	if loading_spinner:
 		loading_spinner.visible = false
 	
@@ -124,6 +123,8 @@ func _populate_tree(category_tree: Array[PandoraEntity], parent_item: TreeItem =
 		if entity is PandoraCategory and entity._children and entity._children.size() > 0:
 			_populate_tree(entity._children, new_item)
 
+	_sort_tree(root_item)
+
 
 func _populate_tree_item(parent_item: TreeItem, parent_entity: PandoraEntity) -> void:
 	for child in parent_entity._children:
@@ -137,15 +138,15 @@ func _sort_tree(item: TreeItem):
 	while child:
 		children.append(child)
 		child = child.get_next()
-	children.sort_custom(func(a: TreeItem, b: TreeItem) -> int:
-		var a_index = a.get_metadata(0).get_index()
-		var b_index = b.get_metadata(0).get_index()
-		
+	children.sort_custom(func(a: TreeItem, b: TreeItem) -> bool:
+		var a_index = int(a.get_metadata(0).get_index())
+		var b_index = int(b.get_metadata(0).get_index())
 		if a_index < b_index:
-			return -1
+			return true
 		elif a_index > b_index:
-			return 1
-		return 0
+			return false
+		else:
+			return false
 	)
 	
 	for i in range(len(children) - 1):
@@ -171,7 +172,7 @@ func _on_icon_changed(entity_id:String, new_path:String) -> void:
 	var item = entity_items[entity_id] as TreeItem
 	item.set_icon(0, load(new_path))
 
-func _get_drag_data(at_position):
+func _get_drag_data(_at_position):
 	if get_selected():
 		set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)
 
@@ -206,7 +207,7 @@ func _can_drop_data(at_position, source):
 
 	# If source is an Entity
 	if source_entity is PandoraEntity and not source_entity is PandoraCategory:
-		if target_entity is PandoraCategory or get_drop_section_at_position(at_position) != DROP_MODE_ON_ITEM:
+		if target_entity is PandoraCategory or get_drop_section_at_position(at_position) != 0:
 			return true
 	# If source is a Category
 	elif source_entity is PandoraCategory:

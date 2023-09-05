@@ -41,17 +41,19 @@ func _init(id_generator:NanoIDGenerator) -> void:
 
 
 ## Creates a new entity on the given PandoraCategory
-func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
+func create_entity(name:String, category:PandoraCategory, entity_tree: Tree = null) -> PandoraEntity:
 	var entity = ScriptUtil.create_entity_from_script(category.get_script_path(), _id_generator.generate(), name, "", category._id)
 	_entities[entity._id] = entity
 	category._children.append(entity)
 	_propagate_properties(category)
 	entity_added.emit(entity)
+	if entity_tree:
+		reindex_entities(entity_tree.get_root())
 	return entity
 
 
 ## Creates a new category on an optional parent category
-func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
+func create_category(name:String, parent_category:PandoraCategory = null, entity_tree: Tree = null) -> PandoraCategory:
 	var category = PandoraCategory.new()
 	category.init_entity(_id_generator.generate(), name, "", "")
 	if parent_category != null:
@@ -63,6 +65,8 @@ func create_category(name:String, parent_category:PandoraCategory = null) -> Pan
 	_categories[category._id] = category
 	_propagate_properties(parent_category)
 	entity_added.emit(category)
+	if entity_tree:
+		reindex_entities(entity_tree.get_root())
 	return category
 
 
@@ -106,7 +110,7 @@ func delete_category(category:PandoraCategory) -> void:
 
 
 ## Deletes an entity (or category)
-func delete_entity(entity:PandoraEntity) -> void:
+func delete_entity(entity:PandoraEntity, entity_tree: Tree = null) -> void:
 	if entity is PandoraCategory:
 		delete_category(entity as PandoraCategory)
 		return
@@ -115,6 +119,8 @@ func delete_entity(entity:PandoraEntity) -> void:
 	entity._property_map.clear()
 	entity._inherited_properties.clear()
 	_entities.erase(entity._id)
+	if entity_tree:
+		reindex_entities(entity_tree.get_root())
 
 
 ## Deletes a property from a parent category
@@ -134,7 +140,7 @@ func move_entity(source: PandoraEntity, target: PandoraEntity, entity_tree: Tree
 
 func reindex_entities(item: TreeItem) -> void:
 	while item:
-		var entity: PandoraEntity = item.get_metadata(0)
+		var entity = item.get_metadata(0)
 		if entity:
 			entity.set_index(item.get_index())
 

@@ -116,8 +116,8 @@ func _save() -> void:
 	save_label.popup()
 
 
-func _delete_entity(entity:PandoraEntity) -> void:
-	Pandora.delete_entity(entity)
+func _delete_entity(entity:PandoraEntity, entity_tree: Tree) -> void:
+	Pandora.delete_entity(entity, entity_tree)
 
 func _move_entity(entity: PandoraEntity, new_parent: PandoraEntity, entity_tree: Tree, shift: int) -> void:
 	Pandora.move_entity(entity, new_parent, entity_tree, shift)
