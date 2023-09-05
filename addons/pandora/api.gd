@@ -128,6 +128,9 @@ func load_data() -> void:
 	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
 	if all_object_data.has("_entity_data") and not all_object_data.is_empty():
 		_backend_load_state = _entity_backend.load_data(all_object_data["_entity_data"])
+	if (all_object_data.has("_id_generator") and not all_object_data.is_empty()
+			and _id_generator is PandoraSequentialIDGenerator):
+		_id_generator.load_data(all_object_data["_id_generator"])
 	if all_object_data.is_empty() or _backend_load_state == PandoraEntityBackend.LoadState.LOADED:
 		_backend_load_state = PandoraEntityBackend.LoadState.LOADED
 		_loaded = true
@@ -141,8 +144,10 @@ func save_data() -> void:
 		push_warning("Pandora: Skip saving data - data not loaded yet.")
 		return
 	var all_object_data = {
-			"_entity_data": _entity_backend.save_data()
-		}
+		"_entity_data": _entity_backend.save_data()
+	}
+	if _id_generator is PandoraSequentialIDGenerator:
+		all_object_data["_id_generator"] = _id_generator.save_data()
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())

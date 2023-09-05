@@ -13,7 +13,7 @@ const __source = "res://addons/pandora/ui/components/properties/property_control
 
 
 func test_signal_original_property_selected() -> void:
-	var id_generator = NanoIDGenerator.new(NanoIDAlphabets.URL, 9)
+	var id_generator = PandoraNanoIDGenerator.new(9)
 	var backend = PandoraEntityBackend.new(id_generator)
 	var root_category = backend.create_category("root")
 	var property = backend.create_property(root_category, "Weight", "float")

@@ -38,4 +38,12 @@ static func init_setting(name: String, default: Variant, type := typeof(default)
 
 
 static func get_id_type() -> ID_TYPE:
-	return ProjectSettings.get_setting(SETTING_ID_TYPE, DEFAULT_ID_TYPE)
+	var id_type := ProjectSettings.get_setting(SETTING_ID_TYPE, DEFAULT_ID_TYPE)
+	
+	if id_type == "sequential":
+		return ID_TYPE.Sequential
+	if id_type == "nanoid":
+		return ID_TYPE.NanoID
+	
+	push_error("unknown id type: %s" % id_type)
+	return ID_TYPE.Sequential

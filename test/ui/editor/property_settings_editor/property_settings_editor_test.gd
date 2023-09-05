@@ -50,7 +50,7 @@ const __source = "res://addons/pandora/ui/editor/property_settings_editor/proper
 
 
 func test_create_settings_ui() -> void:
-	var id_generator = NanoIDGenerator.new(NanoIDAlphabets.URL, 9)
+	var id_generator = PandoraNanoIDGenerator.new(9)
 	var backend = PandoraEntityBackend.new(id_generator)
 	var root_category = backend.create_category("root")
 	var property = backend.create_property(root_category, "Weight", "reference")
