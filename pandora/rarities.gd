@@ -2,4 +2,4 @@
 class_name Rarities
 
 
-const LEGENDARIES = "51"
+const LEGENDARY = "51"
