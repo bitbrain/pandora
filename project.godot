@@ -30,7 +30,3 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/pando
 [filesystem]
 
 import/blender/enabled=false
-
-[gdunit4]
-
-ui/toolbar/run_overall=true
