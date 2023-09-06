@@ -13,6 +13,7 @@ const CATEGORY_MAIN: StringName = "pandora"
 const CATEGORY_CONFIG: StringName = CATEGORY_MAIN + "/config"
 
 const SETTING_ID_TYPE: StringName = CATEGORY_CONFIG + "/id_type"
+
 const DEFAULT_ID_TYPE: IDType = IDType.SEQUENTIAL
 
 

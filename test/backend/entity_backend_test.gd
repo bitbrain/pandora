@@ -616,6 +616,71 @@ func test_saveload_compilation_error_on_script() -> void:
 	assert_that(loaded_entity).is_not_null()
 	assert_bool(loaded_entity is PandoraEntity).is_true()
 
+func test_index_moving_entities_above() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_a)
+	backend.move_entity(entity_2, entity_1, PandoraEntityBackend.DropSection.ABOVE)
+	assert_that(entity_2._index <= entity_1._index).is_true()
+
+func test_index_moving_entities_below() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_a)
+	backend.move_entity(entity_1, entity_2, PandoraEntityBackend.DropSection.BELOW)
+	assert_that(entity_1._index >= entity_2._index).is_true()
+	
+func test_category_moving_entities_above() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_b)
+	backend.move_entity(entity_1, entity_2, PandoraEntityBackend.DropSection.ABOVE)
+	assert_that(entity_1._category_id).is_equal(entity_2._category_id)
+
+func test_category_moving_entities_below() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity_1 = backend.create_entity("Entity 1", category_a)
+	var entity_2 = backend.create_entity("Entity 2", category_b)
+	backend.move_entity(entity_1, entity_2, PandoraEntityBackend.DropSection.BELOW)
+	assert_that(entity_1._category_id).is_equal(entity_2._category_id)
+	
+func test_category_moving_entities_inside() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity = backend.create_entity("Entity 1", category_a)
+	backend.move_entity(entity, category_b, PandoraEntityBackend.DropSection.INSIDE)
+	assert_that(entity._category_id).is_equal(category_b._id)
+
+func test_check_properties_will_change_after_move() -> void:
+	var backend = create_object_backend()
+	var root = backend.create_category("root")
+	var category_a = backend.create_category("Category A", root)
+	var category_b = backend.create_category("Category B", root)
+	var category_c = backend.create_category("Category C", root)
+	backend.create_property(root, "test", "string", "Hello World")
+	backend.create_property(category_c, "test2", "string", "Hello World 2")
+	var entity1 = backend.create_entity("Entity 1", category_a)
+	var entity2 = backend.create_entity("Entity 2", category_a)
+	var will_change1: bool = backend.check_if_properties_will_change_on_move(entity1, entity2, PandoraEntityBackend.DropSection.BELOW)
+	backend.move_entity(entity1, entity2, PandoraEntityBackend.DropSection.BELOW)
+	var will_change2: bool = backend.check_if_properties_will_change_on_move(entity2, entity1, PandoraEntityBackend.DropSection.ABOVE)
+	backend.move_entity(entity2, entity1, PandoraEntityBackend.DropSection.ABOVE)
+	var will_change3: bool = backend.check_if_properties_will_change_on_move(entity1, category_b, PandoraEntityBackend.DropSection.BELOW)
+	backend.move_entity(entity1, category_b, PandoraEntityBackend.DropSection.INSIDE)
+	var will_change4: bool = backend.check_if_properties_will_change_on_move(entity1, category_c, PandoraEntityBackend.DropSection.BELOW)
+	backend.move_entity(entity1, category_c, PandoraEntityBackend.DropSection.INSIDE)
+	assert_that(will_change1).is_false()
+	assert_that(will_change2).is_false()
+	assert_that(will_change3).is_false()
+	assert_that(will_change4).is_true()
+
 func test_import_duplicates() -> void:
 	Pandora.set_context_id(TEST_DIR)
 	Pandora._clear()
