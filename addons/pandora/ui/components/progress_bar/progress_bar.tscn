@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dibfkp6i5uvgi"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/progress_bar/progress_bar.gd" id="1_ifnan"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uy0ts"]
+bg_color = Color(0.278431, 0.701961, 0.360784, 1)
+
+[node name="ProgressContainer" type="MarginContainer"]
+visible = false
+offset_right = 100.0
+offset_bottom = 37.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_ifnan")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_uy0ts")

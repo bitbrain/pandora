@@ -10,6 +10,8 @@ signal data_loaded
 signal data_loaded_failure
 signal entity_added(entity:PandoraEntity)
 signal import_ended(response: String, imported_count: int)
+signal import_calculate_ended(response: Dictionary)
+signal import_progress
 
 
 var _context_manager: PandoraContextManager
@@ -28,6 +30,7 @@ func _enter_tree() -> void:
 	self._id_generator = PandoraIDGenerator.new()
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
 	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
+	self._entity_backend.import_progress.connect(func(): import_progress.emit())
 	load_data()
 
 
@@ -143,15 +146,35 @@ func save_data() -> void:
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
+func calculate_import_data(path: String) -> void:
+	var imported_data = _storage._load_from_file(path)
+	var total_items = imported_data["_entity_data"]["_categories"].size() + imported_data["_entity_data"]["_entities"].size() + imported_data["_entity_data"]["_properties"].size()
+	if not imported_data.has("_entity_data"):
+		import_calculate_ended.emit({
+			"status": "FAIL",
+			"message": "Provided file is invalid or is corrupted.",
+		})
+	elif total_items == 0:
+		import_calculate_ended.emit({
+			"status": "FAIL",
+			"message": "Provided file is empty.",
+		})
+	else:
+		import_calculate_ended.emit({
+			"status": "OK",
+			"total_categories": imported_data["_entity_data"]["_categories"].size(),
+			"total_entities": imported_data["_entity_data"]["_entities"].size(),
+			"total_properties": imported_data["_entity_data"]["_properties"].size(),
+			"path": path,
+		})
+		
+	
+
 func import_data(path: String) -> int:
 	var imported_data = _storage._load_from_file(path)
-	if not imported_data.has("_entity_data") or imported_data.is_empty():
-		import_ended.emit("No data found in file!", 0)
-		return 0
-	
 	var imported_count = _entity_backend.import_data(imported_data["_entity_data"])
 	if imported_count == -1:
-		import_ended.emit("No data found in file!", 0)
+		import_ended.emit("No data found in file.", 0)
 		return 0
 	
 	import_ended.emit("OK", imported_count)

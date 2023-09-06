@@ -21,6 +21,8 @@ enum LoadState {
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
 
+## Emitted when progress is made during data import
+signal import_progress
 
 # entity id -> PandoraEntity
 var _entities:Dictionary = {}
@@ -293,6 +295,7 @@ func import_data(data: Dictionary) -> int:
 	for key in imported_categories:
 		if not _categories.has(imported_categories[key]._id):
 			_categories[key] = imported_categories[key]
+			import_progress.emit()
 			imported_count += 1
 
 	var imported_entities: Dictionary = _deserialize_entities(data["_entities"])
@@ -300,6 +303,7 @@ func import_data(data: Dictionary) -> int:
 	for key in imported_entities:
 		if not _entities.has(imported_entities[key]._id):
 			_entities[key] = imported_entities[key]
+			import_progress.emit()
 			imported_count += 1
 
 	var imported_properties: Dictionary = _deserialize_properties(data["_properties"])
@@ -307,6 +311,7 @@ func import_data(data: Dictionary) -> int:
 	for key in imported_properties:
 		if not _properties.has(imported_properties[key]._id):
 			_properties[key] = imported_properties[key]
+			import_progress.emit()
 			imported_count += 1
 
 	for key in _categories:
@@ -337,6 +342,7 @@ func import_data(data: Dictionary) -> int:
 
 	for root_category in _root_categories:
 		_propagate_properties(root_category)
+
 	return imported_count
 
 
@@ -372,11 +378,8 @@ func _deserialize_categories(data:Array) -> Dictionary:
 		if category._category_id == "":
 			# If category has no parent, it's a root category
 			var root_category_exists = false
-			print("Checking: ", category._id)
 			for existing_category in _root_categories:
-				print("Against: ", existing_category._id)
 				if existing_category._id == category._id:
-					print("Root category already exists: ", category._id)
 					root_category_exists = true
 					break
 			if not root_category_exists:

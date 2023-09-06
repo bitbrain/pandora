@@ -16,11 +16,11 @@ class_name PandoraEditor extends Control
 @onready var save_label = %SaveLabel
 @onready var file_dialog = %FileDialog
 @onready var notification_dialog = %NotificationDialog
+@onready var confirmation_dialog = %ConfirmationDialog
+@onready var progress_bar = %ProgressBar
 
 @onready var data_content = %DataContent
 @onready var error_content = %ErrorContent
-
-
 
 var selected_entity:PandoraEntity
 var _load_error = false
@@ -54,6 +54,8 @@ func _ready() -> void:
 	Pandora.data_loaded.connect(self._data_load_success)
 	Pandora.data_loaded_failure.connect(self._data_load_failure)
 	Pandora.import_ended.connect(self._on_import_ended)
+	Pandora.import_calculate_ended.connect(self._on_import_calculated)
+	Pandora.import_progress.connect(self._on_import_progress)
 
 
 func reattempt_load_on_error() -> void:
@@ -175,27 +177,47 @@ func _data_load_failure() -> void:
 	_load_error = true
 
 func _import_file(path: String) -> void:
-	tree.loading_spinner.visible = true
-	data_content.visible = false
-	Pandora.import_data(path)
+	Pandora.calculate_import_data(path)
+
+func _on_import_calculated(import_info: Dictionary) -> void:
+	if import_info["status"] == "FAIL":
+		notification_dialog.title = "Import Failed!"
+		notification_dialog.dialog_text = import_info["message"]
+		notification_dialog.popup_centered()
+	elif import_info["status"] == "OK":
+		confirmation_dialog.title = "Confirm Import"
+		confirmation_dialog.dialog_text = "Found " + str(import_info["total_categories"]) + " Categories with " + str(import_info["total_entities"]) + " Entities. Would you like to proceed?"
+		confirmation_dialog.confirmed.connect(func(): self._start_import(import_info))
+		confirmation_dialog.popup_centered()
+
+func _start_import(import_info: Dictionary) -> void:
+	save_button.disabled = true
+	reset_button.disabled = true
+	import_button.disabled = true
+	progress_bar.init(int(import_info["total_categories"]) + int(import_info["total_entities"]) + int(import_info["total_properties"]))
+	Pandora.import_data(import_info["path"])
+
+func _on_import_progress() -> void:
+	progress_bar.advance()
 	
 func _on_import_ended(response: String, imported_count: int = 0) -> void:
-	tree.loading_spinner.visible = false
-	data_content.visible = true
 	if response != "OK":
 		notification_dialog.title = "Import Failed!"
 		notification_dialog.dialog_text = response
 		notification_dialog.popup_centered()
-		return
+	else:
+		var data:Array[PandoraEntity] = []
+		data.assign(Pandora.get_all_roots())
+		tree.set_data(data)
+		create_entity_button.disabled = true
+		create_category_button.disabled = false
+		delete_button.disabled = true
+		property_editor.set_entity(null)
+		progress_bar.finish()
+		notification_dialog.title = "Import Finished!"
+		notification_dialog.dialog_text = str(imported_count) + " records imported successfully!"
+		notification_dialog.popup_centered()
 	
-	var data:Array[PandoraEntity] = []
-	data.assign(Pandora.get_all_roots())
-	tree.set_data(data)
-	create_entity_button.disabled = true
-	create_category_button.disabled = false
-	delete_button.disabled = true
-	property_editor.set_entity(null)
-	
-	notification_dialog.title = "Import Finished!"
-	notification_dialog.dialog_text = str(imported_count) + " records imported successfully!"
-	notification_dialog.popup_centered()
+	save_button.disabled = false
+	reset_button.disabled = false
+	import_button.disabled = false
