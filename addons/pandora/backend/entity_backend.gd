@@ -139,23 +139,24 @@ func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: Dro
 		if not target is PandoraCategory:
 			push_error("Unable to move entity to entity")
 			return
-		source.set_category(target._id)
+		source.set_category(target)
 		source.set_index(target._children.size())
 	elif drop_section == DropSection.ABOVE:
 		if source._category_id != target._category_id:
-			source.set_category(target._category_id)
+			source.set_category(target.get_category())
 		var old_index = source._index
 		source.set_index(target._index)
 		reorder_entities(source, old_index)
 	elif drop_section == DropSection.BELOW:
 		if source._category_id != target._category_id:
-			source.set_category(target._category_id)
+			source.set_category(target.get_category())
 		var old_index = source._index
 		source.set_index(target._index + 1)
 		reorder_entities(source, old_index)
 	else:
 		push_error("Unknown drop section: " + str(drop_section))
 		return
+	_propagate_properties(get_category(source._category_id))
 
 ## Reorder indexes based on the move operation made by move_entity
 func reorder_entities(moved_entity: PandoraEntity, old_index: int) -> void:
@@ -169,6 +170,23 @@ func reorder_entities(moved_entity: PandoraEntity, old_index: int) -> void:
 			var _new_index = entity._index - direction
 			entity.set_index(_new_index)
 		current_index += direction
+
+## Checks if the properties of an entity will change when moved to a new category
+func check_if_properties_will_change_on_move(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> bool:
+	var source_properties: Array[PandoraProperty] = source.get_entity_properties()
+	var target_properties: Array[PandoraProperty] = target.get_entity_properties()
+	
+	if source_properties.size() != target_properties.size():
+		return true
+
+	source_properties.sort()
+	target_properties.sort()
+
+	for i in range(source_properties.size()):
+		if not source_properties[i].equals(target_properties[i]):
+			return true
+
+	return false
 
 
 ## Returns an existing entity (or category) or null otherwise

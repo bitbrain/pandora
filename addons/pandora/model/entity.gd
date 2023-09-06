@@ -5,11 +5,10 @@ class_name PandoraEntity extends Resource
 
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
-
+const ENTITY_ICON_PATH = "res://addons/pandora/icons/Object.svg"
 
 signal name_changed(new_name:String)
 signal order_changed(new_index:int)
-signal category_changed(new_category_id:String)
 signal icon_changed(new_icon_path:String)
 signal script_path_changed(new_script_path:String)
 signal instance_script_path_changed(new_script_path:String)
@@ -196,7 +195,7 @@ func get_icon_path() -> String:
 		return _icon_path
 	if get_category().get_icon_path() != CATEGORY_ICON_PATH:
 		return get_category().get_icon_path()
-	return "res://addons/pandora/icons/Object.svg"
+	return ENTITY_ICON_PATH
 	
 	
 func get_script_path() -> String:
@@ -229,11 +228,14 @@ func set_generate_ids(generate_ids:bool) -> void:
 	self._generate_ids = generate_ids
 	generate_ids_changed.emit(_generate_ids)
 
-func set_category(category_id: String) -> void:
-	if get_category().get_icon_path() != Pandora.get_category(category_id).get_icon_path():
-		set_icon_path(Pandora.get_category(category_id).get_icon_path())
-	self._category_id = category_id
-	category_changed.emit(category_id)
+func set_category(category: PandoraCategory) -> void:
+	if get_icon_path() != category.get_icon_path():
+		if category.get_icon_path() != CATEGORY_ICON_PATH:
+			set_icon_path(category.get_icon_path())
+		else:
+			set_icon_path(ENTITY_ICON_PATH)
+	self._category_id = category._id
+	category._children.append(self)
 	
 func set_index(order:int) -> void:
 	self._index = order

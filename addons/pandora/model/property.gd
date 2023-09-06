@@ -134,6 +134,9 @@ func save_data() -> Dictionary:
 		data["_setting_overrides"] = _setting_overrides
 	return data
 
+func equals(other: PandoraProperty) -> bool:
+	return _id == other._id and _name == other._name and _type == other._type and _default_value == other._default_value
+
 
 func _to_string() -> String:
 	return "<PandoraProperty '" + get_property_name() + "' (" + get_property_type().get_type_name() + ")>"

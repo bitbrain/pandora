@@ -35,6 +35,7 @@ func edit_key(property_name:String) -> void:
 
 
 func set_entity(entity:PandoraEntity) -> void:
+	print("Setting entity to " + str(entity))
 	property_settings_container.visible = entity is PandoraCategory
 	property_settings_container.set_property(null)
 	for child in property_list.get_children():

@@ -41,7 +41,7 @@ func search(text:String) -> void:
 
 
 func queue_delete(entity_id:String) -> void:
-	confirm("Please Confirm...", "Are you sure you want to delete?", func():
+	confirm("Confirmation Needed", "Are you sure you want to delete?", func():
 		var item = entity_items[entity_id]
 		var entity = item.get_metadata(0) as PandoraEntity
 		entity_deletion_issued.emit(entity)
@@ -206,7 +206,10 @@ func _can_drop_data(at_position, source):
 
 	# If source is an Entity
 	if source_entity is PandoraEntity and not source_entity is PandoraCategory:
-		if target_entity is PandoraCategory or get_drop_section_at_position(at_position) != 0:
+		# Entity can't be left outside of a Category
+		if target_entity._category_id.is_empty() and get_drop_section_at_position(at_position) != PandoraEntityBackend.DropSection.INSIDE:
+			return false
+		if target_entity is PandoraCategory or get_drop_section_at_position(at_position) != PandoraEntityBackend.DropSection.INSIDE:
 			return true
 	# If source is a Category
 	elif source_entity is PandoraCategory:
@@ -226,6 +229,18 @@ func _drop_data(at_position, source):
 
 	var will_properties_change: bool = Pandora.check_if_properties_will_change_on_move(source_entity, target_entity, drop_section)
 
+	if will_properties_change:
+		confirm("Confirmation Needed", "Moving will alter the properties. Do you wish to proceed?", func():
+			move_item(source, target, drop_section)
+		)
+	else:
+		move_item(source, target, drop_section)
+
+	
+func move_item(source: TreeItem, target: TreeItem, drop_section: PandoraEntityBackend.DropSection):
+	var source_entity: PandoraEntity = source.get_metadata(0)
+	var target_entity: PandoraEntity = target.get_metadata(0)
+
 	if drop_section == PandoraEntityBackend.DropSection.INSIDE:
 		source.get_parent().remove_child(source)
 		target.add_child(source)
@@ -233,6 +248,9 @@ func _drop_data(at_position, source):
 		source.move_before(target)
 	elif drop_section == PandoraEntityBackend.DropSection.BELOW:
 		source.move_after(target)
+
+	deselect_all()
+	selection_cleared.emit()
 
 	entity_moved.emit(source_entity, target_entity, drop_section)
 
