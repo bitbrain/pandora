@@ -24,7 +24,7 @@ var _name:String
 var _icon_path:String
 var _category_id:String
 var _script_path:String
-var _icon_color:Color = Color.WHITE
+var _icon_color:Color = Color.TRANSPARENT
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -198,10 +198,14 @@ func get_icon_path() -> String:
 	return "res://addons/pandora/icons/Object.svg"
 	
 func get_icon_color() -> Color:
-	if is_instance():
+	if is_instance() and _icon_color == Color.TRANSPARENT:
 		return _get_instanced_from_entity().get_icon_color()
 	_initialize_if_not_loaded()
-	return _icon_color
+	if _icon_color != Color.TRANSPARENT:
+		return _icon_color
+	if get_category() and get_category().get_icon_color() != Color.TRANSPARENT:
+		return get_category().get_icon_color()
+	return Color.WHITE
 	
 	
 func get_script_path() -> String:

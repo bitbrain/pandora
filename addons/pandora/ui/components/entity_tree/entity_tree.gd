@@ -145,8 +145,14 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 func _on_icon_changed(entity_id:String, new_path:String) -> void:
 	var item = entity_items[entity_id] as TreeItem
 	item.set_icon(0, load(new_path))
+	# propagate the change to all children if any
+	for child in item.get_children():
+		_on_icon_changed(child.get_metadata(0).get_entity_id(), child.get_metadata(0).get_icon_path())
 
 func _on_icon_color_changed(entity_id:String, new_color:Color) -> void:
 	var item = entity_items[entity_id] as TreeItem
 	item.set_icon_modulate(0, new_color)
+	# propagate the change to all children if any
+	for child in item.get_children():
+		_on_icon_color_changed(child.get_metadata(0).get_entity_id(), child.get_metadata(0).get_icon_color())
 	
