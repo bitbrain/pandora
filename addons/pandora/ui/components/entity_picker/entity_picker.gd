@@ -15,7 +15,7 @@ var categories_only:bool:
 		categories_only = v
 		if old_value != categories_only:
 			_invalidate.call_deferred()
-			
+
 var _ids_to_entities = {}
 var _entity_ids_to_ids = {}
 var _entities:Array[PandoraEntity]
@@ -31,17 +31,17 @@ var _sort:Callable = func(a,b): return false
 func _ready() -> void:
 	option_button.get_popup().id_pressed.connect(_on_id_selected)
 	_invalidate()
-	
-	
+
+
 func set_sort(sort:Callable) -> void:
 	self._sort = sort
 	_invalidate()
-	
-	
+
+
 func set_filter(category_id:String) -> void:
 	self._category_id_filter = category_id
 	_invalidate()
-	
+
 
 func set_data(entities:Array[PandoraEntity]) -> void:
 	self._entities = entities
@@ -54,7 +54,7 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 		_ids_to_entities[id_counter] = entity
 		_entity_ids_to_ids[entity.get_entity_id()] = id_counter
 		id_counter += 1
-		
+
 
 func select(entity:PandoraEntity) -> void:
 	var id = _entity_ids_to_ids[entity.get_entity_id()]
@@ -63,8 +63,8 @@ func select(entity:PandoraEntity) -> void:
 
 func _on_id_selected(id:int) -> void:
 	entity_selected.emit(_ids_to_entities[id])
-	
-	
+
+
 func _invalidate() -> void:
 	var filter = Pandora.get_category(_category_id_filter) if _category_id_filter else null
 	if categories_only:
