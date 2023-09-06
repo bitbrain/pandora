@@ -8,10 +8,11 @@ var _sequential := PandoraSequentialIDGenerator.new()
 
 func generate() -> String:
 	var id_type := PandoraSettings.get_id_type()
-	if id_type == PandoraSettings.ID_TYPE.Sequential:
-		return _sequential.generate()
-	if id_type == PandoraSettings.ID_TYPE.NanoID:
-		return _nanoid.generate()
+	match id_type:
+		PandoraSettings.IDType.SEQUENTIAL:
+			return _sequential.generate()
+		PandoraSettings.IDType.NANOID:
+			return _nanoid.generate()
 	push_error("unknown id type: %s" % id_type)
 	return _sequential.generate()
 
