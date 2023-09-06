@@ -23,7 +23,7 @@ func _ready():
 	entity_items = {}
 	item_selected.connect(_clicked)
 	item_edited.connect(_edited)
-	
+
 	if not entity_items.is_empty():
 		loading_spinner.visible = false
 
@@ -53,7 +53,7 @@ func queue_delete(entity_id:String) -> void:
 
 
 
-## selects the entity with the given ID	
+## selects the entity with the given ID
 func select(entity_id:String) -> void:
 	var entity_item = entity_items[entity_id] as TreeItem
 	entity_item.select(0)
@@ -74,7 +74,7 @@ func _gui_input(event: InputEvent) -> void:
 			if event.is_pressed() and get_selected():
 				deselect_all()
 				selection_cleared.emit()
-	
+
 
 func set_data(category_tree:Array[PandoraEntity]) -> void:
 	clear()
@@ -82,8 +82,8 @@ func set_data(category_tree:Array[PandoraEntity]) -> void:
 	_populate_tree(category_tree)
 	if loading_spinner:
 		loading_spinner.visible = false
-	
-	
+
+
 func add_entity(entity: PandoraEntity) -> void:
 	var parent_item = entity_items.get(entity._category_id)
 	var entity_item = _create_item(parent_item, entity)
@@ -97,8 +97,8 @@ func _clicked() -> void:
 		return
 	var entity = selected_item.get_metadata(0) as PandoraEntity
 	entity_selected.emit(entity)
-	
-	
+
+
 func _edited() -> void:
 	var selected_item = get_selected()
 	if not selected_item:

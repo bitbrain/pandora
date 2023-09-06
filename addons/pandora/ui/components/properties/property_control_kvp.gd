@@ -24,6 +24,7 @@ var _backend:PandoraEntityBackend
 @onready var property_key_edit: LineEdit = %PropertyKeyEdit
 @onready var property_value: MarginContainer = %PropertyValue
 @onready var reset_button: Button = %ResetButton
+@onready var regenerate_id_button: Button = %RegenerateIDButton
 @onready var delete_property_button: Button = %DeletePropertyButton
 @onready var confirmation_dialog = %ConfirmationDialog
 
@@ -35,12 +36,13 @@ func init(property:PandoraProperty, control:PandoraPropertyControl, backend:Pand
 	self._property = property
 	self._control = control
 	self._backend = backend
-	
-	
+
+
 func _ready() -> void:
 	property_key_edit.focus_entered.connect(_property_key_focused)
 	property_key_edit.text_changed.connect(_property_name_changed)
 	reset_button.pressed.connect(_property_reset_to_default)
+	regenerate_id_button.pressed.connect(func(): Pandora.regenerate_property_id(_property))
 	delete_property_button.pressed.connect(func(): confirmation_dialog.popup())
 	confirmation_dialog.confirmed.connect(_delete_property)
 	_refresh.call_deferred()
@@ -55,7 +57,7 @@ func _ready() -> void:
 func edit_key():
 	if property_key_edit.visible:
 		property_key_edit.grab_focus()
-	
+
 
 func _refresh_key() -> void:
 	property_key.text = _property.get_property_name()
@@ -72,8 +74,8 @@ func _refresh_value() -> void:
 func _set_edit_name_mode(edit_mode:bool) -> void:
 	property_key.visible = not edit_mode
 	property_key_edit.visible = edit_mode
-	
-	
+
+
 func _property_name_changed(new_name:String) -> void:
 	# FIXME avoid key duplication issue
 	_property._name = new_name
@@ -94,15 +96,24 @@ func _refresh() -> void:
 		_control.focused.connect(_control_value_focused)
 	_control.refresh()
 	reset_button.visible = not _property.is_original() and _property.is_overridden()
-	delete_property_button.disabled =  not _property.is_original()
+	regenerate_id_button.disabled = not _property.is_original()
+	regenerate_id_button.visible = _property.is_original()
+	if regenerate_id_button.disabled:
+		regenerate_id_button.tooltip_text = "Inherited property id cannot be regenerated"
+	else:
+		regenerate_id_button.tooltip_text = "Regenerate property id"
+	delete_property_button.disabled = not _property.is_original()
 	delete_property_button.visible = _property.is_original()
-	delete_property_button.tooltip_text = "Inherited property cannot be deleted" if delete_property_button.disabled else "Delete property"
+	if delete_property_button.disabled:
+		delete_property_button.tooltip_text = "Inherited property cannot be deleted"
+	else:
+		delete_property_button.tooltip_text = "Delete property"
 
 
 func _delete_property() -> void:
 	_backend.delete_property(_property)
 	queue_free()
-	
+
 
 func _property_key_focused() -> void:
 	original_property_selected.emit(_property)
@@ -115,7 +126,7 @@ func _property_key_unfocused() -> void:
 func _control_value_focused() -> void:
 	if property_key_edit.visible:
 		original_property_selected.emit(_property)
-		
-	
+
+
 func _control_value_unfocused() -> void:
 	pass
