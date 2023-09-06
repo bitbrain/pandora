@@ -9,14 +9,14 @@ extends GdUnitTestSuite
 const __source = "res://addons/pandora/backend/entity_backend.gd"
 const MOCK_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
 const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
-
+const TEST_DIR = "testdata"
 
 var _pandora_backend:PandoraEntityBackend
 
 
 func before():
 	_pandora_backend = Pandora._entity_backend
-
+	
 
 func after():
 	Pandora._entity_backend = _pandora_backend
@@ -622,3 +622,45 @@ func test_import_data_file() -> void:
 	var data_file = ProjectSettings.globalize_path("res://data.pandora")
 	var imported_count: int = Pandora.import_data(data_file)
 	assert_that(imported_count > 0).is_true()
+
+func test_import_empty_data_file() -> void:
+	var _backend = create_object_backend() as PandoraEntityBackend
+	# Create empty data file
+	Pandora.set_context_id(TEST_DIR)
+	Pandora._clear()
+	Pandora.load_data()
+	Pandora.save_data()
+
+	Pandora.set_context_id("")
+	Pandora._clear()
+	Pandora.load_data()
+
+	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+
+	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
+	DirAccess.remove_absolute("res://" + TEST_DIR)
+
+	assert_that(imported_count == 0).is_true()
+
+func test_import_duplicates() -> void:
+	# Copy data.pandora to a test file
+	Pandora._clear()
+	Pandora.load_data()
+	Pandora.set_context_id(TEST_DIR)
+	Pandora.create_category("new_category")
+	Pandora.save_data()
+
+	Pandora.set_context_id("")
+	Pandora._clear()
+	Pandora.load_data()
+
+	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+
+	# DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
+	# DirAccess.remove_absolute("res://" + TEST_DIR)
+
+	print(imported_count)
+
+	assert_that(imported_count == 1).is_true()

@@ -372,8 +372,11 @@ func _deserialize_categories(data:Array) -> Dictionary:
 		if category._category_id == "":
 			# If category has no parent, it's a root category
 			var root_category_exists = false
+			print("Checking: ", category._id)
 			for existing_category in _root_categories:
+				print("Against: ", existing_category._id)
 				if existing_category._id == category._id:
+					print("Root category already exists: ", category._id)
 					root_category_exists = true
 					break
 			if not root_category_exists:

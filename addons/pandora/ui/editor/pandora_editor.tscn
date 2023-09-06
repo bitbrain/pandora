@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=14 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
