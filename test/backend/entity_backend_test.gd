@@ -23,7 +23,7 @@ func after():
 
 
 func create_object_backend() -> PandoraEntityBackend:
-	var backend = auto_free(PandoraEntityBackend.new(PandoraNanoIDGenerator.new(9)))
+	var backend = auto_free(PandoraEntityBackend.new(PandoraIDGenerator.new()))
 	Pandora._entity_backend = backend
 	return backend
 

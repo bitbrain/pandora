@@ -16,7 +16,7 @@ func before_test() -> void:
 	tree = auto_free(load(__source).instantiate())
 	runner = scene_runner(tree)
 	_backend_ref = Pandora._entity_backend
-	var id_generator := PandoraNanoIDGenerator.new(9)
+	var id_generator := PandoraIDGenerator.new()
 	Pandora._entity_backend = PandoraEntityBackend.new(id_generator)
 
 
