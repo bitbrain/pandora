@@ -9,6 +9,7 @@ const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 signal data_loaded
 signal data_loaded_failure
 signal entity_added(entity:PandoraEntity)
+signal import_ended(response: String, imported_count: int)
 
 
 var _context_manager:PandoraContextManager
@@ -122,8 +123,20 @@ func save_data() -> void:
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
-func import_data(path: String) -> void:
-	_entity_backend.import_data(data)
+func import_data(path: String) -> int:
+	var imported_data = _storage._load_from_file(path)
+	if not imported_data.has("_entity_data") or imported_data.is_empty():
+		import_ended.emit("No data found in file!", 0)
+		return 0
+	
+	var imported_count = _entity_backend.import_data(imported_data["_entity_data"])
+	if imported_count == -1:
+		import_ended.emit("No data found in file!", 0)
+		return 0
+	
+	import_ended.emit("OK", imported_count)
+
+	return imported_count
 
 		
 func is_loaded() -> bool:

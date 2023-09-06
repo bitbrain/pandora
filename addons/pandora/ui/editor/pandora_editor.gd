@@ -51,6 +51,7 @@ func _ready() -> void:
 	Pandora.entity_added.connect(tree.add_entity)
 	Pandora.data_loaded.connect(self._data_load_success)
 	Pandora.data_loaded_failure.connect(self._data_load_failure)
+	Pandora.import_ended.connect(self._on_import_ended)
 
 
 func reattempt_load_on_error() -> void:
@@ -150,11 +151,13 @@ func _data_load_failure() -> void:
 
 func _import_file(path: String) -> void:
 	tree.loading_spinner.visible = true
+	data_content.visible = false
 	Pandora.import_data(path)
 	
 func _on_import_ended(response: String, imported_count: int = 0) -> void:
 	tree.loading_spinner.visible = false
-	if not response == "OK":
+	data_content.visible = true
+	if response != "OK":
 		notification_dialog.title = "Import Failed!"
 		notification_dialog.dialog_text = response
 		notification_dialog.popup_centered()
@@ -170,3 +173,4 @@ func _on_import_ended(response: String, imported_count: int = 0) -> void:
 	
 	notification_dialog.title = "Import Finished!"
 	notification_dialog.dialog_text = str(imported_count) + " records imported successfully!"
+	notification_dialog.popup_centered()

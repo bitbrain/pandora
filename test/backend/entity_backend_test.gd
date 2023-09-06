@@ -533,3 +533,10 @@ func test_saveload_compilation_error_on_script() -> void:
 	var loaded_entity = backend.get_entity(entity_id)
 	assert_that(loaded_entity).is_not_null()
 	assert_bool(loaded_entity is PandoraEntity).is_true()
+
+func test_import_data_file() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	backend.create_category("root")
+	var data_file = ProjectSettings.globalize_path("res://data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+	assert_that(imported_count > 0).is_true()

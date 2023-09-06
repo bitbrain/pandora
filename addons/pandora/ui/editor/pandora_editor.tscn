@@ -194,4 +194,8 @@ filters = PackedStringArray("*.pandora")
 
 [node name="NotificationDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
+title = "Import Finished!"
 initial_position = 1
+size = Vector2i(265, 100)
+visible = true
+dialog_text = "0 records imported successfully!"
