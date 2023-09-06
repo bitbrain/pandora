@@ -18,6 +18,15 @@ enum LoadState {
 	LOAD_ERROR
 }
 
+enum DropSection {
+	# move source entity above the target
+	ABOVE = -1,
+	# move source entity below the target
+	BELOW = 1,
+	# move source entity to the target
+	INSIDE = 0
+}
+
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
 
@@ -157,6 +166,61 @@ func delete_property(property:PandoraProperty) -> void:
 	_properties.erase(property._id)
 	_propagate_properties(parent_category)
 
+## Moves an entity (or category) to a new parent category or reorders
+func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> void:
+	if drop_section == DropSection.INSIDE:
+		if not target is PandoraCategory:
+			push_error("Unable to move entity to entity")
+			return
+		source.set_category(target)
+		source.set_index(target._children.size())
+	elif drop_section == DropSection.ABOVE:
+		if source._category_id != target._category_id:
+			source.set_category(target.get_category())
+		var old_index = source._index
+		source.set_index(target._index)
+		reorder_entities(source, old_index)
+	elif drop_section == DropSection.BELOW:
+		if source._category_id != target._category_id:
+			source.set_category(target.get_category())
+		var old_index = source._index
+		source.set_index(target._index + 1)
+		reorder_entities(source, old_index)
+	else:
+		push_error("Unknown drop section: " + str(drop_section))
+		return
+	_propagate_properties(get_category(source._category_id))
+
+## Reorder indexes based on the move operation made by move_entity
+func reorder_entities(moved_entity: PandoraEntity, old_index: int) -> void:
+	var new_index = moved_entity.get_index()
+	var direction = 1 if new_index > old_index else -1
+	var current_index = old_index + direction
+
+	while current_index != new_index + direction:
+		var entity: PandoraEntity = get_entity_by_index(get_category(moved_entity._category_id), current_index)
+		if entity:
+			var _new_index = entity._index - direction
+			entity.set_index(_new_index)
+		current_index += direction
+
+## Checks if the properties of an entity will change when moved to a new category
+func check_if_properties_will_change_on_move(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> bool:
+	var source_properties: Array[PandoraProperty] = source.get_entity_properties()
+	var target_properties: Array[PandoraProperty] = target.get_entity_properties()
+
+	if source_properties.size() != target_properties.size():
+		return true
+
+	source_properties.sort()
+	target_properties.sort()
+
+	for i in range(source_properties.size()):
+		if not source_properties[i].equals(target_properties[i]):
+			return true
+
+	return false
+
 
 ## Returns an existing entity (or category) or null otherwise
 func get_entity(entity_id:String) -> PandoraEntity:
@@ -166,6 +230,12 @@ func get_entity(entity_id:String) -> PandoraEntity:
 		return null
 	return _entities[entity_id]
 
+## Returns an existing entity (or category) based on its index or null otherwise
+func get_entity_by_index(parent: PandoraCategory, index: int) -> PandoraEntity:
+	for entity in parent._children:
+		if entity._index == index:
+			return entity
+	return null
 
 ## Returns an existing category or null otherwise
 func get_category(category_id:String) -> PandoraCategory:

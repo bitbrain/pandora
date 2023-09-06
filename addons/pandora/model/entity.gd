@@ -5,9 +5,10 @@ class_name PandoraEntity extends Resource
 
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
-
+const ENTITY_ICON_PATH = "res://addons/pandora/icons/Object.svg"
 
 signal name_changed(new_name:String)
+signal order_changed(new_index:int)
 signal icon_changed(new_icon_path:String)
 signal script_path_changed(new_script_path:String)
 signal instance_script_path_changed(new_script_path:String)
@@ -23,6 +24,7 @@ var _name:String
 var _icon_path:String
 var _category_id:String
 var _script_path:String
+var _index:int
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -193,7 +195,8 @@ func get_icon_path() -> String:
 		return _icon_path
 	if get_category().get_icon_path() != CATEGORY_ICON_PATH:
 		return get_category().get_icon_path()
-	return "res://addons/pandora/icons/Object.svg"
+
+	return ENTITY_ICON_PATH
 
 
 func get_script_path() -> String:
@@ -226,6 +229,18 @@ func set_generate_ids(generate_ids:bool) -> void:
 	self._generate_ids = generate_ids
 	generate_ids_changed.emit(_generate_ids)
 
+func set_category(category: PandoraCategory) -> void:
+	if get_icon_path() != category.get_icon_path():
+		if category.get_icon_path() != CATEGORY_ICON_PATH:
+			set_icon_path(category.get_icon_path())
+		else:
+			set_icon_path(ENTITY_ICON_PATH)
+	self._category_id = category._id
+	category._children.append(self)
+	
+func set_index(order:int) -> void:
+	self._index = order
+	order_changed.emit(order)
 
 func is_generate_ids() -> bool:
 	if is_instance():
@@ -447,6 +462,13 @@ func get_category() -> PandoraCategory:
 	return Pandora.get_category(_category_id)
 
 
+func get_index() -> int:
+	if is_instance():
+		return _get_instanced_from_entity().get_index()
+	_initialize_if_not_loaded()
+	return _index
+
+	
 func is_category(category_id:String) -> bool:
 	if is_instance():
 		return false
@@ -485,6 +507,10 @@ func load_data(data:Dictionary) -> void:
 		_generate_ids = data["_generate_ids"]
 	if data.has("_ids_generation_class"):
 		_ids_generation_class = data["_ids_generation_class"]
+	if data.has("_index"):
+		_index = data["_index"]
+	else:
+		_index = 0
 
 
 ## Produces a data dictionary that can be used on load_data()
@@ -511,6 +537,7 @@ func save_data() -> Dictionary:
 		dict["_generate_ids"] = _generate_ids
 	if _ids_generation_class != "":
 		dict["_ids_generation_class"] = _ids_generation_class
+	dict["_index"] = _index
 	return dict
 
 
