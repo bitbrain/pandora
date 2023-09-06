@@ -9,6 +9,7 @@ const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
 
 signal name_changed(new_name:String)
 signal icon_changed(new_icon_path:String)
+signal icon_color_changed(new_icon_color:Color)
 signal script_path_changed(new_script_path:String)
 signal instance_script_path_changed(new_script_path:String)
 signal generate_ids_changed(new_generate_ids:bool)
@@ -23,6 +24,7 @@ var _name:String
 var _icon_path:String
 var _category_id:String
 var _script_path:String
+var _icon_color:Color = Color.WHITE
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -195,6 +197,12 @@ func get_icon_path() -> String:
 		return get_category().get_icon_path()
 	return "res://addons/pandora/icons/Object.svg"
 	
+func get_icon_color() -> Color:
+	if is_instance():
+		return _get_instanced_from_entity().get_icon_color()
+	_initialize_if_not_loaded()
+	return _icon_color
+	
 	
 func get_script_path() -> String:
 	if is_instance():
@@ -216,6 +224,9 @@ func set_icon_path(new_path:String) -> void:
 	self._icon_path = new_path
 	icon_changed.emit(new_path)
 
+func set_icon_color(new_color:Color) -> void:
+	self._icon_color = new_color
+	icon_color_changed.emit(new_color)
 
 func set_script_path(new_path:String) -> void:
 	self._script_path = new_path
@@ -485,6 +496,8 @@ func load_data(data:Dictionary) -> void:
 		_generate_ids = data["_generate_ids"]
 	if data.has("_ids_generation_class"):
 		_ids_generation_class = data["_ids_generation_class"]
+	if data.has("_icon_color"):
+		_icon_color = Color(data["_icon_color"])
 
 
 ## Produces a data dictionary that can be used on load_data()
@@ -500,6 +513,7 @@ func save_data() -> Dictionary:
 	else:
 		dict["_name"] = _name
 		dict["_category_id"] = _category_id
+		dict["_icon_color"] = _icon_color.to_html()
 	
 	if _icon_path != "":
 		dict["_icon_path"] = _icon_path
@@ -511,6 +525,7 @@ func save_data() -> Dictionary:
 		dict["_generate_ids"] = _generate_ids
 	if _ids_generation_class != "":
 		dict["_ids_generation_class"] = _ids_generation_class
+	
 	return dict
 
 
