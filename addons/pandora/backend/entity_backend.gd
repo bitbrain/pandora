@@ -18,6 +18,15 @@ enum LoadState {
 	LOAD_ERROR
 }
 
+enum DropSection {
+	# move source entity above the target
+	ABOVE = -1,
+	# move source entity below the target
+	BELOW = 1,
+	# move source entity to the target
+	INSIDE = 0
+}
+
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
 
@@ -31,12 +40,12 @@ var _categories:Dictionary = {}
 # list of categories on the root level
 var _root_categories:Array[PandoraCategory] = []
 # generates ids for new entities
-var _id_generator:NanoIDGenerator
+var _id_generator:PandoraIDGenerator
 # tracks the current state of loading
 var _load_state:LoadState = LoadState.NOT_LOADED
 
 
-func _init(id_generator:NanoIDGenerator) -> void:
+func _init(id_generator: PandoraIDGenerator) -> void:
 	self._id_generator = id_generator
 
 
@@ -79,6 +88,39 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 	on_category._properties.append(property)
 	_propagate_properties(on_category)
 	return property
+
+
+func regenerate_all_ids() -> void:
+	for category in get_all_categories():
+		regenerate_category_id(category)
+	for entity in get_all_entities():
+		regenerate_entity_id(entity)
+	for property in get_all_properties():
+		regenerate_property_id(property)
+
+
+func regenerate_category_id(category: PandoraCategory) -> void:
+	var new_id = _id_generator.generate()
+	_categories.erase(category._id)
+	for child in category._children:
+		child._category_id = new_id
+	for key in _properties:
+		if _properties[key]._category_id == category._id:
+			_properties[key]._category_id = new_id
+	category._id = new_id
+	_categories[category._id] = category
+
+
+func regenerate_entity_id(entity: PandoraEntity) -> void:
+	_entities.erase(entity._id)
+	entity._id = _id_generator.generate()
+	_entities[entity._id] = entity
+
+
+func regenerate_property_id(property: PandoraProperty) -> void:
+	_properties.erase(property._id)
+	property._id = _id_generator.generate()
+	_properties[property._id] = property
 
 
 ## Deletes an existing category and all of its children
@@ -124,6 +166,61 @@ func delete_property(property:PandoraProperty) -> void:
 	_properties.erase(property._id)
 	_propagate_properties(parent_category)
 
+## Moves an entity (or category) to a new parent category or reorders
+func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> void:
+	if drop_section == DropSection.INSIDE:
+		if not target is PandoraCategory:
+			push_error("Unable to move entity to entity")
+			return
+		source.set_category(target)
+		source.set_index(target._children.size())
+	elif drop_section == DropSection.ABOVE:
+		if source._category_id != target._category_id:
+			source.set_category(target.get_category())
+		var old_index = source._index
+		source.set_index(target._index)
+		reorder_entities(source, old_index)
+	elif drop_section == DropSection.BELOW:
+		if source._category_id != target._category_id:
+			source.set_category(target.get_category())
+		var old_index = source._index
+		source.set_index(target._index + 1)
+		reorder_entities(source, old_index)
+	else:
+		push_error("Unknown drop section: " + str(drop_section))
+		return
+	_propagate_properties(get_category(source._category_id))
+
+## Reorder indexes based on the move operation made by move_entity
+func reorder_entities(moved_entity: PandoraEntity, old_index: int) -> void:
+	var new_index = moved_entity.get_index()
+	var direction = 1 if new_index > old_index else -1
+	var current_index = old_index + direction
+
+	while current_index != new_index + direction:
+		var entity: PandoraEntity = get_entity_by_index(get_category(moved_entity._category_id), current_index)
+		if entity:
+			var _new_index = entity._index - direction
+			entity.set_index(_new_index)
+		current_index += direction
+
+## Checks if the properties of an entity will change when moved to a new category
+func check_if_properties_will_change_on_move(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> bool:
+	var source_properties: Array[PandoraProperty] = source.get_entity_properties()
+	var target_properties: Array[PandoraProperty] = target.get_entity_properties()
+
+	if source_properties.size() != target_properties.size():
+		return true
+
+	source_properties.sort()
+	target_properties.sort()
+
+	for i in range(source_properties.size()):
+		if not source_properties[i].equals(target_properties[i]):
+			return true
+
+	return false
+
 
 ## Returns an existing entity (or category) or null otherwise
 func get_entity(entity_id:String) -> PandoraEntity:
@@ -133,6 +230,12 @@ func get_entity(entity_id:String) -> PandoraEntity:
 		return null
 	return _entities[entity_id]
 
+## Returns an existing entity (or category) based on its index or null otherwise
+func get_entity_by_index(parent: PandoraCategory, index: int) -> PandoraEntity:
+	for entity in parent._children:
+		if entity._index == index:
+			return entity
+	return null
 
 ## Returns an existing category or null otherwise
 func get_category(category_id:String) -> PandoraCategory:
@@ -151,7 +254,7 @@ func get_property(property_id:String) -> PandoraProperty:
 ## Returns a list of all root categories
 func get_all_roots() -> Array[PandoraCategory]:
 	return _root_categories
-	
+
 
 ## Returns a list of all categories
 func get_all_categories(parent:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
@@ -174,6 +277,17 @@ func get_all_entities(parent:PandoraCategory = null, sort:Callable = func(a,b): 
 			entities.append(_entities[key])
 	entities.sort_custom(sort)
 	return entities
+
+
+func get_all_properties(parent: PandoraCategory = null, sort: Callable = func(a, b): return false) -> Array[PandoraProperty]:
+	var properties: Array[PandoraProperty] = []
+	if parent:
+		properties.append_array(parent._properties)
+	else:
+		for key in _properties:
+			properties.append(_properties[key])
+	properties.sort_custom(sort)
+	return properties
 
 
 ## Initialize this backend with the given data dictionary.
@@ -222,11 +336,11 @@ func load_data(data:Dictionary) -> LoadState:
 			return _load_state
 		var category = _categories[property._category_id] as PandoraCategory
 		category._properties.append(property)
-		
+
 	# propagate properties from roots
 	for root_category in _root_categories:
 		_propagate_properties(root_category)
-	
+
 	_load_state = LoadState.LOADED
 	return _load_state
 
@@ -262,8 +376,8 @@ func _deserialize_entities(data:Array) -> Dictionary:
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 	return dict
-	
-	
+
+
 func _deserialize_categories(data:Array) -> Dictionary:
 	var dict = {}
 	for category_data in data:
@@ -274,8 +388,8 @@ func _deserialize_categories(data:Array) -> Dictionary:
 			# If category has no parent, it's a root category
 			_root_categories.append(category)
 	return dict
-	
-	
+
+
 func _deserialize_properties(data:Array) -> Dictionary:
 	var dict = {}
 	for property_data in data:
@@ -290,7 +404,7 @@ func _serialize_data(data:Dictionary) -> Array[Dictionary]:
 	for key in data:
 		serialized_data.append(data[key].save_data())
 	return serialized_data
-	
+
 
 # used for testing only
 func _clear() -> void:
@@ -299,7 +413,7 @@ func _clear() -> void:
 	_properties.clear()
 	_root_categories.clear()
 
-	
+
 ## recusively propagate properties into children
 func _propagate_properties(category:PandoraCategory) -> void:
 	if category == null:

@@ -5,9 +5,10 @@ class_name PandoraEntity extends Resource
 
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
-
+const ENTITY_ICON_PATH = "res://addons/pandora/icons/Object.svg"
 
 signal name_changed(new_name:String)
+signal order_changed(new_index:int)
 signal icon_changed(new_icon_path:String)
 signal icon_color_changed(new_icon_color:Color)
 signal script_path_changed(new_script_path:String)
@@ -25,6 +26,7 @@ var _icon_path:String
 var _category_id:String
 var _script_path:String
 var _icon_color:Color = Color.TRANSPARENT
+var _index:int
 # not persisted but computed at runtime
 var _properties:Array[PandoraProperty] = []
 # property name -> Property
@@ -34,7 +36,7 @@ var _inherited_properties = {}
 var _property_overrides = {}
 # there is the option to generate child entity
 # ids + category ids into a file for easier access.
-var _generate_ids = false 
+var _generate_ids = false
 var _ids_generation_class = ""
 
 # String -> PandoraPropertyInstance
@@ -48,8 +50,8 @@ var _instanced_from_id:String
 ## time, changing the parent property should automatically work independently
 ## of this implementation.
 class OverridingProperty extends PandoraProperty:
-	
-	
+
+
 	var _property: PandoraProperty
 	var _parent_entity: PandoraEntity
 
@@ -58,24 +60,24 @@ class OverridingProperty extends PandoraProperty:
 		self._property = property
 		self._parent_entity = parent_entity
 		self._property.name_changed.connect(_change_name)
-		
-	
+
+
 	func get_setting_override(name:String) -> Variant:
 		return _property.get_setting_override(name)
-		
-		
+
+
 	func get_setting(name:String) -> Variant:
 		return _property.get_setting(name)
-	
-	
+
+
 	func has_setting_override(name:String) -> bool:
 		return _property.has_setting_override(name)
-		
-		
+
+
 	func set_setting_override(name:String, override:Variant) -> void:
 		_property.set_setting_override(name, override)
-		
-		
+
+
 	func clear_setting_override(name:String) -> void:
 		_property.clear_setting_override(name)
 
@@ -109,35 +111,35 @@ class OverridingProperty extends PandoraProperty:
 
 	func get_property_type() -> PandoraPropertyType:
 		return _property.get_property_type()
-		
-	
+
+
 	func get_category_id() -> String:
 		if _parent_entity is PandoraCategory:
 			return _parent_entity._id
 		else:
 			return _property.get_category_id()
-			
-	
+
+
 	func get_original_category_id() -> String:
 		return _property.get_original_category_id()
 
 
 	func is_original() -> bool:
 		return _property.get_category_id() == _parent_entity._id
-		
-		
+
+
 	func is_overridden() -> bool:
 		var override_exists = _parent_entity._property_overrides.has(_property.get_property_name())
 		return override_exists and _parent_entity._property_overrides[get_property_name()] != _property.get_default_value()
-		
-		
+
+
 	func reset_to_default() -> void:
 		var had_override = _parent_entity._property_overrides.has(_property.get_property_name())
 		if had_override:
 			_parent_entity._property_overrides.erase(_property.get_property_name())
-		
-		
-	
+
+
+
 	func _change_name(old_name:String, new_name:String) -> void:
 		if _parent_entity._property_overrides.has(old_name):
 			var value = _parent_entity._property_overrides[old_name]
@@ -159,7 +161,7 @@ func init_entity(id:String, name:String, icon_path:String, category_id:String) -
 	self._name = name
 	self._icon_path = icon_path
 	self._category_id = category_id
-	
+
 
 ## Creates an instance of this entity.
 func instantiate() -> PandoraEntity:
@@ -178,15 +180,15 @@ func get_entity_id() -> String:
 		return _get_instanced_from_entity().get_entity_id()
 	_initialize_if_not_loaded()
 	return _id
-	
-	
+
+
 func get_entity_name() -> String:
 	if is_instance() and _name == "":
 		return _get_instanced_from_entity().get_entity_name()
 	_initialize_if_not_loaded()
 	return tr(_name)
-	
-	
+
+
 func get_icon_path() -> String:
 	if is_instance() and _icon_path == "":
 		return _get_instanced_from_entity().get_icon_path()
@@ -195,8 +197,8 @@ func get_icon_path() -> String:
 		return _icon_path
 	if get_category().get_icon_path() != CATEGORY_ICON_PATH:
 		return get_category().get_icon_path()
-	return "res://addons/pandora/icons/Object.svg"
-	
+	return ENTITY_ICON_PATH
+
 func get_icon_color() -> Color:
 	if is_instance() and _icon_color == Color.TRANSPARENT:
 		return _get_instanced_from_entity().get_icon_color()
@@ -206,8 +208,7 @@ func get_icon_color() -> Color:
 	if get_category() and get_category().get_icon_color() != Color.TRANSPARENT:
 		return get_category().get_icon_color()
 	return Color.WHITE
-	
-	
+
 func get_script_path() -> String:
 	if is_instance():
 		return _get_instanced_from_entity().get_script_path()
@@ -222,8 +223,8 @@ func get_script_path() -> String:
 func set_entity_name(new_name:String) -> void:
 	self._name = new_name
 	name_changed.emit(new_name)
-	
-	
+
+
 func set_icon_path(new_path:String) -> void:
 	self._icon_path = new_path
 	icon_changed.emit(new_path)
@@ -241,6 +242,18 @@ func set_generate_ids(generate_ids:bool) -> void:
 	self._generate_ids = generate_ids
 	generate_ids_changed.emit(_generate_ids)
 
+func set_category(category: PandoraCategory) -> void:
+	if get_icon_path() != category.get_icon_path():
+		if category.get_icon_path() != CATEGORY_ICON_PATH:
+			set_icon_path(category.get_icon_path())
+		else:
+			set_icon_path(ENTITY_ICON_PATH)
+	self._category_id = category._id
+	category._children.append(self)
+	
+func set_index(order:int) -> void:
+	self._index = order
+	order_changed.emit(order)
 
 func is_generate_ids() -> bool:
 	if is_instance():
@@ -266,7 +279,7 @@ func get_id_generation_class() -> String:
 		return get_category().get_id_generation_class()
 	return "EntityIds"
 
-	
+
 func get_category_id() -> String:
 	if is_instance():
 		return _get_instanced_from_category().get_entity_id()
@@ -371,8 +384,8 @@ func get_string(property_name:String) -> String:
 		push_warning("unknown string property %s on entity %s" % [property_name, get_entity_id()])
 		return ""
 	return get_entity_property(property_name).get_default_value() as String
-	
-	
+
+
 func get_integer(property_name:String) -> int:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as int
@@ -385,8 +398,8 @@ func get_integer(property_name:String) -> int:
 	if default_value is float:
 		return int(default_value)
 	return default_value as int
-	
-	
+
+
 func get_float(property_name:String) -> float:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as float
@@ -394,8 +407,8 @@ func get_float(property_name:String) -> float:
 		push_warning("unknown float property %s on entity %s" % [property_name, get_entity_id()])
 		return 0.0
 	return get_entity_property(property_name).get_default_value() as float
-	
-	
+
+
 func get_bool(property_name:String) -> bool:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as bool
@@ -403,8 +416,8 @@ func get_bool(property_name:String) -> bool:
 		push_warning("unknown bool property %s on entity %s" % [property_name, get_entity_id()])
 		return false
 	return get_entity_property(property_name).get_default_value() as bool
-	
-	
+
+
 func get_color(property_name:String) -> Color:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as Color
@@ -412,8 +425,8 @@ func get_color(property_name:String) -> Color:
 		push_warning("unknown color property %s on entity %s" % [property_name, get_entity_id()])
 		return Color.WHITE
 	return get_entity_property(property_name).get_default_value() as Color
-	
-	
+
+
 func get_reference(property_name:String) -> PandoraEntity:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as PandoraEntity
@@ -421,8 +434,8 @@ func get_reference(property_name:String) -> PandoraEntity:
 		push_warning("unknown reference property %s on entity %s" % [property_name, get_entity_id()])
 		return null
 	return get_entity_property(property_name).get_default_value() as PandoraEntity
-	
-	
+
+
 func get_resource(property_name:String) -> Resource:
 	if is_instance() and _instance_properties.has(property_name):
 		return _get_instance_property_value(property_name) as Resource
@@ -431,13 +444,13 @@ func get_resource(property_name:String) -> Resource:
 		return null
 	return get_entity_property(property_name).get_default_value() as Resource
 
-	
+
 func has_entity_property(name:String) -> bool:
 	if is_instance():
 		return _get_instanced_from_entity().has_entity_property(name)
 	_initialize_if_not_loaded()
 	return get_entity_property(name) != null
-	
+
 
 func get_entity_properties() -> Array[PandoraProperty]:
 	if is_instance():
@@ -451,8 +464,8 @@ func get_entity_properties() -> Array[PandoraProperty]:
 		else:
 			properties.append(property)
 	return properties
-	
-	
+
+
 func get_category() -> PandoraCategory:
 	if is_instance():
 		return _get_instanced_from_category()
@@ -460,7 +473,14 @@ func get_category() -> PandoraCategory:
 	if _category_id == null or _category_id == "":
 		return null
 	return Pandora.get_category(_category_id)
-	
+
+
+func get_index() -> int:
+	if is_instance():
+		return _get_instanced_from_entity().get_index()
+	_initialize_if_not_loaded()
+	return _index
+
 	
 func is_category(category_id:String) -> bool:
 	if is_instance():
@@ -476,7 +496,7 @@ func is_category(category_id:String) -> bool:
 		category = Pandora.get_category(parent_id)
 		parent_id = category._category_id
 	return false
-	
+
 
 
 ## Initializes this entity with the given data dictionary.
@@ -502,6 +522,10 @@ func load_data(data:Dictionary) -> void:
 		_ids_generation_class = data["_ids_generation_class"]
 	if data.has("_icon_color"):
 		_icon_color = Color(data["_icon_color"])
+	if data.has("_index"):
+		_index = data["_index"]
+	else:
+		_index = 0
 
 
 ## Produces a data dictionary that can be used on load_data()
@@ -529,7 +553,8 @@ func save_data() -> Dictionary:
 		dict["_generate_ids"] = _generate_ids
 	if _ids_generation_class != "":
 		dict["_ids_generation_class"] = _ids_generation_class
-	
+	dict["_index"] = _index
+
 	return dict
 
 
@@ -544,8 +569,8 @@ func _save_overrides() -> Dictionary:
 			"value": type.write_value(value)
 			}
 	return output
-	
-	
+
+
 func _load_overrides(data:Dictionary) -> Dictionary:
 	var output = {}
 	for property_name in data:
@@ -596,19 +621,19 @@ func _to_string() -> String:
 func _initialize_if_not_loaded() -> void:
 	if _id == "":
 		return
-	
+
 	if _name != "" or _category_id != "" or _script_path != "":
 		# entity initialized already
 		return
-		
+
 	var entity = Pandora.get_entity(_id) as PandoraEntity
 	if entity == null:
 		# entity got removed
 		push_warning("Unable to initialize entity with id=" + _id + " from scene: got removed!")
 		return
-	
+
 	init_entity(_id, entity._name, entity._icon_path, entity._category_id)
-	
+
 	## Be vary that PandoraEntity objects initialised from scene exports
 	## are just a copy but with the same attributes. This is fine since
 	## at runtime entities are read-only!
