@@ -135,7 +135,7 @@ func save_data() -> Dictionary:
 	return data
 
 func equals(other: PandoraProperty) -> bool:
-	return _id == other._id and _name == other._name and _type == other._type and _default_value == other._default_value
+	return get_entity_id() == other.get_entity_id() and get_entity_name() == other.get_entity_name() and get_entity_type() == other.get_entity_type()
 
 
 func _to_string() -> String:
