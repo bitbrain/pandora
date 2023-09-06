@@ -208,7 +208,7 @@ func reorder_entities(moved_entity: PandoraEntity, old_index: int) -> void:
 func check_if_properties_will_change_on_move(source: PandoraEntity, target: PandoraEntity, drop_section: DropSection) -> bool:
 	var source_properties: Array[PandoraProperty] = source.get_entity_properties()
 	var target_properties: Array[PandoraProperty] = target.get_entity_properties()
-	
+
 	if source_properties.size() != target_properties.size():
 		return true
 
