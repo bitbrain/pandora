@@ -240,6 +240,9 @@ func save_data() -> Dictionary:
 		"_properties": _serialize_data(_properties)
 	}
 
+func import_data(path: String) -> void:
+	
+
 
 func _deserialize_entities(data:Array) -> Dictionary:
 	var dict = {}

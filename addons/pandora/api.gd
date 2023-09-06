@@ -122,6 +122,9 @@ func save_data() -> void:
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
+func import_data(path: String) -> void:
+	_entity_backend.import_data(data)
+
 		
 func is_loaded() -> bool:
 	return _loaded

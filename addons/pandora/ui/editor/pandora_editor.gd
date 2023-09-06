@@ -7,11 +7,14 @@ class_name PandoraEditor extends Control
 @onready var reset_button = %ResetButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
+@onready var import_button:Button = %ImportButton
 @onready var delete_button = %DeleteButton
 @onready var property_editor = %PropertyEditor
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var version = %Version
 @onready var save_label = %SaveLabel
+@onready var file_dialog = %FileDialog
+@onready var notification_dialog = %NotificationDialog
 
 @onready var data_content = %DataContent
 @onready var error_content = %ErrorContent
@@ -33,6 +36,8 @@ func _ready() -> void:
 	create_category_button.pressed.connect(_create_category)
 	reset_button.pressed.connect(_reset_to_saved_file)
 	delete_button.pressed.connect(func(): tree.queue_delete(selected_entity.get_entity_id()))
+	import_button.pressed.connect(func(): file_dialog.popup_centered())
+	file_dialog.file_selected.connect(_import_file)
 	
 	# set version
 	var plugin_config:ConfigFile = ConfigFile.new()
@@ -142,3 +147,26 @@ func _data_load_failure() -> void:
 	data_content.visible = false
 	error_content.visible = true
 	_load_error = true
+
+func _import_file(path: String) -> void:
+	tree.loading_spinner.visible = true
+	Pandora.import_data(path)
+	
+func _on_import_ended(response: String, imported_count: int = 0) -> void:
+	tree.loading_spinner.visible = false
+	if not response == "OK":
+		notification_dialog.title = "Import Failed!"
+		notification_dialog.dialog_text = response
+		notification_dialog.popup_centered()
+		return
+	
+	var data:Array[PandoraEntity] = []
+	data.assign(Pandora.get_all_roots())
+	tree.set_data(data)
+	create_entity_button.disabled = true
+	create_category_button.disabled = false
+	delete_button.disabled = true
+	property_editor.set_entity(null)
+	
+	notification_dialog.title = "Import Finished!"
+	notification_dialog.dialog_text = str(imported_count) + " records imported successfully!"
