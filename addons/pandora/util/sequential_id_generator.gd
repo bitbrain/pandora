@@ -1,5 +1,5 @@
 class_name PandoraSequentialIDGenerator
-extends PandoraIDGenerator
+extends RefCounted
 
 
 const DEFAULT_CONTEXT := "default"

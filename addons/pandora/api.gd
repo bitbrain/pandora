@@ -8,13 +8,13 @@ const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 
 signal data_loaded
 signal data_loaded_failure
-signal entity_added(entity:PandoraEntity)
+signal entity_added(entity: PandoraEntity)
 
 
-var _context_manager:PandoraContextManager
-var _storage:PandoraJsonDataStorage
+var _context_manager: PandoraContextManager
+var _storage: PandoraJsonDataStorage
 var _id_generator: PandoraIDGenerator
-var _entity_backend:PandoraEntityBackend
+var _entity_backend: PandoraEntityBackend
 
 
 var _loaded = false
@@ -24,16 +24,7 @@ var _backend_load_state:PandoraEntityBackend.LoadState = PandoraEntityBackend.Lo
 func _enter_tree() -> void:
 	self._storage = PandoraJsonDataStorage.new("res://")
 	self._context_manager = PandoraContextManager.new()
-	
-	var id_type := PandoraSettings.get_id_type()
-	if id_type == PandoraSettings.ID_TYPE.Sequential:
-		self._id_generator = PandoraSequentialIDGenerator.new()
-	elif id_type == PandoraSettings.ID_TYPE.NanoID:
-		self._id_generator = PandoraNanoIDGenerator.new(10)
-	else:
-		push_error("unknown is type: %s" % id_type)
-		self._id_generator = PandoraSequentialIDGenerator.new()
-	
+	self._id_generator = PandoraIDGenerator.new()
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
 	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
 	load_data()
@@ -129,8 +120,7 @@ func load_data() -> void:
 	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
 	if all_object_data.has("_entity_data") and not all_object_data.is_empty():
 		_backend_load_state = _entity_backend.load_data(all_object_data["_entity_data"])
-	if (all_object_data.has("_id_generator") and not all_object_data.is_empty()
-			and _id_generator is PandoraSequentialIDGenerator):
+	if all_object_data.has("_id_generator") and not all_object_data.is_empty():
 		_id_generator.load_data(all_object_data["_id_generator"])
 	if all_object_data.is_empty() or _backend_load_state == PandoraEntityBackend.LoadState.LOADED:
 		_backend_load_state = PandoraEntityBackend.LoadState.LOADED
@@ -145,10 +135,9 @@ func save_data() -> void:
 		push_warning("Pandora: Skip saving data - data not loaded yet.")
 		return
 	var all_object_data = {
-		"_entity_data": _entity_backend.save_data()
+		"_entity_data": _entity_backend.save_data(),
+		"_id_generator": _id_generator.save_data(),
 	}
-	if _id_generator is PandoraSequentialIDGenerator:
-		all_object_data["_id_generator"] = _id_generator.save_data()
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
@@ -186,7 +175,6 @@ func deserialize(data:Dictionary) -> PandoraEntity:
 # used for testing only and shutting down the addon
 func _clear() -> void:
 	_entity_backend._clear()
-	if _id_generator.has_method("clear"):
-		_id_generator.clear()
+	_id_generator.clear()
 	_loaded = false
 	_backend_load_state = PandoraEntityBackend.LoadState.NOT_LOADED

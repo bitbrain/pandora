@@ -10,7 +10,7 @@ const __source = "res://addons/pandora/ui/components/property_bar/property_bar.t
 
 
 func test_all_property_scenes_added() -> void:
-	var id_generator = PandoraNanoIDGenerator.new(9)
+	var id_generator = PandoraIDGenerator.new()
 	var backend = PandoraEntityBackend.new(id_generator)
 	var root_category = backend.create_category("root")
 	var property = backend.create_property(root_category, "Weight", "float")

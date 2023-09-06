@@ -6,7 +6,7 @@ extends GdUnitTestSuite
 
 
 # TestSuite generated from
-const __source = 'res://addons/pandora/util/id/sequential_id_generator.gd'
+const __source = 'res://addons/pandora/util/sequential_id_generator.gd'
 
 
 func test_generate_clear() -> void:

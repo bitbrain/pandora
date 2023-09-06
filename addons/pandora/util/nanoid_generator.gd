@@ -1,6 +1,6 @@
 # inspired by github.com/eth0net/nanoid-godot (MIT) v0.2.0
 class_name PandoraNanoIDGenerator
-extends PandoraIDGenerator
+extends RefCounted
 
 
 const ALPHABET := "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict"

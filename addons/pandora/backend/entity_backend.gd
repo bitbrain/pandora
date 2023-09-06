@@ -36,7 +36,7 @@ var _id_generator:PandoraIDGenerator
 var _load_state:LoadState = LoadState.NOT_LOADED
 
 
-func _init(id_generator:PandoraIDGenerator) -> void:
+func _init(id_generator: PandoraIDGenerator) -> void:
 	self._id_generator = id_generator
 
 
