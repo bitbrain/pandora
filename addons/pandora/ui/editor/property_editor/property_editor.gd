@@ -2,7 +2,7 @@
 extends HSplitContainer
 
 
-## called when the user intends to navigate to the 
+## called when the user intends to navigate to the
 ## original property of an inherited property.
 signal inherited_property_selected(category_id:String, property_name:String)
 
@@ -24,7 +24,7 @@ var current_entity:PandoraEntity
 func _ready() -> void:
 	property_bar.property_added.connect(_add_property)
 	set_entity(null)
-	
+
 
 ## if possible, attempt to edit the given property key.
 func edit_key(property_name:String) -> void:
@@ -44,11 +44,11 @@ func set_entity(entity:PandoraEntity) -> void:
 	property_list.visible = entity != null
 	unselected_container.visible = entity == null
 	entity_attributes.visible = entity != null
-	
+
 	if entity != null:
 		entity_attributes.init(entity)
 		var properties = entity.get_entity_properties()
-		
+
 		for property in properties:
 			var scene = property_bar.get_scene_by_type(property.get_property_type().get_type_name())
 			var control = scene.instantiate() as PandoraPropertyControl
@@ -63,8 +63,8 @@ func _add_property(scene:PackedScene) -> void:
 	var property = Pandora.create_property(current_entity as PandoraCategory, _generate_property_name(control.type, current_entity), control.type)
 	if property != null:
 		_add_property_control(control, property)
-	
-	
+
+
 func _add_property_control(control:PandoraPropertyControl, property:PandoraProperty) -> void:
 	var control_kvp = PropertyControlKvp.instantiate()
 	control.init(property)
