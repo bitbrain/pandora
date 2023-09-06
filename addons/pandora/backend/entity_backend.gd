@@ -31,12 +31,12 @@ var _categories:Dictionary = {}
 # list of categories on the root level
 var _root_categories:Array[PandoraCategory] = []
 # generates ids for new entities
-var _id_generator:NanoIDGenerator
+var _id_generator:PandoraIDGenerator
 # tracks the current state of loading
 var _load_state:LoadState = LoadState.NOT_LOADED
 
 
-func _init(id_generator:NanoIDGenerator) -> void:
+func _init(id_generator: PandoraIDGenerator) -> void:
 	self._id_generator = id_generator
 
 
@@ -79,6 +79,39 @@ func create_property(on_category:PandoraCategory, name:String, type:String, defa
 	on_category._properties.append(property)
 	_propagate_properties(on_category)
 	return property
+
+
+func regenerate_all_ids() -> void:
+	for category in get_all_categories():
+		regenerate_category_id(category)
+	for entity in get_all_entities():
+		regenerate_entity_id(entity)
+	for property in get_all_properties():
+		regenerate_property_id(property)
+
+
+func regenerate_category_id(category: PandoraCategory) -> void:
+	var new_id = _id_generator.generate()
+	_categories.erase(category._id)
+	for child in category._children:
+		child._category_id = new_id
+	for key in _properties:
+		if _properties[key]._category_id == category._id:
+			_properties[key]._category_id = new_id
+	category._id = new_id
+	_categories[category._id] = category
+
+
+func regenerate_entity_id(entity: PandoraEntity) -> void:
+	_entities.erase(entity._id)
+	entity._id = _id_generator.generate()
+	_entities[entity._id] = entity
+
+
+func regenerate_property_id(property: PandoraProperty) -> void:
+	_properties.erase(property._id)
+	property._id = _id_generator.generate()
+	_properties[property._id] = property
 
 
 ## Deletes an existing category and all of its children
@@ -151,7 +184,7 @@ func get_property(property_id:String) -> PandoraProperty:
 ## Returns a list of all root categories
 func get_all_roots() -> Array[PandoraCategory]:
 	return _root_categories
-	
+
 
 ## Returns a list of all categories
 func get_all_categories(parent:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
@@ -174,6 +207,17 @@ func get_all_entities(parent:PandoraCategory = null, sort:Callable = func(a,b): 
 			entities.append(_entities[key])
 	entities.sort_custom(sort)
 	return entities
+
+
+func get_all_properties(parent: PandoraCategory = null, sort: Callable = func(a, b): return false) -> Array[PandoraProperty]:
+	var properties: Array[PandoraProperty] = []
+	if parent:
+		properties.append_array(parent._properties)
+	else:
+		for key in _properties:
+			properties.append(_properties[key])
+	properties.sort_custom(sort)
+	return properties
 
 
 ## Initialize this backend with the given data dictionary.
@@ -222,11 +266,11 @@ func load_data(data:Dictionary) -> LoadState:
 			return _load_state
 		var category = _categories[property._category_id] as PandoraCategory
 		category._properties.append(property)
-		
+
 	# propagate properties from roots
 	for root_category in _root_categories:
 		_propagate_properties(root_category)
-	
+
 	_load_state = LoadState.LOADED
 	return _load_state
 
@@ -317,8 +361,8 @@ func _deserialize_entities(data:Array) -> Dictionary:
 			entity.load_data(entity_data)
 			dict[entity._id] = entity
 	return dict
-	
-	
+
+
 func _deserialize_categories(data:Array) -> Dictionary:
 	var dict = {}
 	for category_data in data:
@@ -335,8 +379,8 @@ func _deserialize_categories(data:Array) -> Dictionary:
 			if not root_category_exists:
 				_root_categories.append(category)
 	return dict
-	
-	
+
+
 func _deserialize_properties(data:Array) -> Dictionary:
 	var dict = {}
 	for property_data in data:
@@ -351,7 +395,7 @@ func _serialize_data(data:Dictionary) -> Array[Dictionary]:
 	for key in data:
 		serialized_data.append(data[key].save_data())
 	return serialized_data
-	
+
 
 # used for testing only
 func _clear() -> void:
@@ -360,7 +404,7 @@ func _clear() -> void:
 	_properties.clear()
 	_root_categories.clear()
 
-	
+
 ## recusively propagate properties into children
 func _propagate_properties(category:PandoraCategory) -> void:
 	if category == null:
