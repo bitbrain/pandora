@@ -198,6 +198,7 @@ func get_icon_path() -> String:
 
 	return ENTITY_ICON_PATH
 
+
 func get_script_path() -> String:
 	if is_instance():
 		return _get_instanced_from_entity().get_script_path()
@@ -466,6 +467,7 @@ func get_index() -> int:
 		return _get_instanced_from_entity().get_index()
 	_initialize_if_not_loaded()
 	return _index
+
 	
 func is_category(category_id:String) -> bool:
 	if is_instance():

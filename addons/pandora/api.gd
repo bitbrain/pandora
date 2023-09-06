@@ -90,7 +90,7 @@ func get_entity(entity_id:String) -> PandoraEntity:
 	
 func get_category(category_id:String) -> PandoraCategory:
 	return _entity_backend.get_category(category_id)
-	
+
 func get_property(property_id:String) -> PandoraProperty:
 	return _entity_backend.get_property(property_id)
 
