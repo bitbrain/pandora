@@ -12,5 +12,4 @@ const __source = 'res://addons/pandora/util/nanoid_generator.gd'
 func test_generate_size() -> void:
 	var id_generator = auto_free(preload(__source).new(3))
 	assert_that(len(id_generator.generate())).is_equal(3)
-	id_generator.size = 4
-	assert_that(len(id_generator.generate())).is_equal(4)
+	assert_that(len(id_generator.generate(4))).is_equal(4)
