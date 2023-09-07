@@ -680,3 +680,32 @@ func test_check_properties_will_change_after_move() -> void:
 	assert_that(will_change2).is_false()
 	assert_that(will_change3).is_false()
 	assert_that(will_change4).is_true()
+
+func test_change_entity_icon_color() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	entity.set_icon_color(Color.RED)
+	assert_that(entity.get_icon_color()).is_equal(Color.RED)
+
+
+func test_change_category_icon_color() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Test")
+	category.set_icon_color(Color.RED)
+	assert_that(category.get_icon_color()).is_equal(Color.RED)
+
+func test_icon_color_inheritance() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	category.set_icon_color(Color.RED)
+	assert_that(entity.get_icon_color()).is_equal(Color.RED)
+
+func test_icon_color_overridden() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	entity.set_icon_color(Color.BLUE)
+	category.set_icon_color(Color.RED)
+	assert_that(entity.get_icon_color()).is_equal(Color.BLUE)

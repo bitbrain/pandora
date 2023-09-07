@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cex30s5jawlql"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/color_picker/color_picker.gd" id="1_eeppq"]
+
+[node name="ColorPicker" type="MarginContainer"]
+offset_right = 8.0
+offset_bottom = 55.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_eeppq")
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="."]
+layout_mode = 2
