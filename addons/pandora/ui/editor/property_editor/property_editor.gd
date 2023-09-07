@@ -8,7 +8,7 @@ signal inherited_property_selected(category_id:String, property_name:String)
 
 
 const PropertyControlKvp = preload("res://addons/pandora/ui/components/properties/property_control_kvp.tscn")
-var PROPERTY_DEFAULT_NAME = TranslationManager.translate("ui.property_editor.property_default_name")
+const PROPERTY_DEFAULT_NAME = "property"
 
 
 @onready var property_bar:PandoraPropertyBar = %PropertyBar
@@ -83,7 +83,7 @@ func _add_property_control(control:PandoraPropertyControl, property:PandoraPrope
 
 func _generate_property_name(type:String, entity:PandoraEntity) -> String:
 	var properties = entity.get_entity_properties()
-	var property_name = type + " " + PROPERTY_DEFAULT_NAME
+	var property_name = type + " " + TranslationManager.translate("PROPERTY_DEFAULT_NAME")
 	if properties.is_empty() or not entity.has_entity_property(property_name):
 		return property_name
 	return property_name + str(properties.size())

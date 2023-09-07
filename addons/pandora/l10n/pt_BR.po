@@ -64,28 +64,39 @@ msgstr "Nome da Classe de IDs"
 msgid "ui.property_editor.id_class_name_field.placeholder"
 msgstr "NomeDaClasse"
 
-#, fuzzy
-msgid "ui.property_editor.property_default_name"
-msgstr "Property"
-
 msgid "ui.property_editor.property_settings.header_label.text"
 msgstr "Propriedades"
 
 msgid "ui.property_editor.property_settings.info_label.text"
 msgstr "Configurações da Propriedade"
 
-msgid "ui.property_editor.property_settings.categories_only_label.text"
-msgstr "Somente para Categorias"
+msgid "Categories Only"
+msgstr "Somente Categorias"
 
-msgid "ui.property_editor.property_settings.category_filter_label.text"
-msgstr "Filtrar Categoria"
-
-msgid "ui.property_editor.property_settings.sort_list_label.text"
+msgid "Sort List"
 msgstr "Ordenar"
 
-msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+msgid "Alphabetically"
 msgstr "Ordem Alfabética"
 
+msgid "As-Is"
+msgstr "Padrão"
+
+msgid "property"
+msgstr ""
+
+#~ msgid "ui.property_editor.property_settings.categories_only_label.text"
+#~ msgstr "Somente para Categorias"
+
+#~ msgid "ui.property_editor.property_settings.category_filter_label.text"
+#~ msgstr "Filtrar Categoria"
+
+#~ msgid "ui.property_editor.property_settings.sort_list_label.text"
+#~ msgstr "Ordenar"
+
+#~ msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+#~ msgstr "Ordem Alfabética"
+
 #, fuzzy
-msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
-msgstr "As-is"
+#~ msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
+#~ msgstr "As-is"

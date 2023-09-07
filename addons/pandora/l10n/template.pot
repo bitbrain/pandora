@@ -57,26 +57,23 @@ msgstr ""
 msgid "ui.property_editor.id_class_name_field.placeholder"
 msgstr ""
 
-msgid "ui.property_editor.property_default_name"
-msgstr ""
-
 msgid "ui.property_editor.property_settings.header_label.text"
 msgstr ""
 
 msgid "ui.property_editor.property_settings.info_label.text"
 msgstr ""
 
-msgid "ui.property_editor.property_settings.categories_only_label.text"
+msgid "Categories Only"
 msgstr ""
 
-msgid "ui.property_editor.property_settings.category_filter_label.text"
+msgid "Sort List"
 msgstr ""
 
-msgid "ui.property_editor.property_settings.sort_list_label.text"
+msgid "Alphabetically"
 msgstr ""
 
-msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+msgid "As-Is"
 msgstr ""
 
-msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
+msgid "property"
 msgstr ""

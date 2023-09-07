@@ -64,26 +64,41 @@ msgstr "ID Class Name"
 msgid "ui.property_editor.id_class_name_field.placeholder"
 msgstr "SomeClassName"
 
-msgid "ui.property_editor.property_default_name"
-msgstr "Property"
-
 msgid "ui.property_editor.property_settings.header_label.text"
 msgstr "Properties"
 
 msgid "ui.property_editor.property_settings.info_label.text"
 msgstr "Property Settings"
 
-msgid "ui.property_editor.property_settings.categories_only_label.text"
+msgid "Categories Only"
 msgstr "Categories Only"
 
-msgid "ui.property_editor.property_settings.category_filter_label.text"
-msgstr "Category Filter"
-
-msgid "ui.property_editor.property_settings.sort_list_label.text"
+msgid "Sort List"
 msgstr "Sort List"
 
-msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+msgid "Alphabetically"
 msgstr "Alphabetically"
 
-msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
-msgstr "As-is"
+msgid "As-Is"
+msgstr "As-Is"
+
+msgid "property"
+msgstr "property"
+
+#~ msgid "ui.property_editor.property_default_name"
+#~ msgstr "Property"
+
+#~ msgid "ui.property_editor.property_settings.categories_only_label.text"
+#~ msgstr "Categories Only"
+
+#~ msgid "ui.property_editor.property_settings.category_filter_label.text"
+#~ msgstr "Category Filter"
+
+#~ msgid "ui.property_editor.property_settings.sort_list_label.text"
+#~ msgstr "Sort List"
+
+#~ msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+#~ msgstr "Alphabetically"
+
+#~ msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
+#~ msgstr "As-is"
