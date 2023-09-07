@@ -175,6 +175,10 @@ func calculate_import_data(path: String) -> void:
 
 func import_data(path: String) -> int:
 	var imported_data = _storage._load_from_file(path)
+	if not imported_data.has("_entity_data"):
+		import_ended.emit("Provided file is invalid or is corrupted.", 0)
+		return 0
+
 	var imported_count = _entity_backend.import_data(imported_data["_entity_data"])
 	if imported_count == -1:
 		import_ended.emit("No data found in file.", 0)

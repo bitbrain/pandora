@@ -7,6 +7,7 @@
 				"_icon_path": "res://examples/inventory/icons/school-bag.svg",
 				"_id": "1",
 				"_ids_generation_class": "Items",
+				"_index": 0,
 				"_name": "Items",
 				"_script_path": "res://examples/inventory/item.gd"
 			},
@@ -16,6 +17,7 @@
 				"_icon_path": "res://examples/inventory/icons/switch-weapon.svg",
 				"_id": "3",
 				"_ids_generation_class": "Armory",
+				"_index": 0,
 				"_name": "Armory",
 				"_property_overrides": {
 					"Description": {
@@ -38,6 +40,7 @@
 				"_icon_path": "res://examples/inventory/icons/toolbox.svg",
 				"_id": "4",
 				"_ids_generation_class": "Tools",
+				"_index": 0,
 				"_name": "Tools",
 				"_property_overrides": {
 					"Description": {
@@ -54,6 +57,7 @@
 				"_category_id": "3",
 				"_icon_path": "res://examples/inventory/icons/shield.svg",
 				"_id": "8",
+				"_index": 0,
 				"_name": "Shields",
 				"_property_overrides": {
 					"Description": {
@@ -76,6 +80,7 @@
 				"_icon_path": "res://examples/inventory/icons/peaks.svg",
 				"_id": "13",
 				"_ids_generation_class": "Ores",
+				"_index": 0,
 				"_name": "Ores",
 				"_property_overrides": {
 					"Description": {
@@ -98,27 +103,32 @@
 				"_icon_path": "res://examples/inventory/icons/stars-stack.svg",
 				"_id": "16",
 				"_ids_generation_class": "Rarities",
+				"_index": 0,
 				"_name": "Rarity",
 				"_script_path": "res://examples/inventory/rarity.gd"
 			},
 			{
 				"_category_id": "",
 				"_id": "27",
+				"_index": 0,
 				"_name": "Quests"
 			},
 			{
 				"_category_id": "",
 				"_id": "28",
+				"_index": 0,
 				"_name": "Dialogues"
 			},
 			{
 				"_category_id": "",
 				"_id": "29",
+				"_index": 0,
 				"_name": "Spells"
 			},
 			{
 				"_category_id": "",
 				"_id": "54",
+				"_index": 0,
 				"_name": "Mock (Required for Testing!)",
 				"_script_path": "res://test/mock/custom_mock_entity.gd"
 			}
@@ -127,6 +137,7 @@
 			{
 				"_category_id": "8",
 				"_id": "49",
+				"_index": 0,
 				"_name": "Shield",
 				"_property_overrides": {
 					"Maximum Stack Size": {
@@ -142,6 +153,7 @@
 			{
 				"_category_id": "13",
 				"_id": "50",
+				"_index": 0,
 				"_name": "Copper Ore",
 				"_property_overrides": {
 					"Rarity": {
@@ -160,11 +172,13 @@
 			{
 				"_category_id": "16",
 				"_id": "51",
+				"_index": 0,
 				"_name": "Legendary"
 			},
 			{
 				"_category_id": "54",
 				"_id": "55",
+				"_index": 0,
 				"_name": "MockEntity"
 			}
 		],
@@ -297,5 +311,10 @@
 				"_type": "resource"
 			}
 		]
+	},
+	"_id_generator": {
+		"_ids_by_context": {
+
+		}
 	}
 }
