@@ -4,18 +4,18 @@ extends RefCounted
 
 
 const ALPHABET := "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict"
-const SIZE := 21
+const DEFAULT_LENGTH := 21
 
 
-var size: int
+var default_length := DEFAULT_LENGTH
 
 
-func _init(size := SIZE) -> void:
-	self.size = size
+func _init(length := DEFAULT_LENGTH) -> void:
+	default_length = length
 
 
-func generate() -> String:
+func generate(length := default_length) -> String:
 	var id: String
-	for i in range(size):
+	for i in range(length):
 		id += ALPHABET[randi() % ALPHABET.length()]
 	return id
