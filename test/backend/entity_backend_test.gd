@@ -743,3 +743,32 @@ func test_import_invalid_pandora_data_file() -> void:
 	DirAccess.remove_absolute("res://" + TEST_DIR)
 
 	assert_that(imported_count == 0).is_true()
+
+func test_change_entity_icon_color() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	entity.set_icon_color(Color.RED)
+	assert_that(entity.get_icon_color()).is_equal(Color.RED)
+
+
+func test_change_category_icon_color() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Test")
+	category.set_icon_color(Color.RED)
+	assert_that(category.get_icon_color()).is_equal(Color.RED)
+
+func test_icon_color_inheritance() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	category.set_icon_color(Color.RED)
+	assert_that(entity.get_icon_color()).is_equal(Color.RED)
+
+func test_icon_color_overridden() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	entity.set_icon_color(Color.BLUE)
+	category.set_icon_color(Color.RED)
+	assert_that(entity.get_icon_color()).is_equal(Color.BLUE)

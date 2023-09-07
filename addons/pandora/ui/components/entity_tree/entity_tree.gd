@@ -163,14 +163,26 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	item.set_tooltip_text(0, "Entity ID: " + entity.get_entity_id())
 	if entity.get_icon_path() != "":
 		item.set_icon(0, load(entity.get_icon_path()))
+	item.set_icon_modulate(0, entity.get_icon_color())
 	entity.icon_changed.connect(func(new_path): _on_icon_changed(entity.get_entity_id(), new_path))
+	entity.icon_color_changed.connect(func(new_color): _on_icon_color_changed(entity.get_entity_id(), new_color))
 	return item
 
 
 func _on_icon_changed(entity_id:String, new_path:String) -> void:
 	var item = entity_items[entity_id] as TreeItem
 	item.set_icon(0, load(new_path))
+	# propagate the change to all children if any
+	for child in item.get_children():
+		_on_icon_changed(child.get_metadata(0).get_entity_id(), child.get_metadata(0).get_icon_path())
 
+func _on_icon_color_changed(entity_id:String, new_color:Color) -> void:
+	var item = entity_items[entity_id] as TreeItem
+	item.set_icon_modulate(0, new_color)
+	# propagate the change to all children if any
+	for child in item.get_children():
+		_on_icon_color_changed(child.get_metadata(0).get_entity_id(), child.get_metadata(0).get_icon_color())
+	
 func _get_drag_data(_at_position):
 	if get_selected():
 		set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)

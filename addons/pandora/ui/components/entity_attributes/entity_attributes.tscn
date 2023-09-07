@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ceqq28yvnhs2e"]
+[gd_scene load_steps=5 format=3 uid="uid://ceqq28yvnhs2e"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.gd" id="1_hnn1r"]
 [ext_resource type="PackedScene" uid="uid://dvoxop0o2mlfi" path="res://addons/pandora/ui/components/texture_picker/texture_picker.tscn" id="2_tv6yu"]
 [ext_resource type="PackedScene" uid="uid://bp0gaqyb10bns" path="res://addons/pandora/ui/components/script_picker/script_picker.tscn" id="3_e2peg"]
+[ext_resource type="PackedScene" uid="uid://cex30s5jawlql" path="res://addons/pandora/ui/components/color_picker/color_picker.tscn" id="3_o3ybf"]
 
 [node name="EntityAttributes" type="VBoxContainer"]
 anchors_preset = 15
@@ -27,6 +28,18 @@ size_flags_horizontal = 3
 text = "Icon"
 
 [node name="TexturePicker" parent="IconAttribute" instance=ExtResource("2_tv6yu")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ColorAttribute" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ColorLabel" type="Label" parent="ColorAttribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color"
+
+[node name="ColorPicker" parent="ColorAttribute" instance=ExtResource("3_o3ybf")]
 unique_name_in_owner = true
 layout_mode = 2
 
