@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+
+"Project-Id-Version: Pandora\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid "ui.control_bar.create_category_button.tooltip"
+msgstr ""
+
+msgid "ui.control_bar.create_entity_button.tooltip"
+msgstr ""
+
+msgid "ui.control_bar.regenerate_id_button.tooltip"
+msgstr ""
+
+msgid "ui.control_bar.delete_button.tooltip"
+msgstr ""
+
+msgid "ui.control_bar.save_button.tooltip"
+msgstr ""
+
+msgid "ui.control_bar.reset_button.tooltip"
+msgstr ""
+
+msgid "ui.control_bar.learn_link.text"
+msgstr ""
+
+msgid "ui.control_bar.contribute_link.text"
+msgstr ""
+
+msgid "ui.control_bar.report_link.text"
+msgstr ""
+
+msgid "ui.entity_tree.entity_search.placeholder"
+msgstr ""
+
+msgid "ui.property_editor.caption_label.text"
+msgstr ""
+
+msgid "ui.property_editor.unselected_container_label.text"
+msgstr ""
+
+msgid "ui.property_editor.icon_label.text"
+msgstr ""
+
+msgid "ui.property_editor.script_label.text"
+msgstr ""
+
+msgid "ui.property_editor.generate_id_class_label.text"
+msgstr ""
+
+msgid "ui.property_editor.id_class_name_label.text"
+msgstr ""
+
+msgid "ui.property_editor.id_class_name_field.placeholder"
+msgstr ""
+
+msgid "ui.property_editor.property_default_name"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.header_label.text"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.info_label.text"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.categories_only_label.text"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.category_filter_label.text"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.sort_list_label.text"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+msgstr ""
+
+msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
+msgstr ""

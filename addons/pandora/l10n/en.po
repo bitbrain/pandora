@@ -1,0 +1,89 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Pandora\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+msgid "ui.control_bar.create_category_button.tooltip"
+msgstr "Create Category"
+
+msgid "ui.control_bar.create_entity_button.tooltip"
+msgstr "Create Entity"
+
+msgid "ui.control_bar.regenerate_id_button.tooltip"
+msgstr ""
+"Generate a new ID for selected entry.\n"
+"Shift-click: generate new IDs for all entries."
+
+msgid "ui.control_bar.delete_button.tooltip"
+msgstr "Delete Selected Entry"
+
+msgid "ui.control_bar.save_button.tooltip"
+msgstr "Save Current Changes"
+
+msgid "ui.control_bar.reset_button.tooltip"
+msgstr "Reset Data"
+
+msgid "ui.control_bar.learn_link.text"
+msgstr "Learn"
+
+msgid "ui.control_bar.contribute_link.text"
+msgstr "Contribute"
+
+msgid "ui.control_bar.report_link.text"
+msgstr "🐛 Report a bug!"
+
+msgid "ui.entity_tree.entity_search.placeholder"
+msgstr "Search…"
+
+msgid "ui.property_editor.caption_label.text"
+msgstr "Properties"
+
+msgid "ui.property_editor.unselected_container_label.text"
+msgstr "Create or select a category or item to see its properties here."
+
+msgid "ui.property_editor.icon_label.text"
+msgstr "Icon"
+
+msgid "ui.property_editor.script_label.text"
+msgstr "Script"
+
+msgid "ui.property_editor.generate_id_class_label.text"
+msgstr "Generate ID Class"
+
+msgid "ui.property_editor.id_class_name_label.text"
+msgstr "ID Class Name"
+
+msgid "ui.property_editor.id_class_name_field.placeholder"
+msgstr "SomeClassName"
+
+msgid "ui.property_editor.property_default_name"
+msgstr "Property"
+
+msgid "ui.property_editor.property_settings.header_label.text"
+msgstr "Properties"
+
+msgid "ui.property_editor.property_settings.info_label.text"
+msgstr "Property Settings"
+
+msgid "ui.property_editor.property_settings.categories_only_label.text"
+msgstr "Categories Only"
+
+msgid "ui.property_editor.property_settings.category_filter_label.text"
+msgstr "Category Filter"
+
+msgid "ui.property_editor.property_settings.sort_list_label.text"
+msgstr "Sort List"
+
+msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+msgstr "Alphabetically"
+
+msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
+msgstr "As-is"

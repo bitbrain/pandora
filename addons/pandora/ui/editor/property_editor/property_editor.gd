@@ -8,7 +8,7 @@ signal inherited_property_selected(category_id:String, property_name:String)
 
 
 const PropertyControlKvp = preload("res://addons/pandora/ui/components/properties/property_control_kvp.tscn")
-const PROPERTY_DEFAULT_NAME = "property"
+var PROPERTY_DEFAULT_NAME = TranslationManager.translate("ui.property_editor.property_default_name")
 
 
 @onready var property_bar:PandoraPropertyBar = %PropertyBar
@@ -16,15 +16,21 @@ const PROPERTY_DEFAULT_NAME = "property"
 @onready var unselected_container = %UnselectedContainer
 @onready var entity_attributes = %EntityAttributes
 @onready var property_settings_container = %PropertySettingsContainer
+@onready var caption_label = %CaptionLabel
+@onready var special_label = %SpecialLabel
 
 
 var current_entity:PandoraEntity
 
 
 func _ready() -> void:
+	_translate()
 	property_bar.property_added.connect(_add_property)
 	set_entity(null)
 
+func _translate():
+	caption_label.text = TranslationManager.translate("ui.property_editor.caption_label.text")
+	special_label.text = TranslationManager.translate("ui.property_editor.unselected_container_label.text")
 
 ## if possible, attempt to edit the given property key.
 func edit_key(property_name:String) -> void:

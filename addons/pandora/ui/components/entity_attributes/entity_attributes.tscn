@@ -22,6 +22,7 @@ theme_override_constants/separation = 20
 layout_mode = 2
 
 [node name="IconLabel" type="Label" parent="IconAttribute"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Icon"
@@ -33,7 +34,8 @@ layout_mode = 2
 [node name="ScriptAttribute" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ScriptAttribute"]
+[node name="ScriptLabel" type="Label" parent="ScriptAttribute"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Script"
@@ -49,7 +51,8 @@ theme_override_constants/separation = 20
 [node name="IdGenerationAttribute" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="IdGenerationAttribute"]
+[node name="IdGenerationLabel" type="Label" parent="IdGenerationAttribute"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Generate ID Class"
@@ -63,6 +66,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="IdClassNameLabel" type="Label" parent="IdClassNameAttribute"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ID Class Name"

@@ -1,0 +1,91 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Pandora\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+msgid "ui.control_bar.create_category_button.tooltip"
+msgstr "Nova Categoria"
+
+msgid "ui.control_bar.create_entity_button.tooltip"
+msgstr "Nova Entidade"
+
+msgid "ui.control_bar.regenerate_id_button.tooltip"
+msgstr ""
+"Gerar um novo ID para o registro selecionado.\n"
+"Shift-click: Gera um novo ID para todos os registros."
+
+msgid "ui.control_bar.delete_button.tooltip"
+msgstr "Deletar Registro Selecionado"
+
+msgid "ui.control_bar.save_button.tooltip"
+msgstr "Salvar Mudanças"
+
+msgid "ui.control_bar.reset_button.tooltip"
+msgstr "Desfazer Mudanças"
+
+msgid "ui.control_bar.learn_link.text"
+msgstr "Aprenda"
+
+msgid "ui.control_bar.contribute_link.text"
+msgstr "Contribua"
+
+msgid "ui.control_bar.report_link.text"
+msgstr "🐛 Reporte um bug!"
+
+msgid "ui.entity_tree.entity_search.placeholder"
+msgstr "Buscar…"
+
+msgid "ui.property_editor.caption_label.text"
+msgstr "Propriedades"
+
+msgid "ui.property_editor.unselected_container_label.text"
+msgstr "Crie um selecione uma categoria para visualizar suas propriedades"
+
+msgid "ui.property_editor.icon_label.text"
+msgstr "Ícone"
+
+msgid "ui.property_editor.script_label.text"
+msgstr "Script"
+
+msgid "ui.property_editor.generate_id_class_label.text"
+msgstr "Gerar Classe de IDs"
+
+msgid "ui.property_editor.id_class_name_label.text"
+msgstr "Nome da Classe de IDs"
+
+msgid "ui.property_editor.id_class_name_field.placeholder"
+msgstr "NomeDaClasse"
+
+#, fuzzy
+msgid "ui.property_editor.property_default_name"
+msgstr "Property"
+
+msgid "ui.property_editor.property_settings.header_label.text"
+msgstr "Propriedades"
+
+msgid "ui.property_editor.property_settings.info_label.text"
+msgstr "Configurações da Propriedade"
+
+msgid "ui.property_editor.property_settings.categories_only_label.text"
+msgstr "Somente para Categorias"
+
+msgid "ui.property_editor.property_settings.category_filter_label.text"
+msgstr "Filtrar Categoria"
+
+msgid "ui.property_editor.property_settings.sort_list_label.text"
+msgstr "Ordenar"
+
+msgid "ui.property_editor.property_settings.sort_list_menu.alphabetically"
+msgstr "Ordem Alfabética"
+
+#, fuzzy
+msgid "ui.property_editor.property_settings.sort_list_menu.as_is"
+msgstr "As-is"

@@ -6,6 +6,10 @@ extends VBoxContainer
 @onready var script_picker = %ScriptPicker
 @onready var id_generation_enabled = %IdGenerationEnabled
 @onready var class_name_edit = %ClassNameEdit
+@onready var icon_label = %IconLabel
+@onready var script_label = %ScriptLabel
+@onready var id_generation_label = %IdGenerationLabel
+@onready var id_class_name_label = %IdClassNameLabel
 
 @onready var script_attribute = $ScriptAttribute
 @onready var h_separator_2 = $HSeparator2
@@ -35,11 +39,18 @@ func init(entity:PandoraEntity) -> void:
 
 
 func _ready() -> void:
+	_translate()
 	texture_picker.texture_changed.connect(_set_icon_path)
 	script_picker.script_path_changed.connect(_set_script_path)
 	id_generation_enabled.toggled.connect(_set_id_generation)
 	class_name_edit.text_changed.connect(_set_class_name)
 	
+func _translate():
+	icon_label.text = TranslationManager.translate("ui.property_editor.icon_label.text")
+	script_label.text = TranslationManager.translate("ui.property_editor.script_label.text")
+	id_generation_label.text = TranslationManager.translate("ui.property_editor.id_generation_label.text")
+	id_class_name_label.text = TranslationManager.translate("ui.property_editor.id_class_name_label.text")
+	class_name_edit.placeholder_text = TranslationManager.translate("ui.property_editor.id_class_name_field.placeholder")
 	
 func _set_icon_path(path:String) -> void:
 	_entity.set_icon_path(path)

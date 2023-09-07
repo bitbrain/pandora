@@ -13,6 +13,12 @@ const EntityPicker = preload("res://addons/pandora/ui/components/entity_picker/e
 var _property:PandoraProperty
 var _default_settings:Dictionary
 
+func _ready():
+	_translate()
+
+func _translate():
+	info_label.text = TranslationManager.translate("ui.property_editor.property_settings.info_label.text")
+	header_label.text = TranslationManager.translate("ui.property_editor.property_settings.header_label.text")
 
 
 func set_property(property:PandoraProperty) -> void:
