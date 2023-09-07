@@ -7,14 +7,16 @@ const PandoraEntityInspector = preload("res://addons/pandora/ui/editor/inspector
 
 var editor_view
 var entity_inspector
+var _exporter: PandoraExportPlugin
 
 func _init() -> void:
 	self.name = 'PandoraPlugin'
 
 
 func _enter_tree() -> void:
+	_exporter = PandoraExportPlugin.new()
 	add_autoload_singleton("Pandora", "res://addons/pandora/api.gd")
-	
+	add_export_plugin(_exporter)
 	PandoraSettings.initialize()
 	
 	if Engine.is_editor_hint():
@@ -46,6 +48,7 @@ func _exit_tree() -> void:
 		editor_view.queue_free()
 		remove_inspector_plugin(entity_inspector)
 	
+	remove_export_plugin(_exporter)
 	remove_autoload_singleton("Pandora")
 
 
@@ -64,3 +67,19 @@ func _get_plugin_name() -> String:
 
 func _get_plugin_icon() -> Texture2D:
 	return PandoraIcon
+
+class PandoraExportPlugin extends EditorExportPlugin:
+	# Override the _export_begin method to add the data.pandora file during export
+	func _export_begin(features: PackedStringArray, is_debug: bool, path: String, flags: int):
+		var pandora_path = "res://data.pandora"
+		var file: FileAccess
+		if is_debug:
+			file = FileAccess.open(pandora_path, FileAccess.READ)
+		else:
+			file = FileAccess.open_compressed(pandora_path, FileAccess.READ)
+
+		if file:
+			add_file(pandora_path, file.get_buffer(file.get_length()), false)
+
+	func _get_name() -> String:
+		return "PandoraExporter"
