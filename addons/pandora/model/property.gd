@@ -41,6 +41,10 @@ func get_setting(key:String) -> Variant:
 	else:
 		return null
 		
+func get_setting_override(name:String) -> Variant:
+	if _setting_overrides.has(name):
+		return _setting_overrides[name]
+	return null
 		
 func has_setting_override(name:String) -> bool:
 	return _setting_overrides.has(name)
