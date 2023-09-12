@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://8namx0kxhw0"]
+[gd_scene load_steps=19 format=3 uid="uid://8namx0kxhw0"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/property_bar/property_bar.gd" id="1_0r2cp"]
 [ext_resource type="Texture2D" uid="uid://do5tkodyvid10" path="res://addons/pandora/icons/String.svg" id="1_4esni"]
@@ -15,7 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://b22vuf1tui0q3" path="res://addons/pandora/ui/components/properties/reference/reference_property.tscn" id="13_suig5"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="13_y2aqa"]
 [ext_resource type="Texture2D" uid="uid://rwodit05tms7" path="res://addons/pandora/icons/AtlasTexture.svg" id="15_dus4l"]
-[ext_resource type="PackedScene" uid="uid://yhwimtiw711n" path="res://addons/pandora/ui/components/properties/resource/resource_property.tscn" id="15_rxknd"]
+[ext_resource type="PackedScene" uid="uid://yhwimtiw711n" path="res://addons/pandora/ui/components/properties/resource/resource_property.tscn" id="16_qe711"]
+[ext_resource type="Texture2D" uid="uid://66qnm42libnj" path="res://addons/pandora/icons/Array.svg" id="17_ebxvo"]
+[ext_resource type="PackedScene" uid="uid://ckdfcxfes51ia" path="res://addons/pandora/ui/components/properties/array/array_property.tscn" id="18_sjnhs"]
 
 [node name="PropertyBar" type="HBoxContainer"]
 offset_right = 35.0
@@ -75,4 +77,10 @@ scene = ExtResource("13_suig5")
 layout_mode = 2
 icon = ExtResource("15_dus4l")
 script = ExtResource("3_kwfh5")
-scene = ExtResource("15_rxknd")
+scene = ExtResource("16_qe711")
+
+[node name="AddArrayPropertyButton" type="Button" parent="."]
+layout_mode = 2
+icon = ExtResource("17_ebxvo")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("18_sjnhs")

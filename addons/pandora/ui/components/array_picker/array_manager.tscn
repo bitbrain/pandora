@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://d15ldap7ubifc"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/array_picker/array_manager.gd" id="1_f23k5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xsek"]
+
+[sub_resource type="Shortcut" id="Shortcut_tvk0v"]
+events = [null, null]
+
+[node name="ArrayManager" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1xsek")
+script = ExtResource("1_f23k5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VSplitContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VSplitContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VSplitContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CancelButton" type="Button" parent="MarginContainer/VSplitContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cancel"
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VSplitContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save"
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/VSplitContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+shortcut = SubResource("Shortcut_tvk0v")

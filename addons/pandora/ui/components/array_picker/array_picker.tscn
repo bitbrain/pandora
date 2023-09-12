@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://cikbl461v071j"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/array_picker/array_picker.gd" id="1_yrssj"]
+[ext_resource type="Texture2D" uid="uid://b0mt8ysdc5m4a" path="res://addons/pandora/icons/Edit.svg" id="2_rmn70"]
+[ext_resource type="Script" path="res://addons/pandora/ui/components/array_picker/array_window.gd" id="3_evj6f"]
+[ext_resource type="PackedScene" uid="uid://d15ldap7ubifc" path="res://addons/pandora/ui/components/array_picker/array_manager.tscn" id="4_5yyg5"]
+
+[node name="ArrayPicker" type="HBoxContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_yrssj")
+
+[node name="ArrayInfo" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0 Entries"
+editable = false
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+flat = true
+
+[node name="EditArrayButton" type="Button" parent="."]
+layout_mode = 2
+icon = ExtResource("2_rmn70")
+
+[node name="ArrayWindow" type="Window" parent="."]
+disable_3d = true
+title = "Array Manager"
+initial_position = 2
+size = Vector2i(134, 100)
+visible = false
+wrap_controls = true
+content_scale_mode = 1
+content_scale_aspect = 4
+script = ExtResource("3_evj6f")
+
+[node name="ArrayManager" parent="ArrayWindow" instance=ExtResource("4_5yyg5")]
+
+[connection signal="close_requested" from="ArrayWindow" to="ArrayWindow" method="_on_close_requested"]
