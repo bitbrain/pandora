@@ -1,6 +1,8 @@
 @tool
 extends PanelContainer
 
+signal item_removal_requested
+
 var _property: PandoraProperty
 var _control:PandoraPropertyControl:
 	set(c):
@@ -32,9 +34,11 @@ func _refresh_value() -> void:
 	item_value.get_children().clear()
 	item_value.add_child(_control)
 
-func _refresh():
+func _refresh(_value: Variant = null):
 	if _control == null or _property == null:
 		return
+	_control.refresh()
 
 func _delete_item():
+	item_removal_requested.emit()
 	queue_free()

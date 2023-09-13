@@ -12,7 +12,7 @@ func _ready() -> void:
 	resource_picker.resource_changed.connect(
 		func(resource_path:String):
 			_property.set_default_value(load(resource_path))
-			property_value_changed.emit())
+			property_value_changed.emit(resource_path))
 
 
 func refresh() -> void:

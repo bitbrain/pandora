@@ -18,7 +18,7 @@ func _ready() -> void:
 	spin_box.value_changed.connect(
 		func(value:float):
 			_property.set_default_value(value)
-			property_value_changed.emit())
+			property_value_changed.emit(value))
 
 
 func refresh() -> void:

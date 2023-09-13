@@ -22,7 +22,7 @@ func _init() -> void:
 	super("int", SETTINGS, 0, ICON_PATH)
 
 
-func parse_value(variant:Variant) -> Variant:
+func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 	if variant is float:
 		return int(variant)
 	return variant

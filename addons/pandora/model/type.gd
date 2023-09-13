@@ -24,7 +24,7 @@ func _init(type_name:String, settings:Dictionary, default_value:Variant, type_ic
 	self._type_icon_path = type_icon_path
 	
 	
-func parse_value(variant:Variant) -> Variant:
+func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 	return variant
 	
 	

@@ -86,7 +86,7 @@ func _property_reset_to_default() -> void:
 	_refresh()
 
 
-func _refresh() -> void:
+func _refresh(_value: Variant = null) -> void:
 	if _control == null or _property == null:
 		return
 	# FIXME: focused & unfocused signals don't quite work!

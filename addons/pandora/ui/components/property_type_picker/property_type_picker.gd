@@ -13,7 +13,8 @@ var _types: Array[PandoraPropertyType]
 func _ready():
 	option_button.get_popup().id_pressed.connect(_on_id_selected)
 	
-func set_data()
+func set_data():
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

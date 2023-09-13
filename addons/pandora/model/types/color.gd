@@ -9,7 +9,7 @@ func _init() -> void:
 	super("color", SETTINGS, Color.WHITE, ICON_PATH)
 
 
-func parse_value(variant:Variant) -> Variant:
+func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 	if variant is String:
 		return Color.from_string(variant, Color.WHITE)
 	return variant

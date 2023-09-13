@@ -120,10 +120,12 @@ func load_data(data:Dictionary) -> void:
 	_id = data["_id"]
 	_name = data["_name"]
 	_type = PandoraPropertyType.lookup(data["_type"])
-	_default_value = _type.parse_value(data["_default_value"])
 	_category_id = data["_category_id"]
 	if data.has("_setting_overrides"):
 		_setting_overrides = data["_setting_overrides"]
+		_default_value = _type.parse_value(data["_default_value"], data["_setting_overrides"])
+	else:
+		_default_value = _type.parse_value(data["_default_value"])
 
 
 func save_data() -> Dictionary:

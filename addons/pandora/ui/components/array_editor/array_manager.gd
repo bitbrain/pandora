@@ -6,7 +6,7 @@ const ArrayItem = preload("res://addons/pandora/ui/components/array_editor/array
 
 signal item_added(item: Variant)
 signal item_removed(item: Variant)
-signal item_updated(previous: Variant, current: Variant)
+signal item_updated(idx: int, new_item: Variant)
 signal close_requested
 
 @onready var close_button: Button = %CloseButton
@@ -24,21 +24,50 @@ func _ready():
 
 func open(property: PandoraProperty):
 	_property = property
-	_items = property.get_default_value() as Array
+	_items = property.get_default_value().duplicate()
 	# This looks spooky..
 	property_bar = get_node("../../../../../../../../../../PanelContainer/MarginContainer/HBoxContainer/PropertyBar")
+	_load_items()
 
 func close():
-	pass
+	_items.clear()
+	for child in items_container.get_children():
+		child.queue_free()
+	items_container.get_children().clear()
+
+func _load_items():
+	var array_type = _property.get_setting(ArrayType.SETTING_ARRAY_TYPE)
+	for i in range(_items.size()):
+		var item = ArrayItem.instantiate()
+		var control = property_bar.get_scene_by_type(array_type).instantiate() as PandoraPropertyControl
+		var item_property = PandoraProperty.new("", "array_item", array_type)
+		var value = _items[i]
+		if array_type == 'resource':
+			value = load(value)
+		item_property.set_default_value(value)
+		_add_property_control(control, item_property, i)
 
 func _add_new_item():
-	print(property_bar)
 	var array_type = _property.get_setting(ArrayType.SETTING_ARRAY_TYPE)
 	var scene = property_bar.get_scene_by_type(array_type)
 	var control = scene.instantiate() as PandoraPropertyControl
-	_add_property_control(control)
+	var item_property = PandoraProperty.new("", "array_item", _property.get_setting(ArrayType.SETTING_ARRAY_TYPE))
+	_items.append(item_property.get_default_value())
+	item_property.set_default_value(_items[_items.size() - 1])
+	_add_property_control(control, item_property, _items.size() - 1)
+	item_added.emit(_items[_items.size() - 1])
 
-func _add_property_control(control:PandoraPropertyControl):
+func _add_property_control(control: PandoraPropertyControl, item_property: PandoraProperty, idx: int):
 	var item = ArrayItem.instantiate()
+	
+	control.init(item_property)
+
+	control.property_value_changed.connect(func(value: Variant):
+		item_updated.emit(idx, value)
+	)
+
+	item.item_removal_requested.connect(func():
+		item_removed.emit(control._property.get_default_value())
+	)
 	item.init(_property, control, Pandora._entity_backend)
 	items_container.add_child(item)

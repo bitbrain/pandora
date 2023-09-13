@@ -17,7 +17,7 @@ func _ready() -> void:
 	entity_picker.entity_selected.connect(
 		func(entity:PandoraEntity):
 			_property.set_default_value(entity)
-			property_value_changed.emit())
+			property_value_changed.emit(entity))
 
 
 func refresh() -> void:
