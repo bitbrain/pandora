@@ -13,6 +13,15 @@ const EntityPicker = preload("res://addons/pandora/ui/components/entity_picker/e
 var _property:PandoraProperty
 var _default_settings:Dictionary
 
+var allowed_nested_types: Dictionary = {
+	0: "string",
+	1: "int",
+	2: "bool",
+	3: "float",
+	4: "color",
+	5: "reference",
+	6: "resource"
+}
 
 
 func set_property(property:PandoraProperty) -> void:
@@ -92,6 +101,21 @@ func _new_control_for_type(key:String, type:String, options:Array[Variant], defa
 			_select_category_on_picker.call_deferred(entity_picker, current_value)
 		entity_picker.entity_selected.connect(func(new): _change_value(key, new.get_entity_id(), default_value))
 		return entity_picker
+		# pre-select category deferred since
+		# data may not be available right now
+		if current_value != "":
+			_select_category_on_picker.call_deferred(entity_picker, current_value)
+		entity_picker.entity_selected.connect(func(new): _change_value(key, new.get_entity_id(), default_value))
+		return entity_picker
+	elif type == "property_type":
+		var property_type_picker: OptionButton = OptionButton.new()
+		for index in allowed_nested_types:
+			var property_type = PandoraPropertyType.lookup(allowed_nested_types[index])
+			property_type_picker.add_icon_item(load(property_type.get_type_icon_path()), property_type.get_type_name(), index)
+		if current_value != "":
+			_select_prop_type.call_deferred(property_type_picker, current_value)
+		property_type_picker.item_selected.connect(func(index): _change_value(key, allowed_nested_types[index], default_value))
+		return property_type_picker
 	return null
 
 
@@ -105,3 +129,6 @@ func _change_value(key:String, new_value:Variant, default_value:Variant) -> void
 func _select_category_on_picker(picker, category_id:String) -> void:
 	var category = Pandora.get_category(category_id)
 	picker.select(category)
+
+func _select_prop_type(picker, prop_type:String) -> void:
+	picker.select(allowed_nested_types.find_key(prop_type))

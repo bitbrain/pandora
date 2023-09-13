@@ -1,5 +1,6 @@
 extends PandoraPropertyType
 
+const ICON_PATH = "res://addons/pandora/icons/int.svg"
 
 const SETTING_MIN_VALUE = "Min Value"
 const SETTING_MAX_VALUE = "Max Value"
@@ -18,7 +19,7 @@ const SETTINGS = {
 
 
 func _init() -> void:
-	super("int", SETTINGS, 0)
+	super("int", SETTINGS, 0, ICON_PATH)
 
 
 func parse_value(variant:Variant) -> Variant:

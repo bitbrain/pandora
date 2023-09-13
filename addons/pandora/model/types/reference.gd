@@ -1,5 +1,6 @@
 extends PandoraPropertyType
 
+const ICON_PATH = "res://addons/pandora/icons/Object.svg"
 
 const SETTING_CATEGORIES_ONLY = "Categories Only"
 const SETTING_CATEGORY_FILTER = "Category Filter"
@@ -29,7 +30,7 @@ const SETTINGS = {
 
 
 func _init() -> void:
-	super("reference", SETTINGS, null)
+	super("reference", SETTINGS, null, ICON_PATH)
 
 
 func parse_value(variant:Variant) -> Variant:

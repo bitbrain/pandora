@@ -1,27 +1,18 @@
 extends PandoraPropertyType
 
+const ICON_PATH = "res://addons/pandora/icons/Array.svg"
+
 const SETTING_ARRAY_TYPE = "Array Type"
-const ACCEPTED_TYPES = [
-	"String",
-	"Int",
-	"Float",
-	"Bool",
-	"Color",
-	"Reference",
-	"Resource"
-]
 
 const SETTINGS = {
 	SETTING_ARRAY_TYPE: {
-		"type": "string",
-		"options": ACCEPTED_TYPES,
-		"value": ACCEPTED_TYPES[0]
+		"type": "property_type",
+		"value": "string",
 	}
 }
 
-
 func _init() -> void:
-	super("array", SETTINGS, false)
+	super("array", SETTINGS, [], ICON_PATH)
 
 
 func is_valid(variant:Variant) -> bool:
