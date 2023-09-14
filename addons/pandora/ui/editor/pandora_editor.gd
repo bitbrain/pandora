@@ -14,9 +14,7 @@ class_name PandoraEditor extends Control
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var version = %Version
 @onready var save_label = %SaveLabel
-@onready var file_dialog = %FileDialog
-@onready var notification_dialog = %NotificationDialog
-@onready var confirmation_dialog = %ConfirmationDialog
+@onready var import_dialog = %ImportDialog
 @onready var progress_bar = %ProgressBar
 
 @onready var data_content = %DataContent
@@ -39,8 +37,9 @@ func _ready() -> void:
 	regenerate_id_button.pressed.connect(_on_regenerate_id_button_pressed)
 	reset_button.pressed.connect(_reset_to_saved_file)
 	delete_button.pressed.connect(func(): tree.queue_delete(selected_entity.get_entity_id()))
-	import_button.pressed.connect(func(): file_dialog.popup_centered())
-	file_dialog.file_selected.connect(_import_file)
+	import_button.pressed.connect(func(): import_dialog.open())
+	import_dialog.import_started.connect(func(import_count: int): progress_bar.init(import_count))
+	import_dialog.import_ended.connect(_on_import_ended)
 	
 	# set version
 	var plugin_config:ConfigFile = ConfigFile.new()
@@ -54,9 +53,7 @@ func _ready() -> void:
 	Pandora.entity_added.connect(tree.add_entity)
 	Pandora.data_loaded.connect(self._data_load_success)
 	Pandora.data_loaded_failure.connect(self._data_load_failure)
-	Pandora.import_ended.connect(self._on_import_ended)
-	Pandora.import_calculate_ended.connect(self._on_import_calculated)
-	Pandora.import_progress.connect(self._on_import_progress)
+	Pandora.import_progress.connect(self._on_progress)
 
 
 func reattempt_load_on_error() -> void:
@@ -180,48 +177,16 @@ func _data_load_failure() -> void:
 	error_content.visible = true
 	_load_error = true
 
-func _import_file(path: String) -> void:
-	Pandora.calculate_import_data(path)
-
-func _on_import_calculated(import_info: Dictionary) -> void:
-	if import_info["status"] == "FAIL":
-		notification_dialog.title = "Import Failed!"
-		notification_dialog.dialog_text = import_info["message"]
-		notification_dialog.popup_centered()
-	elif import_info["status"] == "OK":
-		confirmation_dialog.title = "Confirm Import"
-		confirmation_dialog.dialog_text = "Found " + str(import_info["total_categories"]) + " Categories with " + str(import_info["total_entities"]) + " Entities. Would you like to proceed?"
-		confirmation_dialog.confirmed.connect(func(): self._start_import(import_info))
-		confirmation_dialog.popup_centered()
-
-func _start_import(import_info: Dictionary) -> void:
-	save_button.disabled = true
-	reset_button.disabled = true
-	import_button.disabled = true
-	progress_bar.init(int(import_info["total_categories"]) + int(import_info["total_entities"]) + int(import_info["total_properties"]))
-	Pandora.import_data(import_info["path"])
-
-func _on_import_progress() -> void:
+func _on_progress() -> void:
 	progress_bar.advance()
-	
-func _on_import_ended(response: String, imported_count: int = 0) -> void:
-	if response != "OK":
-		notification_dialog.title = "Import Failed!"
-		notification_dialog.dialog_text = response
-		notification_dialog.popup_centered()
-	else:
-		var data:Array[PandoraEntity] = []
-		data.assign(Pandora.get_all_roots())
-		tree.set_data(data)
-		create_entity_button.disabled = true
-		create_category_button.disabled = false
-		delete_button.disabled = true
-		property_editor.set_entity(null)
-		progress_bar.finish()
-		notification_dialog.title = "Import Finished!"
-		notification_dialog.dialog_text = str(imported_count) + " records imported successfully!"
-		notification_dialog.popup_centered()
-	
+
+func _on_import_ended(data: Array[PandoraEntity]) -> void:
+	tree.set_data(data)
+	create_entity_button.disabled = true
+	create_category_button.disabled = false
+	delete_button.disabled = true
+	property_editor.set_entity(null)
+	progress_bar.finish()
 	save_button.disabled = false
 	reset_button.disabled = false
 	import_button.disabled = false

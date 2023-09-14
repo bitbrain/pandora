@@ -744,6 +744,15 @@ func test_import_invalid_pandora_data_file() -> void:
 
 	assert_that(imported_count == 0).is_true()
 
+func test_calculate_import_data() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	backend.create_category("root")
+	var data_file = ProjectSettings.globalize_path("res://data.pandora")
+
+	var total_items:int = Pandora.calculate_import_data(data_file)
+
+	assert_that(total_items > 0).is_true()
+
 func test_change_entity_icon_color() -> void:
 	var backend = create_object_backend()
 	var category = backend.create_category("Category")

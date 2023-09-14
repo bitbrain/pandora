@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=16 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://3w10txrbpwmx" path="res://addons/pandora/icons/Import.svg" id="7_2mwyl"]
 [ext_resource type="PackedScene" uid="uid://dibfkp6i5uvgi" path="res://addons/pandora/ui/components/progress_bar/progress_bar.tscn" id="10_xf8wv"]
 [ext_resource type="Texture2D" uid="uid://cjqnk0xjuxycs" path="res://docs/assets/logo.svg" id="11_4qjpy"]
+[ext_resource type="PackedScene" uid="uid://ceboo5esbe2ld" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.tscn" id="15_umv0u"]
 
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
@@ -128,7 +129,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 0.27451)
-text = "Pandora v1.0-alpha3"
+text = "Pandora v1.0-alpha4"
 horizontal_alignment = 2
 vertical_alignment = 1
 justification_flags = 0
@@ -198,27 +199,8 @@ theme_type_variation = &"HeaderSmall"
 text = "Check for GDScript errors and reload project."
 horizontal_alignment = 1
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="ImportDialog" parent="." instance=ExtResource("15_umv0u")]
 unique_name_in_owner = true
-title = "Open a File"
-initial_position = 1
-size = Vector2i(800, 600)
-transient = false
-ok_button_text = "Open"
-file_mode = 0
-access = 2
-filters = PackedStringArray("*.pandora")
-
-[node name="NotificationDialog" type="AcceptDialog" parent="."]
-unique_name_in_owner = true
-title = "Import Finished!"
-initial_position = 1
-size = Vector2i(274, 100)
-transient = false
-
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
-unique_name_in_owner = true
-title = "Confirm Import"
-initial_position = 1
-size = Vector2i(355, 100)
-transient = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0

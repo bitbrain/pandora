@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://ceboo5esbe2ld"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.gd" id="1_4evpu"]
+
+[node name="ImportDialog" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_4evpu")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a File"
+initial_position = 1
+size = Vector2i(800, 600)
+transient = false
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.pandora")
+
+[node name="NotificationDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+title = "Import Finished!"
+initial_position = 1
+size = Vector2i(274, 100)
+transient = false
+dialog_text = "0 records imported successfully!"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Confirm Import"
+initial_position = 1
+size = Vector2i(504, 100)
+dialog_text = "Found 10 Categories with 4 Entities. Would you like to proceed?"

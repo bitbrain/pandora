@@ -9,8 +9,10 @@ const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 signal data_loaded
 signal data_loaded_failure
 signal entity_added(entity:PandoraEntity)
-signal import_ended(response: String, imported_count: int)
-signal import_calculate_ended(response: Dictionary)
+signal import_success(imported_count: int)
+signal import_failed(reason: String)
+signal import_calculation_ended(import_info: Dictionary)
+signal import_calculation_failed(reason: String)
 signal import_progress
 
 
@@ -149,42 +151,37 @@ func save_data() -> void:
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
-func calculate_import_data(path: String) -> void:
+func calculate_import_data(path: String) -> int:
 	var imported_data = _storage._load_from_file(path)
-	var total_items = imported_data["_entity_data"]["_categories"].size() + imported_data["_entity_data"]["_entities"].size() + imported_data["_entity_data"]["_properties"].size()
+	var total_items = 0
 	if not imported_data.has("_entity_data"):
-		import_calculate_ended.emit({
-			"status": "FAIL",
-			"message": "Provided file is invalid or is corrupted.",
-		})
-	elif total_items == 0:
-		import_calculate_ended.emit({
-			"status": "FAIL",
-			"message": "Provided file is empty.",
-		})
+		import_calculation_failed.emit("Provided file is invalid or is corrupted.")
 	else:
-		import_calculate_ended.emit({
-			"status": "OK",
-			"total_categories": imported_data["_entity_data"]["_categories"].size(),
-			"total_entities": imported_data["_entity_data"]["_entities"].size(),
-			"total_properties": imported_data["_entity_data"]["_properties"].size(),
-			"path": path,
-		})
+		total_items = imported_data["_entity_data"]["_categories"].size() + imported_data["_entity_data"]["_entities"].size() + imported_data["_entity_data"]["_properties"].size()
+		if total_items == 0:
+			import_calculation_failed.emit("Provided file is empty.")
+		else:
+			import_calculation_ended.emit({
+				"total_categories": imported_data["_entity_data"]["_categories"].size(),
+				"total_entities": imported_data["_entity_data"]["_entities"].size(),
+				"total_properties": imported_data["_entity_data"]["_properties"].size(),
+				"path": path,
+			})
+	return total_items
 		
-	
 
 func import_data(path: String) -> int:
 	var imported_data = _storage._load_from_file(path)
 	if not imported_data.has("_entity_data"):
-		import_ended.emit("Provided file is invalid or is corrupted.", 0)
+		import_failed.emit("Provided file is invalid or is corrupted.")
 		return 0
 
 	var imported_count = _entity_backend.import_data(imported_data["_entity_data"])
 	if imported_count == -1:
-		import_ended.emit("No data found in file.", 0)
+		import_failed.emit("No data found in file.")
 		return 0
 	
-	import_ended.emit("OK", imported_count)
+	import_success.emit(imported_count)
 
 	return imported_count
 

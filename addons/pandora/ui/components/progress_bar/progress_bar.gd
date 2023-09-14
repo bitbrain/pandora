@@ -1,4 +1,5 @@
 @tool
+class_name ImportProgressBar 
 extends MarginContainer
 
 @onready var progress_bar = $ProgressBar
