@@ -300,7 +300,7 @@
 			},
 			{
 				"_category_id": "1",
-				"_default_value": 0.0990471839908196,
+				"_default_value": 0.0990471839908252,
 				"_id": "45",
 				"_name": "float property",
 				"_setting_overrides": {
@@ -356,12 +356,22 @@
 					"Array Type": "reference"
 				},
 				"_type": "array"
+			},
+			{
+				"_category_id": "1",
+				"_default_value": {
+					"0": "",
+					"1": ""
+				},
+				"_id": "5",
+				"_name": "array property",
+				"_type": "array"
 			}
 		]
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-			"default": 4
+			"default": 5
 		}
 	}
 }

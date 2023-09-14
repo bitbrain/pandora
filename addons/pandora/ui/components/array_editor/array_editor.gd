@@ -4,6 +4,7 @@ extends HBoxContainer
 signal item_added(item: Variant)
 signal item_removed(item: Variant)
 signal item_updated(idx: int, new_item: Variant)
+signal about_to_popup
 
 @onready var edit_button: Button = $EditArrayButton
 @onready var array_info: LineEdit = $ArrayInfo
@@ -14,6 +15,7 @@ var _property: PandoraProperty
 func _ready():
 	_refresh()
 	edit_button.pressed.connect(func(): array_window.open(_property))
+	array_window.about_to_popup.connect(func(): about_to_popup.emit())
 	array_window.item_added.connect(func(item: Variant): 
 		item_added.emit(item)
 		_refresh.call_deferred()

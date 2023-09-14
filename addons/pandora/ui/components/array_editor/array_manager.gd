@@ -3,6 +3,7 @@ extends PanelContainer
 
 const ArrayType = preload("res://addons/pandora/model/types/array.gd")
 const ArrayItem = preload("res://addons/pandora/ui/components/array_editor/array_item.tscn")
+const PropertyBarScene = "res://addons/pandora/ui/components/property_bar/property_bar.tscn"
 
 signal item_added(item: Variant)
 signal item_removed(item: Variant)
@@ -24,12 +25,14 @@ func _ready():
 
 func open(property: PandoraProperty):
 	_property = property
-	# This looks spooky..
-	property_bar = get_node("../../../../../../../../../../PanelContainer/MarginContainer/HBoxContainer/PropertyBar")
-	_load_items()
+	var property_bar_scene = load(PropertyBarScene)
+	property_bar = property_bar_scene.instantiate()
+	property_bar._ready()
+	_load_items.call_deferred()
 
 func close():
 	_clear()
+	property_bar.queue_free()
 
 func _clear():
 	_items.clear()

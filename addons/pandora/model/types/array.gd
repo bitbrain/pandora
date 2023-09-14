@@ -51,3 +51,6 @@ func write_value(variant:Variant) -> Variant:
 				value = value.to_html()
 			dict[str(i)] = value
 	return dict
+
+func allow_nesting() -> bool:
+	return false
