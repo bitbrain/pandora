@@ -32,7 +32,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839908252
 					}
 				}
 			},
@@ -74,7 +74,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839908252
 					}
 				}
 			},
@@ -141,6 +141,13 @@
 				"_index": 0,
 				"_name": "Mock (Required for Testing!)",
 				"_script_path": "res://test/mock/custom_mock_entity.gd"
+			},
+			{
+				"_category_id": "",
+				"_icon_color": "ffffff00",
+				"_id": "2",
+				"_index": 0,
+				"_name": "NPCs"
 			}
 		],
 		"_entities": [
@@ -323,12 +330,38 @@
 				"_id": "48",
 				"_name": "resource property",
 				"_type": "resource"
+			},
+			{
+				"_category_id": "2",
+				"_default_value": "",
+				"_id": "3",
+				"_name": "Name",
+				"_type": "string"
+			},
+			{
+				"_category_id": "2",
+				"_default_value": {
+					"0": {
+						"_entity_id": "49",
+						"_type": 0
+					},
+					"1": {
+						"_entity_id": "50",
+						"_type": 0
+					}
+				},
+				"_id": "4",
+				"_name": "Shop Items",
+				"_setting_overrides": {
+					"Array Type": "reference"
+				},
+				"_type": "array"
 			}
 		]
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-
+			"default": 4
 		}
 	}
 }

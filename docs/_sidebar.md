@@ -12,6 +12,7 @@
       * [🔹 Color](/concepts/properties/color.md)
       * [🔹 Reference](/concepts/properties/reference.md)
       * [🔹 Resource](/concepts/properties/resource.md)
+      * [🔹 Array](/concepts/properties/array.md)
 * [🔌 GDScript API](/api/)
    * [🔹 Accessing Data](/api/access.md)
    * [🔹 Entity Instancing](/api/instancing.md)

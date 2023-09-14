@@ -27,6 +27,7 @@ The following property types are supported:
 |[Color](/concepts/properties/color.md)|`Color`|
 |[Reference](/concepts/properties/reference.md)|`PandoraEntity`|
 |[Resource](/concepts/properties/resource.md)|`Resource`|
+|[Array](/concepts/properties/array.md)|`Array`|
 
 ## Contribute
 
