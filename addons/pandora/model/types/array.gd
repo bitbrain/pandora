@@ -25,12 +25,13 @@ func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 		var dict = variant as Dictionary
 		for i in range(dict.size()):
 			var value = dict[str(i)]
-			if settings[SETTING_ARRAY_TYPE] == "reference":
-				value = PandoraReference.new(value["_entity_id"], value["_type"]).get_entity()
-			if settings[SETTING_ARRAY_TYPE] == "resource":
-				value = load(value)
-			if settings[SETTING_ARRAY_TYPE] == "color":
-				value = Color.from_string(value, Color.WHITE)
+			if not settings.is_empty():
+				if settings[SETTING_ARRAY_TYPE] == "reference":
+					value = PandoraReference.new(value["_entity_id"], value["_type"]).get_entity()
+				if settings[SETTING_ARRAY_TYPE] == "resource":
+					value = load(value)
+				if settings[SETTING_ARRAY_TYPE] == "color":
+					value = Color.from_string(value, Color.WHITE)
 			array.append(value)
 		return array
 	return variant

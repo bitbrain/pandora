@@ -24,21 +24,24 @@ func _ready():
 
 func open(property: PandoraProperty):
 	_property = property
-	_items = property.get_default_value().duplicate()
 	# This looks spooky..
 	property_bar = get_node("../../../../../../../../../../PanelContainer/MarginContainer/HBoxContainer/PropertyBar")
 	_load_items()
 
 func close():
+	_clear()
+
+func _clear():
 	_items.clear()
 	for child in items_container.get_children():
 		child.queue_free()
 	items_container.get_children().clear()
 
 func _load_items():
+	_clear()
+	_items = _property.get_default_value().duplicate()
 	var array_type = _property.get_setting(ArrayType.SETTING_ARRAY_TYPE)
 	for i in range(_items.size()):
-		var item = ArrayItem.instantiate()
 		var control = property_bar.get_scene_by_type(array_type).instantiate() as PandoraPropertyControl
 		var item_property = PandoraProperty.new("", "array_item", array_type)
 		var value = _items[i]
