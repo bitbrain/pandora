@@ -13,6 +13,9 @@ class_name PandoraEditor extends Control
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var version = %Version
 @onready var save_label = %SaveLabel
+@onready var learn_link = %Learn
+@onready var contribute_link = %Contribute
+@onready var report_link = %ReportBug
 
 @onready var data_content = %DataContent
 @onready var error_content = %ErrorContent
@@ -24,6 +27,7 @@ var _load_error = false
 
 
 func _ready() -> void:
+	_translate()
 	save_button.pressed.connect(_save)
 	tree.entity_selected.connect(_entity_selected)
 	tree.selection_cleared.connect(_selection_cleared)
@@ -49,6 +53,18 @@ func _ready() -> void:
 	Pandora.entity_added.connect(tree.add_entity)
 	Pandora.data_loaded.connect(self._data_load_success)
 	Pandora.data_loaded_failure.connect(self._data_load_failure)
+
+func _translate() -> void:
+	create_category_button.tooltip_text = TranslationManager.translate("ui.control_bar.create_category_button.tooltip")
+	create_entity_button.tooltip_text = TranslationManager.translate("ui.control_bar.create_entity_button.tooltip")
+	delete_button.tooltip_text = TranslationManager.translate("ui.control_bar.delete_button.tooltip")
+	regenerate_id_button.tooltip_text = TranslationManager.translate("ui.control_bar.regenerate_id_button.tooltip")
+	save_button.tooltip_text = TranslationManager.translate("ui.control_bar.save_button.tooltip")
+	reset_button.tooltip_text = TranslationManager.translate("ui.control_bar.reset_button.tooltip")
+	learn_link.text = TranslationManager.translate("ui.control_bar.learn_link.text")
+	contribute_link.text = TranslationManager.translate("ui.control_bar.contribute_link.text")
+	report_link.text = TranslationManager.translate("ui.control_bar.report_link.text")
+	entity_search.placeholder_text = TranslationManager.translate("ui.entity_tree.entity_search.placeholder")
 
 
 func reattempt_load_on_error() -> void:

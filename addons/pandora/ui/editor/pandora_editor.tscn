@@ -42,13 +42,13 @@ size_flags_horizontal = 3
 [node name="CreateCategoryButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Create category"
+tooltip_text = "Create Category"
 icon = ExtResource("3_ehaql")
 
 [node name="CreateEntityButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Create entity"
+tooltip_text = "Create Entity"
 disabled = true
 icon = ExtResource("2_aj8uc")
 
@@ -63,20 +63,20 @@ icon = ExtResource("4_wy3he")
 [node name="DeleteButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Delete selected entry"
+tooltip_text = "Delete Selected Entry"
 disabled = true
 icon = ExtResource("4_c68uu")
 
 [node name="SaveButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Save current changes"
+tooltip_text = "Save Current Changes"
 icon = ExtResource("2_wcf01")
 
 [node name="ResetButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Reset data"
+tooltip_text = "Reset Data"
 icon = ExtResource("5_qbvn0")
 
 [node name="SaveLabel" parent="Contents/HeaderBar/Actions" instance=ExtResource("6_ftkgr")]
@@ -90,6 +90,7 @@ size_flags_horizontal = 10
 theme_override_constants/separation = 15
 
 [node name="Learn" type="LinkButton" parent="Contents/HeaderBar/Links"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Learn"
@@ -97,6 +98,7 @@ underline = 1
 uri = "https://bitbra.in/pandora"
 
 [node name="Contribute" type="LinkButton" parent="Contents/HeaderBar/Links"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Contribute"
@@ -104,6 +106,7 @@ underline = 1
 uri = "https://github.com/bitbrain/pandora"
 
 [node name="ReportBug" type="LinkButton" parent="Contents/HeaderBar/Links"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "🐛 Report a bug!"
@@ -138,7 +141,6 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
-placeholder_text = "Search..."
 right_icon = ExtResource("5_4i0xc")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]

@@ -16,15 +16,21 @@ const PROPERTY_DEFAULT_NAME = "property"
 @onready var unselected_container = %UnselectedContainer
 @onready var entity_attributes = %EntityAttributes
 @onready var property_settings_container = %PropertySettingsContainer
+@onready var caption_label = %CaptionLabel
+@onready var special_label = %SpecialLabel
 
 
 var current_entity:PandoraEntity
 
 
 func _ready() -> void:
+	_translate()
 	property_bar.property_added.connect(_add_property)
 	set_entity(null)
 
+func _translate():
+	caption_label.text = TranslationManager.translate("ui.property_editor.caption_label.text")
+	special_label.text = TranslationManager.translate("ui.property_editor.unselected_container_label.text")
 
 ## if possible, attempt to edit the given property key.
 func edit_key(property_name:String) -> void:
@@ -77,7 +83,7 @@ func _add_property_control(control:PandoraPropertyControl, property:PandoraPrope
 
 func _generate_property_name(type:String, entity:PandoraEntity) -> String:
 	var properties = entity.get_entity_properties()
-	var property_name = type + " " + PROPERTY_DEFAULT_NAME
+	var property_name = type + " " + TranslationManager.translate("PROPERTY_DEFAULT_NAME")
 	if properties.is_empty() or not entity.has_entity_property(property_name):
 		return property_name
 	return property_name + str(properties.size())

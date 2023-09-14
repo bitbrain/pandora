@@ -13,6 +13,12 @@ const EntityPicker = preload("res://addons/pandora/ui/components/entity_picker/e
 var _property:PandoraProperty
 var _default_settings:Dictionary
 
+func _ready():
+	_translate()
+
+func _translate():
+	info_label.text = TranslationManager.translate("ui.property_editor.property_settings.info_label.text")
+	header_label.text = TranslationManager.translate("ui.property_editor.property_settings.header_label.text")
 
 
 func set_property(property:PandoraProperty) -> void:
@@ -29,7 +35,7 @@ func set_property(property:PandoraProperty) -> void:
 		setting.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var label = Label.new()
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		label.text = default_setting_name
+		label.text = TranslationManager.translate(default_setting_name)
 		setting.add_child(label)
 		var default_setting = _default_settings[default_setting_name]
 		var current_value = _property.get_setting_override(default_setting_name) if _property.has_setting_override(default_setting_name) else default_setting.value
