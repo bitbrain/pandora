@@ -131,3 +131,17 @@ func test_resource_property_wrong_type() -> void:
 	var new_property = PandoraProperty.new("", "", "")
 	new_property.load_data(property.save_data())
 	assert_that(new_property.get_default_value()).is_equal("")
+
+func test_array_property() -> void:
+	var property = PandoraProperty.new("123", "property", "array")
+	property.set_default_value([1, 2, 3])
+	var new_property = PandoraProperty.new("", "", "")
+	new_property.load_data(property.save_data())
+	assert_that(new_property).is_equal(property)
+
+func test_array_property_wrong_type() -> void:
+	var property = PandoraProperty.new("123", "property", "string")
+	property.set_default_value([1, 2, 3])
+	var new_property = PandoraProperty.new("", "", "")
+	new_property.load_data(property.save_data())
+	assert_that(new_property.get_default_value()).is_equal("")
