@@ -19,16 +19,18 @@ func test_signal_original_property_selected() -> void:
 	var property = backend.create_property(root_category, "Weight", "float")
 	var inner_control = PropertyControl.new()
 	
-	var control = auto_free(load(__source).instantiate())
-	var control_spy = spy(control)
+   
+	var runner = scene_runner(__source)
+	var control = runner.scene()
+	# create a signal monitor to watch the control
+	var signal_monitor := monitor_signals(control)
 	control.init(property, inner_control, backend)
-	var runner = scene_runner(control)
+	control._ready()
 	
 	# wait 50ms
 	await runner.simulate_frames(10, 5)
 	
 	runner.set_mouse_pos(control.property_key_edit.position + Vector2(10, 10))
-	await runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
+	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
 	
-	# FIXME: improve test by testing actual signal
-	verify(control_spy)._property_key_focused()
+	await assert_signal(signal_monitor).wait_until(50).is_emitted('original_property_selected', [property])
