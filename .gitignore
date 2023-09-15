@@ -8,3 +8,5 @@ export_presets.cfg
 .mono/
 data_*/
 .godot/
+
+addons/gdUnit4/GdUnitRunner.cfg
