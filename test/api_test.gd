@@ -10,20 +10,27 @@ const __source = "res://addons/pandora/api.gd"
 const TEST_DIR = "testdata"
 const CustomTexture = preload("res://docs/assets/logo.svg")
 
+var _pandora_backend:PandoraEntityBackend
+
 
 func before() -> void:
+	_pandora_backend = Pandora._entity_backend
 	Pandora.set_context_id(TEST_DIR)
 	Pandora._clear()
 	Pandora.load_data()
 	
-	
 func after() -> void:
+	Pandora._entity_backend = _pandora_backend
 	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
 	DirAccess.remove_absolute("res://" + TEST_DIR)
 	Pandora.set_context_id("")
 	Pandora._clear()
 	Pandora.load_data()
 
+func create_object_backend() -> PandoraEntityBackend:
+	var backend = auto_free(PandoraEntityBackend.new(PandoraIDGenerator.new()))
+	Pandora._entity_backend = backend
+	return backend
 
 func test_api_save_and_load_objects() -> void:
 	var category = Pandora.create_category("Swords")
@@ -90,3 +97,75 @@ func test_entity_is_category() -> void:
 	assert_bool(sword.is_category(items.get_entity_id())).is_true()
 	assert_bool(sword.is_category(weapons.get_entity_id())).is_true()
 	assert_bool(sword.is_category(quests.get_entity_id())).is_false()
+
+func test_import_duplicates() -> void:
+	Pandora.set_context_id(TEST_DIR)
+	Pandora._clear()
+	Pandora.load_data()
+	Pandora.create_category("new_category2")
+	Pandora.create_entity("new_entity", Pandora.create_category("new_category"))
+	Pandora.save_data()
+	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+
+	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
+	DirAccess.remove_absolute("res://" + TEST_DIR)
+	assert_that(imported_count == 0).is_true()
+
+
+func test_import_empty_data_file() -> void:
+	# Create empty data file
+	Pandora.set_context_id(TEST_DIR)
+	Pandora._clear()
+	Pandora.load_data()
+	Pandora.save_data()
+
+	Pandora.set_context_id("")
+	Pandora._clear()
+	Pandora.load_data()
+
+	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+
+	Pandora._clear()
+
+	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
+	DirAccess.remove_absolute("res://" + TEST_DIR)
+
+	assert_that(imported_count == 0).is_true()
+
+func test_import_valid_pandora_data_file() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	backend.create_category("root")
+	var data_file = ProjectSettings.globalize_path("res://data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+	assert_that(imported_count > 0).is_true()
+
+func test_import_invalid_pandora_data_file() -> void:
+	Pandora._clear()
+	Pandora.set_context_id(TEST_DIR)
+	Pandora.load_data()
+	var invalid_data: Dictionary = {
+		"_invalid_structure": ""
+	}
+	var file = FileAccess.open("res://" + TEST_DIR + "/data.pandora", FileAccess.WRITE)
+	file.store_string(JSON.stringify(invalid_data))
+	file.close()
+	var backend = create_object_backend() as PandoraEntityBackend
+	backend.create_category("root")
+	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
+	var imported_count: int = Pandora.import_data(data_file)
+
+	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
+	DirAccess.remove_absolute("res://" + TEST_DIR)
+
+	assert_that(imported_count == 0).is_true()
+
+func test_calculate_import_data() -> void:
+	var backend = create_object_backend() as PandoraEntityBackend
+	backend.create_category("root")
+	var data_file = ProjectSettings.globalize_path("res://data.pandora")
+
+	var total_items:int = Pandora.calculate_import_data(data_file)
+
+	assert_that(total_items > 0).is_true()
