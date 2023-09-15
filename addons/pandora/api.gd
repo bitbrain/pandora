@@ -8,7 +8,12 @@ const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 
 signal data_loaded
 signal data_loaded_failure
-signal entity_added(entity: PandoraEntity)
+signal entity_added(entity:PandoraEntity)
+signal import_success(imported_count: int)
+signal import_failed(reason: String)
+signal import_calculation_ended(import_info: Dictionary)
+signal import_calculation_failed(reason: String)
+signal import_progress
 
 
 var _context_manager: PandoraContextManager
@@ -27,6 +32,7 @@ func _enter_tree() -> void:
 	self._id_generator = PandoraIDGenerator.new()
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
 	self._entity_backend.entity_added.connect(func(entity): entity_added.emit(entity))
+	self._entity_backend.import_progress.connect(func(): import_progress.emit())
 	load_data()
 
 
@@ -145,6 +151,39 @@ func save_data() -> void:
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
 
+func calculate_import_data(path: String) -> int:
+	var imported_data = _storage._load_from_file(path)
+	var total_items = 0
+	if not imported_data.has("_entity_data"):
+		import_calculation_failed.emit("Provided file is invalid or is corrupted.")
+	else:
+		total_items = imported_data["_entity_data"]["_categories"].size() + imported_data["_entity_data"]["_entities"].size() + imported_data["_entity_data"]["_properties"].size()
+		if total_items == 0:
+			import_calculation_failed.emit("Provided file is empty.")
+		else:
+			import_calculation_ended.emit({
+				"total_categories": imported_data["_entity_data"]["_categories"].size(),
+				"total_entities": imported_data["_entity_data"]["_entities"].size(),
+				"total_properties": imported_data["_entity_data"]["_properties"].size(),
+				"path": path,
+			})
+	return total_items
+		
+
+func import_data(path: String) -> int:
+	var imported_data = _storage._load_from_file(path)
+	if not imported_data.has("_entity_data"):
+		import_failed.emit("Provided file is invalid or is corrupted.")
+		return 0
+
+	var imported_count = _entity_backend.import_data(imported_data["_entity_data"])
+	if imported_count == -1:
+		import_failed.emit("No data found in file.")
+		return 0
+	
+	import_success.emit(imported_count)
+
+	return imported_count
 
 func is_loaded() -> bool:
 	return _loaded
