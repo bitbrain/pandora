@@ -30,6 +30,8 @@ enum DropSection {
 ## Emitted when an entity (or category) gets created
 signal entity_added(entity:PandoraEntity)
 
+## Emitted when progress is made during data import
+signal import_progress
 
 # entity id -> PandoraEntity
 var _entities:Dictionary = {}
@@ -354,6 +356,65 @@ func save_data() -> Dictionary:
 		"_properties": _serialize_data(_properties)
 	}
 
+func import_data(data: Dictionary) -> int:
+	var imported_count: int = 0
+
+	# Deserialize imported data
+	var imported_categories: Dictionary = _deserialize_categories(data["_categories"])
+	
+	for key in imported_categories:
+		if not _categories.has(imported_categories[key]._id):
+			_categories[key] = imported_categories[key]
+			import_progress.emit()
+			imported_count += 1
+
+	var imported_entities: Dictionary = _deserialize_entities(data["_entities"])
+
+	for key in imported_entities:
+		if not _entities.has(imported_entities[key]._id):
+			_entities[key] = imported_entities[key]
+			import_progress.emit()
+			imported_count += 1
+
+	var imported_properties: Dictionary = _deserialize_properties(data["_properties"])
+
+	for key in imported_properties:
+		if not _properties.has(imported_properties[key]._id):
+			_properties[key] = imported_properties[key]
+			import_progress.emit()
+			imported_count += 1
+
+	for key in _categories:
+		var category = _categories[key] as PandoraCategory
+		if category._category_id:
+			if not _categories.has(category._category_id):
+				push_error("Pandora error: category " + category._category_id + " on category does not exist")
+				return -1
+			var parent = _categories[category._category_id] as PandoraCategory
+			if not parent._children.has(category):
+				parent._children.append(category)
+	for key in _entities:
+		var entity = _entities[key] as PandoraEntity
+		if not _categories.has(entity._category_id):
+			push_error("Pandora error: category " + entity._category_id + " on entity does not exist")
+			return -1
+		var category = _categories[entity._category_id] as PandoraCategory
+		if not category._children.has(entity):
+			category._children.append(entity)
+	for key in _properties:
+		var property = _properties[key] as PandoraProperty
+		if not _categories.has(property._category_id):
+			push_error("Pandora error: category " + property._category_id + " on property does not exist")
+			return -1
+		var category = _categories[property._category_id] as PandoraCategory
+		if not category._properties.has(property):
+			category._properties.append(property)
+
+	for root_category in _root_categories:
+		_propagate_properties(root_category)
+
+	return imported_count
+
 
 func _deserialize_entities(data:Array) -> Dictionary:
 	var dict = {}
@@ -386,7 +447,13 @@ func _deserialize_categories(data:Array) -> Dictionary:
 		dict[category._id] = category
 		if category._category_id == "":
 			# If category has no parent, it's a root category
-			_root_categories.append(category)
+			var root_category_exists = false
+			for existing_category in _root_categories:
+				if existing_category._id == category._id:
+					root_category_exists = true
+					break
+			if not root_category_exists:
+				_root_categories.append(category)
 	return dict
 
 

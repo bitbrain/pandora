@@ -7,17 +7,18 @@ class_name PandoraEditor extends Control
 @onready var reset_button = %ResetButton
 @onready var create_entity_button:Button = %CreateEntityButton
 @onready var create_category_button:Button = %CreateCategoryButton
+@onready var import_button:Button = %ImportButton
 @onready var delete_button = %DeleteButton
 @onready var property_editor = %PropertyEditor
 @onready var regenerate_id_button:Button = %RegenerateIDButton
 @onready var entity_search: LineEdit = %EntitySearch
 @onready var version = %Version
 @onready var save_label = %SaveLabel
+@onready var import_dialog = %ImportDialog
+@onready var progress_bar = %ProgressBar
 
 @onready var data_content = %DataContent
 @onready var error_content = %ErrorContent
-
-
 
 var selected_entity:PandoraEntity
 var _load_error = false
@@ -36,7 +37,10 @@ func _ready() -> void:
 	regenerate_id_button.pressed.connect(_on_regenerate_id_button_pressed)
 	reset_button.pressed.connect(_reset_to_saved_file)
 	delete_button.pressed.connect(func(): tree.queue_delete(selected_entity.get_entity_id()))
-
+	import_button.pressed.connect(func(): import_dialog.open())
+	import_dialog.import_started.connect(func(import_count: int): progress_bar.init(import_count))
+	import_dialog.import_ended.connect(_on_import_ended)
+	
 	# set version
 	var plugin_config:ConfigFile = ConfigFile.new()
 	plugin_config.load("res://addons/pandora/plugin.cfg")
@@ -49,6 +53,7 @@ func _ready() -> void:
 	Pandora.entity_added.connect(tree.add_entity)
 	Pandora.data_loaded.connect(self._data_load_success)
 	Pandora.data_loaded_failure.connect(self._data_load_failure)
+	Pandora.import_progress.connect(self._on_progress)
 
 
 func reattempt_load_on_error() -> void:
@@ -171,3 +176,17 @@ func _data_load_failure() -> void:
 	data_content.visible = false
 	error_content.visible = true
 	_load_error = true
+
+func _on_progress() -> void:
+	progress_bar.advance()
+
+func _on_import_ended(data: Array[PandoraEntity]) -> void:
+	tree.set_data(data)
+	create_entity_button.disabled = true
+	create_category_button.disabled = false
+	delete_button.disabled = true
+	property_editor.set_entity(null)
+	progress_bar.finish()
+	save_button.disabled = false
+	reset_button.disabled = false
+	import_button.disabled = false

@@ -13,6 +13,7 @@ shadow_color = Color(0, 0.627451, 0.772549, 0.14902)
 shadow_offset = Vector2(0, 0)
 
 [node name="SaveLabel" type="Label"]
+self_modulate = Color(1, 1, 1, 0)
 theme_override_colors/font_color = Color(0.564706, 0.92549, 0, 1)
 text = "Data saved!"
 label_settings = SubResource("LabelSettings_ue3du")
