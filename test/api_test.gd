@@ -125,8 +125,6 @@ func test_import_empty_data_file() -> void:
 	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
 	var imported_count: int = Pandora.import_data(data_file)
 
-	Pandora._clear()
-
 	assert_that(imported_count == 0).is_true()
 
 func test_import_valid_pandora_data_file() -> void:
