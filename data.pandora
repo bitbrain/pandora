@@ -201,6 +201,32 @@
 				"_id": "55",
 				"_index": 0,
 				"_name": "MockEntity"
+			},
+			{
+				"_category_id": "2",
+				"_icon_color": "ffffff00",
+				"_id": "6",
+				"_index": 0,
+				"_name": "Florence",
+				"_property_overrides": {
+					"Name": {
+						"type": "string",
+						"value": "Florence"
+					},
+					"Shop Items": {
+						"type": "array",
+						"value": {
+							"0": {
+								"_entity_id": "50",
+								"_type": 0
+							},
+							"1": {
+								"_entity_id": "51",
+								"_type": 0
+							}
+						}
+					}
+				}
 			}
 		],
 		"_properties": [
@@ -341,14 +367,7 @@
 			{
 				"_category_id": "2",
 				"_default_value": {
-					"0": {
-						"_entity_id": "49",
-						"_type": 0
-					},
-					"1": {
-						"_entity_id": "50",
-						"_type": 0
-					}
+
 				},
 				"_id": "4",
 				"_name": "Shop Items",
@@ -371,7 +390,7 @@
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-			"default": 5
+			"default": 6
 		}
 	}
 }

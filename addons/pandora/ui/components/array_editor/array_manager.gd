@@ -59,7 +59,6 @@ func _add_new_item():
 	var control = scene.instantiate() as PandoraPropertyControl
 	var item_property = PandoraProperty.new("", "array_item", _property.get_setting(ArrayType.SETTING_ARRAY_TYPE))
 	_items.append(item_property.get_default_value())
-	item_property.set_default_value(_items[_items.size() - 1])
 	_add_property_control(control, item_property, _items.size() - 1)
 	item_added.emit(_items[_items.size() - 1])
 
