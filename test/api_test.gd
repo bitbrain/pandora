@@ -108,8 +108,6 @@ func test_import_duplicates() -> void:
 	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
 	var imported_count: int = Pandora.import_data(data_file)
 
-	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
-	DirAccess.remove_absolute("res://" + TEST_DIR)
 	assert_that(imported_count == 0).is_true()
 
 
@@ -128,9 +126,6 @@ func test_import_empty_data_file() -> void:
 	var imported_count: int = Pandora.import_data(data_file)
 
 	Pandora._clear()
-
-	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
-	DirAccess.remove_absolute("res://" + TEST_DIR)
 
 	assert_that(imported_count == 0).is_true()
 
@@ -155,10 +150,6 @@ func test_import_invalid_pandora_data_file() -> void:
 	backend.create_category("root")
 	var data_file = ProjectSettings.globalize_path("res://" + TEST_DIR + "/data.pandora")
 	var imported_count: int = Pandora.import_data(data_file)
-
-	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
-	DirAccess.remove_absolute("res://" + TEST_DIR)
-
 	assert_that(imported_count == 0).is_true()
 
 func test_calculate_import_data() -> void:
