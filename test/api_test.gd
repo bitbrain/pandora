@@ -13,13 +13,13 @@ const CustomTexture = preload("res://docs/assets/logo.svg")
 var _pandora_backend:PandoraEntityBackend
 
 
-func before() -> void:
+func before_test() -> void:
 	_pandora_backend = Pandora._entity_backend
 	Pandora.set_context_id(TEST_DIR)
 	Pandora._clear()
 	Pandora.load_data()
 	
-func after() -> void:
+func after_test() -> void:
 	Pandora._entity_backend = _pandora_backend
 	DirAccess.remove_absolute("res://" + TEST_DIR + "/data.pandora")
 	DirAccess.remove_absolute("res://" + TEST_DIR)
