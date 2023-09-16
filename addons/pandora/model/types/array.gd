@@ -18,6 +18,13 @@ func _init() -> void:
 func is_valid(variant:Variant) -> bool:
 	return variant is Array
 
+func get_merged_settings(property: PandoraProperty) -> Dictionary:
+	var merged_settings: Dictionary = _settings.duplicate()
+	var array_type = PandoraPropertyType.lookup(property.get_setting(SETTING_ARRAY_TYPE))
+	var array_type_settings: Dictionary = array_type.get_settings().duplicate()
+	merged_settings.merge(array_type_settings)
+	return merged_settings
+
 
 func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 	if variant is Dictionary:
@@ -36,7 +43,6 @@ func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 		return array
 	return variant
 	
-	
 func write_value(variant:Variant) -> Variant:
 	var array = variant as Array
 	var dict = {}
@@ -49,7 +55,9 @@ func write_value(variant:Variant) -> Variant:
 				value = value.resource_path
 			elif value is Color:
 				value = value.to_html()
-			dict[str(i)] = value
+			
+			if value != null:
+				dict[str(i)] = value
 	return dict
 
 func allow_nesting() -> bool:

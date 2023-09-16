@@ -20,7 +20,14 @@ func set_property(property:PandoraProperty) -> void:
 		child.queue_free()
 	properties_settings.get_children().clear()
 	self._property = property
-	self._default_settings = property.get_property_type().get_settings() if property != null else {}
+	if property:
+		var property_type = property.get_property_type()
+		if property_type.get_type_name() == 'array':
+			self._default_settings = property_type.get_merged_settings(property)
+		else:
+			self._default_settings = property_type.get_settings()
+	else:
+		self._default_settings = {}
 	info_label.visible = property == null or not property.is_original()
 	header_label.visible = not info_label.visible
 
@@ -118,6 +125,7 @@ func _change_value(key:String, new_value:Variant, default_value:Variant) -> void
 		_property.clear_setting_override(key)
 	elif new_value != default_value:
 		_property.set_setting_override(key, new_value)
+	_refresh()
 
 
 func _select_category_on_picker(picker, category_id:String) -> void:
@@ -126,3 +134,6 @@ func _select_category_on_picker(picker, category_id:String) -> void:
 
 func _select_prop_type(picker, prop_type:String) -> void:
 	picker.select(property_types_idx.find_key(prop_type))
+
+func _refresh():
+	set_property(_property)

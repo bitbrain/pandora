@@ -30,6 +30,10 @@ func _ready():
 	)
 
 func set_property(property: PandoraProperty):
+	if property.get_original_category_id() != property._id:
+		var original_category = Pandora.get_category(property.get_original_category_id())
+		var original_array_property = original_category.get_entity_property(property.get_property_name())
+		property._setting_overrides = original_array_property._setting_overrides
 	_property = property
 	_refresh()
 

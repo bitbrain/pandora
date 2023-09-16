@@ -23,8 +23,11 @@ func _on_item_added(item: Variant):
 	save_array()
 
 func _on_item_updated(idx: int, item: Variant):
-	_items[idx] = item
-	save_array()
+	if range(_items.size()).has(idx):
+		_items[idx] = item
+		save_array()
+	else:
+		_on_item_added(item)
 
 func _on_item_removed(item: Variant):
 	_items.erase(item)
