@@ -44,7 +44,6 @@ func _update_deferred() -> void:
 	for id in ids_to_entities.keys():
 		if ids_to_entities[id].get_entity_id() == current_entity.get_entity_id():
 			property_control.select(id)
-			
 			break
 
 
