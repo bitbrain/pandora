@@ -1,14 +1,15 @@
 extends PandoraPropertyType
 
+const ICON_PATH = "res://addons/pandora/icons/AtlasTexture.svg"
 
 const SETTINGS = {}
 
 
 func _init() -> void:
-	super("resource", SETTINGS, null)
+	super("resource", SETTINGS, null, ICON_PATH)
 
 
-func parse_value(variant:Variant) -> Variant:
+func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 	if variant is String:
 		return load(variant)
 	return variant

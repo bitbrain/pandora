@@ -444,6 +444,14 @@ func get_resource(property_name:String) -> Resource:
 		return null
 	return get_entity_property(property_name).get_default_value() as Resource
 
+func get_array(property_name:String) -> Array:
+	if is_instance() and _instance_properties.has(property_name):
+		return _get_instance_property_value(property_name) as Array
+	if not has_entity_property(property_name):
+		push_warning("unknown array property %s on entity %s" % [property_name, get_entity_id()])
+		return []
+	return get_entity_property(property_name).get_default_value() as Array
+
 
 func has_entity_property(name:String) -> bool:
 	if is_instance():

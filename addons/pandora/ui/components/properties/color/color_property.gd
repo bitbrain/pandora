@@ -12,7 +12,7 @@ func _ready() -> void:
 	color_picker_button.color_changed.connect(
 		func(color:Color):
 			_property.set_default_value(color)
-			property_value_changed.emit())
+			property_value_changed.emit(color))
 
 
 func refresh() -> void:

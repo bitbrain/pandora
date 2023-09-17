@@ -2,7 +2,7 @@
 class_name PandoraPropertyControl extends MarginContainer
 
 
-signal property_value_changed
+signal property_value_changed(value:Variant)
 signal focused
 signal unfocused
 

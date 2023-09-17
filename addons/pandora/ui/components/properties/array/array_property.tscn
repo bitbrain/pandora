@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckdfcxfes51ia"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/array/array_property.gd" id="1_ku3y1"]
+[ext_resource type="PackedScene" uid="uid://cikbl461v071j" path="res://addons/pandora/ui/components/array_editor/array_editor.tscn" id="2_j8x1r"]
+
+[node name="ArrayProperty" type="MarginContainer"]
+script = ExtResource("1_ku3y1")
+type = "array"
+
+[node name="ArrayEditor" parent="." instance=ExtResource("2_j8x1r")]
+layout_mode = 2

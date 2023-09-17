@@ -12,7 +12,7 @@ func _ready() -> void:
 	check_button.toggled.connect(
 		func(toggled:bool):
 			_property.set_default_value(toggled)
-			property_value_changed.emit())
+			property_value_changed.emit(toggled))
 
 
 func refresh() -> void:
