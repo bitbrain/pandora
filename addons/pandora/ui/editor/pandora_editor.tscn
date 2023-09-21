@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=17 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://3w10txrbpwmx" path="res://addons/pandora/icons/Import.svg" id="7_2mwyl"]
 [ext_resource type="PackedScene" uid="uid://dibfkp6i5uvgi" path="res://addons/pandora/ui/components/progress_bar/progress_bar.tscn" id="10_xf8wv"]
 [ext_resource type="Texture2D" uid="uid://cjqnk0xjuxycs" path="res://docs/assets/logo.svg" id="11_4qjpy"]
+[ext_resource type="PackedScene" uid="uid://dy4xl20q2nq7q" path="res://addons/pandora/ui/components/update_button/update_button.tscn" id="11_cva2e"]
 [ext_resource type="PackedScene" uid="uid://ceboo5esbe2ld" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.tscn" id="15_umv0u"]
 
 [node name="PandoraEditor" type="MarginContainer"]
@@ -133,6 +134,9 @@ text = "Pandora v1.0-alpha4"
 horizontal_alignment = 2
 vertical_alignment = 1
 justification_flags = 0
+
+[node name="UpdateButton" parent="Contents/HeaderBar/Links" instance=ExtResource("11_cva2e")]
+layout_mode = 2
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
 unique_name_in_owner = true
