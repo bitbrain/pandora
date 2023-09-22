@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtwiql0cpn5hu"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/updater/updater.gd" id="1_e18b4"]
+[ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="1_jpf8m"]
+
+[node name="UpdaterControl" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e18b4")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="ReleaseNotesText" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Release Notes"
+
+[node name="ReleaseText" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("1_jpf8m")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VersionText" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Latest version: vx.y.-alphaZ"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="DownloadButton" type="Button" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "Download and install"
+
+[node name="CenterContainer2" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LinkButton" type="LinkButton" parent="VBoxContainer/CenterContainer2"]
+layout_mode = 2
+text = "Release Notes"
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/DownloadButton" to="." method="_on_download_button_pressed"]

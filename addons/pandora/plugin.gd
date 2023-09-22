@@ -14,6 +14,7 @@ func _init() -> void:
 
 
 func _enter_tree() -> void:
+	Engine.set_meta("PandoraEditorPlugin", self)
 	_exporter = PandoraExportPlugin.new()
 	add_autoload_singleton("Pandora", "res://addons/pandora/api.gd")
 	add_export_plugin(_exporter)

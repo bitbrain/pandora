@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://dy4xl20q2nq7q"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/update_button/update_button.gd" id="1_0iteh"]
+[ext_resource type="PackedScene" uid="uid://dtwiql0cpn5hu" path="res://addons/pandora/ui/components/updater/updater.tscn" id="2_lifbu"]
+
+[node name="UpdateButton" type="Button"]
+visible = false
+text = "Update"
+script = ExtResource("1_0iteh")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+unique_name_in_owner = true
+
+[node name="UpdaterWindow" type="AcceptDialog" parent="."]
+title = "Update Pandora"
+initial_position = 2
+size = Vector2i(600, 450)
+unresizable = true
+ok_button_text = "Close"
+
+[node name="UpdaterControl" parent="UpdaterWindow" instance=ExtResource("2_lifbu")]
+
+[node name="PostUpdateWindow" type="ConfirmationDialog" parent="."]
+title = "Pandora Updater"
+initial_position = 2
+size = Vector2i(343, 109)
+ok_button_text = "Restart"
+dialog_text = "Updated Pandora successfully!
+Restart editor?"
+
+[connection signal="pressed" from="." to="." method="_on_update_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_completed"]
+[connection signal="update_done" from="UpdaterWindow/UpdaterControl" to="." method="_on_updater_update_done"]
+[connection signal="confirmed" from="PostUpdateWindow" to="." method="_on_post_update_window_confirmed"]
