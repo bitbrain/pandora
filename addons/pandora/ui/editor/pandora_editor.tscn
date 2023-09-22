@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bv43ytfd0mlq1" path="res://addons/pandora/icons/Search.svg" id="5_4i0xc"]
 [ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="5_qbvn0"]
 [ext_resource type="PackedScene" uid="uid://dsqfuyjkcdwvu" path="res://addons/pandora/ui/components/notification_label/notification_label.tscn" id="6_ftkgr"]
-[ext_resource type="Texture2D" uid="uid://3w10txrbpwmx" path="res://addons/pandora/icons/Import.svg" id="7_2mwyl"]
+[ext_resource type="Texture2D" uid="uid://dp8it1xjb8k2g" path="res://addons/pandora/icons/AssetLib.svg" id="8_wruey"]
 [ext_resource type="PackedScene" uid="uid://dibfkp6i5uvgi" path="res://addons/pandora/ui/components/progress_bar/progress_bar.tscn" id="10_xf8wv"]
 [ext_resource type="Texture2D" uid="uid://cjqnk0xjuxycs" path="res://docs/assets/logo.svg" id="11_4qjpy"]
 [ext_resource type="PackedScene" uid="uid://dy4xl20q2nq7q" path="res://addons/pandora/ui/components/update_button/update_button.tscn" id="11_cva2e"]
@@ -87,7 +87,7 @@ icon = ExtResource("5_qbvn0")
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Import Data File"
-icon = ExtResource("7_2mwyl")
+icon = ExtResource("8_wruey")
 
 [node name="SaveLabel" parent="Contents/HeaderBar/Actions" instance=ExtResource("6_ftkgr")]
 unique_name_in_owner = true
