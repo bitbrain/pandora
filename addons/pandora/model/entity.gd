@@ -167,6 +167,8 @@ func init_entity(id:String, name:String, icon_path:String, category_id:String) -
 func instantiate() -> PandoraEntity:
 	var entity = ScriptUtil.create_entity_from_script(get_script_path(), "", "", "", "")
 	if entity != null:
+		# ensure to store the id on instances too, so scene saving does not break.
+		entity._id = get_entity_id()
 		entity._instanced_from_id = get_entity_id()
 	return entity
 	
