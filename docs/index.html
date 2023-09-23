@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Godot 4 addon for RPG data management such items, inventories, spells, mobs, quests and NPCs.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="shortcut icon" href="assets/favicon.png" type="image/png">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link 
     rel="stylesheet"
@@ -34,6 +35,18 @@
         style: 'text-align: right;',
         class: 'className',
       },
+      plugins: [
+        titlePlugin({
+          suffix: ' | Pandora'
+        })
+      ]
+    }
+    function titlePlugin(config) {
+      return (hook, vm) => {
+        hook.doneEach((content) => {
+          document.title += config.suffix
+        });
+      }
     }
   </script>
   <!-- Docsify v4 -->
