@@ -14,6 +14,10 @@ func _init(_property:PandoraProperty, value:Variant) -> void:
 	self._property = _property
 	
 	
+func duplicate_instance() -> PandoraPropertyInstance:
+	return PandoraPropertyInstance.new(_property, _value)
+
+	
 func get_property_name() -> String:
 	if _property != null:
 		return _property.get_property_name()
