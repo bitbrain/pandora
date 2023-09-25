@@ -707,3 +707,28 @@ func test_icon_color_overridden() -> void:
 	entity.set_icon_color(Color.BLUE)
 	category.set_icon_color(Color.RED)
 	assert_that(entity.get_icon_color()).is_equal(Color.BLUE)
+
+
+func test_duplicate_entity_instance_inherits_original() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	backend.create_property(category, "test", "string", "")
+	var instance = entity.instantiate()
+	instance.set_string("test", "original-instance")
+	var duplicate = instance.duplicate_instance()
+	assert_that(duplicate.get_string('test')).is_equal("original-instance")
+	
+	
+func test_duplicate_entity_instance_is_independent_of_former() -> void:
+	var backend = create_object_backend()
+	var category = backend.create_category("Category")
+	var entity = backend.create_entity("Entity", category)
+	backend.create_property(category, "test", "string", "")
+	var instance = entity.instantiate()
+	instance.set_string("test", "original-instance")
+	var duplicate = instance.duplicate_instance()
+	duplicate.set_string("test", "duplicate-instance")
+	assert_that(instance.get_string('test')).is_equal("original-instance")
+	assert_that(duplicate.get_string('test')).is_equal("duplicate-instance")
+	

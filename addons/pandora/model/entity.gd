@@ -163,6 +163,19 @@ func init_entity(id:String, name:String, icon_path:String, category_id:String) -
 	self._category_id = category_id
 
 
+## Similar to instantiate(), this method will duplicate an existing
+## instance with all its properties.
+## In case this is called on an entity, it will act as instantiate()
+func duplicate_instance() -> PandoraEntity:
+	var new_instance = instantiate()
+	# ensure to carry over any overrides!
+	if is_instance():
+		for key in _instance_properties:
+			var duplicated_property = _instance_properties[key].duplicate_instance()
+			new_instance._instance_properties[key] = duplicated_property
+	return new_instance
+
+
 ## Creates an instance of this entity.
 func instantiate() -> PandoraEntity:
 	var entity = ScriptUtil.create_entity_from_script(get_script_path(), "", "", "", "")
