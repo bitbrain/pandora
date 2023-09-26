@@ -13,8 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://dsqfuyjkcdwvu" path="res://addons/pandora/ui/components/notification_label/notification_label.tscn" id="6_ftkgr"]
 [ext_resource type="Texture2D" uid="uid://dp8it1xjb8k2g" path="res://addons/pandora/icons/AssetLib.svg" id="8_wruey"]
 [ext_resource type="PackedScene" uid="uid://dibfkp6i5uvgi" path="res://addons/pandora/ui/components/progress_bar/progress_bar.tscn" id="10_xf8wv"]
-[ext_resource type="Texture2D" uid="uid://cjqnk0xjuxycs" path="res://docs/assets/logo.svg" id="11_4qjpy"]
 [ext_resource type="PackedScene" uid="uid://dy4xl20q2nq7q" path="res://addons/pandora/ui/components/update_button/update_button.tscn" id="11_cva2e"]
+[ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="15_3jwvj"]
 [ext_resource type="PackedScene" uid="uid://ceboo5esbe2ld" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.tscn" id="15_umv0u"]
 
 [node name="PandoraEditor" type="MarginContainer"]
@@ -187,7 +187,7 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="Contents/ErrorContent/VBoxContainer"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-texture = ExtResource("11_4qjpy")
+texture = ExtResource("15_3jwvj")
 expand_mode = 3
 stretch_mode = 5
 
