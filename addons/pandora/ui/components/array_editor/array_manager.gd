@@ -37,7 +37,7 @@ func close():
 
 func is_empty(item: Variant):
 	var array_type = _property.get_setting(ArrayType.SETTING_ARRAY_TYPE)
-	if array_type == 'reference' or array_type == 'resource':
+	if array_type == 'resource':
 		return is_instance_valid(item) == false
 	elif array_type == 'string':
 		return item == ""
@@ -67,6 +67,9 @@ func _load_items():
 		var value = _items[i]
 		if array_type == 'resource':
 			value = load(value)
+		elif array_type == 'reference':
+			if value is Dictionary:
+				value = Pandora.get_entity(value["_entity_id"])
 		item_property.set_default_value(value)
 		_add_property_control(control, item_property, i)
 
