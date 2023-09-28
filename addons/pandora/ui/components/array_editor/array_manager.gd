@@ -37,6 +37,8 @@ func close():
 
 func is_empty(item: Variant):
 	var array_type = _property.get_setting(ArrayType.SETTING_ARRAY_TYPE)
+	if array_type == 'reference':
+		return item == null
 	if array_type == 'resource':
 		return is_instance_valid(item) == false
 	elif array_type == 'string':
