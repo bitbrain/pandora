@@ -34,3 +34,13 @@ func _path_changed(new_path:String) -> void:
 			resource_changed.emit(new_path)
 		else:
 			line_edit.text = resource_path
+
+func _can_drop_data(_pos, data):
+	if data.type == "files":
+		return true
+	return false
+
+func _drop_data(_pos, data):
+	if data.type == "files":
+		var path = data.files[0]
+		_path_changed(path)
