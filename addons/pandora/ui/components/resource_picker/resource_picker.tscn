@@ -11,6 +11,7 @@ script = ExtResource("1_hjkiw")
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 
 [node name="LoadFileButton" type="Button" parent="."]
 layout_mode = 2
