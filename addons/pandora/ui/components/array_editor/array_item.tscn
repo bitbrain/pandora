@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://crcu03fp7fkyd"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/array_editor/array_item.gd" id="1_3q6kl"]
-[ext_resource type="Texture2D" uid="uid://c8r1klbs37r1b" path="res://addons/pandora/icons/Clear.svg" id="2_himgp"]
+[ext_resource type="Texture2D" uid="uid://b2s1ixfakdj1e" path="res://addons/pandora/icons/Remove.svg" id="2_rgeed"]
 
 [node name="ArrayItem" type="PanelContainer"]
 size_flags_horizontal = 3
@@ -19,7 +19,7 @@ size_flags_horizontal = 3
 [node name="DeleteItemButton" type="Button" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-icon = ExtResource("2_himgp")
+icon = ExtResource("2_rgeed")
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true

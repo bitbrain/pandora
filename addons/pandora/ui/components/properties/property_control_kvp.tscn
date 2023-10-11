@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/pandora/ui/components/properties/property_control_kvp.gd" id="1_1h35p"]
 [ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="2_718d2"]
 [ext_resource type="Texture2D" uid="uid://bfs83ic84umkv" path="res://addons/pandora/icons/nanoid.svg" id="3_1psa3"]
-[ext_resource type="Texture2D" uid="uid://c8r1klbs37r1b" path="res://addons/pandora/icons/Clear.svg" id="3_dhxsl"]
+[ext_resource type="Texture2D" uid="uid://b2s1ixfakdj1e" path="res://addons/pandora/icons/Remove.svg" id="4_2n76s"]
 
 [node name="PropertyControlKVP" type="PanelContainer"]
 size_flags_horizontal = 3
@@ -59,7 +59,7 @@ icon = ExtResource("3_1psa3")
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
-icon = ExtResource("3_dhxsl")
+icon = ExtResource("4_2n76s")
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
