@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://ctmsh7eg6wypu" path="res://addons/pandora/ui/components/entity_tree/entity_tree.tscn" id="3_4ayq8"]
 [ext_resource type="PackedScene" uid="uid://clsxp8wg4ctet" path="res://addons/pandora/ui/editor/property_editor/property_editor.tscn" id="3_8d8dx"]
 [ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="3_ehaql"]
-[ext_resource type="Texture2D" uid="uid://c8r1klbs37r1b" path="res://addons/pandora/icons/Clear.svg" id="4_c68uu"]
 [ext_resource type="Texture2D" uid="uid://bfs83ic84umkv" path="res://addons/pandora/icons/nanoid.svg" id="4_wy3he"]
+[ext_resource type="Texture2D" uid="uid://b2s1ixfakdj1e" path="res://addons/pandora/icons/Remove.svg" id="5_0e3qw"]
 [ext_resource type="Texture2D" uid="uid://bv43ytfd0mlq1" path="res://addons/pandora/icons/Search.svg" id="5_4i0xc"]
 [ext_resource type="Texture2D" uid="uid://bhcep67ihojnd" path="res://addons/pandora/icons/Reload.svg" id="5_qbvn0"]
 [ext_resource type="PackedScene" uid="uid://dsqfuyjkcdwvu" path="res://addons/pandora/ui/components/notification_label/notification_label.tscn" id="6_ftkgr"]
@@ -69,7 +69,7 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete selected entry"
 disabled = true
-icon = ExtResource("4_c68uu")
+icon = ExtResource("5_0e3qw")
 
 [node name="SaveButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
