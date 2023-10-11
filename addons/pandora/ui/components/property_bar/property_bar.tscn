@@ -75,12 +75,14 @@ scene = ExtResource("13_suig5")
 
 [node name="AddResourcePropertyButton" type="Button" parent="."]
 layout_mode = 2
+tooltip_text = "Resource property"
 icon = ExtResource("15_dus4l")
 script = ExtResource("3_kwfh5")
 scene = ExtResource("16_qe711")
 
 [node name="AddArrayPropertyButton" type="Button" parent="."]
 layout_mode = 2
+tooltip_text = "Array property"
 icon = ExtResource("17_ebxvo")
 script = ExtResource("3_kwfh5")
 scene = ExtResource("18_sjnhs")
