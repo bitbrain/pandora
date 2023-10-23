@@ -25,7 +25,7 @@ func _init(class_data:Dictionary) -> void:
 func _on_id_selected(id:int) -> void:
 	var entity = ids_to_entities[id] as PandoraEntity
 	var current_entity = get_edited_object()[get_edited_property()] as PandoraEntity
-	property_control.modulate = current_entity.get_icon_color()
+	property_control.modulate = current_entity.get_icon_color() if current_entity != null else Color.WHITE
 	if current_entity != null and entity.get_entity_id() == current_entity.get_entity_id():
 		# skip current entities
 		return
