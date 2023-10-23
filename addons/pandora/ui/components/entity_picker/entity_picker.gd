@@ -51,6 +51,7 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 	option_button.get_popup().clear()
 	for entity in _entities:
 		option_button.get_popup().add_icon_item(load(entity.get_icon_path()), entity.get_entity_name(), id_counter)
+		option_button.get_popup().set_item_icon_modulate(id_counter, entity.get_icon_color())
 		_ids_to_entities[id_counter] = entity
 		_entity_ids_to_ids[entity.get_entity_id()] = id_counter
 		id_counter += 1
@@ -59,6 +60,7 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 func select(entity:PandoraEntity) -> void:
 	var id = _entity_ids_to_ids[entity.get_entity_id()]
 	option_button.select(id)
+	option_button.modulate = entity.get_icon_color()
 
 
 func _on_id_selected(id:int) -> void:
