@@ -17,7 +17,9 @@ func _init(class_data:Dictionary) -> void:
 	
 	for entity in all_entities:
 		property_control.get_popup().add_icon_item(load(entity.get_icon_path()), entity.get_entity_name(), id_counter)
-		property_control.get_popup().set_item_icon_modulate(id_counter, entity.get_icon_color())
+		# Godot 4.1+
+		if property_control.get_popup().has_method("set_item_icon_modulate"):
+			property_control.get_popup().set_item_icon_modulate(id_counter, entity.get_icon_color())
 		ids_to_entities[id_counter] = entity
 		id_counter += 1
 
