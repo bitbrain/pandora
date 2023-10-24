@@ -17,7 +17,9 @@ func _init(class_data:Dictionary) -> void:
 	
 	for entity in all_entities:
 		property_control.get_popup().add_icon_item(load(entity.get_icon_path()), entity.get_entity_name(), id_counter)
-		property_control.get_popup().set_item_icon_modulate(id_counter, entity.get_icon_color())
+		# Godot 4.1+
+		if property_control.get_popup().has_method("set_item_icon_modulate"):
+			property_control.get_popup().set_item_icon_modulate(id_counter, entity.get_icon_color())
 		ids_to_entities[id_counter] = entity
 		id_counter += 1
 
@@ -25,7 +27,7 @@ func _init(class_data:Dictionary) -> void:
 func _on_id_selected(id:int) -> void:
 	var entity = ids_to_entities[id] as PandoraEntity
 	var current_entity = get_edited_object()[get_edited_property()] as PandoraEntity
-
+	property_control.modulate = current_entity.get_icon_color() if current_entity != null else Color.WHITE
 	if current_entity != null and entity.get_entity_id() == current_entity.get_entity_id():
 		# skip current entities
 		return
@@ -44,6 +46,7 @@ func _update_deferred() -> void:
 	for id in ids_to_entities.keys():
 		if ids_to_entities[id].get_entity_id() == current_entity.get_entity_id():
 			property_control.select(id)
+			property_control.modulate = current_entity.get_icon_color()
 			break
 
 
