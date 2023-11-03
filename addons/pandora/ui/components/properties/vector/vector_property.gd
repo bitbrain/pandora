@@ -104,6 +104,8 @@ func _create_editor_spin_slider(axis:int) -> EditorSpinSlider:
 	node.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	node.flat = true
 	node.hide_slider = true
+	if vector_type == VectorType.VECTOR_2 or vector_type == VectorType.VECTOR_3:
+		node.step = 0.01
 	node.focus_entered.connect(func(): focused.emit())
 	node.focus_exited.connect(func(): unfocused.emit())
 	node.value_changed.connect(
