@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://csevjm1e6lhlp"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/vector/vector_property.gd" id="1_3onub"]
+
+[node name="Vector3iProperty" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3onub")
+vector_type = 3
+type = "vector3i"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
