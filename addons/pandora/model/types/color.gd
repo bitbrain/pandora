@@ -1,6 +1,6 @@
 extends PandoraPropertyType
 
-const ICON_PATH = "res://addons/pandora/icons/Color.svg"
+const ICON_PATH = "../../icons/Color.svg"
 
 const SETTINGS = {}
 

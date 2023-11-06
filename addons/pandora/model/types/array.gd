@@ -1,6 +1,6 @@
 extends PandoraPropertyType
 
-const ICON_PATH = "res://addons/pandora/icons/Array.svg"
+const ICON_PATH = "../../icons/Array.svg"
 
 const SETTING_ARRAY_TYPE = "Array Type"
 

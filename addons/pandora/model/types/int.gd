@@ -1,6 +1,6 @@
 extends PandoraPropertyType
 
-const ICON_PATH = "res://addons/pandora/icons/int.svg"
+const ICON_PATH = "../../icons/int.svg"
 
 const SETTING_MIN_VALUE = "Min Value"
 const SETTING_MAX_VALUE = "Max Value"

@@ -60,7 +60,7 @@ func allow_nesting() -> bool:
 static func lookup(name:String) -> PandoraPropertyType:
 	if name == "":
 		return UndefinedType.new()
-	var ScriptType = load("res://addons/pandora/model/types/" + name + ".gd")
+	var ScriptType = load("./types/" + name + ".gd")
 	if ScriptType != null and ScriptType.has_source_code():
 		return ScriptType.new()
 	else:
@@ -68,7 +68,7 @@ static func lookup(name:String) -> PandoraPropertyType:
 
 static func get_all_types() -> Array[PandoraPropertyType]:
 	var types:Array[PandoraPropertyType] = []
-	var dir = DirAccess.open("res://addons/pandora/model/types")
+	var dir = DirAccess.open("./types")
 	dir.list_dir_begin()
 	var file_name:String = dir.get_next()
 	while file_name != "":

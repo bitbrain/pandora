@@ -3,9 +3,9 @@
 @tool
 class_name PandoraEntity extends Resource
 
-const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
-const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
-const ENTITY_ICON_PATH = "res://addons/pandora/icons/Object.svg"
+const ScriptUtil = preload("../util/script_util.gd")
+const CATEGORY_ICON_PATH = "../icons/Folder.svg"
+const ENTITY_ICON_PATH = "../icons/Object.svg"
 
 signal name_changed(new_name:String)
 signal order_changed(new_index:int)
@@ -232,7 +232,7 @@ func get_script_path() -> String:
 		return _script_path
 	if _category_id != "" and get_category() != null:
 		return get_category().get_script_path()
-	return "res://addons/pandora/model/entity.gd"
+	return "../model/entity.gd"
 
 
 func set_entity_name(new_name:String) -> void:

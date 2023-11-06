@@ -4,7 +4,7 @@
 class_name PandoraEntityBackend extends RefCounted
 
 
-const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
+const ScriptUtil = preload("../util/script_util.gd")
 
 
 enum LoadState {

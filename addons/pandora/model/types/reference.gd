@@ -1,6 +1,6 @@
 extends PandoraPropertyType
 
-const ICON_PATH = "res://addons/pandora/icons/Object.svg"
+const ICON_PATH = "../../icons/Object.svg"
 
 const SETTING_CATEGORIES_ONLY = "Categories Only"
 const SETTING_CATEGORY_FILTER = "Category Filter"
