@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://8namx0kxhw0"]
+[gd_scene load_steps=27 format=3 uid="uid://8namx0kxhw0"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/property_bar/property_bar.gd" id="1_0r2cp"]
 [ext_resource type="Texture2D" uid="uid://do5tkodyvid10" path="res://addons/pandora/icons/String.svg" id="1_4esni"]
@@ -11,12 +11,20 @@
 [ext_resource type="PackedScene" uid="uid://kgit41uva08d" path="res://addons/pandora/ui/components/properties/integer/integer_property.tscn" id="6_bgkni"]
 [ext_resource type="PackedScene" uid="uid://75nkqyavb3aj" path="res://addons/pandora/ui/components/properties/float/float_property.tscn" id="8_7fghm"]
 [ext_resource type="PackedScene" uid="uid://brp6oodbm37gk" path="res://addons/pandora/ui/components/properties/bool/bool_property.tscn" id="10_jsvgc"]
+[ext_resource type="Texture2D" uid="uid://bk7a4jkyif178" path="res://addons/pandora/icons/Vector2i.svg" id="11_2g827"]
+[ext_resource type="PackedScene" uid="uid://18iy7nw2r8gv" path="res://addons/pandora/ui/components/properties/vector/vector2i/vector2i_property.tscn" id="11_wu1l4"]
+[ext_resource type="PackedScene" uid="uid://csevjm1e6lhlp" path="res://addons/pandora/ui/components/properties/vector/vector3i/vector3i_property.tscn" id="12_6vngj"]
 [ext_resource type="PackedScene" uid="uid://chj1ateikyk5" path="res://addons/pandora/ui/components/properties/color/color_property.tscn" id="12_xjj7h"]
+[ext_resource type="Texture2D" uid="uid://c6kohe0abjrrs" path="res://addons/pandora/icons/Vector3i.svg" id="13_26qay"]
+[ext_resource type="Texture2D" uid="uid://dcqltisjej0lu" path="res://addons/pandora/icons/Vector2.svg" id="13_c5fps"]
 [ext_resource type="PackedScene" uid="uid://b22vuf1tui0q3" path="res://addons/pandora/ui/components/properties/reference/reference_property.tscn" id="13_suig5"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="13_y2aqa"]
+[ext_resource type="PackedScene" uid="uid://cmewrvvrbssm0" path="res://addons/pandora/ui/components/properties/vector/vector2/vector2_property.tscn" id="14_oowe1"]
 [ext_resource type="Texture2D" uid="uid://rwodit05tms7" path="res://addons/pandora/icons/AtlasTexture.svg" id="15_dus4l"]
 [ext_resource type="PackedScene" uid="uid://yhwimtiw711n" path="res://addons/pandora/ui/components/properties/resource/resource_property.tscn" id="16_qe711"]
+[ext_resource type="Texture2D" uid="uid://bdxvds1pxhqv6" path="res://addons/pandora/icons/Vector3.svg" id="17_bx0em"]
 [ext_resource type="Texture2D" uid="uid://66qnm42libnj" path="res://addons/pandora/icons/Array.svg" id="17_ebxvo"]
+[ext_resource type="PackedScene" uid="uid://cckh8r5sngw1m" path="res://addons/pandora/ui/components/properties/vector/vector3/vector3_property.tscn" id="18_oxp4m"]
 [ext_resource type="PackedScene" uid="uid://ckdfcxfes51ia" path="res://addons/pandora/ui/components/properties/array/array_property.tscn" id="18_sjnhs"]
 
 [node name="PropertyBar" type="HBoxContainer"]
@@ -56,6 +64,34 @@ tooltip_text = "Bool property"
 icon = ExtResource("4_wkogm")
 script = ExtResource("3_kwfh5")
 scene = ExtResource("10_jsvgc")
+
+[node name="AddVector2iPropertyButton" type="Button" parent="."]
+layout_mode = 2
+tooltip_text = "Vector2i property"
+icon = ExtResource("11_2g827")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("11_wu1l4")
+
+[node name="AddVector2PropertyButton" type="Button" parent="."]
+layout_mode = 2
+tooltip_text = "Vector2 property"
+icon = ExtResource("13_c5fps")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("14_oowe1")
+
+[node name="AddVector3iPropertyButton" type="Button" parent="."]
+layout_mode = 2
+tooltip_text = "Vector3i property"
+icon = ExtResource("13_26qay")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("12_6vngj")
+
+[node name="AddVector3PropertyButton" type="Button" parent="."]
+layout_mode = 2
+tooltip_text = "Vector3 property"
+icon = ExtResource("17_bx0em")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("18_oxp4m")
 
 [node name="AddColorPropertyButton" type="Button" parent="."]
 layout_mode = 2

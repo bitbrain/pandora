@@ -16,6 +16,10 @@ Enter `instantiate()`, Pandora's answer to this conundrum. An instanced version 
 - `set_int`
 - `set_float`
 - `set_bool`
+- `set_vector2i`
+- `set_vector2`
+- `set_vector3i`
+- `set_vector3`
 - `set_color`
 - `set_reference`
 - `set_resource`
@@ -27,7 +31,7 @@ func _ready() -> void:
    var sword = Pandora.get_entity(EntityIds.SWORD) # PandoraEntity type
    var sword_instance = sword.instantiate() # PandoraEntity type
    var damage = sword_instance.get_float("Damage") # float type
-   
+
    sword_instance.set_float("Damage", 0.1) # Voila! Damage adjusted.
 ```
 It is generally recommended to use `instantiate()` for any entity that can be unique in the game world with its own changing properties. If an entity may never change its properties, there is no need to instantiate it and simply use `PandoraEntity` instead in your code.

@@ -24,6 +24,10 @@ The following property types are supported:
 |[Integer](/concepts/properties/integer.md)|`int`|
 |[Float](/concepts/properties/float.md)|`float`|
 |[Bool](/concepts/properties/bool.md)|`bool`|
+|[Vector2i](/concepts/properties/vector2i.md)|`Vector2i`|
+|[Vector2](/concepts/properties/vector2.md)|`Vector2`|
+|[Vector3i](/concepts/properties/vector3i.md)|`Vector3i`|
+|[Vector3](/concepts/properties/vector3.md)|`Vector3`|
 |[Color](/concepts/properties/color.md)|`Color`|
 |[Reference](/concepts/properties/reference.md)|`PandoraEntity`|
 |[Resource](/concepts/properties/resource.md)|`Resource`|
