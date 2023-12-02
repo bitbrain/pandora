@@ -5,7 +5,7 @@ extends GdUnitTestSuite
 
 
 # TestSuite generated from
-const __source = "res://test/mock/mock_scene.tscn"
+const __source = "res://mock/mock_scene.tscn"
 
 
 func test_instantiate_mock_data_via_scene() -> void:

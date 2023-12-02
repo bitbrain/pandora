@@ -7,8 +7,8 @@ extends GdUnitTestSuite
 
 # TestSuite generated from
 const __source = "res://addons/pandora/backend/entity_backend.gd"
-const MOCK_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
-const MOCK_ENTITY_ALT_PATH = "res://test/mock/custom_mock_entity_alternative.gd"
+const MOCK_ENTITY_PATH = "res://mock/custom_mock_entity.gd"
+const MOCK_ENTITY_ALT_PATH = "res://mock/custom_mock_entity_alternative.gd"
 
 var _pandora_backend:PandoraEntityBackend
 
@@ -582,7 +582,7 @@ func test_saveload_invalid_entity() -> void:
 func test_saveload_non_entity() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")
-	category.set_script_path("res://test/mock/non-entity.gd")
+	category.set_script_path("res://mock/non-entity.gd")
 	var entity_id = backend.create_entity("root", category).get_entity_id()
 	var data = backend.save_data()
 	backend.load_data(data)
@@ -594,7 +594,7 @@ func test_saveload_non_entity() -> void:
 func test_saveload_wrong_init() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")
-	category.set_script_path("res://test/mock/entity-wrong-init.gd")
+	category.set_script_path("res://mock/entity-wrong-init.gd")
 	var entity_id = backend.create_entity("root", category).get_entity_id()
 	var data = backend.save_data()
 	backend.load_data(data)
@@ -606,7 +606,7 @@ func test_saveload_wrong_init() -> void:
 func test_saveload_compilation_error_on_script() -> void:
 	var backend = create_object_backend() as PandoraEntityBackend
 	var category = backend.create_category("root")
-	category.set_script_path("res://test/mock/entity-compilation-error.gd")
+	category.set_script_path("res://mock/entity-compilation-error.gd")
 	var entity_id = backend.create_entity("root", category).get_entity_id()
 	var data = backend.save_data()
 	backend.load_data(data)

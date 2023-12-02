@@ -6,9 +6,9 @@ extends GdUnitTestSuite
 
 
 # TestSuite generated from
-const __source = "res://test/mock/mock_scene.tscn"
+const __source = "res://mock/mock_scene.tscn"
 const TEST_DIR = "testdata"
-const CUSTOM_ENTITY_PATH = "res://test/mock/custom_mock_entity.gd"
+const CUSTOM_ENTITY_PATH = "res://mock/custom_mock_entity.gd"
 
 func before() -> void:
 	Pandora.set_context_id(TEST_DIR)
