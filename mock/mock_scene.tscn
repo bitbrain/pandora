@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c3j2xs0rnqdst"]
 
-[ext_resource type="Script" path="res://test/mock/mock_scene.gd" id="1_m4lrk"]
-[ext_resource type="Script" path="res://test/mock/custom_mock_entity.gd" id="2_mijc7"]
+[ext_resource type="Script" path="res://mock/mock_scene.gd" id="1_m4lrk"]
+[ext_resource type="Script" path="res://mock/custom_mock_entity.gd" id="2_mijc7"]
 
 [sub_resource type="Resource" id="Resource_6ucbm"]
 script = ExtResource("2_mijc7")

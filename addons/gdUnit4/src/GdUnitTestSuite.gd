@@ -21,6 +21,10 @@ const NO_ARG :Variant = GdUnitConstants.NO_ARG
 var __is_skipped := false
 @warning_ignore("unused_private_class_variable")
 var __skip_reason :String = "Unknow."
+var __active_test_case :String
+var __awaiter := __gdunit_awaiter()
+# holds the actual execution context
+var __execution_context
 
 
 ### We now load all used asserts and tool scripts into the cache according to the principle of "lazy loading"
@@ -28,7 +32,7 @@ var __skip_reason :String = "Unknow."
 # We go this hard way to increase the loading performance to avoid reparsing all the used scripts
 # for more detailed info -> https://github.com/godotengine/godot/issues/67400
 func __lazy_load(script_path :String) -> GDScript:
-	return ResourceLoader.load(script_path, "GDScript", ResourceLoader.CACHE_MODE_REUSE)
+	return GdUnitAssertions.__lazy_load(script_path)
 
 
 func __gdunit_assert() -> GDScript:
@@ -39,8 +43,8 @@ func __gdunit_tools() -> GDScript:
 	return __lazy_load("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
 
-func __gdunit_awaiter() -> GDScript:
-	return __lazy_load("res://addons/gdUnit4/src/GdUnitAwaiter.gd")
+func __gdunit_awaiter() -> Object:
+	return __lazy_load("res://addons/gdUnit4/src/GdUnitAwaiter.gd").new()
 
 
 func __gdunit_argument_matchers():
@@ -79,7 +83,6 @@ func is_failure(_expected_failure :String = NO_ARG) -> bool:
 	return Engine.get_meta("GD_TEST_FAILURE") if Engine.has_meta("GD_TEST_FAILURE") else false
 
 
-var __active_test_case :String
 func set_active_test_case(test_case :String) -> void:
 	__active_test_case = test_case
 
@@ -93,8 +96,14 @@ func error_as_string(error_number :int) -> String:
 
 ## A litle helper to auto freeing your created objects after test execution
 func auto_free(obj) -> Variant:
-	var GdUnitMemoryPool = __lazy_load("res://addons/gdUnit4/src/core/GdUnitMemoryPool.gd")
-	return GdUnitMemoryPool.register_auto_free(obj, get_meta(GdUnitMemoryPool.META_PARAM))
+	return __execution_context.register_auto_free(obj)
+
+
+@warning_ignore("native_method_override")
+func add_child(node :Node, force_readable_name := false, internal := Node.INTERNAL_MODE_DISABLED) -> void:
+	super.add_child(node, force_readable_name, internal)
+	if __execution_context != null:
+		__execution_context.orphan_monitor_start()
 
 
 ## Discard the error message triggered by a timeout (interruption).[br]
@@ -151,12 +160,12 @@ func clear_push_errors() -> void:
 ## args: the expected signal arguments as an array[br]
 ## timeout: the timeout in ms, default is set to 2000ms
 func await_signal_on(source :Object, signal_name :String, args :Array = [], timeout :int = 2000) -> Variant:
-	return await __gdunit_awaiter().await_signal_on(source, signal_name, args, timeout)
+	return await __awaiter.await_signal_on(source, signal_name, args, timeout)
 
 
 ## Waits until the next idle frame
 func await_idle_frame():
-	await __gdunit_awaiter().await_idle_frame()
+	await __awaiter.await_idle_frame()
 
 
 ## Waits for for a given amount of milliseconds[br]
@@ -167,7 +176,7 @@ func await_idle_frame():
 ## [/codeblock][br]
 ## use this waiter and not `await get_tree().create_timer().timeout to prevent errors when a test case is timed out
 func await_millis(timeout :int):
-	await __gdunit_awaiter().await_millis(timeout)
+	await __awaiter.await_millis(timeout)
 
 
 ## Creates a new scene runner to allow simulate interactions checked a scene.[br]
@@ -198,12 +207,12 @@ const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 
 ## Creates a mock for given class name
 func mock(clazz, mock_mode := RETURN_DEFAULTS) -> Object:
-	return __lazy_load("res://addons/gdUnit4/src/mocking/GdUnitMockBuilder.gd").build(self, clazz, mock_mode)
+	return __lazy_load("res://addons/gdUnit4/src/mocking/GdUnitMockBuilder.gd").build(clazz, mock_mode)
 
 
 ## Creates a spy checked given object instance
 func spy(instance) -> Object:
-	return __lazy_load("res://addons/gdUnit4/src/spy/GdUnitSpyBuilder.gd").build(self, instance)
+	return __lazy_load("res://addons/gdUnit4/src/spy/GdUnitSpyBuilder.gd").build(instance)
 
 
 ## Configures a return value for the specified function and used arguments.[br]

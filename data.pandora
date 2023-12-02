@@ -140,7 +140,7 @@
 				"_id": "54",
 				"_index": 0,
 				"_name": "Mock (Required for Testing!)",
-				"_script_path": "res://test/mock/custom_mock_entity.gd"
+				"_script_path": "res://mock/custom_mock_entity.gd"
 			},
 			{
 				"_category_id": "",
