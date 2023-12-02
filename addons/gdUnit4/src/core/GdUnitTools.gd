@@ -56,16 +56,16 @@ static func delete_directory(path :String, only_content := false) -> void:
 				push_error("Delete %s failed: %s" % [path, error_as_string(err)])
 
 
-static func copy_file(from_file :String, to_dir :String) -> Result:
+static func copy_file(from_file :String, to_dir :String) -> GdUnitResult:
 	var dir := DirAccess.open(to_dir)
 	if dir != null:
 		var to_file := to_dir + "/" + from_file.get_file()
 		prints("Copy %s to %s" % [from_file, to_file])
 		var error = dir.copy(from_file, to_file)
 		if error != OK:
-			return Result.error("Can't copy file form '%s' to '%s'. Error: '%s'" % [from_file, to_file, error_as_string(error)])
-		return Result.success(to_file)
-	return Result.error("Directory not found: " + to_dir)
+			return GdUnitResult.error("Can't copy file form '%s' to '%s'. Error: '%s'" % [from_file, to_file, error_as_string(error)])
+		return GdUnitResult.success(to_file)
+	return GdUnitResult.error("Directory not found: " + to_dir)
 
 
 static func copy_directory(from_dir :String, to_dir :String, recursive :bool = false) -> bool:
@@ -203,7 +203,7 @@ static func prints_verbose(message :String) -> void:
 		prints(message)
 
 
-static func free_instance(instance :Variant) -> bool:
+static func free_instance(instance :Variant, is_stdout_verbose :=false) -> bool:
 	if instance is Array:
 		for element in instance:
 			free_instance(element)
@@ -215,20 +215,28 @@ static func free_instance(instance :Variant) -> bool:
 	# do not free a class refernece
 	if typeof(instance) == TYPE_OBJECT and (instance as Object).is_class("GDScriptNativeClass"):
 		return false
-	if is_instance_valid(instance) and instance is RefCounted:
+	if is_stdout_verbose:
+		print_verbose("GdUnit4:gc():free instance ", instance)
+	release_double(instance)
+	if instance is RefCounted:
 		instance.notification(Object.NOTIFICATION_PREDELETE)
+		await Engine.get_main_loop().process_frame
 		return true
 	else:
-			# is instance already freed?
-		if not is_instance_valid(instance) or ClassDB.class_get_property(instance, "new"):
-			return false
-		release_double(instance)
+		# is instance already freed?
+		#if not is_instance_valid(instance) or ClassDB.class_get_property(instance, "new"):
+		#	return false
 		#release_connections(instance)
 		if instance is Timer:
 			instance.stop()
-			#instance.queue_free()
 			instance.call_deferred("free")
+			await Engine.get_main_loop().process_frame
 			return true
+		if instance is Node and instance.get_parent() != null:
+			if is_stdout_verbose:
+				print_verbose("GdUnit4:gc():remove node from parent ",  instance.get_parent(), instance)
+			instance.get_parent().remove_child(instance)
+			instance.set_owner(null)
 		instance.free()
 		return !is_instance_valid(instance)
 
@@ -251,9 +259,9 @@ static func _release_connections(instance :Object):
 static func release_timers():
 	# we go the new way to hold all gdunit timers in group 'GdUnitTimers'
 	for node in Engine.get_main_loop().root.get_children():
-		if node.is_in_group("GdUnitTimers"):
-			#prints("found gdunit timer artifact", node, is_instance_valid(node))
+		if is_instance_valid(node) and node.is_in_group("GdUnitTimers"):
 			if is_instance_valid(node):
+				Engine.get_main_loop().root.remove_child(node)
 				node.stop()
 				node.free()
 
@@ -269,11 +277,6 @@ static func dispose_all():
 static func release_double(instance :Object) -> void:
 	if instance.has_method("__release_double"):
 		instance.call("__release_double")
-
-
-# test is Godot mono running
-static func is_mono_supported() -> bool:
-	return ClassDB.class_exists("CSharpScript")
 
 
 static func make_qualified_path(path :String) -> String:
@@ -300,11 +303,11 @@ static func register_expect_interupted_by_timeout(test_suite :Node, test_case_na
 	test_case.expect_to_interupt()
 
 
-static func extract_zip(zip_package :String, dest_path :String) -> Result:
+static func extract_zip(zip_package :String, dest_path :String) -> GdUnitResult:
 	var zip: ZIPReader = ZIPReader.new()
 	var err := zip.open(zip_package)
 	if err != OK:
-		return Result.error("Extracting `%s` failed! Please collect the error log and report this. Error Code: %s" % [zip_package, err])
+		return GdUnitResult.error("Extracting `%s` failed! Please collect the error log and report this. Error Code: %s" % [zip_package, err])
 	var zip_entries: PackedStringArray = zip.get_files()
 	# Get base path and step over archive folder
 	var archive_path = zip_entries[0]
@@ -318,4 +321,4 @@ static func extract_zip(zip_package :String, dest_path :String) -> Result:
 		var file: FileAccess = FileAccess.open(new_file_path, FileAccess.WRITE)
 		file.store_buffer(zip.read_file(zip_entry))
 	zip.close()
-	return Result.success(dest_path)
+	return GdUnitResult.success(dest_path)
