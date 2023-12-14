@@ -34,18 +34,14 @@ func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 		var array = []
 		var dict = variant as Dictionary
 		if dict.has(SERIALIZED_VALUES) and dict.has(SERIALIZED_VALUES_TYPE):
-			var values_type = PandoraPropertyType
-			if not settings.is_empty():
-				PandoraPropertyType.lookup(settings[SETTING_ARRAY_TYPE])
-			else:
-				values_type = PandoraPropertyType.lookup(dict[SERIALIZED_VALUES_TYPE])
-
+			var values_type = (
+				PandoraPropertyType.lookup(settings[SETTING_ARRAY_TYPE]) if not settings.is_empty()
+				else PandoraPropertyType.lookup(dict[SERIALIZED_VALUES_TYPE])
+			)
 			for i in range(dict[SERIALIZED_VALUES].size()):
 				var value = dict[SERIALIZED_VALUES][str(i)]
-				if not values_type is UndefinedType:
-					array.append(values_type.parse_value(value))
-				else:
-					array.append(value)
+				array.append(values_type.parse_value(value))
+
 		else:
 			for i in range(dict.size()):
 				var value = dict[str(i)]
