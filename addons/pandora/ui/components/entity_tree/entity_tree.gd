@@ -31,13 +31,22 @@ func _ready():
 ## filters the existing list to the given search term
 ## if search term is empty the search gets cleared.
 func search(text:String) -> void:
-	for key in entity_items:
-		var entity_item = entity_items[key] as TreeItem
-		if text != "":
-			var entity = entity_item.get_metadata(0) as PandoraEntity
-			entity_item.set_collapsed_recursive(entity.get_entity_name().contains(text))
-		else:
-			entity_item.set_collapsed_recursive(false)
+	var root = get_root()
+	for top_item in root.get_children():
+		_search_item_recursive(top_item, text)
+
+
+func _search_item_recursive(item: TreeItem, text: String) -> bool:
+	var entity = item.get_metadata(0) as PandoraEntity
+	# always succeed on empty search!
+	var matches_search = (text == "") or entity.get_entity_name().to_lower().contains(text.to_lower())
+	
+	for sub in item.get_children():
+		var submatch = search_item_recursive(sub, text)
+		matches_search = matches_search or submatch
+	
+	item.visible = matches_search
+	return matches_search
 
 
 func queue_delete(entity_id:String) -> void:
