@@ -42,7 +42,7 @@ func _search_item_recursive(item: TreeItem, text: String) -> bool:
 	var matches_search = (text == "") or entity.get_entity_name().to_lower().contains(text.to_lower())
 	
 	for sub in item.get_children():
-		var submatch = search_item_recursive(sub, text)
+		var submatch = _search_item_recursive(sub, text)
 		matches_search = matches_search or submatch
 	
 	item.visible = matches_search
