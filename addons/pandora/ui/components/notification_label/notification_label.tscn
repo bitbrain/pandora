@@ -4,7 +4,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_ue3du"]
 line_spacing = 0.0
-font_size = 22
+font_size = 16
 font_color = Color(0.537255, 0.952941, 0, 1)
 outline_size = 2
 outline_color = Color(0, 0.866667, 0.541176, 1)
