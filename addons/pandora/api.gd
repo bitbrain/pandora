@@ -1,29 +1,26 @@
 @tool
 extends Node
 
-
 const EntityIdFileGenerator = preload("res://addons/pandora/util/entity_id_file_generator.gd")
+const CategoryEnumGenerator = preload("res://addons/pandora/util/category_enum_generator.gd")
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
-
 
 signal data_loaded
 signal data_loaded_failure
-signal entity_added(entity:PandoraEntity)
+signal entity_added(entity: PandoraEntity)
 signal import_success(imported_count: int)
 signal import_failed(reason: String)
 signal import_calculation_ended(import_info: Dictionary)
 signal import_calculation_failed(reason: String)
 signal import_progress
 
-
 var _context_manager: PandoraContextManager
 var _storage: PandoraJsonDataStorage
 var _id_generator: PandoraIDGenerator
 var _entity_backend: PandoraEntityBackend
 
-
 var _loaded = false
-var _backend_load_state:PandoraEntityBackend.LoadState = PandoraEntityBackend.LoadState.NOT_LOADED
+var _backend_load_state: PandoraEntityBackend.LoadState = PandoraEntityBackend.LoadState.NOT_LOADED
 
 
 func _enter_tree() -> void:
@@ -48,19 +45,19 @@ func get_context_id() -> String:
 	return _context_manager.get_context_id()
 
 
-func set_context_id(context_id:String) -> void:
+func set_context_id(context_id: String) -> void:
 	_context_manager.set_context_id(context_id)
 
 
-func create_entity(name:String, category:PandoraCategory) -> PandoraEntity:
+func create_entity(name: String, category: PandoraCategory) -> PandoraEntity:
 	return _entity_backend.create_entity(name, category)
 
 
-func create_category(name:String, parent_category:PandoraCategory = null) -> PandoraCategory:
+func create_category(name: String, parent_category: PandoraCategory = null) -> PandoraCategory:
 	return _entity_backend.create_category(name, parent_category)
 
 
-func create_property(on_category:PandoraCategory, name:String, type:String) -> PandoraProperty:
+func create_property(on_category: PandoraCategory, name: String, type: String) -> PandoraProperty:
 	return _entity_backend.create_property(on_category, name, type)
 
 
@@ -80,24 +77,29 @@ func regenerate_property_id(property: PandoraProperty) -> void:
 	_entity_backend.regenerate_property_id(property)
 
 
-func delete_category(category:PandoraCategory) -> void:
+func delete_category(category: PandoraCategory) -> void:
 	_entity_backend.delete_category(category)
 
 
-func delete_entity(entity:PandoraEntity) -> void:
+func delete_entity(entity: PandoraEntity) -> void:
 	_entity_backend.delete_entity(entity)
 
-	
-func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: PandoraEntityBackend.DropSection) -> void:
+
+func move_entity(
+	source: PandoraEntity, target: PandoraEntity, drop_section: PandoraEntityBackend.DropSection
+) -> void:
 	_entity_backend.move_entity(source, target, drop_section)
-	
-func get_entity(entity_id:String) -> PandoraEntity:
+
+
+func get_entity(entity_id: String) -> PandoraEntity:
 	return _entity_backend.get_entity(entity_id)
-	
-func get_category(category_id:String) -> PandoraCategory:
+
+
+func get_category(category_id: String) -> PandoraCategory:
 	return _entity_backend.get_category(category_id)
 
-func get_property(property_id:String) -> PandoraProperty:
+
+func get_property(property_id: String) -> PandoraProperty:
 	return _entity_backend.get_property(property_id)
 
 
@@ -105,15 +107,23 @@ func get_all_roots() -> Array[PandoraCategory]:
 	return _entity_backend.get_all_roots()
 
 
-func get_all_categories(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
+func get_all_categories(
+	filter: PandoraCategory = null, sort: Callable = func(a, b): return false
+) -> Array[PandoraEntity]:
 	return _entity_backend.get_all_categories(filter, sort)
 
 
-func get_all_entities(filter:PandoraCategory = null, sort:Callable = func(a,b): return false) -> Array[PandoraEntity]:
+func get_all_entities(
+	filter: PandoraCategory = null, sort: Callable = func(a, b): return false
+) -> Array[PandoraEntity]:
 	return _entity_backend.get_all_entities(filter, sort)
 
-func check_if_properties_will_change_on_move(source:PandoraEntity, target:PandoraEntity, drop_section:PandoraEntityBackend.DropSection) -> bool:
+
+func check_if_properties_will_change_on_move(
+	source: PandoraEntity, target: PandoraEntity, drop_section: PandoraEntityBackend.DropSection
+) -> bool:
 	return _entity_backend.check_if_properties_will_change_on_move(source, target, drop_section)
+
 
 func load_data_async() -> void:
 	var thread = Thread.new()
@@ -150,6 +160,8 @@ func save_data() -> void:
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
+	CategoryEnumGenerator.regenerate_category_enums(get_all_roots())
+
 
 func calculate_import_data(path: String) -> int:
 	var imported_data = _storage._load_from_file(path)
@@ -157,18 +169,27 @@ func calculate_import_data(path: String) -> int:
 	if not imported_data.has("_entity_data"):
 		import_calculation_failed.emit("Provided file is invalid or is corrupted.")
 	else:
-		total_items = imported_data["_entity_data"]["_categories"].size() + imported_data["_entity_data"]["_entities"].size() + imported_data["_entity_data"]["_properties"].size()
+		total_items = (
+			imported_data["_entity_data"]["_categories"].size()
+			+ imported_data["_entity_data"]["_entities"].size()
+			+ imported_data["_entity_data"]["_properties"].size()
+		)
 		if total_items == 0:
 			import_calculation_failed.emit("Provided file is empty.")
 		else:
-			import_calculation_ended.emit({
-				"total_categories": imported_data["_entity_data"]["_categories"].size(),
-				"total_entities": imported_data["_entity_data"]["_entities"].size(),
-				"total_properties": imported_data["_entity_data"]["_properties"].size(),
-				"path": path,
-			})
+			(
+				import_calculation_ended
+				. emit(
+					{
+						"total_categories": imported_data["_entity_data"]["_categories"].size(),
+						"total_entities": imported_data["_entity_data"]["_entities"].size(),
+						"total_properties": imported_data["_entity_data"]["_properties"].size(),
+						"path": path,
+					}
+				)
+			)
 	return total_items
-		
+
 
 func import_data(path: String) -> int:
 	var imported_data = _storage._load_from_file(path)
@@ -180,16 +201,17 @@ func import_data(path: String) -> int:
 	if imported_count == -1:
 		import_failed.emit("No data found in file.")
 		return 0
-	
+
 	import_success.emit(imported_count)
 
 	return imported_count
 
+
 func is_loaded() -> bool:
 	return _loaded
-	
-	
-func serialize(instance:PandoraEntity) -> Dictionary:
+
+
+func serialize(instance: PandoraEntity) -> Dictionary:
 	if instance is PandoraCategory:
 		push_warning("Cannot serialize a category!")
 		return {}
@@ -197,14 +219,16 @@ func serialize(instance:PandoraEntity) -> Dictionary:
 		var new_instance = instance.instantiate()
 		return new_instance.save_data()
 	return instance.save_data()
-	
-	
-func deserialize(data:Dictionary) -> PandoraEntity:
+
+
+func deserialize(data: Dictionary) -> PandoraEntity:
 	if not _loaded:
 		push_warning("Pandora - cannot deserialize: data not initialized yet.")
 		return null
 	if not data.has("_instanced_from_id"):
-		push_error("Unable to deserialize data! Not an instance! Call PandoraEntity.instantiate() to create instances.")
+		push_error(
+			"Unable to deserialize data! Not an instance! Call PandoraEntity.instantiate() to create instances."
+		)
 		return
 	var entity = Pandora.get_entity(data["_instanced_from_id"])
 	if not entity:
