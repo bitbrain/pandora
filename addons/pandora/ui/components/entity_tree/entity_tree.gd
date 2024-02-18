@@ -50,9 +50,9 @@ func _search_item_recursive(item: TreeItem, text: String) -> bool:
 
 
 func queue_delete(entity_id:String) -> void:
-	confirm("Confirmation Needed", "Are you sure you want to delete?", func():
-		var item = entity_items[entity_id]
-		var entity = item.get_metadata(0) as PandoraEntity
+	var item = entity_items[entity_id]
+	var entity = item.get_metadata(0) as PandoraEntity
+	confirm("Confirmation Needed", "Are you sure you want to delete '%s'?" % entity.get_entity_name(), func():
 		entity_deletion_issued.emit(entity)
 		if item.get_parent() != null:
 			item.get_parent().remove_child(item)
