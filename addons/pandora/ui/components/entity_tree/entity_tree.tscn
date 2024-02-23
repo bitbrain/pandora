@@ -19,4 +19,5 @@ layout_mode = 1
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
 initial_position = 2
-dialog_text = "Are you sure you want to delete?"
+size = Vector2i(303, 80)
+dialog_text = "Are you sure you want to delete '%s'?"
