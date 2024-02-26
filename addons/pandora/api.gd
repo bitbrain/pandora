@@ -2,7 +2,7 @@
 extends Node
 
 const EntityIdFileGenerator = preload("res://addons/pandora/util/entity_id_file_generator.gd")
-const CategoryEnumGenerator = preload("res://addons/pandora/util/category_enum_generator.gd")
+const CategoryIdFileGenerator = preload("res://addons/pandora/util/category_id_file_generator.gd")
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
 
 signal data_loaded
@@ -160,7 +160,7 @@ func save_data() -> void:
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
 	EntityIdFileGenerator.regenerate_id_files(get_all_roots())
-	CategoryEnumGenerator.regenerate_category_enums(get_all_roots())
+	CategoryIdFileGenerator.regenerate_category_id_file(get_all_roots())
 
 
 func calculate_import_data(path: String) -> int:
