@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://8namx0kxhw0"]
+[gd_scene load_steps=29 format=3 uid="uid://8namx0kxhw0"]
 
 [ext_resource type="Script" path="res://addons/pandora/ui/components/property_bar/property_bar.gd" id="1_0r2cp"]
 [ext_resource type="Texture2D" uid="uid://do5tkodyvid10" path="res://addons/pandora/icons/String.svg" id="1_4esni"]
@@ -26,6 +26,8 @@
 [ext_resource type="Texture2D" uid="uid://66qnm42libnj" path="res://addons/pandora/icons/Array.svg" id="17_ebxvo"]
 [ext_resource type="PackedScene" uid="uid://cckh8r5sngw1m" path="res://addons/pandora/ui/components/properties/vector/vector3/vector3_property.tscn" id="18_oxp4m"]
 [ext_resource type="PackedScene" uid="uid://ckdfcxfes51ia" path="res://addons/pandora/ui/components/properties/array/array_property.tscn" id="18_sjnhs"]
+[ext_resource type="Texture2D" uid="uid://cb105f78rcfaa" path="res://addons/pandora/icons/Texture2D.svg" id="27_86nf1"]
+[ext_resource type="PackedScene" uid="uid://bm1l2gcyxt3aa" path="res://addons/pandora/ui/components/properties/texture2d/texture2d_property.tscn" id="28_0sht3"]
 
 [node name="PropertyBar" type="HBoxContainer"]
 offset_right = 35.0
@@ -122,3 +124,10 @@ tooltip_text = "Array property"
 icon = ExtResource("17_ebxvo")
 script = ExtResource("3_kwfh5")
 scene = ExtResource("18_sjnhs")
+
+[node name="PandoraPropertyButton" type="Button" parent="."]
+layout_mode = 2
+tooltip_text = "Texture2D Property"
+icon = ExtResource("27_86nf1")
+script = ExtResource("3_kwfh5")
+scene = ExtResource("28_0sht3")
