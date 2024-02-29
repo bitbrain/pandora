@@ -26,10 +26,11 @@ In this example, the `Damage` property of the `SWORD` entity is fetched, demonst
 
 Pandora allows you to define entities on nodes directly inside the editor:
 
-- The exported type **must** extend `PandoraEntity` 
+- The exported type **must** extend `PandoraEntity`
 - The exported type **must** be a `@tool` script
 
 This can be done as follows:
+
 ```gdscript
 extends Node2D
 
@@ -39,6 +40,7 @@ extends Node2D
 func _ready() -> void:
    var instance:PandoraEntity = item.instantiate()
 ```
+
 Within the Godot node editor properties, then select the entity of your choice from the list. Pandora automatically filters the entities depending on the type provided:
 
 ![custom-type-exports](../assets/custom_type_exports.gif)
@@ -55,6 +57,7 @@ if entity is CustomType:
    # 1. a parent category of entity has the CustomType script set
    # 2. CustomType extends PandoraEntity
 ```
+
 ✅ **Advantage**: type-safe and allows for auto-completion</br>
 😕 **Downside**: requires extra scripts to do type-checks
 
@@ -86,4 +89,4 @@ if entity.is_category(Items.CATEGORY_ORES):
 ```
 
 ✅ **Advantage**: no additional setup required (quick)</br>
-😕 **Downside**: currently not possible, requires [#63](https://github.com/bitbrain/pandora/issues/63) to be done first!
+😕 **Downside**: category generation is still alpha and the api may change
