@@ -249,11 +249,7 @@ func test_save_and_load_data() -> void:
 	backend.create_entity("b", category_b)
 	backend.create_property(category_c, "property1", "string", "Hello World")
 	backend.create_property(category_d, "typed_array", "array", [Color.RED])
-
-	#var color_array = [Color.RED]
-
 	var old_entity_1 = backend.create_entity("Entity 1", category_d)
-	#old_entity_1.get_array("typed_array").append_array(color_array)
 
 	var data = backend.save_data()
 	assert_that(data._categories).is_not_null()
@@ -261,53 +257,14 @@ func test_save_and_load_data() -> void:
 
 	backend.load_data(data)
 
-	print("Loaded data")
-
 	var new_entity_1 = backend.get_entity(old_entity_1.get_entity_id())
 	
 	var old_color_array = old_entity_1.get_array("typed_array")
 	var new_color_array = new_entity_1.get_array("typed_array")
 
-	print("Got Array")
-	print(old_color_array)
-	print(new_color_array)
-	
-	print(typeof(old_color_array[0]))
-	print(typeof(new_color_array[0]))
-
-	# print("Entities")
-	# print(old_entities)
-	# print(backend._entities)
-
-	# print(old_entities["9"])
-
-	# var class_instance = old_entities["9"]
-	# var output = {}
-	# var methods = []
-	# for method in class_instance.get_method_list():
-	# 	methods.append(method.name)
-
-	# output["METHODS"] = methods
-
-	# var properties = []
-	# for prop in class_instance.get_property_list():
-	# 	if prop.type == 3:
-	# 		properties.append(prop.name)
-	# output["PROPERTIES"] = properties
-	# print(output)
-
-	#print(backend._entities["9"])
-
-	# Making this call after getting the array from either of the entities (old/new) will throw the error ERROR: Max recursion reached
-   	# at: write (core/variant/variant_parser.cpp:1942)
-	#assert_that(old_entities).is_equal(backend._entities)
-	
-	print("Categories")
-	print(old_categories)
-	print(backend._categories)
-
-	#assert_that(old_categories).is_equal(backend._categories)
-	#assert_that(new_color_array[0]).is_equal(color_array[0])
+	assert_that(new_color_array[0]).is_equal(old_color_array[0])
+	assert_that(old_entities).is_equal(backend._entities)
+	assert_that(old_categories).is_equal(backend._categories)
 
 
 func test_inherit_correct_properties() -> void:
