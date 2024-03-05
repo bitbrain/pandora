@@ -39,26 +39,50 @@ func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 					value = load(value)
 				if settings[SETTING_ARRAY_TYPE] == "color":
 					value = Color.from_string(value, Color.WHITE)
+			else:
+				if value is Dictionary and value.has("type") and value.has("value"):
+					var value_type = value["type"]
+					var dict_value = value["value"]
+			
+					var type = PandoraPropertyType.lookup(value_type)
+					if type != null:
+						value = type.parse_value(dict_value)
+
 			array.append(value)
 		return array
 	return variant
-	
+
+
 func write_value(variant:Variant) -> Variant:
 	var array = variant as Array
 	var dict = {}
 	if not array.is_empty():
+		var types = PandoraPropertyType.get_all_types()
+		var value_type
+
 		for i in range(array.size()):
 			var value = array[i]
 			if value is PandoraEntity:
 				value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY).save_data()
-			elif value is Resource:
-				value = value.resource_path
-			elif value is Color:
-				value = value.to_html()
-			
+				value_type = value
+			else:
+				for type in types:
+					if type.is_valid(value):
+						value_type = type
+						value = type.write_value(value)	
+						break
+
 			if value != null:
-				dict[str(i)] = value
+				if value_type == null:
+					dict[str(i)] = value
+				else:
+					dict[str(i)] = {
+						"type": value_type.get_type_name(),
+						"value": value
+					}
+
 	return dict
+
 
 func allow_nesting() -> bool:
 	return false
