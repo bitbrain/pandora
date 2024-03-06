@@ -65,6 +65,9 @@ func write_value(variant:Variant) -> Variant:
 			if value is PandoraEntity:
 				value_type =  PandoraPropertyType.lookup("reference")
 				value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY).save_data()
+			elif value is PandoraReference:
+				value_type =  PandoraPropertyType.lookup("reference")
+				value = value.save_data()
 			else:
 				for type in types:
 					if type.is_valid(value):
