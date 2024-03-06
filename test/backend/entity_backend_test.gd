@@ -244,15 +244,25 @@ func test_save_and_load_data() -> void:
 	var category_a = backend.create_category("a")
 	var category_b = backend.create_category("b")
 	var category_c = backend.create_category("c", category_b)
+	var category_d = backend.create_category("d")
 	backend.create_entity("a", category_a)
 	backend.create_entity("b", category_b)
 	backend.create_property(category_c, "property1", "string", "Hello World")
+	backend.create_property(category_d, "typed_array", "array", [Color.RED])
+	var old_entity_1 = backend.create_entity("Entity 1", category_d)
+
 	var data = backend.save_data()
 	assert_that(data._categories).is_not_null()
 	assert_that(data._entities).is_not_null()
-	
+
 	backend.load_data(data)
+
+	var new_entity_1 = backend.get_entity(old_entity_1.get_entity_id())
 	
+	var old_color_array = old_entity_1.get_array("typed_array")
+	var new_color_array = new_entity_1.get_array("typed_array")
+
+	assert_that(new_color_array[0]).is_equal(old_color_array[0])
 	assert_that(old_entities).is_equal(backend._entities)
 	assert_that(old_categories).is_equal(backend._categories)
 

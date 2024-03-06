@@ -60,11 +60,17 @@ func allow_nesting() -> bool:
 static func lookup(name:String) -> PandoraPropertyType:
 	if name == "":
 		return UndefinedType.new()
-	var ScriptType = load("res://addons/pandora/model/types/" + name + ".gd")
-	if ScriptType != null and ScriptType.has_source_code():
-		return ScriptType.new()
-	else:
-		return UndefinedType.new()
+
+	var klass = PandoraPropertyType
+	var types_dir = klass.resource_path.get_base_dir()
+	var type_path = types_dir + "/types/" + name + ".gd"
+
+	if ResourceLoader.exists(type_path):
+		var ScriptType = load(type_path)
+		if ScriptType != null and ScriptType.has_source_code():
+			return ScriptType.new()
+
+	return UndefinedType.new()
 
 static func get_all_types() -> Array[PandoraPropertyType]:
 	var types:Array[PandoraPropertyType] = []

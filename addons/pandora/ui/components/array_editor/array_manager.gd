@@ -72,6 +72,8 @@ func _load_items():
 		elif array_type == 'reference':
 			if value is Dictionary:
 				value = Pandora.get_entity(value["_entity_id"])
+			elif value is PandoraReference:
+				value = value.get_entity()
 		item_property.set_default_value(value)
 		_add_property_control(control, item_property, i)
 
