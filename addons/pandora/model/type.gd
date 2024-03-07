@@ -60,6 +60,8 @@ func allow_nesting() -> bool:
 static func lookup(name:String) -> PandoraPropertyType:
 	if name == "":
 		return UndefinedType.new()
+	if not ResourceLoader.exists("res://addons/pandora/model/types/" + name + ".gd"):
+		return UndefinedType.new()
 	var ScriptType = load("res://addons/pandora/model/types/" + name + ".gd")
 	if ScriptType != null and ScriptType.has_source_code():
 		return ScriptType.new()

@@ -1,5 +1,8 @@
 extends PandoraPropertyType
 
+const SERIALIZED_VALUES = "values"
+const SERIALIZED_VALUES_TYPE = "values_type"
+
 const ICON_PATH = "res://addons/pandora/icons/Array.svg"
 
 const SETTING_ARRAY_TYPE = "Array Type"
@@ -30,34 +33,56 @@ func parse_value(variant:Variant, settings:Dictionary = {}) -> Variant:
 	if variant is Dictionary:
 		var array = []
 		var dict = variant as Dictionary
-		for i in range(dict.size()):
-			var value = dict[str(i)]
-			if not settings.is_empty():
-				if settings[SETTING_ARRAY_TYPE] == "reference":
-					value = PandoraReference.new(value["_entity_id"], value["_type"]).get_entity()
-				if settings[SETTING_ARRAY_TYPE] == "resource":
-					value = load(value)
-				if settings[SETTING_ARRAY_TYPE] == "color":
-					value = Color.from_string(value, Color.WHITE)
-			array.append(value)
+		if dict.has(SERIALIZED_VALUES) and dict.has(SERIALIZED_VALUES_TYPE):
+			var values_type = (
+				PandoraPropertyType.lookup(settings[SETTING_ARRAY_TYPE]) if not settings.is_empty()
+				else PandoraPropertyType.lookup(dict[SERIALIZED_VALUES_TYPE])
+			)
+			for i in range(dict[SERIALIZED_VALUES].size()):
+				var value = dict[SERIALIZED_VALUES][str(i)]
+				array.append(values_type.parse_value(value))
+
+		else:
+			for i in range(dict.size()):
+				var value = dict[str(i)]
+				if not settings.is_empty():
+					if settings[SETTING_ARRAY_TYPE] == "reference":
+						value = PandoraReference.new(value["_entity_id"], value["_type"]).get_entity()
+					if settings[SETTING_ARRAY_TYPE] == "resource":
+						value = load(value)
+					if settings[SETTING_ARRAY_TYPE] == "color":
+						value = Color.from_string(value, Color.WHITE)
+				array.append(value)
 		return array
 	return variant
 	
 func write_value(variant:Variant) -> Variant:
 	var array = variant as Array
-	var dict = {}
+	var dict = {
+		SERIALIZED_VALUES: {},
+		SERIALIZED_VALUES_TYPE: ""
+	}
 	if not array.is_empty():
+		var types = PandoraPropertyType.get_all_types()
+		var values_type : PandoraPropertyType
 		for i in range(array.size()):
 			var value = array[i]
-			if value is PandoraEntity:
-				value = PandoraReference.new(value.get_entity_id(), PandoraReference.Type.CATEGORY if value is PandoraCategory else PandoraReference.Type.ENTITY).save_data()
-			elif value is Resource:
-				value = value.resource_path
-			elif value is Color:
-				value = value.to_html()
-			
-			if value != null:
-				dict[str(i)] = value
+			var found_valid_type = false
+			for type in types:
+				if type.is_valid(value):
+					dict[SERIALIZED_VALUES][str(i)] = type.write_value(value)
+					if values_type == null:
+						values_type = type
+					elif values_type != type:
+						# Array contains mixed-type values
+						values_type = UndefinedType.new()
+					found_valid_type = true
+					break
+			if not found_valid_type:
+				# Array contains a value for which no valid type could be found
+				dict[SERIALIZED_VALUES][str(i)] = value
+				values_type = UndefinedType.new()
+		dict[SERIALIZED_VALUES_TYPE] = values_type.get_type_name()
 	return dict
 
 func allow_nesting() -> bool:

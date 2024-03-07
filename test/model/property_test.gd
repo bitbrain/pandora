@@ -146,6 +146,18 @@ func test_array_property_wrong_type() -> void:
 	new_property.load_data(property.save_data())
 	assert_that(new_property.get_default_value()).is_equal("")
 
+func test_array_property_custom_parsers() -> void:
+	var array_type = load("res://addons/pandora/model/types/array.gd")
+	var category = Pandora.create_category("Test Category")
+	var property = Pandora.create_property(category, "property", "array")
+	property.set_setting_override(array_type.SETTING_ARRAY_TYPE, "color")
+	var entity = Pandora.create_entity("entity", category)
+	var entity_property = entity.get_entity_property("property")
+	entity_property.set_default_value([Color.WHITE])
+	entity.load_data(entity.save_data())
+	assert_that(entity.get_array("property")[0]).is_equal(Color.WHITE)
+	assert_that(typeof(entity.get_array("property")[0])).is_not_equal(TYPE_STRING)
+
 func test_vector2_property() -> void:
 	var vector = Vector2.ONE
 	var property = PandoraProperty.new("123", "property", "vector2")
