@@ -172,7 +172,7 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	item.set_tooltip_text(0, "Entity ID: " + entity.get_entity_id())
 	if entity.get_icon_path() != "":
 		item.set_icon(0, load(entity.get_icon_path()))
-		var editor_plugin: EditorPlugin = Engine.get_meta("PandoraEditorPlugin")
+		var editor_plugin: EditorPlugin = Engine.get_meta("PandoraEditorPlugin") if Engine.has_meta("PandoraEditorPlugin") else null
 		if editor_plugin:
 			item.set_icon_max_width(0, editor_plugin.get_editor_interface().get_editor_scale() * 16)
 	item.set_icon_modulate(0, entity.get_icon_color())

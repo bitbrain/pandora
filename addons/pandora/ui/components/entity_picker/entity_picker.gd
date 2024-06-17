@@ -52,7 +52,7 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 	for entity in _entities:
 		option_button.get_popup().add_icon_item(load(entity.get_icon_path()), entity.get_entity_name(), id_counter)
 		
-		var editor_plugin: EditorPlugin = Engine.get_meta("PandoraEditorPlugin")
+		var editor_plugin: EditorPlugin = Engine.get_meta("PandoraEditorPlugin") if Engine.has_meta("PandoraEditorPlugin") else null
 		if editor_plugin:
 			option_button.get_popup().set_item_icon_max_width(id_counter, editor_plugin.get_editor_interface().get_editor_scale() * 16)
 		# Godot 4.1+
