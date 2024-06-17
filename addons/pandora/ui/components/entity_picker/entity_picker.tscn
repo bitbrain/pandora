@@ -14,3 +14,4 @@ script = ExtResource("1_cjsnj")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+expand_icon = true
