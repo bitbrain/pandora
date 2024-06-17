@@ -53,7 +53,8 @@ func set_data(entities:Array[PandoraEntity]) -> void:
 		option_button.get_popup().add_icon_item(load(entity.get_icon_path()), entity.get_entity_name(), id_counter)
 		
 		var editor_plugin: EditorPlugin = Engine.get_meta("PandoraEditorPlugin")
-		option_button.get_popup().set_item_icon_max_width(id_counter, editor_plugin.get_editor_interface().get_editor_scale() * 16)
+		if editor_plugin:
+			option_button.get_popup().set_item_icon_max_width(id_counter, editor_plugin.get_editor_interface().get_editor_scale() * 16)
 		# Godot 4.1+
 		if option_button.get_popup().has_method("set_item_icon_modulate"):
 			option_button.get_popup().set_item_icon_modulate(id_counter, entity.get_icon_color())

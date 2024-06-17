@@ -173,7 +173,8 @@ func _create_item(parent_item: TreeItem, entity:PandoraEntity) -> TreeItem:
 	if entity.get_icon_path() != "":
 		item.set_icon(0, load(entity.get_icon_path()))
 		var editor_plugin: EditorPlugin = Engine.get_meta("PandoraEditorPlugin")
-		item.set_icon_max_width(0, editor_plugin.get_editor_interface().get_editor_scale() * 16)
+		if editor_plugin:
+			item.set_icon_max_width(0, editor_plugin.get_editor_interface().get_editor_scale() * 16)
 	item.set_icon_modulate(0, entity.get_icon_color())
 	entity.icon_changed.connect(func(new_path): _on_icon_changed(entity.get_entity_id(), new_path))
 	entity.icon_color_changed.connect(func(new_color): _on_icon_color_changed(entity.get_entity_id(), new_color))

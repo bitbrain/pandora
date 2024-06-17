@@ -49,6 +49,8 @@ func _exit_tree() -> void:
 		editor_view.queue_free()
 		remove_inspector_plugin(entity_inspector)
 	
+	Engine.remove_meta("PandoraEditorPlugin")
+	
 	remove_export_plugin(_exporter)
 	remove_autoload_singleton("Pandora")
 
