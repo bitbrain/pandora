@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run GDUnit4 tests
-        uses: MikeSchulze/gdUnit4-action@v1
+        uses: MikeSchulze/gdUnit4-action@v1.1.1
         with:
           godot-version: ${{ matrix.godot-version }}
           godot-status: "stable"
