@@ -379,8 +379,14 @@
 			{
 				"_category_id": "1",
 				"_default_value": {
-					"0": "",
-					"1": ""
+					"0": {
+						"type": "color",
+						"value": "000000ff"
+					},
+					"1": {
+						"type": "color",
+						"value": "000000ff"
+					}
 				},
 				"_id": "5",
 				"_name": "array property",
