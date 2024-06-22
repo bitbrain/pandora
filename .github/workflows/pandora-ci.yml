@@ -24,37 +24,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  unit-tests-legacy:
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      checks: write
-      contents: write
-      pull-requests: write
-      statuses: write
-
-    strategy:
-      fail-fast: false
-      max-parallel: 10
-      matrix:
-        godot-version: ["4.0.3", "4.1.4"]
-
-    name: "🤖 CI on Godot ${{ matrix.godot-version }} (Legacy)"
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Run GDUnit4 tests
-        uses: MikeSchulze/gdUnit4-action@v1.1.1
-        with:
-          godot-version: ${{ matrix.godot-version }}
-          godot-status: "stable"
-          timeout: 3
-          paths: "res://test"
-          version: "v4.1.4"
-          publish-report: false
-          report-name: report_Godot${{ matrix.godot-version }}_unit-tests-legacy
-
   unit-tests:
     runs-on: ubuntu-latest
     permissions:
@@ -90,7 +59,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: "Final Results"
-    needs: [unit-tests-legacy, unit-tests]
+    needs: [unit-tests]
     steps:
       - run: exit 1
         if: >-
