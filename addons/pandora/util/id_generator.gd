@@ -1,7 +1,6 @@
 class_name PandoraIDGenerator
 extends RefCounted
 
-
 var _nanoid := PandoraNanoIDGenerator.new(10)
 var _sequential := PandoraSequentialIDGenerator.new()
 

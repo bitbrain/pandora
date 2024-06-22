@@ -4,11 +4,9 @@
 @tool
 class_name PandoraContextManager extends RefCounted
 
-
 # Notifies if the context has changed.
 # This can happen if someone changes save games.
 signal context_changed
-
 
 var _context_id: String = ""
 

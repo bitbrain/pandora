@@ -1,24 +1,21 @@
 @tool
 extends PanelContainer
 
-
 ## invoked when a property was selected that is inherited.
-signal inherited_property_selected(category_id:String, property_name:String)
+signal inherited_property_selected(category_id: String, property_name: String)
 
 ## called when an original property was selected
-signal original_property_selected(property:PandoraProperty)
+signal original_property_selected(property: PandoraProperty)
 
-
-var _property:PandoraProperty:
+var _property: PandoraProperty:
 	set(p):
 		_property = p
 		_refresh_key.call_deferred()
-var _control:PandoraPropertyControl:
+var _control: PandoraPropertyControl:
 	set(c):
 		_control = c
 		_refresh_value.call_deferred()
-var _backend:PandoraEntityBackend
-
+var _backend: PandoraEntityBackend
 
 @onready var property_key: LinkButton = %PropertyKey
 @onready var property_key_edit: LineEdit = %PropertyKeyEdit
@@ -29,8 +26,9 @@ var _backend:PandoraEntityBackend
 @onready var confirmation_dialog = %ConfirmationDialog
 
 
-
-func init(property:PandoraProperty, control:PandoraPropertyControl, backend:PandoraEntityBackend) -> void:
+func init(
+	property: PandoraProperty, control: PandoraPropertyControl, backend: PandoraEntityBackend
+) -> void:
 	if self._control != null:
 		_control.queue_free()
 	self._property = property
@@ -48,8 +46,11 @@ func _ready() -> void:
 	_refresh.call_deferred()
 	if _property != null:
 		_set_edit_name_mode(_property.is_original())
-		property_key.pressed.connect(func():
-			inherited_property_selected.emit(_property.get_original_category_id(), _property.get_property_name()))
+		property_key.pressed.connect(
+			func(): inherited_property_selected.emit(
+				_property.get_original_category_id(), _property.get_property_name()
+			)
+		)
 	if _control != null:
 		_control.property_value_changed.connect(_refresh)
 
@@ -71,12 +72,12 @@ func _refresh_value() -> void:
 	property_value.add_child(_control)
 
 
-func _set_edit_name_mode(edit_mode:bool) -> void:
+func _set_edit_name_mode(edit_mode: bool) -> void:
 	property_key.visible = not edit_mode
 	property_key_edit.visible = edit_mode
 
 
-func _property_name_changed(new_name:String) -> void:
+func _property_name_changed(new_name: String) -> void:
 	# FIXME avoid key duplication issue
 	_property._name = new_name
 

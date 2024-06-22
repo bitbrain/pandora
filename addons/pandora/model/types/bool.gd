@@ -9,5 +9,5 @@ func _init() -> void:
 	super("bool", SETTINGS, false, ICON_PATH)
 
 
-func is_valid(variant:Variant) -> bool:
+func is_valid(variant: Variant) -> bool:
 	return variant is bool

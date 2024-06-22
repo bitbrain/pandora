@@ -1,10 +1,10 @@
 class_name PandoraCategory extends PandoraEntity
 
 # not persisted but computed at runtime
-var _children:Array[PandoraEntity] = []
+var _children: Array[PandoraEntity] = []
 
 
-func get_child(entity_id:String) -> PandoraEntity:
+func get_child(entity_id: String) -> PandoraEntity:
 	for child in _children:
 		if child.get_entity_id() == entity_id:
 			return child
@@ -19,7 +19,7 @@ func get_icon_path() -> String:
 	return "res://addons/pandora/icons/Folder.svg"
 
 
-func _delete_property(name:String) -> void:
+func _delete_property(name: String) -> void:
 	super._delete_property(name)
 	for child in _children:
 		child._delete_property(name)

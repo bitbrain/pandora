@@ -2,10 +2,8 @@
 class_name PandoraNanoIDGenerator
 extends RefCounted
 
-
 const ALPHABET := "useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict"
 const DEFAULT_LENGTH := 21
-
 
 var default_length := DEFAULT_LENGTH
 

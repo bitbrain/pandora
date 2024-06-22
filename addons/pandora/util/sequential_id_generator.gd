@@ -1,14 +1,12 @@
 class_name PandoraSequentialIDGenerator
 extends RefCounted
 
-
 const DEFAULT_CONTEXT: String = "default"
-
 
 var _ids_by_context: Dictionary = {}
 
 
-func generate(context:String = DEFAULT_CONTEXT) -> String:
+func generate(context: String = DEFAULT_CONTEXT) -> String:
 	if not _ids_by_context.has(context):
 		_ids_by_context[context] = 0
 	_ids_by_context[context] += 1
@@ -20,9 +18,7 @@ func clear() -> void:
 
 
 func save_data() -> Dictionary:
-	return {
-		"_ids_by_context": _ids_by_context
-	}
+	return {"_ids_by_context": _ids_by_context}
 
 
 func load_data(data: Dictionary) -> void:

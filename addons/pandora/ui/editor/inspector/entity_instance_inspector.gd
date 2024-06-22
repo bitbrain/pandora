@@ -1,8 +1,9 @@
 extends EditorInspectorPlugin
 
-const BrowserProperty = preload("res://addons/pandora/ui/editor/inspector/entity_instance_browser_property.gd")
+const BrowserProperty = preload(
+	"res://addons/pandora/ui/editor/inspector/entity_instance_browser_property.gd"
+)
 const PANDORA_ENTITY_CLASS = &"PandoraEntity"
-
 
 # ClassName -> Dictionary
 var _global_class_cache = {}
@@ -26,7 +27,7 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 	return false
 
 
-func _is_pandora_entity(clazz:String) -> bool:
+func _is_pandora_entity(clazz: String) -> bool:
 	if clazz == PANDORA_ENTITY_CLASS:
 		return true
 	if clazz == "":
@@ -37,9 +38,9 @@ func _is_pandora_entity(clazz:String) -> bool:
 	if parent == PANDORA_ENTITY_CLASS:
 		return true
 	return _is_pandora_entity(parent)
-	
-	
-func _get_parent_class(clazz_name:String) -> String:
+
+
+func _get_parent_class(clazz_name: String) -> String:
 	if not _global_class_cache.has(clazz_name):
 		return ""
 	var clazz = _global_class_cache[clazz_name]
