@@ -51,7 +51,7 @@ jobs:
           godot-status: "stable"
           timeout: 3
           paths: "res://test"
-          version: "v4.2.5"
+          version: "v4.1.4"
           publish-report: false
           report-name: report_Godot${{ matrix.godot-version }}_unit-tests-legacy
 
