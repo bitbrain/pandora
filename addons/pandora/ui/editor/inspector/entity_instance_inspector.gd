@@ -17,7 +17,7 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 	if _global_class_cache.is_empty():
 		for global_class in ProjectSettings.get_global_class_list():
 			_global_class_cache[global_class["class"]] = global_class
-	if object != null && type == TYPE_OBJECT:
+	if type == TYPE_OBJECT:
 		var test_instance = ClassDB
 		if _is_pandora_entity(hint_string):
 			var inspector_property := BrowserProperty.new(_global_class_cache[hint_string])
