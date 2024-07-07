@@ -25,3 +25,6 @@ entity = SubResource("Resource_xfcj2")
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2
 texture = ExtResource("1_r3xd3")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2

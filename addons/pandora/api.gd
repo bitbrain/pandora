@@ -15,7 +15,7 @@ signal import_calculation_failed(reason: String)
 signal import_progress
 
 var _context_manager: PandoraContextManager
-var _storage: PandoraJsonDataStorage
+var _storage: PandoraDataStorage
 var _id_generator: PandoraIDGenerator
 var _entity_backend: PandoraEntityBackend
 
@@ -164,7 +164,7 @@ func save_data() -> void:
 
 
 func calculate_import_data(path: String) -> int:
-	var imported_data = _storage._load_from_file(path)
+	var imported_data = _storage.load_from_file(path)
 	var total_items = 0
 	if not imported_data.has("_entity_data"):
 		import_calculation_failed.emit("Provided file is invalid or is corrupted.")
@@ -192,7 +192,7 @@ func calculate_import_data(path: String) -> int:
 
 
 func import_data(path: String) -> int:
-	var imported_data = _storage._load_from_file(path)
+	var imported_data = _storage.load_from_file(path)
 	if not imported_data.has("_entity_data"):
 		import_failed.emit("Provided file is invalid or is corrupted.")
 		return 0

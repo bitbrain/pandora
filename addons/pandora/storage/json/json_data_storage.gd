@@ -25,13 +25,12 @@ func _init(data_dir: String):
 func store_all_data(data: Dictionary, context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
 	var file: FileAccess
-	# Ensure within the Godot Engine editor, Pandora remains uncompressed
-	if Engine.is_editor_hint() or OS.is_debug_build():
-		file = FileAccess.open(file_path, FileAccess.WRITE)
-		file.store_string(JSON.stringify(data, "\t"))
-	else:
+	if _should_use_compression():
 		file = FileAccess.open_compressed(file_path, FileAccess.WRITE)
 		file.store_string(JSON.stringify(data))
+	else:
+		file = FileAccess.open(file_path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(data, "\t"))
 	file.close()
 	return data
 
@@ -39,11 +38,10 @@ func store_all_data(data: Dictionary, context_id: String) -> Dictionary:
 func get_all_data(context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
 	var file: FileAccess
-	# Ensure within the Godot Engine editor, Pandora remains uncompressed
-	if Engine.is_editor_hint() or OS.is_debug_build():
-		file = FileAccess.open(file_path, FileAccess.READ)
-	else:
+	if _should_use_compression():
 		file = FileAccess.open_compressed(file_path, FileAccess.READ)
+	else:
+		file = FileAccess.open(file_path, FileAccess.READ)
 	var json: JSON = JSON.new()
 	if file != null:
 		var text = file.get_as_text()
@@ -70,6 +68,22 @@ func get_decompressed_data(file_path: String) -> Dictionary:
 		return {}
 
 
+func load_from_file(file_path: String) -> Dictionary:
+	var file: FileAccess
+	if _should_use_compression():
+		file = FileAccess.open_compressed(file_path, FileAccess.READ)
+	else:
+		file = FileAccess.open(file_path, FileAccess.READ)
+	if FileAccess.file_exists(file_path) and file != null:
+		var content = file.get_as_text()
+		file.close()
+		var json = JSON.new()
+		json.parse(content)
+		return json.get_data()
+	else:
+		return {}
+
+
 func _get_directory_path(context_id: String) -> String:
 	var directory_path = ""
 	if data_directory.ends_with("//"):
@@ -89,17 +103,6 @@ func _get_file_path(context_id: String) -> String:
 	return "%s/data.pandora" % [_get_directory_path(context_id)]
 
 
-func _load_from_file(file_path: String) -> Dictionary:
-	var file: FileAccess
-	if OS.is_debug_build():
-		file = FileAccess.open(file_path, FileAccess.READ)
-	else:
-		file = FileAccess.open_compressed(file_path, FileAccess.READ)
-	if FileAccess.file_exists(file_path) and file != null:
-		var content = file.get_as_text()
-		file.close()
-		var json = JSON.new()
-		json.parse(content)
-		return json.get_data()
-	else:
-		return {}
+func _should_use_compression() -> bool:
+	# Ensure within the Godot Engine editor Pandora remains uncompressed
+	return not Engine.is_editor_hint() and not OS.is_debug_build()

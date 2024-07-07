@@ -24,3 +24,7 @@ func store_all_data(data: Dictionary, context_id: String) -> Dictionary:
 
 func get_all_data(context_id: String) -> Dictionary:
 	return {}
+
+
+func load_from_file(file_path: String) -> Dictionary:
+	return {}

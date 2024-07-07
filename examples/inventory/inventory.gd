@@ -3,7 +3,7 @@ class_name Inventory extends Node
 
 signal item_added(item:Item, index:int)
 signal item_removed(item:Item, index:int)
-	
+
 
 # id -> ItemInstance
 var _slots = {}
@@ -24,7 +24,7 @@ func add_item(item:Item, index:int) -> void:
 			return
 		existing_item.set_current_stacksize(new_stacksize)
 		item_added.emit(existing_item, index)
-		
+
 
 func remove_item(index:int) -> Item:
 	if _slots.has(index):

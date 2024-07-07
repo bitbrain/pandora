@@ -4,6 +4,7 @@ extends EditorPlugin
 const PandoraEditor := preload("res://addons/pandora/ui/editor/pandora_editor.tscn")
 const PandoraIcon := preload("res://addons/pandora/icons/pandora-icon.svg")
 const PandoraEntityInspector = preload("res://addons/pandora/ui/editor/inspector/entity_instance_inspector.gd")
+const Compression = preload("res://addons/pandora/util/compression.gd")
 
 var editor_view
 var entity_inspector
@@ -81,7 +82,8 @@ class PandoraExportPlugin extends EditorExportPlugin:
 			return
 		var data:PackedByteArray = file.get_buffer(file.get_length())
 		if not is_debug:
-			data = data.compress()
+			var text = file.get_as_text()
+			data = Compression.compress(text)
 		add_file(pandora_path, data, false)
 
 	func _get_name() -> String:
