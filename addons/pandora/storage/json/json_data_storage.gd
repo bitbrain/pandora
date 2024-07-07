@@ -25,7 +25,8 @@ func _init(data_dir: String):
 func store_all_data(data: Dictionary, context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
 	var file: FileAccess
-	if OS.is_debug_build():
+	# Ensure within the Godot Engine editor, Pandora remains uncompressed
+	if Engine.is_editor_hint() or OS.is_debug_build():
 		file = FileAccess.open(file_path, FileAccess.WRITE)
 		file.store_string(JSON.stringify(data, "\t"))
 	else:
@@ -38,7 +39,8 @@ func store_all_data(data: Dictionary, context_id: String) -> Dictionary:
 func get_all_data(context_id: String) -> Dictionary:
 	var file_path = _get_file_path(context_id)
 	var file: FileAccess
-	if OS.is_debug_build():
+	# Ensure within the Godot Engine editor, Pandora remains uncompressed
+	if Engine.is_editor_hint() or OS.is_debug_build():
 		file = FileAccess.open(file_path, FileAccess.READ)
 	else:
 		file = FileAccess.open_compressed(file_path, FileAccess.READ)
