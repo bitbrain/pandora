@@ -7,7 +7,6 @@ const RARITY = "16"
 const QUESTS = "27"
 const DIALOGUES = "28"
 const SPELLS = "29"
-const MOCK_(REQUIRED_FOR_TESTING!) = "54"
 const NPCS = "2"
 
 
