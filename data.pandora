@@ -136,8 +136,10 @@
 			},
 			{
 				"_category_id": "",
+				"_generate_ids": true,
 				"_icon_color": "ffffff00",
 				"_id": "54",
+				"_ids_generation_class": "MockEntities",
 				"_index": 0,
 				"_name": "Mock (Required for Testing!)",
 				"_script_path": "res://mock/custom_mock_entity.gd"
@@ -227,6 +229,20 @@
 						}
 					}
 				}
+			},
+			{
+				"_category_id": "54",
+				"_icon_color": "ffffff00",
+				"_id": "7",
+				"_index": 0,
+				"_name": "1 Some Entity"
+			},
+			{
+				"_category_id": "54",
+				"_icon_color": "ffffff00",
+				"_id": "8",
+				"_index": 0,
+				"_name": "/1209I)(#)9390292084"
 			}
 		],
 		"_properties": [
@@ -396,7 +412,7 @@
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-			"default": 6
+			"default": 8
 		}
 	}
 }

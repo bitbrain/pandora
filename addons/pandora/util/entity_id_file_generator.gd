@@ -1,3 +1,6 @@
+const Tokenizer = preload("tokenizer.gd")
+
+
 ## Generates a .gd file that allows for easier access
 ## of entities
 static func regenerate_id_files(root_categories: Array[PandoraCategory]) -> void:
@@ -49,7 +52,7 @@ static func regenerate_entity_id_file(
 		file_access.store_line(
 			(
 				"const "
-				+ entity_name.to_upper().replace(" ", "_")
+				+ Tokenizer.tokenize(entity_name)
 				+ " = "
 				+ '"'
 				+ entity.get_entity_id()

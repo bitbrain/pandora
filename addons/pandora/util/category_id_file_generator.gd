@@ -1,3 +1,15 @@
+const Tokenizer = preload("tokenizer.gd")
+
+
+class CategoryTuple:
+	var category_name: String
+	var category_id: String
+
+	func _init(category_name: String, category_id: String) -> void:
+		self.category_name = category_name
+		self.category_id = category_id
+
+
 ## Generates a .gd file that allows for easier access
 ## of categories and subcategories of the data
 static func regenerate_category_id_file(root_categories: Array[PandoraCategory]) -> void:
@@ -53,7 +65,7 @@ static func generate_category_id_file(
 		var line = (
 			'const %s = "%s"'
 			% [
-				category_tuple.category_name.to_upper().replace(" ", "_"),
+				Tokenizer.tokenize(category_tuple.category_name),
 				category_tuple.category_id
 			]
 		)
@@ -73,7 +85,7 @@ static func generate_category_id_file(
 			line = (
 				'	const %s = "%s"'
 				% [
-					category_tuple.category_name.to_upper().replace(" ", "_"),
+					Tokenizer.tokenize(category_tuple.category_name),
 					category_tuple.category_id
 				]
 			)
@@ -81,12 +93,3 @@ static func generate_category_id_file(
 		file_access.store_line("\n")
 
 	file_access.close()
-
-
-class CategoryTuple:
-	var category_name: String
-	var category_id: String
-
-	func _init(category_name: String, category_id: String) -> void:
-		self.category_name = category_name
-		self.category_id = category_id
