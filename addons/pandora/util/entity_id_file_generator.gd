@@ -4,30 +4,37 @@ const Tokenizer = preload("tokenizer.gd")
 ## Generates a .gd file that allows for easier access
 ## of entities
 static func regenerate_id_files(root_categories: Array[PandoraCategory]) -> void:
-	# class name  -> Array[Entity]
-	var class_to_entity_map = {}
-	for category in root_categories:
-		regenerate_id_files_for_category(category, class_to_entity_map)
+	var class_to_entity_map = generate_class_to_entity_map(root_categories)
 
 	for entity_class in class_to_entity_map:
-		regenerate_entity_id_file(entity_class, class_to_entity_map[entity_class])
+		generate_entity_id_file(entity_class, class_to_entity_map[entity_class])
 
 
-static func regenerate_id_files_for_category(
+static func generate_class_to_entity_map(
+	root_categories: Array[PandoraCategory]
+) -> Dictionary:
+	var class_to_entity_map = {}
+	for category in root_categories:
+		_process_category_for_id_files(category, class_to_entity_map)
+	return class_to_entity_map
+
+
+static func _process_category_for_id_files(
 	category: PandoraCategory, class_to_entity_map: Dictionary
 ) -> void:
 	for child in category._children:
 		if child is PandoraCategory:
-			regenerate_id_files_for_category(child as PandoraCategory, class_to_entity_map)
+			_process_category_for_id_files(child as PandoraCategory, class_to_entity_map)
 		else:
 			if category.is_generate_ids():
-				if not class_to_entity_map.has(category.get_id_generation_class()):
-					var entities: Array[PandoraEntity] = []
-					class_to_entity_map[category.get_id_generation_class()] = entities
-				class_to_entity_map[category.get_id_generation_class()].append(child)
+				var classname = category.get_id_generation_class()
+				if not class_to_entity_map.has(classname):
+					var new_array:Array[PandoraEntity] = []
+					class_to_entity_map[classname] = new_array
+				class_to_entity_map[classname].append(child as PandoraEntity)
 
 
-static func regenerate_entity_id_file(
+static func generate_entity_id_file(
 	entity_class_name: String, entities: Array[PandoraEntity]
 ) -> void:
 	var file_path = "res://pandora/" + entity_class_name.to_snake_case() + ".gd"
@@ -42,22 +49,14 @@ static func regenerate_entity_id_file(
 	var name_usages = {}
 
 	for entity in entities:
-		if not name_usages.has(entity.get_entity_name()):
-			name_usages[entity.get_entity_name()] = 0
-		var entity_name = (
-			entity.get_entity_name()
-			if name_usages[entity.get_entity_name()] == 0
-			else entity.get_entity_name() + str(name_usages[entity.get_entity_name()])
-		)
+		var entity_name = entity.get_entity_name()
+		if not name_usages.has(entity_name):
+			name_usages[entity_name] = 0
+		else:
+			name_usages[entity_name] += 1
+			entity_name += str(name_usages[entity_name])
+
 		file_access.store_line(
-			(
-				"const "
-				+ Tokenizer.tokenize(entity_name)
-				+ " = "
-				+ '"'
-				+ entity.get_entity_id()
-				+ '"'
-			)
+			"const " + Tokenizer.tokenize(entity_name) + ' = "' + entity.get_entity_id() + '"'
 		)
-		name_usages[entity.get_entity_name()] += 1
 	file_access.close()

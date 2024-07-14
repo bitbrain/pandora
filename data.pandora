@@ -243,6 +243,23 @@
 				"_id": "8",
 				"_index": 0,
 				"_name": "/1209I)(#)9390292084"
+			},
+			{
+				"_category_id": "1",
+				"_icon_color": "ffffff00",
+				"_id": "9",
+				"_index": 0,
+				"_name": "Apple",
+				"_property_overrides": {
+					"Maximum Stack Size": {
+						"type": "int",
+						"value": -10
+					},
+					"float property": {
+						"type": "float",
+						"value": 0.0990471839908196
+					}
+				}
 			}
 		],
 		"_properties": [
@@ -342,7 +359,7 @@
 			},
 			{
 				"_category_id": "1",
-				"_default_value": 0.0990471839908252,
+				"_default_value": 0.0990471839908196,
 				"_id": "45",
 				"_name": "float property",
 				"_setting_overrides": {
@@ -412,7 +429,7 @@
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-			"default": 8
+			"default": 9
 		}
 	}
 }
