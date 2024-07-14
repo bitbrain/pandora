@@ -693,9 +693,8 @@ func _save_overrides() -> Dictionary:
 	for property_name in _property_overrides:
 		var value = _property_overrides[property_name]
 		var property = get_entity_property(property_name)
-		if property != null:
-			var type = property.get_property_type()
-			output[property_name] = {"type": type.get_type_name(), "value": type.write_value(value)}
+		var type = property.get_property_type()
+		output[property_name] = {"type": type.get_type_name(), "value": type.write_value(value)}
 	return output
 
 
