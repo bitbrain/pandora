@@ -5,7 +5,8 @@ static func regenerate_id_files(root_categories: Array[PandoraCategory]) -> void
 	var class_to_entity_map = generate_class_to_entity_map(root_categories)
 	for entity_class in class_to_entity_map:
 		var file_content = generate_entity_id_file(entity_class, class_to_entity_map[entity_class])
-		_write_to_file(entity_class, file_content)
+		if not file_content.is_empty():
+			_write_to_file(entity_class, file_content)
 
 
 static func generate_class_to_entity_map(root_categories: Array[PandoraCategory]) -> Dictionary:
@@ -16,6 +17,8 @@ static func generate_class_to_entity_map(root_categories: Array[PandoraCategory]
 
 
 static func generate_entity_id_file(entity_class_name: String, entities: Array[PandoraEntity]) -> Array[String]:
+	if entities.is_empty():
+		return []
 	var lines:Array[String] = ["# Do not modify! Auto-generated file.", "class_name " + entity_class_name + "\n"]
 	var name_usages = {}
 	for entity in entities:

@@ -53,6 +53,10 @@
 					"Maximum Stack Size": {
 						"type": "int",
 						"value": -10
+					},
+					"float property": {
+						"type": "float",
+						"value": 0.0990471839908196
 					}
 				}
 			},
@@ -74,7 +78,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908252
+						"value": 0.0990471839908196
 					}
 				}
 			},
