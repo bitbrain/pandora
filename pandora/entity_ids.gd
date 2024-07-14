@@ -1,4 +1,3 @@
 # Do not modify! Auto-generated file.
-class_name Armory
+class_name EntityIds
 
-const SHIELD = "49"

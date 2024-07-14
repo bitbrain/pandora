@@ -2,11 +2,22 @@
 class_name PandoraCategories
 
 
-const ROOT = "d4XcsGkH2Q"
+const ITEMS = "1"
+const RARITY = "16"
+const QUESTS = "27"
+const DIALOGUES = "28"
+const SPELLS = "29"
+const MOCK__REQUIRED_FOR_TESTING__ = "54"
+const NPCS = "2"
 
 
-class RootCategories:
-	const ITEMS = "BUN2WCGz4q"
-	const NPCS = "UW1OQAniX7"
+class ItemsArmoryCategories:
+	const SHIELDS = "8"
+
+
+class ItemsCategories:
+	const ARMORY = "3"
+	const TOOLS = "4"
+	const ORES = "13"
 
 
