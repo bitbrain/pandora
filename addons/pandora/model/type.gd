@@ -73,8 +73,12 @@ static func lookup(name: String) -> PandoraPropertyType:
 
 	if ResourceLoader.exists(type_path):
 		var ScriptType = load(type_path)
-		if ScriptType != null and ScriptType.has_source_code():
-			return ScriptType.new()
+		if ScriptType != null:
+			if Engine.is_editor_hint() and ScriptType.has_source_code():
+				return ScriptType.new()
+		else:
+			if ScriptType.can_instantiate():
+				return ScriptType.new()
 
 	return UndefinedType.new()
 

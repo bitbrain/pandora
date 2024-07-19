@@ -39,7 +39,7 @@ static func create_entity_from_script(
 
 static func _get_entity_class(path: String) -> GDScript:
 	var EntityClass = load(path)
-	if EntityClass == null:
+	if EntityClass == null or not EntityClass.can_instantiate():
 		push_warning("Unable to find " + path + " - defaulting to PandoraEntity instead.")
 		EntityClass = PandoraEntityScript
 	return EntityClass
