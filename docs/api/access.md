@@ -45,6 +45,26 @@ Within the Godot node editor properties, then select the entity of your choice f
 
 ![custom-type-exports](../assets/custom_type_exports.gif)
 
+## Category Exports
+
+Pandora allows you to define categories on nodes directly inside the editor:
+
+- The exported type **must** extend `PandoraCategory`
+- The exported type **must** be a `@tool` script
+
+This can be done as follows:
+
+```gdscript
+extends Node2D
+
+@export var category:PandoraCategory
+
+func _ready() -> void:
+   var entities:Array<PandoraEntity> = Pandora.get_all_entities(category)
+```
+
+This allows you to tailor certain nodes towards specific categories directly in the editor.
+
 ## Type checks
 
 Pandora provides various ways to check if an entity is of a specific "type".
