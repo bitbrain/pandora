@@ -36,7 +36,7 @@ func parse_value(variant: Variant, settings: Dictionary = {}) -> Variant:
 		for i in range(dict.size()):
 			var value = dict[str(i)]
 			if not settings.is_empty():
-				if settings[SETTING_ARRAY_TYPE] == "reference":
+				if settings[SETTING_ARRAY_TYPE] == "reference" and "_entity_id" in value:
 					value = PandoraReference.new(value["_entity_id"], value["_type"]).get_entity()
 				if settings[SETTING_ARRAY_TYPE] == "resource":
 					value = load(value)
