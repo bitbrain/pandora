@@ -25,6 +25,8 @@ concurrency:
 
 jobs:
   unit-tests:
+    timeout-minutes: 5
+
     runs-on: ubuntu-latest
     permissions:
       actions: write
