@@ -27,6 +27,7 @@ func _ready() -> void:
 		GdUnitSettings.setup()
 	GdUnit4Version.init_version_label(_version_label)
 	_font_size = GdUnitFonts.init_fonts(_version_label)
+	@warning_ignore("return_value_discarded")
 	about_to_popup.connect(_do_setup_properties)
 
 
@@ -54,25 +55,30 @@ func setup_properties(properties_parent: Node, property_category: String) -> voi
 	theme_.set_constant("h_separation", "GridContainer", 12)
 	var last_category := "!"
 	var min_size_overall := 0.0
+	var labels := []
+	var inputs := []
+	var info_labels := []
+	var grid: GridContainer = null
 	for p in category_properties:
 		var min_size_ := 0.0
-		var grid := GridContainer.new()
-		grid.columns = 4
-		grid.theme = theme_
 		var property: GdUnitProperty = p
 		var current_category := property.category()
-		if current_category != last_category:
+		if not grid or current_category != last_category:
+			grid = GridContainer.new()
+			grid.columns = 4
+			grid.theme = theme_
+
 			var sub_category: Node = _properties_template.get_child(3).duplicate()
 			sub_category.get_child(0).text = current_category.capitalize()
 			sub_category.custom_minimum_size.y = _font_size + 16
 			properties_parent.add_child(sub_category)
+			properties_parent.add_child(grid)
 			last_category = current_category
 		# property name
 		var label: Label = _properties_template.get_child(0).duplicate()
 		label.text = _to_human_readable(property.name())
-		label.custom_minimum_size = Vector2(_font_size * 20, 0)
+		labels.append(label)
 		grid.add_child(label)
-		min_size_ += label.size.x
 
 		# property reset btn
 		var reset_btn: Button = _properties_template.get_child(1).duplicate()
@@ -83,21 +89,26 @@ func setup_properties(properties_parent: Node, property_category: String) -> voi
 
 		# property type specific input element
 		var input: Node = _create_input_element(property, reset_btn)
-		input.custom_minimum_size = Vector2(_font_size * 15, 0)
+		inputs.append(input)
 		grid.add_child(input)
-		min_size_ += input.size.x
+		@warning_ignore("return_value_discarded")
 		reset_btn.pressed.connect(_on_btn_property_reset_pressed.bind(property, input, reset_btn))
 		# property help text
 		var info: Node = _properties_template.get_child(2).duplicate()
 		info.text = property.help()
+		info_labels.append(info)
 		grid.add_child(info)
-		min_size_ += info.text.length() * _font_size
 		if min_size_overall < min_size_:
 			min_size_overall = min_size_
-		properties_parent.add_child(grid)
+	for controls: Array in [labels, inputs, info_labels]:
+		var _size: float = controls.map(func(c: Control) -> float: return c.size.x).max()
+		min_size_overall += _size
+		for control: Control in controls:
+			control.custom_minimum_size.x = _size
 	properties_parent.custom_minimum_size.x = min_size_overall
 
 
+@warning_ignore("return_value_discarded")
 func _create_input_element(property: GdUnitProperty, reset_btn: Button) -> Node:
 	if property.is_selectable_value():
 		var options := OptionButton.new()
@@ -141,6 +152,7 @@ func to_shortcut(keys: PackedInt32Array) -> String:
 	return input_event.as_text()
 
 
+@warning_ignore("return_value_discarded")
 func to_keys(input_event: InputEventKey) -> PackedInt32Array:
 	var keys := PackedInt32Array()
 	if input_event.ctrl_pressed:
@@ -206,10 +218,12 @@ func rescan(update_scripts:=false) -> void:
 
 
 func _on_btn_report_bug_pressed() -> void:
+	@warning_ignore("return_value_discarded")
 	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=bug&projects=projects%2F5&template=bug_report.yml&title=GD-XXX%3A+Describe+the+issue+briefly")
 
 
 func _on_btn_request_feature_pressed() -> void:
+	@warning_ignore("return_value_discarded")
 	OS.shell_open("https://github.com/MikeSchulze/gdUnit4/issues/new?assignees=MikeSchulze&labels=enhancement&projects=&template=feature_request.md&title=")
 
 

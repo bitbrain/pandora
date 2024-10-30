@@ -50,6 +50,7 @@ static func instance() -> GdUnitCommandHandler:
 	return GdUnitSingleton.instance("GdUnitCommandHandler", func() -> GdUnitCommandHandler: return GdUnitCommandHandler.new())
 
 
+@warning_ignore("return_value_discarded")
 func _init() -> void:
 	assert_shortcut_mappings(SETTINGS_SHORTCUT_MAPPING)
 
@@ -58,6 +59,7 @@ func _init() -> void:
 	GdUnitSignals.instance().gdunit_client_disconnected.connect(_on_client_disconnected)
 	GdUnitSignals.instance().gdunit_settings_changed.connect(_on_settings_changed)
 	# preload previous test execution
+	@warning_ignore("return_value_discarded")
 	_runner_config.load_config()
 
 	init_shortcuts()
@@ -75,7 +77,8 @@ func _init() -> void:
 
 	# schedule discover tests if enabled and running inside the editor
 	if Engine.is_editor_hint() and GdUnitSettings.is_test_discover_enabled():
-		var timer :SceneTreeTimer = Engine.get_main_loop().create_timer(5)
+		var timer :SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(5)
+		@warning_ignore("return_value_discarded")
 		timer.timeout.connect(cmd_discover_tests)
 
 
@@ -119,7 +122,7 @@ func init_shortcuts() -> void:
 		register_shortcut(shortcut, inputEvent)
 
 
-func create_shortcut_input_even(key_codes : PackedInt32Array) -> InputEventKey:
+func create_shortcut_input_even(key_codes: PackedInt32Array) -> InputEventKey:
 	var inputEvent :InputEventKey = InputEventKey.new()
 	inputEvent.pressed = true
 	for key_code in key_codes:
@@ -204,7 +207,8 @@ func cmd_run(debug :bool) -> void:
 	if _is_running:
 		return
 	# save current selected excution config
-	var result := _runner_config.set_server_port(Engine.get_meta("gdunit_server_port")).save_config()
+	var server_port: int = Engine.get_meta("gdunit_server_port")
+	var result := _runner_config.set_server_port(server_port).save_config()
 	if result.is_error():
 		push_error(result.error_message())
 		return
@@ -239,6 +243,7 @@ func cmd_editor_run_test(debug :bool) -> void:
 	var cursor_line := active_base_editor().get_caret_line()
 	#run test case?
 	var regex := RegEx.new()
+	@warning_ignore("return_value_discarded")
 	regex.compile("(^func[ ,\t])(test_[a-zA-Z0-9_]*)")
 	var result := regex.search(active_base_editor().get_line(cursor_line))
 	if result:
@@ -259,8 +264,10 @@ func cmd_create_test() -> void:
 		# show error dialog
 		push_error("Failed to create test case: %s" % result.error_message())
 		return
-	var info := result.value() as Dictionary
-	ScriptEditorControls.edit_script(info.get("path"), info.get("line"))
+	var info: Dictionary = result.value()
+	var script_path: String = info.get("path")
+	var script_line: int = info.get("line")
+	ScriptEditorControls.edit_script(script_path, script_line)
 
 
 func cmd_discover_tests() -> void:
@@ -276,8 +283,10 @@ static func scan_test_directorys(base_directory :String, test_directory: String,
 		if GdUnitTestSuiteScanner.exclude_scan_directories.has(current_directory):
 			continue
 		if match_test_directory(directory, test_directory):
+			@warning_ignore("return_value_discarded")
 			test_suite_paths.append(current_directory)
 		else:
+			@warning_ignore("return_value_discarded")
 			scan_test_directorys(current_directory, test_directory, test_suite_paths)
 	return test_suite_paths
 
@@ -339,11 +348,13 @@ func _on_run_overall_pressed(_debug := false) -> void:
 func _on_settings_changed(property :GdUnitProperty) -> void:
 	if SETTINGS_SHORTCUT_MAPPING.has(property.name()):
 		var shortcut :GdUnitShortcut.ShortCut = SETTINGS_SHORTCUT_MAPPING.get(property.name())
-		var input_event := create_shortcut_input_even(property.value())
+		var value: PackedInt32Array = property.value()
+		var input_event := create_shortcut_input_even(value)
 		prints("Shortcut changed: '%s' to '%s'" % [GdUnitShortcut.ShortCut.keys()[shortcut], input_event.as_text()])
 		register_shortcut(shortcut, input_event)
 	if property.name() == GdUnitSettings.TEST_DISCOVER_ENABLED:
-		var timer :SceneTreeTimer = Engine.get_main_loop().create_timer(3)
+		var timer :SceneTreeTimer = (Engine.get_main_loop() as SceneTree).create_timer(3)
+		@warning_ignore("return_value_discarded")
 		timer.timeout.connect(cmd_discover_tests)
 
 

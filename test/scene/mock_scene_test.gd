@@ -16,3 +16,4 @@ func test_instantiate_mock_data_via_scene() -> void:
 	
 	assert_that(tree.get_entity_instance()).is_not_null()
 	assert_bool(tree.get_entity_instance() is CustomMockEntity).is_true()
+	assert_bool(tree.get_category() is PandoraCategory).is_true()

@@ -38,6 +38,7 @@ func server_port() -> int:
 	return _config.get(SERVER_PORT, -1)
 
 
+@warning_ignore("return_value_discarded")
 func self_test() -> GdUnitRunnerConfig:
 	add_test_suite("res://addons/gdUnit4/test/")
 	add_test_suite("res://addons/gdUnit4/mono/test/")
@@ -52,6 +53,7 @@ func add_test_suite(p_resource_path :String) -> GdUnitRunnerConfig:
 
 func add_test_suites(resource_paths :PackedStringArray) -> GdUnitRunnerConfig:
 	for resource_path_ in resource_paths:
+		@warning_ignore("return_value_discarded")
 		add_test_suite(resource_path_)
 	return self
 
@@ -60,8 +62,10 @@ func add_test_case(p_resource_path :String, test_name :StringName, test_param_in
 	var to_execute_ := to_execute()
 	var test_cases :PackedStringArray = to_execute_.get(p_resource_path, PackedStringArray())
 	if test_param_index != -1:
+		@warning_ignore("return_value_discarded")
 		test_cases.append("%s:%d" % [test_name, test_param_index])
 	else:
+		@warning_ignore("return_value_discarded")
 		test_cases.append(test_name)
 	to_execute_[p_resource_path] = test_cases
 	return self
@@ -72,18 +76,22 @@ func add_test_case(p_resource_path :String, test_name :StringName, test_param_in
 # '/path/path', res://path/path', 'res://path/path/testsuite.gd' or 'testsuite'
 # 'res://path/path/testsuite.gd:test_case' or 'testsuite:test_case'
 func skip_test_suite(value :StringName) -> GdUnitRunnerConfig:
-	var parts :Array =  GdUnitFileAccess.make_qualified_path(value).rsplit(":")
+	var parts: PackedStringArray = GdUnitFileAccess.make_qualified_path(value).rsplit(":")
 	if parts[0] == "res":
-		parts.pop_front()
+		parts.remove_at(0)
 	parts[0] = GdUnitFileAccess.make_qualified_path(parts[0])
 	match parts.size():
-		1: skipped()[parts[0]] = PackedStringArray()
-		2: skip_test_case(parts[0], parts[1])
+		1:
+			skipped()[parts[0]] = PackedStringArray()
+		2:
+			@warning_ignore("return_value_discarded")
+			skip_test_case(parts[0], parts[1])
 	return self
 
 
 func skip_test_suites(resource_paths :PackedStringArray) -> GdUnitRunnerConfig:
 	for resource_path_ in resource_paths:
+		@warning_ignore("return_value_discarded")
 		skip_test_suite(resource_path_)
 	return self
 
@@ -91,6 +99,7 @@ func skip_test_suites(resource_paths :PackedStringArray) -> GdUnitRunnerConfig:
 func skip_test_case(p_resource_path :String, test_name :StringName) -> GdUnitRunnerConfig:
 	var to_ignore := skipped()
 	var test_cases :PackedStringArray = to_ignore.get(p_resource_path, PackedStringArray())
+	@warning_ignore("return_value_discarded")
 	test_cases.append(test_name)
 	to_ignore[p_resource_path] = test_cases
 	return self
@@ -129,19 +138,20 @@ func load_config(path :String = CONFIG_FILE) -> GdUnitResult:
 		var error := test_json_conv.parse(content)
 		if error != OK:
 			return GdUnitResult.error("The runner configuration '%s' is invalid! The format is changed please delete it manually and start a new test run." % path)
-		_config = test_json_conv.get_data() as Dictionary
+		_config = test_json_conv.get_data()
 		if not _config.has(VERSION):
 			return GdUnitResult.error("The runner configuration '%s' is invalid! The format is changed please delete it manually and start a new test run." % path)
 		fix_value_types()
 	return GdUnitResult.success(path)
 
 
+@warning_ignore("unsafe_cast")
 func fix_value_types() -> void:
 	# fix float value to int json stores all numbers as float
 	var server_port_ :int = _config.get(SERVER_PORT, -1)
 	_config[SERVER_PORT] = server_port_
-	convert_Array_to_PackedStringArray(_config[INCLUDED])
-	convert_Array_to_PackedStringArray(_config[SKIPPED])
+	convert_Array_to_PackedStringArray(_config[INCLUDED] as Dictionary)
+	convert_Array_to_PackedStringArray(_config[SKIPPED] as Dictionary)
 
 
 func convert_Array_to_PackedStringArray(data :Dictionary) -> void:

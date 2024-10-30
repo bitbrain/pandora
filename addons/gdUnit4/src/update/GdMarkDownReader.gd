@@ -109,6 +109,7 @@ func regex(pattern :String) -> RegEx:
 
 
 func _init() -> void:
+	@warning_ignore("return_value_discarded")
 	_img_replace_regex.compile("\\[img\\]((.*?))\\[/img\\]")
 
 
@@ -116,6 +117,7 @@ func set_http_client(client :GdUnitUpdateClient) -> void:
 	_client = client
 
 
+@warning_ignore("return_value_discarded")
 func _notification(what :int) -> void:
 	if what == NOTIFICATION_PREDELETE:
 		# finally remove_at the downloaded images
@@ -149,26 +151,29 @@ func to_bbcode(input :String) -> String:
 		var regex_ :RegEx = pattern[0]
 		var bb_replace :Variant = pattern[1]
 		if bb_replace is Callable:
+			@warning_ignore("unsafe_method_access")
 			input = await bb_replace.call(regex_, input)
 		else:
-			input = regex_.sub(input, bb_replace, true)
+			@warning_ignore("unsafe_cast")
+			input = regex_.sub(input, bb_replace as String, true)
 	return input + "\n"
 
 
-func process_tables(input :String) -> String:
-	var bbcode := Array()
-	var lines := Array(input.split("\n"))
+func process_tables(input: String) -> String:
+	var bbcode := PackedStringArray()
+	var lines: Array[String] = Array(input.split("\n") as Array, TYPE_STRING, "", null)
 	while not lines.is_empty():
 		if is_table(lines[0]):
 			bbcode.append_array(parse_table(lines))
 			continue
-		bbcode.append(lines.pop_front())
-	return "\n".join(PackedStringArray(bbcode))
+		@warning_ignore("return_value_discarded", "unsafe_cast")
+		bbcode.append(lines.pop_front() as String)
+	return "\n".join(bbcode)
 
 
 class Table:
-	var _columns :int
-	var _rows := Array()
+	var _columns: int
+	var _rows: Array[Row] = []
 
 	class Row:
 		var _cells := PackedStringArray()
@@ -176,6 +181,7 @@ class Table:
 		func _init(cells :PackedStringArray, columns :int) -> void:
 			_cells = cells
 			for i in range(_cells.size(), columns):
+				@warning_ignore("return_value_discarded")
 				_cells.append("")
 
 		func to_bbcode(cell_sizes :PackedInt32Array, bold :bool) -> String:
@@ -186,6 +192,7 @@ class Table:
 					cell = create_line(cell_sizes[cell_index])
 				if bold:
 					cell = "[b]%s[/b]" % cell
+				@warning_ignore("return_value_discarded")
 				cells.append("[cell]%s[/cell]" % cell)
 			return "|".join(cells)
 
@@ -208,6 +215,7 @@ class Table:
 	func calculate_max_cell_sizes() -> PackedInt32Array:
 		var cells_size := PackedInt32Array()
 		for column in _columns:
+			@warning_ignore("return_value_discarded")
 			cells_size.append(0)
 
 		for row_index in _rows.size():
@@ -219,6 +227,7 @@ class Table:
 					cells_size[cell_index] = size
 		return cells_size
 
+	@warning_ignore("return_value_discarded")
 	func to_bbcode() -> PackedStringArray:
 		var cell_sizes := calculate_max_cell_sizes()
 		var bb_code := PackedStringArray()
@@ -292,6 +301,7 @@ func process_image_references(p_regex :RegEx, p_input :String) -> String:
 	return extracted_references
 
 
+@warning_ignore("return_value_discarded")
 func process_image(p_regex :RegEx, p_input :String) -> String:
 	var to_replace := PackedStringArray()
 	var tool_tips :=  PackedStringArray()
@@ -312,6 +322,7 @@ func process_image(p_regex :RegEx, p_input :String) -> String:
 
 
 func _process_external_image_resources(input :String) -> String:
+	@warning_ignore("return_value_discarded")
 	DirAccess.make_dir_recursive_absolute(image_download_folder)
 	# scan all img for external resources and download it
 	for value in _img_replace_regex.search_all(input):
@@ -334,6 +345,7 @@ func _process_external_image_resources(input :String) -> String:
 					var err := image.save_png(new_url)
 					if err:
 						push_error("Can't save image to '%s'. Error: %s" % [new_url, error_string(err)])
+					@warning_ignore("return_value_discarded")
 					_image_urls.append(new_url)
 					input = input.replace(image_url, new_url)
 	return input

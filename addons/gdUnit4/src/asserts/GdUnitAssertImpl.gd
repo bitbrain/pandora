@@ -1,3 +1,4 @@
+class_name GdUnitAssertImpl
 extends GdUnitAssert
 
 
@@ -12,8 +13,6 @@ func _init(current :Variant) -> void:
 	# save the actual assert instance on the current thread context
 	GdUnitThreadManager.get_current_context().set_assert(self)
 	GdAssertReports.reset_last_error_line_number()
-
-
 
 
 
@@ -39,7 +38,7 @@ func report_error(failure :String, failure_line_number: int = -1) -> GdUnitAsser
 	return self
 
 
-func test_fail() -> GdUnitAssert:
+func do_fail() -> GdUnitAssert:
 	return report_error(GdAssertMessages.error_not_implemented())
 
 

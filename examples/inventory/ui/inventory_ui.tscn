@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://2meu4gdjnodt"]
+[gd_scene load_steps=5 format=3 uid="uid://2meu4gdjnodt"]
 
 [ext_resource type="Script" path="res://examples/inventory/ui/inventory_ui.gd" id="1_0oe7e"]
 [ext_resource type="Texture2D" uid="uid://cb6str3hxrsdi" path="res://addons/pandora/icons/KeyValue.svg" id="2_hk48w"]
+[ext_resource type="Script" path="res://examples/inventory/item.gd" id="2_u024b"]
+
+[sub_resource type="Resource" id="Resource_aygen"]
+script = ExtResource("2_u024b")
+_id = "49"
 
 [node name="InventoryUI" type="GridContainer"]
 anchors_preset = 15
@@ -13,6 +18,7 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 3
 script = ExtResource("1_0oe7e")
+category = SubResource("Resource_aygen")
 
 [node name="Slot1" type="TextureRect" parent="."]
 layout_mode = 2

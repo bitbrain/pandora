@@ -22,6 +22,7 @@ func _init(instance :Object, func_name :String, args := Array()) -> void:
 	GdUnitThreadManager.get_current_context().set_assert(self)
 	# verify at first the function name exists
 	if not instance.has_method(func_name):
+		@warning_ignore("return_value_discarded")
 		report_error("The function '%s' do not exists checked instance '%s'." % [func_name, instance])
 		_interrupted = true
 	else:
@@ -33,7 +34,7 @@ func _notification(_what :int) -> void:
 		_current_value_provider.dispose()
 		_current_value_provider = null
 	if is_instance_valid(_sleep_timer):
-		Engine.get_main_loop().root.remove_child(_sleep_timer)
+		(Engine.get_main_loop() as SceneTree).root.remove_child(_sleep_timer)
 		_sleep_timer.stop()
 		_sleep_timer.free()
 		_sleep_timer = null
@@ -52,10 +53,6 @@ func report_error(failure :String) -> GdUnitFuncAssert:
 
 func failure_message() -> String:
 	return _current_failure_message
-
-
-func send_report(report :GdUnitReport)-> void:
-	GdUnitSignals.instance().gdunit_report.emit(report)
 
 
 func override_failure_message(message :String) -> GdUnitFuncAssert:
@@ -124,8 +121,10 @@ func _validate_callback(predicate :Callable, expected :Variant = null) -> void:
 	var time_scale := Engine.get_time_scale()
 	var timer := Timer.new()
 	timer.set_name("gdunit_funcassert_interrupt_timer_%d" % timer.get_instance_id())
-	Engine.get_main_loop().root.add_child(timer)
+	var scene_tree := Engine.get_main_loop() as SceneTree
+	scene_tree.root.add_child(timer)
 	timer.add_to_group("GdUnitTimers")
+	@warning_ignore("return_value_discarded")
 	timer.timeout.connect(func do_interrupt() -> void:
 		_interrupted = true
 		, CONNECT_DEFERRED)
@@ -133,7 +132,7 @@ func _validate_callback(predicate :Callable, expected :Variant = null) -> void:
 	timer.start((_timeout/1000.0)*time_scale)
 	_sleep_timer = Timer.new()
 	_sleep_timer.set_name("gdunit_funcassert_sleep_timer_%d" % _sleep_timer.get_instance_id() )
-	Engine.get_main_loop().root.add_child(_sleep_timer)
+	scene_tree.root.add_child(_sleep_timer)
 
 	while true:
 		var current :Variant = await next_current_value()
@@ -145,13 +144,20 @@ func _validate_callback(predicate :Callable, expected :Variant = null) -> void:
 			await _sleep_timer.timeout
 
 	_sleep_timer.stop()
-	await Engine.get_main_loop().process_frame
+	await scene_tree.process_frame
 	if _interrupted:
 		# https://github.com/godotengine/godot/issues/73052
 		#var predicate_name = predicate.get_method()
 		var predicate_name :String = str(predicate).split('::')[1]
-		report_error(GdAssertMessages.error_interrupted(predicate_name.strip_edges().trim_prefix("cb_"), expected, LocalTime.elapsed(_timeout)))
+		@warning_ignore("return_value_discarded")
+		report_error(GdAssertMessages.error_interrupted(
+			predicate_name.strip_edges().trim_prefix("cb_"),
+			expected,
+			LocalTime.elapsed(_timeout)
+			)
+		)
 	else:
+		@warning_ignore("return_value_discarded")
 		report_success()
 	_sleep_timer.free()
 	timer.free()

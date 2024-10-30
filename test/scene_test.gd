@@ -30,3 +30,4 @@ func test_initialize_scene() -> void:
 	await runner.simulate_frames(1)
 	
 	assert_that(scene.get_entity_instance()).is_not_null()
+	assert_that(scene.get_category()).is_not_null()
