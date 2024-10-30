@@ -44,6 +44,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set Runner Tracking ID to prevent orphan processes
+        run: |
+          export RUNNER_TRACKING_ID=""
+
       - name: Run GDUnit4 tests
         uses: MikeSchulze/gdUnit4-action@v1.1.1
         with:
