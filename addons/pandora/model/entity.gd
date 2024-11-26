@@ -25,7 +25,10 @@ var _category_id: String:
 	get():
 		if is_instance():
 			var original = Pandora.get_entity(_instanced_from_id)
-			return original._category_id
+			if original:
+				return original._category_id
+			else:
+				return ''
 		else:
 			return _category_id
 var _script_path: String
