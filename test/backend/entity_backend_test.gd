@@ -741,4 +741,3 @@ func test_duplicate_entity_instance_is_independent_of_former() -> void:
 	duplicate.set_string("test", "duplicate-instance")
 	assert_that(instance.get_string('test')).is_equal("original-instance")
 	assert_that(duplicate.get_string('test')).is_equal("duplicate-instance")
-

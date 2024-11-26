@@ -158,3 +158,17 @@ func test_calculate_import_data() -> void:
 	var total_items:int = Pandora.calculate_import_data(data_file)
 
 	assert_that(total_items > 0).is_true()
+
+
+func test_category_of_instance() -> void:
+	Pandora._clear()
+	var backend = create_object_backend() as PandoraEntityBackend
+	var category = backend.create_category("Category")
+	var child_category = backend.create_category("Child", category)
+	var entity = backend.create_entity("Entity", child_category)
+	var instance = entity.instantiate()
+	var duplicate = instance.duplicate_instance()
+	assert_that(instance.is_category(category.get_entity_id())).is_equal(true)
+	assert_that(duplicate.is_category(category.get_entity_id())).is_equal(true)
+	assert_that(instance.is_category(child_category.get_entity_id())).is_equal(true)
+	assert_that(duplicate.is_category(child_category.get_entity_id())).is_equal(true)

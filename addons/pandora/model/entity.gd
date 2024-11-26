@@ -21,7 +21,13 @@ signal id_generation_class_changed(new_id_generation_path: String)
 
 var _name: String
 var _icon_path: String
-var _category_id: String
+var _category_id: String:
+	get():
+		if is_instance():
+			var original = Pandora.get_entity(_instanced_from_id)
+			return original._category_id
+		else:
+			return _category_id
 var _script_path: String
 var _icon_color: Color = Color.TRANSPARENT
 var _index: int
@@ -614,8 +620,6 @@ func get_index() -> int:
 
 
 func is_category(category_id: String) -> bool:
-	if is_instance():
-		return false
 	if self._category_id == category_id:
 		return true
 	# find parent category with id
