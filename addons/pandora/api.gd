@@ -225,12 +225,12 @@ func deserialize(data: Dictionary) -> PandoraEntity:
 	if not _loaded:
 		push_warning("Pandora - cannot deserialize: data not initialized yet.")
 		return null
-	if not data.has("_instanced_from_id"):
+	if not data.has("_instance_id"):
 		push_error(
 			"Unable to deserialize data! Not an instance! Call PandoraEntity.instantiate() to create instances."
 		)
 		return
-	var entity = Pandora.get_entity(data["_instanced_from_id"])
+	var entity = Pandora.get_entity(data["_id"])
 	if not entity:
 		return
 	var instance = ScriptUtil.create_entity_from_script(entity.get_script_path(), "", "", "", "")

@@ -4,8 +4,13 @@
 class_name PandoraEntity extends Resource
 
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
+const NanoIdGenerator = preload("res://addons/pandora/util/nanoid_generator.gd")
 const CATEGORY_ICON_PATH = "res://addons/pandora/icons/Folder.svg"
 const ENTITY_ICON_PATH = "res://addons/pandora/icons/Object.svg"
+
+# we require nano ids for instances as they are non-incremental
+# and instances are persisted outside of Pandora.
+static var _INSTANCE_ID_GENERATOR = NanoIdGenerator.new()
 
 signal name_changed(new_name: String)
 signal order_changed(new_index: int)
@@ -24,7 +29,7 @@ var _icon_path: String
 var _category_id: String:
 	get():
 		if is_instance():
-			var original = Pandora.get_entity(_instanced_from_id)
+			var original = Pandora.get_entity(_id)
 			if original:
 				return original._category_id
 			else:
@@ -48,7 +53,7 @@ var _ids_generation_class = ""
 
 # String -> PandoraPropertyInstance
 var _instance_properties: Dictionary = {}
-var _instanced_from_id: String
+var _instance_id: String
 
 
 ## Wrapper around PandoraProperty that is used to manage overrides.
@@ -187,12 +192,12 @@ func instantiate() -> PandoraEntity:
 	if entity != null:
 		# ensure to store the id on instances too, so scene saving does not break.
 		entity._id = get_entity_id()
-		entity._instanced_from_id = get_entity_id()
+		entity._instance_id = _INSTANCE_ID_GENERATOR.generate()
 	return entity
 
 
 func is_instance() -> bool:
-	return _instanced_from_id != ""
+	return _instance_id != ""
 
 
 func get_entity_id() -> String:
@@ -634,6 +639,10 @@ func is_category(category_id: String) -> bool:
 		category = Pandora.get_category(parent_id)
 		parent_id = category._category_id
 	return false
+	
+	
+func get_entity_instance_id() -> String:
+	return self._instance_id
 
 
 ## Initializes this entity with the given data dictionary.
@@ -641,8 +650,8 @@ func is_category(category_id: String) -> bool:
 func load_data(data: Dictionary) -> void:
 	if data.has("_id"):
 		_id = data["_id"]
-	if data.has("_instanced_from_id"):
-		_instanced_from_id = data["_instanced_from_id"]
+	if data.has("_instance_id"):
+		_instance_id = data["_instance_id"]
 		_instance_properties = _load_instance_properties(data["_instance_properties"])
 	else:
 		_name = data["_name"]
@@ -673,7 +682,7 @@ func save_data() -> Dictionary:
 		dict["_id"] = _id
 
 	if is_instance():
-		dict["_instanced_from_id"] = _instanced_from_id
+		dict["_instance_id"] = _instance_id
 		dict["_instance_properties"] = _save_instance_properties()
 	else:
 		dict["_name"] = _name
@@ -780,7 +789,7 @@ func _initialize_if_not_loaded() -> void:
 func _get_instanced_from_entity() -> PandoraEntity:
 	if not is_instance():
 		return self
-	return Pandora.get_entity(self._instanced_from_id)
+	return Pandora.get_entity(self._id)
 
 
 func _get_instanced_from_category() -> PandoraCategory:

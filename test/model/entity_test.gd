@@ -21,6 +21,15 @@ func test_instantiate_entity() -> void:
 	var instance = entity.instantiate()
 	assert_that(instance.get_entity_id()).is_equal("123")
 	assert_bool(instance.is_instance()).is_true()
+	assert_that(instance.get_entity_instance_id()).is_not_equal("123")
+	
+	
+func test_instantiate_entity_unique_instance_ids() -> void:
+	var entity = PandoraEntity.new()
+	entity.init_entity("123", "Test Entity", "res://hello.jpg", "123")
+	var instance_1 = entity.instantiate()
+	var instance_2 = entity.instantiate()
+	assert_that(instance_1.get_entity_instance_id()).is_not_equal(instance_2.get_entity_instance_id())
 
 
 func test_duplicate_entity() -> void:
@@ -29,6 +38,14 @@ func test_duplicate_entity() -> void:
 	var instance = entity.duplicate_instance()
 	assert_that(instance.get_entity_id()).is_equal("123")
 	assert_bool(instance.is_instance()).is_true()
+	
+	
+func test_duplicate_entity_unique_instance_ids() -> void:
+	var entity = PandoraEntity.new()
+	entity.init_entity("123", "Test Entity", "res://hello.jpg", "123")
+	var instance_1 = entity.duplicate_instance()
+	var instance_2 = entity.duplicate_instance()
+	assert_that(instance_1.get_entity_instance_id()).is_not_equal(instance_2.get_entity_instance_id())
 
 
 func test_entity_set_get_vector2_property() -> void:
