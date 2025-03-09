@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://crcu03fp7fkyd"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/array_editor/array_item.gd" id="1_3q6kl"]
+[ext_resource type="Script" uid="uid://csaisqucgg6bx" path="res://addons/pandora/ui/components/array_editor/array_item.gd" id="1_3q6kl"]
 [ext_resource type="Texture2D" uid="uid://b2s1ixfakdj1e" path="res://addons/pandora/icons/Remove.svg" id="2_rgeed"]
 
 [node name="ArrayItem" type="PanelContainer"]

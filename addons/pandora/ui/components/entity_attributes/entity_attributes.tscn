@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ceqq28yvnhs2e"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.gd" id="1_hnn1r"]
+[ext_resource type="Script" uid="uid://d3wqprwajfpi3" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.gd" id="1_hnn1r"]
 [ext_resource type="PackedScene" uid="uid://dvoxop0o2mlfi" path="res://addons/pandora/ui/components/texture_picker/texture_picker.tscn" id="2_tv6yu"]
 [ext_resource type="PackedScene" uid="uid://bp0gaqyb10bns" path="res://addons/pandora/ui/components/script_picker/script_picker.tscn" id="3_e2peg"]
 [ext_resource type="PackedScene" uid="uid://cex30s5jawlql" path="res://addons/pandora/ui/components/color_picker/color_picker.tscn" id="3_o3ybf"]

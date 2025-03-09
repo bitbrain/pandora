@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ceboo5esbe2ld"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.gd" id="1_4evpu"]
+[ext_resource type="Script" uid="uid://4hj8geca1kqp" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.gd" id="1_4evpu"]
 
 [node name="ImportDialog" type="Control"]
 layout_mode = 3

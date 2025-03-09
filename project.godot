@@ -15,7 +15,7 @@ config/tags=PackedStringArray("addon", "godot4", "rpg", "data")
 run/main_scene="res://TestScene.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="pandora"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/image="res://splash.png"
 config/icon="res://addons/pandora/icons/icon.png"
 
@@ -35,3 +35,4 @@ import/blender/enabled=false
 
 settings/test/test_discovery=true
 ui/inspector/tree_sort_mode=1
+settings/common/update_notification_enabled=false

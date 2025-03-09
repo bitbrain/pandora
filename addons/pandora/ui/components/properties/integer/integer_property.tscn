@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://kgit41uva08d"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/integer/integer_property.gd" id="1_82ywy"]
+[ext_resource type="Script" uid="uid://3dvks83yldd3" path="res://addons/pandora/ui/components/properties/integer/integer_property.gd" id="1_82ywy"]
 
 [node name="IntegerProperty" type="MarginContainer"]
 size_flags_horizontal = 3

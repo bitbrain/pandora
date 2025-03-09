@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://c3j2xs0rnqdst"]
 
-[ext_resource type="Script" path="res://mock/mock_scene.gd" id="1_m4lrk"]
-[ext_resource type="Script" path="res://mock/custom_mock_entity.gd" id="2_mijc7"]
-[ext_resource type="Script" path="res://addons/pandora/model/category.gd" id="3_dox3s"]
+[ext_resource type="Script" uid="uid://bhwuibto5k3jv" path="res://mock/mock_scene.gd" id="1_m4lrk"]
+[ext_resource type="Script" uid="uid://dp0reebqd8ox4" path="res://mock/custom_mock_entity.gd" id="2_mijc7"]
+[ext_resource type="Script" uid="uid://ddi7nbxu0sys3" path="res://addons/pandora/model/category.gd" id="3_dox3s"]
 
 [sub_resource type="Resource" id="Resource_qaqi5"]
 script = ExtResource("2_mijc7")

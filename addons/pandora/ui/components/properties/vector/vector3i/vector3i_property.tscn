@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://csevjm1e6lhlp"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/vector/vector_property.gd" id="1_3onub"]
+[ext_resource type="Script" uid="uid://d31s8isfsqird" path="res://addons/pandora/ui/components/properties/vector/vector_property.gd" id="1_3onub"]
 
 [node name="Vector3iProperty" type="MarginContainer"]
 anchors_preset = 15

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://xbns62fkvuc7"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/property_type_picker/property_type_picker.gd" id="1_7kqcl"]
+[ext_resource type="Script" uid="uid://clt62qk6a21q4" path="res://addons/pandora/ui/components/property_type_picker/property_type_picker.gd" id="1_7kqcl"]
 
 [node name="PropertyTypePicker" type="HBoxContainer"]
 anchors_preset = 15
