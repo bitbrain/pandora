@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dibfkp6i5uvgi"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/progress_bar/progress_bar.gd" id="1_ifnan"]
+[ext_resource type="Script" uid="uid://sjpp7qx4vbjd" path="res://addons/pandora/ui/components/progress_bar/progress_bar.gd" id="1_ifnan"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uy0ts"]
 bg_color = Color(0.278431, 0.701961, 0.360784, 1)

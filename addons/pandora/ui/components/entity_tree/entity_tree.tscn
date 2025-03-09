@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ctmsh7eg6wypu"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/entity_tree/entity_tree.gd" id="1_0uafu"]
+[ext_resource type="Script" uid="uid://nrk4g58k31is" path="res://addons/pandora/ui/components/entity_tree/entity_tree.gd" id="1_0uafu"]
 [ext_resource type="PackedScene" uid="uid://piqbfrsn5bi1" path="res://addons/pandora/ui/components/loading_spinner/LoadingSpinner.tscn" id="2_dokdi"]
 
 [node name="EntityTree" type="Tree"]

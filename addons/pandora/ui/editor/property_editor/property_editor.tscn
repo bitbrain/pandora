@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://clsxp8wg4ctet"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/editor/property_editor/property_editor.gd" id="1_r06w1"]
+[ext_resource type="Script" uid="uid://df4b8473mfmny" path="res://addons/pandora/ui/editor/property_editor/property_editor.gd" id="1_r06w1"]
 [ext_resource type="PackedScene" uid="uid://8namx0kxhw0" path="res://addons/pandora/ui/components/property_bar/property_bar.tscn" id="1_vndtp"]
 [ext_resource type="PackedScene" uid="uid://ceqq28yvnhs2e" path="res://addons/pandora/ui/components/entity_attributes/entity_attributes.tscn" id="3_tosw7"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="4_y2k2p"]

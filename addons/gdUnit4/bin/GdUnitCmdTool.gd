@@ -312,12 +312,12 @@ class CLIRunner:
 		commands.append_array(result.value() as Array)
 		result = (
 			CmdCommandHandler.new(_cmd_options)
-				.register_cb("-help", Callable(self, "show_help"))
-				.register_cb("--help-advanced", Callable(self, "show_advanced_help"))
-				.register_cb("-a", Callable(_runner_config, "add_test_suite"))
-				.register_cbv("-a", Callable(_runner_config, "add_test_suites"))
-				.register_cb("-i", Callable(_runner_config, "skip_test_suite"))
-				.register_cbv("-i", Callable(_runner_config, "skip_test_suites"))
+				.register_cb("-help", show_help)
+				.register_cb("--help-advanced", show_advanced_help)
+				.register_cb("-a", _runner_config.add_test_suite)
+				.register_cbv("-a", _runner_config.add_test_suites)
+				.register_cb("-i", _runner_config.skip_test_suite)
+				.register_cbv("-i", _runner_config.skip_test_suites)
 				.register_cb("-rd", set_report_dir)
 				.register_cb("-rc", set_report_count)
 				.register_cb("--selftest", run_self_test)
@@ -376,9 +376,9 @@ class CLIRunner:
 		var ts_scanner := GdUnitTestSuiteScanner.new()
 		for as_resource_path in to_execute.keys() as Array[String]:
 			var selected_tests: PackedStringArray = to_execute.get(as_resource_path)
-			var scaned_suites := ts_scanner.scan(as_resource_path)
-			skip_test_case(scaned_suites, selected_tests)
-			test_suites_to_process.append_array(scaned_suites)
+			var scanned_suites := ts_scanner.scan(as_resource_path)
+			skip_test_case(scanned_suites, selected_tests)
+			test_suites_to_process.append_array(scanned_suites)
 		skip_suites(test_suites_to_process, config)
 		return test_suites_to_process
 

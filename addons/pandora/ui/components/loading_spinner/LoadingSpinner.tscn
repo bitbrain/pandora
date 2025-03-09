@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://piqbfrsn5bi1"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/loading_spinner/loading_spinner.gd" id="1_waqf6"]
+[ext_resource type="Script" uid="uid://pdchat0hnc06" path="res://addons/pandora/ui/components/loading_spinner/loading_spinner.gd" id="1_waqf6"]
 [ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="2_0ad3g"]
 
 [node name="LoadingSpinner" type="CenterContainer"]

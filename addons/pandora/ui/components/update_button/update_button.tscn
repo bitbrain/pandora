@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dy4xl20q2nq7q"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/update_button/update_button.gd" id="1_0iteh"]
+[ext_resource type="Script" uid="uid://sn8ptmm6u17a" path="res://addons/pandora/ui/components/update_button/update_button.gd" id="1_0iteh"]
 [ext_resource type="PackedScene" uid="uid://dtwiql0cpn5hu" path="res://addons/pandora/ui/components/updater/updater.tscn" id="2_lifbu"]
 
 [node name="UpdateButton" type="Button"]

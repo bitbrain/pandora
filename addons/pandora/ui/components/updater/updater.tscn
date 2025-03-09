@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dtwiql0cpn5hu"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/updater/updater.gd" id="1_e18b4"]
+[ext_resource type="Script" uid="uid://df16diqheefu8" path="res://addons/pandora/ui/components/updater/updater.gd" id="1_e18b4"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="1_jpf8m"]
 
 [node name="UpdaterControl" type="Control"]

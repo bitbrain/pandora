@@ -224,11 +224,11 @@
 						"value": {
 							"0": {
 								"_entity_id": "50",
-								"_type": 0
+								"_type": 0.0
 							},
 							"1": {
 								"_entity_id": "51",
-								"_type": 0
+								"_type": 0.0
 							}
 						}
 					}
@@ -328,8 +328,8 @@
 				"_id": "35",
 				"_name": "Maximum Stack Size",
 				"_setting_overrides": {
-					"Max Value": 10,
-					"Min Value": -10
+					"Max Value": 10.0,
+					"Min Value": -10.0
 				},
 				"_type": "int"
 			},
@@ -367,15 +367,15 @@
 				"_id": "45",
 				"_name": "float property",
 				"_setting_overrides": {
-					"Max Value": 20,
-					"Min Value": -999,
+					"Max Value": 20.0,
+					"Min Value": -999.0,
 					"Steps": 0.00999999046325684
 				},
 				"_type": "float"
 			},
 			{
 				"_category_id": "1",
-				"_default_value": 0,
+				"_default_value": 0.0,
 				"_id": "46",
 				"_name": "float property7",
 				"_type": "float"
@@ -433,7 +433,7 @@
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-			"default": 9
+			"default": 9.0
 		}
 	}
 }

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://chj1ateikyk5"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/color/color_property.gd" id="1_tgtmt"]
+[ext_resource type="Script" uid="uid://cjpnsuvvhqlfc" path="res://addons/pandora/ui/components/properties/color/color_property.gd" id="1_tgtmt"]
 
 [node name="ColorProperty" type="MarginContainer"]
 offset_right = 8.0

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d15ldap7ubifc"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/array_editor/array_manager.gd" id="1_f23k5"]
+[ext_resource type="Script" uid="uid://db4alrrhmduii" path="res://addons/pandora/ui/components/array_editor/array_manager.gd" id="1_f23k5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xsek"]
 

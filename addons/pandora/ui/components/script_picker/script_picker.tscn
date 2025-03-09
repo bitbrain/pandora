@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bp0gaqyb10bns"]
 
-[ext_resource type="Script" path="res://addons/pandora/ui/components/script_picker/script_picker.gd" id="1_7xx4n"]
+[ext_resource type="Script" uid="uid://cc3lh861dwdq3" path="res://addons/pandora/ui/components/script_picker/script_picker.gd" id="1_7xx4n"]
 [ext_resource type="Texture2D" uid="uid://dimpswbv6s8t2" path="res://addons/pandora/icons/Folder.svg" id="2_gmucu"]
 
 [node name="ScriptPicker" type="HBoxContainer"]
