@@ -177,16 +177,25 @@ func move_entity(source: PandoraEntity, target: PandoraEntity, drop_section: Dro
 		if not target is PandoraCategory:
 			push_error("Unable to move entity to entity")
 			return
+		var old_parent = get_category(source._category_id)
+		if old_parent:
+			old_parent._children.erase(source)
 		source.set_category(target)
 		source.set_index(target._children.size())
 	elif drop_section == DropSection.ABOVE:
 		if source._category_id != target._category_id:
+			var old_parent = get_category(source._category_id)
+			if old_parent:
+				old_parent._children.erase(source)
 			source.set_category(target.get_category())
 		var old_index = source._index
 		source.set_index(target._index)
 		reorder_entities(source, old_index)
 	elif drop_section == DropSection.BELOW:
 		if source._category_id != target._category_id:
+			var old_parent = get_category(source._category_id)
+			if old_parent:
+				old_parent._children.erase(source)
 			source.set_category(target.get_category())
 		var old_index = source._index
 		source.set_index(target._index + 1)
