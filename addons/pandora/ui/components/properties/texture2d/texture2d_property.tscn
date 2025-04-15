@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm1l2gcyxt3aa"]
+
+[ext_resource type="Script" path="res://addons/pandora/ui/components/properties/texture2d/texture2d_property.gd" id="1_o4vlm"]
+
+[node name="Texture2dProperty" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o4vlm")
+type = "texture2d"
