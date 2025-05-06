@@ -60,7 +60,7 @@ extends Node2D
 @export var category:PandoraCategory
 
 func _ready() -> void:
-   var entities:Array<PandoraEntity> = Pandora.get_all_entities(category)
+   var entities:Array[PandoraEntity] = Pandora.get_all_entities(category)
 ```
 
 This allows you to tailor certain nodes towards specific categories directly in the editor.
