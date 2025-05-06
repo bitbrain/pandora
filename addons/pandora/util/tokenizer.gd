@@ -4,7 +4,7 @@ static var regex:RegEx
 static func tokenize(value:String) -> String:
 	if regex == null:
 		regex = RegEx.new()
-		regex.compile("(^[^A-Z_])|([^A-Z0-9_])")
+		regex.compile("(^[^A-Z_\u4e00-\u9fa5])|([^A-Z0-9_\u4e00-\u9fa5])")
 	var token = value.to_upper()
 
 	var regex_matches = regex.search_all(token)
