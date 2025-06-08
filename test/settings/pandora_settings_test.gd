@@ -68,6 +68,8 @@ func test_set_data_path() -> void:
 		SETTING_PANDORA_DATA_PATH, "res://data.pandora",
 		TYPE_STRING, PROPERTY_HINT_FILE, "*.pandora"
 	)
+	
+	Pandora.set_context_id("")
 	var new_path: String = "res://" + TEST_DIR + "/" + "collection.pandora"
 	PandoraSettings.set_data_path(new_path)
 	assert_str(PandoraSettings.get_data_path()).is_equal(new_path)
@@ -76,7 +78,6 @@ func test_set_data_path() -> void:
 	Pandora._storage = PandoraJsonDataStorage.new(new_path.get_base_dir())
 	# Resave the data to ensure it uses the new path
 	Pandora.save_data()
-
 	# Unload and reload the data to ensure it reflects the new path
 	Pandora._clear()
 	Pandora.load_data()
