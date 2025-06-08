@@ -7,11 +7,12 @@ extends GdUnitTestSuite
 
 # TestSuite generated from
 const __source = 'res://addons/pandora/settings/pandora_settings.gd'
-
+const TEST_DIR = "testdata"
 
 const IDType := PandoraSettings.IDType
 
 const SETTING_ID_TYPE := PandoraSettings.SETTING_ID_TYPE
+const SETTING_PANDORA_DATA_PATH := PandoraSettings.SETTING_PANDORA_DATA_PATH
 
 
 func test_initialize() -> void:
@@ -48,3 +49,50 @@ func test_set_id_type() -> void:
 			PROPERTY_HINT_ENUM, "%s,%s" % IDType.keys())
 	PandoraSettings.set_id_type(IDType.NANOID)
 	assert_int(PandoraSettings.get_id_type()).is_equal(IDType.NANOID)
+
+
+func test_get_data_path() -> void:
+	ProjectSettings.clear(SETTING_PANDORA_DATA_PATH)
+	PandoraSettings.init_setting(
+		SETTING_PANDORA_DATA_PATH, "res://data.pandora",
+		TYPE_STRING, PROPERTY_HINT_FILE, "*.pandora"
+	)
+	var expected: String = ProjectSettings.get_setting(SETTING_PANDORA_DATA_PATH)
+	var actual := PandoraSettings.get_data_path()
+	assert_str(actual).is_equal(expected)
+
+
+func test_set_data_path() -> void:
+	ProjectSettings.clear(SETTING_PANDORA_DATA_PATH)
+	PandoraSettings.init_setting(
+		SETTING_PANDORA_DATA_PATH, "res://data.pandora",
+		TYPE_STRING, PROPERTY_HINT_FILE, "*.pandora"
+	)
+	
+	Pandora.set_context_id("")
+	var new_path: String = "res://" + TEST_DIR + "/" + "collection.pandora"
+	PandoraSettings.set_data_path(new_path)
+	assert_str(PandoraSettings.get_data_path()).is_equal(new_path)
+
+	# Reinitialize the data storage with the new path
+	Pandora._storage = PandoraJsonDataStorage.new(new_path.get_base_dir())
+	# Resave the data to ensure it uses the new path
+	Pandora.save_data()
+	# Unload and reload the data to ensure it reflects the new path
+	Pandora._clear()
+	Pandora.load_data()
+
+	assert_array(Pandora.get_all_entities()).is_not_empty()
+
+	assert_file(new_path).exists()
+
+	# Clean up
+	DirAccess.remove_absolute(new_path)
+
+	PandoraSettings.set_data_path("res://data.pandora")
+	assert_str(PandoraSettings.get_data_path()).is_equal("res://data.pandora")
+	
+	Pandora._storage = PandoraJsonDataStorage.new(PandoraSettings.get_data_path().get_base_dir())
+
+	Pandora._clear()
+	Pandora.load_data()

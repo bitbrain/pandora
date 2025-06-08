@@ -24,7 +24,9 @@ var _backend_load_state: PandoraEntityBackend.LoadState = PandoraEntityBackend.L
 
 
 func _enter_tree() -> void:
-	self._storage = PandoraJsonDataStorage.new("res://")
+	var data_path := PandoraSettings.get_data_path()
+
+	self._storage = PandoraJsonDataStorage.new(data_path.get_base_dir())
 	self._context_manager = PandoraContextManager.new()
 	self._id_generator = PandoraIDGenerator.new()
 	self._entity_backend = PandoraEntityBackend.new(_id_generator)
@@ -179,7 +181,7 @@ func calculate_import_data(path: String) -> int:
 		else:
 			(
 				import_calculation_ended
-				. emit(
+				.emit(
 					{
 						"total_categories": imported_data["_entity_data"]["_categories"].size(),
 						"total_entities": imported_data["_entity_data"]["_entities"].size(),

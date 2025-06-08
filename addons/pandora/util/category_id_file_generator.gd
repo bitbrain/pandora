@@ -47,19 +47,20 @@ static func _process_sub_category_tuples(
 
 			# Add current category to the local list if it's a leaf or has children
 			if not subcategory_tuples.has(new_key) or subcategory_tuples[new_key].size() == 0:
-				subcategory_tuples.erase(new_key)  # Remove if empty
+				subcategory_tuples.erase(new_key) # Remove if empty
 			local_subcategories.append(category_tuple)
 
 	if local_subcategories.size() > 0:
 		subcategory_tuples[parent_category] = local_subcategories
 
 
-
 static func generate_category_id_file(
 	root_category_tuples: Array[CategoryTuple], subcategory_tuples: Dictionary) -> void:
-	var file_path = "res://pandora/categories.gd"
-	if not DirAccess.dir_exists_absolute("res://pandora"):
-		DirAccess.make_dir_absolute("res://pandora")
+	var definitions_dir := PandoraSettings.get_definitions_dir()
+	var file_path = "%s/categories.gd" % definitions_dir
+	file_path.replace("//", "/") # Ensure correct path format
+	if not DirAccess.dir_exists_absolute(definitions_dir):
+		DirAccess.make_dir_absolute(definitions_dir)
 
 	var file_access = FileAccess.open(file_path, FileAccess.WRITE)
 	file_access.store_line("# Do not modify! Auto-generated file.")
