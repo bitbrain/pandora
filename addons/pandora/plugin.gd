@@ -56,7 +56,7 @@ func _exit_tree() -> void:
 	remove_autoload_singleton("Pandora")
 
 
-func _make_visible(visible:bool) -> void:
+func _make_visible(visible: bool) -> void:
 	if Engine.is_editor_hint() and is_instance_valid(editor_view):
 		editor_view.visible = visible
 
@@ -75,12 +75,12 @@ func _get_plugin_icon() -> Texture2D:
 class PandoraExportPlugin extends EditorExportPlugin:
 	# Override the _export_begin method to add the data.pandora file during export
 	func _export_begin(features: PackedStringArray, is_debug: bool, path: String, flags: int):
-		var pandora_path = "res://data.pandora"
+		var pandora_path = PandoraSettings.get_data_path()
 		var file = FileAccess.open(pandora_path, FileAccess.READ)
 		if not file:
-			printerr("Unable to export Pandora data: ",  FileAccess.get_open_error())
+			printerr("Unable to export Pandora data: ", FileAccess.get_open_error())
 			return
-		var data:PackedByteArray = file.get_buffer(file.get_length())
+		var data: PackedByteArray = file.get_buffer(file.get_length())
 		if not is_debug:
 			var text = file.get_as_text()
 			data = Compression.compress(text)

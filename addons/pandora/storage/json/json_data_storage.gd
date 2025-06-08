@@ -100,7 +100,13 @@ func _get_directory_path(context_id: String) -> String:
 
 
 func _get_file_path(context_id: String) -> String:
-	return "%s/data.pandora" % [_get_directory_path(context_id)]
+	# Allow to override the file name in the settings based
+	# on whether the user has set a custom data path
+	var file_name := "data.pandora"
+	if PandoraSettings.get_data_path().get_file() != "data.pandora":
+		file_name = PandoraSettings.get_data_path().get_file()
+
+	return "%s/%s" % [_get_directory_path(context_id), file_name]
 
 
 func _should_use_compression() -> bool:
