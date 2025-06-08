@@ -25,7 +25,7 @@ static func generate_class_to_entity_map(root_categories: Array[PandoraCategory]
 static func generate_entity_id_file(entity_class_name: String, entities: Array[PandoraEntity]) -> Array[String]:
 	if entities.is_empty():
 		return []
-	var lines:Array[String] = ["# Do not modify! Auto-generated file.", "class_name " + entity_class_name + "\n\n"]
+	var lines: Array[String] = ["# Do not modify! Auto-generated file.", "class_name " + entity_class_name + "\n\n"]
 	var name_usages = {}
 	for entity in entities:
 		var entity_name = entity.get_entity_name()
@@ -40,7 +40,7 @@ static func generate_entity_id_file(entity_class_name: String, entities: Array[P
 static func _process_category_for_id_files(category: PandoraCategory, class_to_entity_map: Dictionary) -> void:
 	var classname = category.get_id_generation_class()
 	if not class_to_entity_map.has(classname):
-		var empty:Array[PandoraEntity] = []
+		var empty: Array[PandoraEntity] = []
 		class_to_entity_map[classname] = empty
 
 	if category.is_generate_ids():
@@ -66,9 +66,13 @@ static func _entity_exists_in_map(entity_list: Array[PandoraEntity], entity: Pan
 	return false
 
 static func _write_to_file(entity_class_name: String, lines: Array[String]) -> void:
-	var file_path = "res://pandora/" + entity_class_name.to_snake_case() + ".gd"
-	if not DirAccess.dir_exists_absolute("res://pandora"):
-		DirAccess.make_dir_absolute("res://pandora")
+	var definitions_dir := PandoraSettings.get_definitions_dir()
+	if not definitions_dir.ends_with("/"):
+		definitions_dir += "/"
+
+	var file_path = definitions_dir + entity_class_name.to_snake_case() + ".gd"
+	if not DirAccess.dir_exists_absolute(definitions_dir):
+		DirAccess.make_dir_absolute(definitions_dir)
 
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	if FileAccess.get_open_error() == OK:

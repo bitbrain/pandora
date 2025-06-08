@@ -17,6 +17,10 @@ const DEFAULT_ID_TYPE: IDType = IDType.SEQUENTIAL
 const SETTING_PANDORA_DATA_PATH: StringName = CATEGORY_CONFIG + "/data_path"
 const DEFAULT_PANDORA_DATA_PATH: StringName = "res://data.pandora"
 
+const SETTINGS_PANDORA_DEFINITIONS_DIR: StringName = CATEGORY_CONFIG + "/definitions_dir"
+const DEFAULT_PANDORA_DEFINITIONS_DIR: StringName = "res://pandora/"
+
+
 static func initialize() -> void:
     init_setting(
         SETTING_ID_TYPE,
@@ -31,6 +35,13 @@ static func initialize() -> void:
         DEFAULT_PANDORA_DATA_PATH,
         TYPE_STRING,
         PROPERTY_HINT_FILE,
+    )
+
+    init_setting(
+        SETTINGS_PANDORA_DEFINITIONS_DIR,
+        DEFAULT_PANDORA_DEFINITIONS_DIR,
+        TYPE_STRING,
+        PROPERTY_HINT_DIR
     )
 
 
@@ -74,3 +85,14 @@ static func get_data_path() -> StringName:
 
 static func set_data_path(path: StringName) -> void:
     ProjectSettings.set_setting(SETTING_PANDORA_DATA_PATH, path)
+
+
+static func get_definitions_dir() -> StringName:
+    return ProjectSettings.get_setting(
+        SETTINGS_PANDORA_DEFINITIONS_DIR,
+        DEFAULT_PANDORA_DEFINITIONS_DIR
+    )
+
+
+static func set_definitions_dir(path: StringName) -> void:
+    ProjectSettings.set_setting(SETTINGS_PANDORA_DEFINITIONS_DIR, path)
