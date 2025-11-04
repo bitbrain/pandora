@@ -82,6 +82,9 @@ func write_value(variant: Variant) -> Variant:
 			elif value is PandoraReference:
 				value_type = PandoraPropertyType.lookup("reference")
 				value = value.save_data()
+			elif PandoraSettings.compare_with_extensions_models(value):
+				value_type = PandoraPropertyType.lookup(PandoraSettings.get_lookup_property_name(value))
+				value = value.save_data()
 			else:
 				for type in types:
 					if type.is_valid(value):

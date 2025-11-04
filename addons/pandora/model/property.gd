@@ -27,7 +27,10 @@ var _setting_overrides: Dictionary = {}
 func _init(id: String, name: String, type_name: String) -> void:
 	self._id = id
 	self._name = name
-	self._type = PandoraPropertyType.lookup(type_name)
+	var path = ""
+	if PandoraSettings.extensions_types.has(type_name):
+		path = PandoraSettings.extensions_types[type_name]
+	self._type = PandoraPropertyType.lookup(type_name, path)
 	self._default_value = _type.get_default_value()
 
 
@@ -126,7 +129,10 @@ func is_overridden() -> bool:
 func load_data(data: Dictionary) -> void:
 	_id = data["_id"]
 	_name = data["_name"]
-	_type = PandoraPropertyType.lookup(data["_type"])
+	var path = ""
+	if PandoraSettings.extensions_types.has(data["_type"]):
+		path = PandoraSettings.extensions_types[data["_type"]]
+	_type = PandoraPropertyType.lookup(data["_type"], path)
 	_category_id = data["_category_id"]
 	if data.has("_setting_overrides"):
 		_setting_overrides = data["_setting_overrides"]

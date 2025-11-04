@@ -718,7 +718,10 @@ func _load_overrides(data: Dictionary) -> Dictionary:
 	var output = {}
 	for property_name in data:
 		var unparsed_data = data[property_name]
-		var type = PandoraPropertyType.lookup(unparsed_data["type"])
+		var path = ""
+		if PandoraSettings.extensions_types.has(unparsed_data["type"]):
+			path = PandoraSettings.extensions_types[unparsed_data["type"]]
+		var type = PandoraPropertyType.lookup(unparsed_data["type"], path)
 		output[property_name] = type.parse_value(unparsed_data["value"])
 	return output
 
