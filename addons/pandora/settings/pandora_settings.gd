@@ -141,12 +141,14 @@ static func _check_new_extensions_models() -> void:
 
 static func compare_with_extensions_models(value) -> bool:
 	for emodel in extensions_models:
-		if value.is_class(extensions_models[emodel].get_class()):
-			return true
+		if not value is Dictionary and not value is Color:
+			if value.is_class(extensions_models[emodel].get_class()):
+				return true
 	return false
 
 static func get_lookup_property_name(value) -> String:
 	for emodel in extensions_models:
-		if value.is_class(extensions_models[emodel].get_class()):
-			return emodel
+		if not value is Dictionary and not value is Color:
+			if value.is_class(extensions_models[emodel].get_class()):
+				return emodel
 	return ""

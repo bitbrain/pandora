@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://byn750powq8to"]
+
+[ext_resource type="Script" uid="uid://b84c7qpfpvyom" path="res://pandora/extensions/test_property/ui_component/test_property.gd" id="1_2tsil"]
+
+[node name="TestProperty" type="MarginContainer"]
+script = ExtResource("1_2tsil")
+type = "test_property"
+metadata/_custom_type_script = "uid://bvl8qiojdoihh"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Item Name"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+focus_mode = 1
+max_value = 99999.0
+rounded = true
+select_all_on_focus = true

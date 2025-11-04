@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxemj3mwf2j5s"]
+
+[ext_resource type="Script" uid="uid://crr6rlkqtg6we" path="res://addons/pandora/ui/components/property_bar/property_button.gd" id="1_4r260"]
+[ext_resource type="Texture2D" uid="uid://bxhfymfa16eho" path="res://pandora/extensions/test_property/icons/icon.png" id="1_v8e0h"]
+[ext_resource type="PackedScene" uid="uid://byn750powq8to" path="res://pandora/extensions/test_property/ui_component/test_property.tscn" id="3_5ts7y"]
+
+[node name="AddTestPropertyButton" type="Button"]
+tooltip_text = "Test property"
+icon = ExtResource("1_v8e0h")
+script = ExtResource("1_4r260")
+scene = ExtResource("3_5ts7y")
+metadata/_custom_type_script = "uid://crr6rlkqtg6we"
