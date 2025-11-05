@@ -10,7 +10,6 @@ const __source = 'res://addons/pandora/settings/pandora_settings.gd'
 const TEST_DIR = "testdata"
 
 const IDType := PandoraSettings.IDType
-const EXTENSION_NAME := "test_property"
 
 const SETTING_ID_TYPE := PandoraSettings.SETTING_ID_TYPE
 const SETTING_PANDORA_DATA_PATH := PandoraSettings.SETTING_PANDORA_DATA_PATH
@@ -98,11 +97,18 @@ func test_set_data_path() -> void:
 	Pandora._clear()
 	Pandora.load_data()
 
-func test_compare_with_extensions_models() -> void:
+func test_get_extensions_dirs() -> void:
 	ProjectSettings.clear(SETTINGS_PANDORA_EXTENSIONS_DIR)
 	PandoraSettings.init_setting(
 		SETTINGS_PANDORA_EXTENSIONS_DIR, ["res://pandora/extensions"],
-		TYPE_ARRAY, PROPERTY_HINT_DIR
+		TYPE_ARRAY, PROPERTY_HINT_DIR, "*.pandora"
 	)
-	var actual := PandoraSettings.compare_with_extensions_models(EXTENSION_NAME)
+	var expected: Array = ProjectSettings.get_setting(SETTINGS_PANDORA_EXTENSIONS_DIR)
+	var actual: Array = PandoraSettings.get_extensions_dirs()
+	assert_array(actual).is_equal(expected)
+	
+func test_compare_with_extensions_models() -> void:
+	PandoraSettings.initialize()
+	var test := PandoraTestProperty.new("apple", 2)
+	var actual := PandoraSettings.compare_with_extensions_models(test)
 	assert_bool(actual).is_equal(true)

@@ -104,13 +104,13 @@ static func get_definitions_dir() -> StringName:
 static func set_definitions_dir(path: StringName) -> void:
 	ProjectSettings.set_setting(SETTINGS_PANDORA_DEFINITIONS_DIR, path)
 
-static func get_extensions_dirs() -> Array[StringName]:
+static func get_extensions_dirs() -> Array:
 	return ProjectSettings.get_setting(
 		SETTINGS_PANDORA_EXTENSIONS_DIR, 
 		DEFAULT_PANDORA_EXTENSIONS_DIR
 	)
 
-static func set_extensions_dir(array: Array[StringName]) -> void:
+static func set_extensions_dir(array: Array) -> void:
 	ProjectSettings.set_setting(SETTINGS_PANDORA_EXTENSIONS_DIR, array)
 	_check_new_extensions_models()
 
@@ -142,13 +142,13 @@ static func _check_new_extensions_models() -> void:
 static func compare_with_extensions_models(value) -> bool:
 	for emodel in extensions_models:
 		if not value is Dictionary and not value is Color:
-			if value.is_class(extensions_models[emodel].get_class()):
+			if typeof(value) == typeof(extensions_models[emodel]):
 				return true
 	return false
 
 static func get_lookup_property_name(value) -> String:
 	for emodel in extensions_models:
 		if not value is Dictionary and not value is Color:
-			if value.is_class(extensions_models[emodel].get_class()):
+			if typeof(value) == typeof(extensions_models[emodel]):
 				return emodel
 	return ""
