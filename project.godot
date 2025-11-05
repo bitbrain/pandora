@@ -25,7 +25,7 @@ Pandora="*res://addons/pandora/api.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/pandora/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/pandora/plugin.cfg")
 
 [filesystem]
 
@@ -36,3 +36,12 @@ import/blender/enabled=false
 settings/test/test_discovery=true
 ui/inspector/tree_sort_mode=1
 settings/common/update_notification_enabled=false
+templates/testsuite/GDScript="# GdUnit generated TestSuite
+class_name ${suite_class_name}
+extends GdUnitTestSuite
+@warning_ignore('unused_parameter')
+@warning_ignore('return_value_discarded')
+
+# TestSuite generated from
+const __source = '${source_resource_path}'
+"

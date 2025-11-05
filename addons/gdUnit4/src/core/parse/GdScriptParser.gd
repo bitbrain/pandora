@@ -3,7 +3,13 @@ extends RefCounted
 
 const GdUnitTools := preload("res://addons/gdUnit4/src/core/GdUnitTools.gd")
 
-const ALLOWED_CHARACTERS := "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
+const TYPE_VOID = GdObjects.TYPE_VOID
+const TYPE_VARIANT = GdObjects.TYPE_VARIANT
+const TYPE_VARARG = GdObjects.TYPE_VARARG
+const TYPE_FUNC = GdObjects.TYPE_FUNC
+const TYPE_FUZZER = GdObjects.TYPE_FUZZER
+const TYPE_ENUM = GdObjects.TYPE_ENUM
+
 
 var TOKEN_NOT_MATCH := Token.new("")
 var TOKEN_SPACE := SkippableToken.new(" ")
@@ -23,11 +29,16 @@ var TOKEN_ARGUMENT_ASIGNMENT := Token.new("=")
 var TOKEN_ARGUMENT_TYPE_ASIGNMENT := Token.new(":=")
 var TOKEN_ARGUMENT_FUZZER := FuzzerToken.new(GdUnitTools.to_regex("((?!(fuzzer_(seed|iterations)))fuzzer?\\w+)( ?+= ?+| ?+:= ?+| ?+:Fuzzer ?+= ?+|)"))
 var TOKEN_ARGUMENT_TYPE := Token.new(":")
+var TOKEN_ARGUMENT_VARIADIC := Token.new("...")
 var TOKEN_ARGUMENT_SEPARATOR := Token.new(",")
-var TOKEN_BRACKET_OPEN := Token.new("(")
-var TOKEN_BRACKET_CLOSE := Token.new(")")
-var TOKEN_ARRAY_OPEN := Token.new("[")
-var TOKEN_ARRAY_CLOSE := Token.new("]")
+var TOKEN_BRACKET_ROUND_OPEN := Token.new("(")
+var TOKEN_BRACKET_ROUND_CLOSE := Token.new(")")
+var TOKEN_BRACKET_SQUARE_OPEN := Token.new("[")
+var TOKEN_BRACKET_SQUARE_CLOSE := Token.new("]")
+var TOKEN_BRACKET_CURLY_OPEN := Token.new("{")
+var TOKEN_BRACKET_CURLY_CLOSE := Token.new("}")
+
+
 
 var OPERATOR_ADD := Operator.new("+")
 var OPERATOR_SUB := Operator.new("-")
@@ -40,10 +51,12 @@ var TOKENS :Array[Token] = [
 	TOKEN_TABULATOR,
 	TOKEN_NEW_LINE,
 	TOKEN_COMMENT,
-	TOKEN_BRACKET_OPEN,
-	TOKEN_BRACKET_CLOSE,
-	TOKEN_ARRAY_OPEN,
-	TOKEN_ARRAY_CLOSE,
+	TOKEN_BRACKET_ROUND_OPEN,
+	TOKEN_BRACKET_ROUND_CLOSE,
+	TOKEN_BRACKET_SQUARE_OPEN,
+	TOKEN_BRACKET_SQUARE_CLOSE,
+	TOKEN_BRACKET_CURLY_OPEN,
+	TOKEN_BRACKET_CURLY_CLOSE,
 	TOKEN_CLASS_NAME,
 	TOKEN_INNER_CLASS,
 	TOKEN_EXTENDS,
@@ -54,6 +67,7 @@ var TOKENS :Array[Token] = [
 	TOKEN_ARGUMENT_TYPE_ASIGNMENT,
 	TOKEN_ARGUMENT_ASIGNMENT,
 	TOKEN_ARGUMENT_TYPE,
+	TOKEN_ARGUMENT_VARIADIC,
 	TOKEN_FUNCTION,
 	TOKEN_ARGUMENT_SEPARATOR,
 	TOKEN_FUNCTION_RETURN_TYPE,
@@ -65,9 +79,11 @@ var TOKENS :Array[Token] = [
 ]
 
 var _regex_clazz_name := GdUnitTools.to_regex("(class) ([a-zA-Z0-9_]+) (extends[a-zA-Z]+:)|(class) ([a-zA-Z0-9_]+)")
+var _regex_func_name := GdUnitTools.to_regex("^(?:static\\s+)?func\\s+([\\w\\p{L}\\p{N}_]+)\\s*\\(")
 var _regex_strip_comments := GdUnitTools.to_regex("^([^#\"']|'[^']*'|\"[^\"]*\")*\\K#.*")
 var _scanned_inner_classes := PackedStringArray()
 var _script_constants := {}
+var _is_awaiting := GdUnitTools.to_regex("\\bawait\\s+(?![^\"]*\"[^\"]*$)(?!.*#.*await)")
 
 
 static func to_unix_format(input :String) -> String:
@@ -296,6 +312,7 @@ func get_token(input :String, current_index :int) -> Token:
 func next_token(input: String, current_index: int, ignore_tokens :Array[Token] = []) -> Token:
 	var token := TOKEN_NOT_MATCH
 	for t :Token in TOKENS.filter(func(t :Token) -> bool: return not ignore_tokens.has(t)):
+
 		if t.match(input, current_index):
 			token = t
 			break
@@ -319,7 +336,7 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 		# or allowend charset
 		# or is a float value
 		if (test_for_sign and next==0) \
-			or character in ALLOWED_CHARACTERS \
+			or is_allowed_character(character) \
 			or (character == "." and (ignore_dots or current_token.is_valid_int())):
 			current_token += character
 			next += 1
@@ -328,6 +345,31 @@ func tokenize_value(input: String, current: int, token: Token, ignore_dots := fa
 	if current_token != "":
 		return Variable.new(current_token)
 	return TOKEN_NOT_MATCH
+
+
+# const ALLOWED_CHARACTERS := "0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\""
+func is_allowed_character(input: String) -> bool:
+	var code_point := input.unicode_at(0)
+	# Unicode
+	if code_point > 127:
+		# This is a Unicode character (Chinese, Japanese, etc.)
+		return true
+	# ASCII digit 0-9
+	if code_point >= 48 and code_point <= 57:
+		return true
+	# ASCII lowercase a-z
+	if code_point >= 97 and code_point <= 122:
+		return true
+	# ASCII uppercase A-Z
+	if code_point >= 65 and code_point <= 90:
+		return true
+	# underscore _
+	if code_point == 95:
+		return true
+	# quotes '"
+	if code_point == 34 or code_point == 39:
+		return true
+	return false
 
 
 func extract_clazz_name(value :String) -> String:
@@ -383,12 +425,14 @@ func is_getter_or_setter(func_name: String) -> bool:
 	return func_name.begins_with("@") and (func_name.ends_with("getter") or func_name.ends_with("setter"))
 
 
-func _parse_function_arguments(input: String) -> Dictionary:
-	var arguments := {}
+func _parse_function_arguments(input: String) -> Array[Dictionary]:
+	var arguments: Array[Dictionary] = []
 	var current_index := 0
-	var token :Token = null
+	var token: Token = null
 	var bracket := 0
 	var in_function := false
+
+
 	while current_index < len(input):
 		token = next_token(input, current_index)
 		# fallback to not end in a endless loop
@@ -407,11 +451,10 @@ func _parse_function_arguments(input: String) -> Dictionary:
 		current_index += token._consumed
 		if token.is_skippable():
 			continue
-		if token == TOKEN_BRACKET_OPEN:
+		if token == TOKEN_BRACKET_ROUND_OPEN :
 			in_function = true
 			bracket += 1
-			continue
-		if token == TOKEN_BRACKET_CLOSE:
+		if token == TOKEN_BRACKET_ROUND_CLOSE:
 			bracket -= 1
 		# if function end?
 		if in_function and bracket == 0:
@@ -421,55 +464,93 @@ func _parse_function_arguments(input: String) -> Dictionary:
 			token = next_token(input, current_index)
 			current_index += token._consumed
 			continue
-		# is fuzzer argument
-		if token is FuzzerToken:
-			var arg_value := _parse_end_function(input.substr(current_index), true)
-			current_index += arg_value.length()
-			var arg_name :String = (token as FuzzerToken).name()
-			arguments[arg_name] = arg_value.lstrip(" ")
-			continue
+
 		# is value argument
-		if in_function and token.is_variable():
-			var arg_name: String = (token as Variable).plain_value()
-			var arg_value: String = GdFunctionArgument.UNDEFINED
+		if in_function:
+			var arg_value := ""
+			var current_argument := {
+				"name" : "",
+				"value" : GdFunctionArgument.UNDEFINED,
+				"type" : TYPE_VARIANT
+			}
+
 			# parse type and default value
 			while current_index < len(input):
 				token = next_token(input, current_index)
 				current_index += token._consumed
 				if token.is_skippable():
 					continue
+
+				if token.is_variable() && current_argument["name"] == "":
+					arguments.append(current_argument)
+					current_argument["name"] = (token as Variable).plain_value()
+					continue
+
 				match token:
+							# is fuzzer argument
+					TOKEN_ARGUMENT_FUZZER:
+						arg_value = _parse_end_function(input.substr(current_index), true)
+						current_index += arg_value.length()
+						current_argument["name"] = (token as FuzzerToken).name()
+						current_argument["value"] = arg_value.lstrip(" ")
+						current_argument["type"] = TYPE_FUZZER
+						arguments.append(current_argument)
+						continue
+
+					TOKEN_ARGUMENT_VARIADIC:
+						current_argument["type"] = TYPE_VARARG
+
 					TOKEN_ARGUMENT_TYPE:
 						token = next_token(input, current_index)
 						if token == TOKEN_SPACE:
 							current_index += token._consumed
 							token = next_token(input, current_index)
+							current_index += token._consumed
+						if current_argument["type"] != TYPE_VARARG:
+							current_argument["type"] = GdObjects.string_to_type((token as Variable).plain_value())
+
 					TOKEN_ARGUMENT_TYPE_ASIGNMENT:
 						arg_value = _parse_end_function(input.substr(current_index), true)
 						current_index += arg_value.length()
+						current_argument["value"] = arg_value.lstrip(" ")
 					TOKEN_ARGUMENT_ASIGNMENT:
 						token = next_token(input, current_index)
 						arg_value = _parse_end_function(input.substr(current_index), true)
 						current_index += arg_value.length()
-					TOKEN_BRACKET_OPEN:
+						current_argument["value"] = arg_value.lstrip(" ")
+
+					TOKEN_BRACKET_SQUARE_OPEN:
+						bracket += 1
+					TOKEN_BRACKET_CURLY_OPEN:
+						bracket += 1
+					TOKEN_BRACKET_ROUND_OPEN :
 						bracket += 1
 						# if value a function?
 						if bracket > 1:
 							# complete the argument value
-							var func_begin := input.substr(current_index-TOKEN_BRACKET_OPEN._consumed)
+							var func_begin := input.substr(current_index-TOKEN_BRACKET_ROUND_OPEN ._consumed)
 							var func_body := _parse_end_function(func_begin)
 							arg_value += func_body
 							# fix parse index to end of value
-							current_index += func_body.length() - TOKEN_BRACKET_OPEN._consumed - TOKEN_BRACKET_CLOSE._consumed
-					TOKEN_BRACKET_CLOSE:
+							current_index += func_body.length() - TOKEN_BRACKET_ROUND_OPEN ._consumed - TOKEN_BRACKET_ROUND_CLOSE._consumed
+					TOKEN_BRACKET_SQUARE_CLOSE:
+						bracket -= 1
+					TOKEN_BRACKET_CURLY_CLOSE:
+						bracket -= 1
+					TOKEN_BRACKET_ROUND_CLOSE:
 						bracket -= 1
 						# end of function
 						if bracket == 0:
 							break
 					TOKEN_ARGUMENT_SEPARATOR:
 						if bracket <= 1:
-							break
-			arguments[arg_name] = arg_value.lstrip(" ")
+							# next argument
+							current_argument = {
+								"name" : "",
+								"value" : GdFunctionArgument.UNDEFINED,
+								"type" : GdObjects.TYPE_VARIANT
+							}
+							continue
 	return arguments
 
 
@@ -478,6 +559,7 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 	var current_index := 0
 	var bracket_count := 0
 	var in_array := 0
+	var in_dict := 0
 	var end_of_func := false
 
 	while current_index < len(input) and not end_of_func:
@@ -504,14 +586,17 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 			# count if inside an array
 			"[": in_array += 1
 			"]": in_array -= 1
+			# count if inside an dictionary
+			"{": in_dict += 1
+			"}": in_dict -= 1
 			# count if inside a function
 			"(": bracket_count += 1
 			")":
 				bracket_count -= 1
-				if bracket_count < 0 and in_array <= 0:
+				if bracket_count < 0 and in_array <= 0 and in_dict <= 0:
 					end_of_func = true
 			",":
-				if bracket_count == 0 and in_array == 0:
+				if bracket_count == 0 and in_array == 0 and in_dict <= 0:
 					end_of_func = true
 		current_index += 1
 	if remove_trailing_char:
@@ -523,19 +608,21 @@ func _parse_end_function(input: String, remove_trailing_char := false) -> String
 	return input.substr(0, current_index)
 
 
-@warning_ignore("unsafe_method_access")
 func extract_inner_class(source_rows: PackedStringArray, clazz_name :String) -> PackedStringArray:
 	for row_index in source_rows.size():
 		var input := source_rows[row_index]
 		var token := next_token(input, 0)
 		if token.is_inner_class():
+			@warning_ignore("unsafe_method_access")
 			if token.is_class_name(clazz_name):
+				@warning_ignore("unsafe_method_access")
 				token.parse(source_rows, row_index)
+				@warning_ignore("unsafe_method_access")
 				return token.content()
 	return PackedStringArray()
 
 
-func extract_func_signature(rows :PackedStringArray, index :int) -> String:
+func extract_func_signature(rows: PackedStringArray, index: int) -> String:
 	var signature := ""
 
 	for rowIndex in range(index, rows.size()):
@@ -567,22 +654,18 @@ func get_class_name(script :GDScript) -> String:
 	return GdObjects.to_pascal_case(script.resource_path.get_basename().get_file())
 
 
-func parse_func_name(input :String) -> String:
-	var current_index := 0
-	var token := next_token(input, current_index)
-	current_index += token._consumed
-	if token != TOKEN_FUNCTION_STATIC_DECLARATION and token != TOKEN_FUNCTION_DECLARATION:
+func parse_func_name(input: String) -> String:
+	var result := _regex_func_name.search(input)
+	if result == null:
+		push_error("Can't extract function name from '%s'" % input)
 		return ""
-	while not token is Variable:
-		token = next_token(input, current_index)
-		current_index += token._consumed
-	return token._token
+	return result.get_string(1)
 
 
 ## Enriches the function descriptor by line number and argument default values
 ## - enrich all function descriptors form current script up to all inherited scrips
 func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescriptor]) -> void:
-	var enriched_functions := PackedStringArray()
+	var enriched_functions := {}  # Use Dictionary for O(1) lookup instead of PackedStringArray
 	var script_to_scan := script
 	while script_to_scan != null:
 		# do not scan the test suite base class itself
@@ -599,29 +682,35 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 			if input.begins_with("#") or input.length() == 0:
 				continue
 			var token := next_token(input, 0)
-			if token == TOKEN_FUNCTION_STATIC_DECLARATION or token == TOKEN_FUNCTION_DECLARATION:
-				var function_name := parse_func_name(input)
-				var fd: GdFunctionDescriptor = fds.filter(func(element: GdFunctionDescriptor) -> bool:
-					# is same function name and not already enriched
-					return function_name == element.name() and not enriched_functions.has(element.name())
-				).pop_front()
-				if fd != null:
-					# add as enriched function to exclude from next iteration (could be inherited)
-					@warning_ignore("return_value_discarded")
-					enriched_functions.append(fd.name())
-					var func_signature := extract_func_signature(rows, rowIndex)
-					var func_arguments := _parse_function_arguments(func_signature)
-					# enrich missing default values
-					for arg_name: String in func_arguments.keys():
-						var func_argument: String = func_arguments[arg_name]
-						fd.set_argument_value(arg_name, func_argument)
-					fd.enrich_file_info(script_to_scan.resource_path, rowIndex + 1)
-					fd._is_coroutine = is_func_coroutine(rows, rowIndex)
-					# enrich return class name if not set
-					if fd.return_type() == TYPE_OBJECT and fd._return_class in ["", "Resource", "RefCounted"]:
-						var var_token := parse_return_token(func_signature)
-						if var_token != TOKEN_NOT_MATCH and var_token.type() == TYPE_OBJECT:
-							fd._return_class = _patch_inner_class_names(var_token.plain_value(), "")
+			if token != TOKEN_FUNCTION_STATIC_DECLARATION and token != TOKEN_FUNCTION_DECLARATION:
+				continue
+
+			var function_name := parse_func_name(input)
+			# Skip if already enriched (from parent class scan)
+			if enriched_functions.has(function_name):
+				continue
+
+			# Find matching function descriptor
+			var fd: GdFunctionDescriptor = null
+			for candidate in fds:
+				if candidate.name() == function_name:
+					fd = candidate
+					break
+			if fd == null:
+				continue
+			# Mark as enriched
+			enriched_functions[function_name] = true
+			var func_signature := extract_func_signature(rows, rowIndex)
+			var func_arguments := _parse_function_arguments(func_signature)
+			# enrich missing default values
+			fd.enrich_arguments(func_arguments)
+			fd.enrich_file_info(script_to_scan.resource_path, rowIndex + 1)
+			fd._is_coroutine = is_func_coroutine(rows, rowIndex)
+			# enrich return class name if not set
+			if fd.return_type() == TYPE_OBJECT and fd._return_class in ["", "Resource", "RefCounted"]:
+				var var_token := parse_return_token(func_signature)
+				if var_token != TOKEN_NOT_MATCH and var_token.type() == TYPE_OBJECT:
+					fd._return_class = _patch_inner_class_names(var_token.plain_value(), "")
 		# if the script ihnerits we need to scan this also
 		script_to_scan = script_to_scan.get_base_script()
 
@@ -629,14 +718,17 @@ func _enrich_function_descriptor(script: GDScript, fds: Array[GdFunctionDescript
 func is_func_coroutine(rows :PackedStringArray, index :int) -> bool:
 	var is_coroutine := false
 	for rowIndex in range(index+1, rows.size()):
-		var input := rows[rowIndex]
-		is_coroutine = input.contains("await")
-		if is_coroutine:
-			return true
+		var input := rows[rowIndex].strip_edges()
+		# skip empty lines
+		if input.is_empty():
+			continue
 		var token := next_token(input, 0)
 		# scan until next function
 		if token == TOKEN_FUNCTION_STATIC_DECLARATION or token == TOKEN_FUNCTION_DECLARATION:
 			break
+
+		if _is_awaiting.search(input):
+			return true
 	return is_coroutine
 
 
