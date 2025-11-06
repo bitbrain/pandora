@@ -63,14 +63,18 @@ func allow_nesting() -> bool:
 	return true
 
 
-static func lookup(name: String) -> PandoraPropertyType:
+static func lookup(name: String, path: String = "") -> PandoraPropertyType:
 	if name == "":
 		return UndefinedType.new()
-
-	var klass = PandoraPropertyType
-	var types_dir = klass.resource_path.get_base_dir()
-	var type_path = types_dir + "/types/" + name + ".gd"
-
+	
+	var type_path = ""
+	if path == "":
+		var klass = PandoraPropertyType
+		var types_dir = klass.resource_path.get_base_dir()
+		type_path = types_dir + "/types/" + name + ".gd"
+	else:
+		type_path = path + name + ".gd"
+	
 	if ResourceLoader.exists(type_path):
 		var ScriptType = load(type_path)
 		if ScriptType != null:
@@ -93,4 +97,9 @@ static func get_all_types() -> Array[PandoraPropertyType]:
 				types.append(type)
 		file_name = dir.get_next()
 	dir.list_dir_end()
+	
+	for extensions_type in PandoraSettings.extensions_types:
+		var type = lookup(extensions_type, PandoraSettings.extensions_types[extensions_type])
+		if type != null:
+			types.append(type)
 	return types

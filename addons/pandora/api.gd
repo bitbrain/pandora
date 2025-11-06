@@ -24,6 +24,7 @@ var _backend_load_state: PandoraEntityBackend.LoadState = PandoraEntityBackend.L
 
 
 func _enter_tree() -> void:
+	PandoraSettings.initialize()
 	var data_path := PandoraSettings.get_data_path()
 
 	self._storage = PandoraJsonDataStorage.new(data_path.get_base_dir())

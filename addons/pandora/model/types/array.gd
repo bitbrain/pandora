@@ -46,8 +46,11 @@ func parse_value(variant: Variant, settings: Dictionary = {}) -> Variant:
 				if value is Dictionary and value.has("type") and value.has("value"):
 					var value_type = value["type"]
 					var dict_value = value["value"]
-
-					var type = PandoraPropertyType.lookup(value_type)
+					
+					var path = ""
+					if PandoraSettings.extensions_types.has(value_type):
+						path = PandoraSettings.extensions_types[value_type]
+					var type = PandoraPropertyType.lookup(value_type, path)
 					if type != null:
 						value = type.parse_value(dict_value)
 
@@ -81,6 +84,10 @@ func write_value(variant: Variant) -> Variant:
 				)
 			elif value is PandoraReference:
 				value_type = PandoraPropertyType.lookup("reference")
+				value = value.save_data()
+			elif PandoraSettings.compare_with_extensions_models(value):
+				var path = PandoraSettings.extensions_types[value]
+				value_type = PandoraPropertyType.lookup(PandoraSettings.get_lookup_property_name(value), path)
 				value = value.save_data()
 			else:
 				for type in types:

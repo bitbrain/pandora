@@ -2,11 +2,11 @@
 class_name PandoraCategories
 
 
-const ROOT = "og1dmAzn1b"
+const ROOT = "F2e9QCtQ6e"
 
 
 class RootCategories:
-	const ITEMS = "EBUfjZlkKO"
-	const NPCS = "S6Dp5mcWW6"
+	const ITEMS = "_zMxaAiHqU"
+	const NPCS = "PXyryU_CUw"
 
 

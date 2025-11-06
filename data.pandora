@@ -32,7 +32,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			},
@@ -56,7 +56,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			},
@@ -78,7 +78,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			},
@@ -102,7 +102,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			},
@@ -170,7 +170,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			},
@@ -190,7 +190,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			},
@@ -261,7 +261,7 @@
 					},
 					"float property": {
 						"type": "float",
-						"value": 0.0990471839908196
+						"value": 0.0990471839909333
 					}
 				}
 			}
@@ -363,7 +363,7 @@
 			},
 			{
 				"_category_id": "1",
-				"_default_value": 0.0990471839908196,
+				"_default_value": 0.0990471839909333,
 				"_id": "45",
 				"_name": "float property",
 				"_setting_overrides": {

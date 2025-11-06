@@ -52,7 +52,7 @@ func test_array_window_opening() -> void:
 
 	await runner.simulate_frames(10, 5)
 
-	runner.set_mouse_pos(scene.edit_button.position + Vector2(10, 10))
+	runner.set_mouse_position(scene.edit_button.position + Vector2(10, 10))
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 	await runner.simulate_frames(10, 5)
@@ -87,12 +87,12 @@ func test_create_reference_array() -> void:
 
 	await runner.simulate_frames(10, 5)
 
-	runner.set_mouse_pos(scene.edit_button.position + Vector2(10, 10))
+	runner.set_mouse_position(scene.edit_button.position + Vector2(10, 10))
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 	await runner.simulate_frames(10, 5)
 
-	runner.set_mouse_pos(scene.array_window.array_manager.close_button.position + Vector2(10, 10))
+	runner.set_mouse_position(scene.array_window.array_manager.close_button.position + Vector2(10, 10))
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 	scene.array_window._on_close_requested()
