@@ -30,7 +30,7 @@ func test_signal_original_property_selected() -> void:
 	# wait 50ms
 	await runner.simulate_frames(10, 5)
 	
-	runner.set_mouse_pos(control.property_key_edit.position + Vector2(10, 10))
+	runner.set_mouse_position(control.property_key_edit.position + Vector2(10, 10))
 	runner.simulate_mouse_button_press(MOUSE_BUTTON_LEFT)
 	
 	await assert_signal(signal_monitor).wait_until(50).is_emitted('original_property_selected', [property])

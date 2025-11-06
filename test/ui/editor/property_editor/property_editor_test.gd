@@ -68,7 +68,7 @@ func test_array_property_items_creation() -> void:
 	var array_editor = scene.property_list.get_child(0).property_value.get_child(0).array_editor
 	var edit_btn_pos = array_editor.edit_button.global_position
 
-	runner.set_mouse_pos(edit_btn_pos + Vector2(10, 10))
+	runner.set_mouse_position(edit_btn_pos + Vector2(10, 10))
 	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	await runner.simulate_frames(10, 5)
 
