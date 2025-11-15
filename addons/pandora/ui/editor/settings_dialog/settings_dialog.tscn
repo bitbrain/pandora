@@ -84,6 +84,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SelectExtension" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.5489626, 0.5489626, 0.54896253, 1)
@@ -92,7 +93,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -119,6 +119,10 @@ item_1/text = "PPIngredient"
 item_2/text = "PPStats"
 item_3/text = "PPItemDrop"
 item_4/text = "PPStatusEffect"
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties"]
+layout_mode = 2
+text = "New Property"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
 visible = false
@@ -192,8 +196,62 @@ modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
+[node name="CreationDialog" type="ConfirmationDialog" parent="Window"]
+oversampling_override = 1.0
+title = "New Property"
+initial_position = 2
+size = Vector2i(500, 246)
+ok_button_text = "Create"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/CreationDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 492.0
+offset_bottom = 197.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/CreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/CreationDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Property Name"
+
+[node name="LineEdit" type="LineEdit" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "TestProperty"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Window/CreationDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Type"
+
+[node name="LineEdit2" type="LineEdit" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "test_property"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/CreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/CreationDialog/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Description"
+
+[node name="TextEdit" type="TextEdit" parent="Window/CreationDialog/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+placeholder_text = "Write here a description of your property"
+
 [connection signal="close_requested" from="Window" to="." method="_on_close_requested"]
 [connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList" to="." method="_on_item_selected"]
 [connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/ItemList" to="." method="_on_property_selected"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/Button" to="." method="_on_new_property_pressed"]
 [connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton" to="." method="_on_enabled"]
 [connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton2" to="." method="_on_show_on_top"]
+[connection signal="confirmed" from="Window/CreationDialog" to="." method="_on_creation_dialog_confirmed"]

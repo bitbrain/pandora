@@ -20,6 +20,11 @@ signal update_extensions_configurations
 @onready var entities_dependencies_container: GridContainer = $Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/GridContainer
 @onready var ext_property_details: VBoxContainer = $Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer
 
+@onready var creation_dialog: ConfirmationDialog = $Window/CreationDialog
+@onready var creation_name_edit: LineEdit = $Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer/LineEdit
+@onready var creation_type_edit: LineEdit = $Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer2/LineEdit2
+@onready var creation_description_edit: TextEdit = $Window/CreationDialog/VBoxContainer/VBoxContainer/TextEdit
+
 var _selected_extension_conf_index : int
 var _selected_extension_property_index : int
 
@@ -143,3 +148,51 @@ func _on_show_on_top(toggled_on: bool) -> void:
 	
 	PandoraSettings.save_extensions_configurations()
 	update_extensions_configurations.emit()
+
+func _on_new_property_pressed() -> void:
+	creation_dialog.popup_centered()
+
+func _on_creation_dialog_confirmed() -> void:
+	var property_name = creation_name_edit.text
+	var property_type = creation_type_edit.text
+	var property_description = creation_description_edit.text
+	
+	if not property_name:
+		push_error("Property name is mandatory. Please retry.")
+	if not property_type:
+		push_error("Property type is mandatory. Please retry.")
+	
+	var extensions_configurations := PandoraSettings.get_extensions_configurations()
+	var extensions_dirs = PandoraSettings.get_extensions_dirs()
+	
+	var extensions_dir = extensions_dirs[_selected_extension_conf_index]
+	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
+	
+	var opened_ext_dir = DirAccess.open(extensions_dir)
+	opened_ext_dir.make_dir_recursive(property_type + "/icons")
+	opened_ext_dir.make_dir_recursive(property_type + "/model/types")
+	opened_ext_dir.make_dir_recursive(property_type + "/property_button")
+	opened_ext_dir.make_dir_recursive(property_type + "/ui_component")
+	FileAccess.open(extensions_dir + "/" + property_type + "/model/" + property_type + ".gd", FileAccess.WRITE)
+	FileAccess.open(extensions_dir + "/" + property_type + "/model/types/" + property_type + ".gd", FileAccess.WRITE)
+	FileAccess.open(extensions_dir + "/" + property_type + "/property_button/property_button.tscn", FileAccess.WRITE)
+	FileAccess.open(extensions_dir + "/" + property_type + "/ui_component/" + property_type + ".gd", FileAccess.WRITE)
+	FileAccess.open(extensions_dir + "/" + property_type + "/ui_component/" + property_type + ".tscn", FileAccess.WRITE)
+	
+	var extension_property : Dictionary = {
+		"name": property_name,
+		"dir_name": property_type,
+		"description": property_description,
+		"enabled": false,
+		"show_on_top": true,
+		"dependencies": []
+	}
+	extensions_configurations[_selected_extension_conf_index]["properties"].append(extension_property)
+	PandoraSettings.save_extensions_configurations()
+	update_extensions_configurations.emit()
+	
+	creation_name_edit.text = ""
+	creation_type_edit.text = ""
+	creation_description_edit.text = ""
+	
+	_load_configurations()
