@@ -1,7 +1,7 @@
 @tool
 extends PandoraPropertyControl
 
-const ItemRecipeType = preload("../model/types/test_property.gd")
+const TestPropertyType = preload("../model/types/test_property.gd")
 
 @onready var text_edit: TextEdit = $HBoxContainer/TextEdit
 @onready var spin_box: SpinBox = $HBoxContainer/SpinBox
@@ -31,8 +31,8 @@ func _ready() -> void:
 
 func refresh() -> void:
 	if _property != null:
-		spin_box.min_value = _property.get_setting(ItemRecipeType.SETTING_MIN_VALUE) as int
-		spin_box.max_value = _property.get_setting(ItemRecipeType.SETTING_MAX_VALUE) as int
+		spin_box.min_value = _property.get_setting(TestPropertyType.SETTING_MIN_VALUE) as int
+		spin_box.max_value = _property.get_setting(TestPropertyType.SETTING_MAX_VALUE) as int
 		if _property.get_default_value() != null:
 			current_property = _property.get_default_value() as PandoraTestProperty
 			text_edit.text = current_property.get_item_name()
@@ -40,5 +40,5 @@ func refresh() -> void:
 			spin_box.value = current_property.get_quantity()
 
 func _setting_changed(key:String) -> void:
-	if key == ItemRecipeType.SETTING_MIN_VALUE || key == ItemRecipeType.SETTING_MAX_VALUE:
+	if key == TestPropertyType.SETTING_MIN_VALUE || key == TestPropertyType.SETTING_MAX_VALUE:
 		refresh()

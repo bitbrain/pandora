@@ -1,0 +1,16 @@
+{
+	"configuration": {
+		"icon": "res://addons/pandora/icons/pandora-icon.svg",
+		"name": "Pandora"
+	},
+	"properties": [
+		{
+			"dependencies": [],
+			"description": "A simple property of test to show how to use new custom extensions.",
+			"dir_name": "test_property",
+			"enabled": true,
+			"name": "PandoraTestProperty",
+			"show_on_top": true
+		}
+	]
+}

@@ -7,6 +7,7 @@ class_name PandoraEditor extends Control
 @onready var create_entity_button: Button = %CreateEntityButton
 @onready var create_category_button: Button = %CreateCategoryButton
 @onready var import_button: Button = %ImportButton
+@onready var settings_button: Button = %SettingsButton
 @onready var delete_button = %DeleteButton
 @onready var property_editor = %PropertyEditor
 @onready var regenerate_id_button: Button = %RegenerateIDButton
@@ -14,6 +15,7 @@ class_name PandoraEditor extends Control
 @onready var version = %Version
 @onready var save_label = %SaveLabel
 @onready var import_dialog = %ImportDialog
+@onready var settings_dialog = %SettingsDialog
 @onready var progress_bar = %ProgressBar
 
 @onready var data_content = %DataContent
@@ -21,7 +23,6 @@ class_name PandoraEditor extends Control
 
 var selected_entity: PandoraEntity
 var _load_error = false
-
 
 func _ready() -> void:
 	save_button.pressed.connect(_save)
@@ -37,6 +38,7 @@ func _ready() -> void:
 	reset_button.pressed.connect(_reset_to_saved_file)
 	delete_button.pressed.connect(func(): tree.queue_delete(selected_entity.get_entity_id()))
 	import_button.pressed.connect(func(): import_dialog.open())
+	settings_button.pressed.connect(func(): settings_dialog.open())
 	import_dialog.import_started.connect(func(import_count: int): progress_bar.init(import_count))
 	import_dialog.import_ended.connect(_on_import_ended)
 

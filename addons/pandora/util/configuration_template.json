@@ -1,0 +1,7 @@
+{
+	"configuration": {
+		"name": "Pandora",
+		"icon": "res://addons/pandora/icons/pandora-icon.svg",
+	},
+	"properties": []
+}

@@ -100,3 +100,7 @@ func _generate_property_name(type: String, entity: PandoraEntity) -> String:
 	if properties.is_empty() or not entity.has_entity_property(property_name):
 		return property_name
 	return property_name + str(properties.size())
+
+
+func _on_update_extensions_configurations() -> void:
+	property_bar.updates_property_bar_buttons()

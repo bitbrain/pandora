@@ -1,0 +1,199 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctp7xnvi5ep0e"]
+
+[ext_resource type="Script" uid="uid://d4efa7td5f0e0" path="res://addons/pandora/ui/editor/settings_dialog/settings_dialog.gd" id="1_4vos3"]
+[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="2_4vos3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4vos3"]
+
+[node name="SettingsDialog" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_4vos3")
+
+[node name="Window" type="Window" parent="."]
+disable_3d = true
+oversampling_override = 1.0
+title = "Extensions Settings"
+initial_position = 2
+size = Vector2i(1152, 648)
+visible = false
+wrap_controls = true
+content_scale_mode = 1
+content_scale_aspect = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="Window"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4vos3")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer"]
+layout_mode = 2
+
+[node name="ExtensionsContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/ExtensionsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.69411767, 1)
+text = "Extensions list"
+
+[node name="ItemList" type="ItemList" parent="Window/PanelContainer/HBoxContainer/ExtensionsContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+item_count = 1
+item_0/text = "Default"
+item_0/icon = ExtResource("2_4vos3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7882353, 0.3137255, 0.80784315, 1)
+text = "Pandora - Extensions Settings"
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Here you can enable/disable any properties added by the extension or change their behaviours."
+
+[node name="NoProperties" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.5489626, 0.5489626, 0.54896253, 1)
+text = "This extensions doesn't add custom properties to Pandora."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectExtension" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.5489626, 0.5489626, 0.54896253, 1)
+text = "Select an extension to check its configuration"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6039216, 0.44313726, 0.4117647, 1)
+text = "All Properties"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Properties" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_selected_color = Color(0.64705884, 0.25490198, 0.6627451, 1)
+item_count = 5
+item_0/text = "PPRecipe"
+item_1/text = "PPIngredient"
+item_2/text = "PPStats"
+item_3/text = "PPItemDrop"
+item_4/text = "PPStatusEffect"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Defines the main attributes of an entity (mob, player, NPC, etc.)."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Enable property"
+
+[node name="CheckButton2" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+text = "Show property on top (inside Property bar)"
+
+[node name="PropertiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
+text = "Dependencies (Properties)"
+
+[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 5
+
+[node name="Label2" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/GridContainer"]
+layout_mode = 2
+text = "PPIngredient"
+
+[node name="EntitiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
+text = "Dependencies (Entities/Models)"
+
+[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 5
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/GridContainer"]
+layout_mode = 2
+text = "ItemEntity"
+
+[node name="BottomSpace" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[connection signal="close_requested" from="Window" to="." method="_on_close_requested"]
+[connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList" to="." method="_on_item_selected"]
+[connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/ItemList" to="." method="_on_property_selected"]
+[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton" to="." method="_on_enabled"]
+[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton2" to="." method="_on_show_on_top"]

@@ -25,6 +25,8 @@ const DEFAULT_PANDORA_EXTENSIONS_DIR: Array[StringName] = ["res://pandora/extens
 
 static var extensions_models: Dictionary[String, RefCounted] = {}
 static var extensions_types: Dictionary[String, String] = {}
+static var extensions_configurations: Array[Dictionary] = []
+static var extensions_confs_map: Dictionary[String, int] = {}
 
 static func initialize() -> void:
 	init_setting(
@@ -75,6 +77,7 @@ static func init_setting(
 		"hint_string": hint_string,
 	}
 	ProjectSettings.add_property_info(info)
+	_load_all_extensions_configuration()
 	_check_new_extensions_models()
 
 static func get_id_type() -> IDType:
@@ -110,9 +113,28 @@ static func get_extensions_dirs() -> Array:
 		DEFAULT_PANDORA_EXTENSIONS_DIR
 	)
 
+static func get_extensions_configurations() -> Array[Dictionary]:
+	return extensions_configurations
+
+static func get_extensions_confs_map() -> Dictionary:
+	return extensions_confs_map
+
 static func set_extensions_dir(array: Array) -> void:
 	ProjectSettings.set_setting(SETTINGS_PANDORA_EXTENSIONS_DIR, array)
+	_load_all_extensions_configuration()
 	_check_new_extensions_models()
+
+static func _load_all_extensions_configuration() -> void:
+	var extensions_dirs = PandoraSettings.get_extensions_dirs()
+	for extensions_dir in extensions_dirs:
+		var configuration_file = FileAccess.open(extensions_dir + "/configuration.json", FileAccess.READ)
+		if not configuration_file:
+			push_error("Impossible to load the configuration from " + extensions_dir)
+		else:
+			var configuration_dic = JSON.parse_string(configuration_file.get_as_text())
+			if not extensions_configurations.has(configuration_dic):
+				extensions_configurations.append(configuration_dic)
+				extensions_confs_map[extensions_dir] = extensions_configurations.size() - 1
 
 static func _check_new_extensions_models() -> void:
 	var extensions_dirs = PandoraSettings.get_extensions_dirs()
@@ -145,6 +167,17 @@ static func compare_with_extensions_models(value) -> bool:
 			if typeof(value) == typeof(extensions_models[emodel]):
 				return true
 	return false
+
+static func save_extensions_configurations() -> void:
+	var extensions_dirs = PandoraSettings.get_extensions_dirs()
+	var extensions_confs_map = PandoraSettings.get_extensions_confs_map()
+	var extensions_configurations = PandoraSettings.get_extensions_configurations()
+	for extensions_dir in extensions_dirs:
+		var configuration_file = FileAccess.open(extensions_dir + "/configuration.json", FileAccess.WRITE)
+		var extensions_confs_idx: int = extensions_confs_map[extensions_dir] as int
+		var extensions_configuration = extensions_configurations[extensions_confs_idx]
+		configuration_file.store_string(JSON.stringify(extensions_configuration, "\t"))
+		configuration_file.close()
 
 static func get_lookup_property_name(value) -> String:
 	for emodel in extensions_models:
