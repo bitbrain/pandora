@@ -124,6 +124,13 @@ static func set_extensions_dir(array: Array) -> void:
 	_load_all_extensions_configuration()
 	_check_new_extensions_models()
 
+static func find_extension_configuration_property(type: String) -> Dictionary:
+	for conf in extensions_configurations:
+		for property in conf["properties"]:
+			if property["dir_name"] == type:
+				return property
+	return {}
+
 static func _load_all_extensions_configuration() -> void:
 	var extensions_dirs = PandoraSettings.get_extensions_dirs()
 	for extensions_dir in extensions_dirs:
