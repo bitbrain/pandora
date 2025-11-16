@@ -155,10 +155,18 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
 layout_mode = 2
+
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
 text = "Dependencies (Properties)"
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/HBoxContainer"]
+layout_mode = 2
+text = "Add dependency"
 
 [node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
 layout_mode = 2
@@ -170,6 +178,7 @@ layout_mode = 2
 text = "PPIngredient"
 
 [node name="EntitiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+visible = false
 modulate = Color(1, 1, 1, 0.47058824)
 layout_mode = 2
 
@@ -177,10 +186,18 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
 layout_mode = 2
+
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
 text = "Dependencies (Entities/Models)"
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/HBoxContainer"]
+layout_mode = 2
+text = "Add dependency"
 
 [node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
 layout_mode = 2
@@ -248,10 +265,51 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 placeholder_text = "Write here a description of your property"
 
+[node name="DependencyDialog" type="ConfirmationDialog" parent="Window"]
+oversampling_override = 1.0
+title = "Add new dependency"
+initial_position = 2
+size = Vector2i(300, 166)
+ok_button_text = "Add"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/DependencyDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 292.0
+offset_bottom = 117.0
+
+[node name="Label" type="Label" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+text = "Select a property"
+
+[node name="OptionButton" type="OptionButton" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+text = "Type of dependency"
+
+[node name="LineEdit" type="LineEdit" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+editable = false
+
+[node name="EnableDialog" type="ConfirmationDialog" parent="Window"]
+oversampling_override = 1.0
+title = "Warning"
+initial_position = 2
+size = Vector2i(275, 106)
+ok_button_text = "Enable"
+dialog_text = "The selected property is disabled.
+Do you want to enable it?"
+
 [connection signal="close_requested" from="Window" to="." method="_on_close_requested"]
 [connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList" to="." method="_on_item_selected"]
 [connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/ItemList" to="." method="_on_property_selected"]
 [connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/Button" to="." method="_on_new_property_pressed"]
 [connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton" to="." method="_on_enabled"]
 [connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton2" to="." method="_on_show_on_top"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/HBoxContainer/Button" to="." method="_on_add_prop_dependency_pressed"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/HBoxContainer/Button" to="." method="_on_add_entity_dependency_pressed"]
 [connection signal="confirmed" from="Window/CreationDialog" to="." method="_on_creation_dialog_confirmed"]
+[connection signal="confirmed" from="Window/DependencyDialog" to="." method="_on_dependency_dialog_confirmed"]
+[connection signal="confirmed" from="Window/EnableDialog" to="." method="_on_enable_dialog_confirmed"]

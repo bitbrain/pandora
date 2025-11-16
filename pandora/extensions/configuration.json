@@ -5,11 +5,24 @@
 	},
 	"properties": [
 		{
-			"dependencies": [],
+			"dependencies": [
+				{
+					"name": "DependencyProperty",
+					"type": "PROPERTY"
+				}
+			],
 			"description": "A simple property of test to show how to use new custom extensions.",
 			"dir_name": "test_property",
 			"enabled": true,
 			"name": "PandoraTestProperty",
+			"show_on_top": true
+		},
+		{
+			"dependencies": [],
+			"description": "",
+			"dir_name": "dependency_property",
+			"enabled": false,
+			"name": "DependencyProperty",
 			"show_on_top": true
 		}
 	]

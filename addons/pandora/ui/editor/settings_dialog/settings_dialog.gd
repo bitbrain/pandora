@@ -25,8 +25,14 @@ signal update_extensions_configurations
 @onready var creation_type_edit: LineEdit = $Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer2/LineEdit2
 @onready var creation_description_edit: TextEdit = $Window/CreationDialog/VBoxContainer/VBoxContainer/TextEdit
 
+@onready var dependency_dialog: ConfirmationDialog = $Window/DependencyDialog
+@onready var extensions_properties_selector: OptionButton = $Window/DependencyDialog/VBoxContainer/OptionButton
+@onready var dependency_type_edit: LineEdit = $Window/DependencyDialog/VBoxContainer/LineEdit
+@onready var enable_dialog: ConfirmationDialog = $Window/EnableDialog
+
 var _selected_extension_conf_index : int
 var _selected_extension_property_index : int
+var _selected_dependency : Dictionary
 
 func _ready() -> void:
 	window.hide()
@@ -92,25 +98,19 @@ func _on_property_selected(index: int) -> void:
 	ext_property_desc.text = extension_property["description"]
 	ext_property_enable_btn.button_pressed = extension_property["enabled"]
 	ext_property_show_on_top_btn.button_pressed = extension_property["show_on_top"]
-	if not extension_property["dependencies"]:
-		properties_dependencies.hide()
-		entities_dependencies.hide()
-	else:
-		var dependencies : Array[Dictionary] = extension_property["dependencies"]
-		var property_dependencies := dependencies.filter(func(dep: Dictionary): return dep["type"] == "PROPERTY")
-		var model_dependencies := dependencies.filter(func(dep: Dictionary): return dep["type"] == "MODEL")
-		if property_dependencies:
-			for dep in property_dependencies:
-				var dep_label = Label.new()
-				dep_label.text = dep["name"]
-				properties_dependencies_container.add_child(dep_label)
-			properties_dependencies.show()
-		if model_dependencies:
-			for dep in model_dependencies:
-				var dep_label = Label.new()
-				dep_label.text = dep["name"]
-				entities_dependencies_container.add_child(dep_label)
-			entities_dependencies.show()
+	var dependencies : Array = extension_property["dependencies"]
+	var property_dependencies := dependencies.filter(func(dep: Dictionary): return dep["type"] == "PROPERTY")
+	var model_dependencies := dependencies.filter(func(dep: Dictionary): return dep["type"] == "MODEL")
+	if property_dependencies:
+		for dep in property_dependencies:
+			var dep_label = Label.new()
+			dep_label.text = dep["name"]
+			properties_dependencies_container.add_child(dep_label)
+	if model_dependencies:
+		for dep in model_dependencies:
+			var dep_label = Label.new()
+			dep_label.text = dep["name"]
+			entities_dependencies_container.add_child(dep_label)
 	
 	if not extension_property["enabled"]:
 		ext_property_show_on_top_btn.disabled = true
@@ -196,3 +196,48 @@ func _on_creation_dialog_confirmed() -> void:
 	creation_description_edit.text = ""
 	
 	_load_configurations()
+
+func _on_add_prop_dependency_pressed() -> void:
+	dependency_type_edit.editable = true
+	dependency_type_edit.text = "PROPERTY"
+	dependency_type_edit.editable = false
+	
+	extensions_properties_selector.clear()
+	
+	var extensions_configurations := PandoraSettings.get_extensions_configurations()
+	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
+	for ext_conf_prop in extensions_configuration["properties"]:
+		if ext_conf_prop["name"] != extensions_configuration["properties"][_selected_extension_property_index]["name"]:
+			extensions_properties_selector.add_item(ext_conf_prop["name"])
+	
+	dependency_dialog.popup_centered()
+
+func _on_add_entity_dependency_pressed() -> void:
+	dependency_type_edit.editable = true
+	dependency_type_edit.text = "ENTITY"
+	dependency_type_edit.editable = false
+	dependency_dialog.popup_centered()
+
+func _on_dependency_dialog_confirmed() -> void:
+	var property_name := extensions_properties_selector.get_item_text(extensions_properties_selector.selected)
+	
+	var extensions_configurations := PandoraSettings.get_extensions_configurations()
+	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
+	var extension_properties = extensions_configurations[_selected_extension_conf_index]["properties"]
+	var selected_dependency = extension_properties.filter(func(property: Dictionary): return property["name"] == property_name)[0] as Dictionary
+	if not selected_dependency["enabled"]:
+		_selected_dependency = selected_dependency
+		enable_dialog.popup_centered()
+	else:
+		extension_properties[_selected_extension_property_index]["dependencies"].append({"name": selected_dependency["name"], "type": "PROPERTY"})
+		PandoraSettings.save_extensions_configurations()
+		update_extensions_configurations.emit()
+
+func _on_enable_dialog_confirmed() -> void:
+	var extensions_configurations := PandoraSettings.get_extensions_configurations()
+	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
+	var extension_properties = extensions_configurations[_selected_extension_conf_index]["properties"]
+	extension_properties.filter(func(property: Dictionary): return property["name"] == _selected_dependency["name"])[0]["enabled"] = true
+	extension_properties[_selected_extension_property_index]["dependencies"].append({"name": _selected_dependency["name"], "type": "PROPERTY"})
+	PandoraSettings.save_extensions_configurations()
+	update_extensions_configurations.emit()

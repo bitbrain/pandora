@@ -186,6 +186,19 @@ static func save_extensions_configurations() -> void:
 		configuration_file.store_string(JSON.stringify(extensions_configuration, "\t"))
 		configuration_file.close()
 
+static func get_property_dependencies_by(current_property: Dictionary) -> Array[Dictionary]:
+	var extensions_configurations = PandoraSettings.get_extensions_configurations()
+	var property_dependencies : Array[Dictionary] = []
+	var current_dependencies := current_property["dependencies"] as Array
+	var current_prop_dependencies = current_dependencies.filter(func(dep: Dictionary): return dep["type"] == "PROPERTY")
+	for current_dependency in current_prop_dependencies:
+		for ext_configuration in extensions_configurations:
+			var ext_conf_properties := ext_configuration["properties"] as Array
+			var property_dependency := ext_conf_properties.filter(func(p: Dictionary): return p["name"] == current_dependency["name"])
+			if property_dependency:
+				property_dependencies.append(property_dependency[0])
+	return property_dependencies
+
 static func get_lookup_property_name(value) -> String:
 	for emodel in extensions_models:
 		if not value is Dictionary and not value is Color:
