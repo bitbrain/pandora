@@ -16,14 +16,6 @@
 			"enabled": true,
 			"name": "PandoraTestProperty",
 			"show_on_top": true
-		},
-		{
-			"dependencies": [],
-			"description": "",
-			"dir_name": "dependency_property",
-			"enabled": false,
-			"name": "DependencyProperty",
-			"show_on_top": true
 		}
 	]
 }
