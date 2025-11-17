@@ -5,12 +5,7 @@
 	},
 	"properties": [
 		{
-			"dependencies": [
-				{
-					"name": "DependencyProperty",
-					"type": "PROPERTY"
-				}
-			],
+			"dependencies": [],
 			"description": "A simple property of test to show how to use new custom extensions.",
 			"dir_name": "test_property",
 			"enabled": true,
