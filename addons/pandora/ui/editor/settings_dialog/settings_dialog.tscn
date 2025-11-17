@@ -75,6 +75,7 @@ layout_mode = 2
 text = "Here you can enable/disable any properties added by the extension or change their behaviours."
 
 [node name="NoProperties" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -84,6 +85,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SelectExtension" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -92,23 +94,25 @@ text = "Select an extension to check its configuration"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ExtConfigurationContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6039216, 0.44313726, 0.4117647, 1)
 text = "All Properties"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Properties" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Properties" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ItemList" type="ItemList" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties"]
+[node name="PropertyItemList" type="ItemList" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -120,95 +124,101 @@ item_2/text = "PPStats"
 item_3/text = "PPItemDrop"
 item_4/text = "PPStatusEffect"
 
-[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties"]
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties"]
 layout_mode = 2
 text = "New Property"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="PropertyContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="PropertyDescription" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Defines the main attributes of an entity (mob, player, NPC, etc.)."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="EnableButton" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Enable property"
 
-[node name="CheckButton2" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ShowPropertyOnTop" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = true
 text = "Show property on top (inside Property bar)"
 
-[node name="PropertiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="PropertiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer"]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.47058824)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies"]
 layout_mode = 2
 
-[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/HBoxContainer"]
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
 text = "Dependencies (Properties)"
 
-[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/HBoxContainer"]
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies/HBoxContainer"]
 layout_mode = 2
 text = "Add dependency"
 
-[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies"]
+[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies"]
 layout_mode = 2
 theme_override_constants/h_separation = 30
 columns = 5
 
-[node name="Label2" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/GridContainer"]
+[node name="Label2" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies/GridContainer"]
 layout_mode = 2
 text = "PPIngredient"
 
-[node name="EntitiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="EntitiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer"]
+unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0.47058824)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies"]
 layout_mode = 2
 
-[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/HBoxContainer"]
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
 text = "Dependencies (Entities/Models)"
 
-[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/HBoxContainer"]
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies/HBoxContainer"]
 layout_mode = 2
 text = "Add dependency"
 
-[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies"]
 layout_mode = 2
 theme_override_constants/h_separation = 30
 columns = 5
 
-[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/GridContainer"]
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies/GridContainer"]
 layout_mode = 2
 text = "ItemEntity"
 
-[node name="BottomSpace" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies"]
+[node name="BottomSpace" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -304,12 +314,12 @@ Do you want to enable it?"
 
 [connection signal="close_requested" from="Window" to="." method="_on_close_requested"]
 [connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList" to="." method="_on_item_selected"]
-[connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/ItemList" to="." method="_on_property_selected"]
-[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Properties/Button" to="." method="_on_new_property_pressed"]
-[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton" to="." method="_on_enabled"]
-[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/CheckButton2" to="." method="_on_show_on_top"]
-[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PropertiesDependencies/HBoxContainer/Button" to="." method="_on_add_prop_dependency_pressed"]
-[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/EntitiesDependencies/HBoxContainer/Button" to="." method="_on_add_entity_dependency_pressed"]
+[connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties/PropertyItemList" to="." method="_on_property_selected"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties/Button" to="." method="_on_new_property_pressed"]
+[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/HBoxContainer/EnableButton" to="." method="_on_enabled"]
+[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/HBoxContainer/ShowPropertyOnTop" to="." method="_on_show_on_top"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/PropertiesDependencies/HBoxContainer/Button" to="." method="_on_add_prop_dependency_pressed"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/EntitiesDependencies/HBoxContainer/Button" to="." method="_on_add_entity_dependency_pressed"]
 [connection signal="confirmed" from="Window/CreationDialog" to="." method="_on_creation_dialog_confirmed"]
 [connection signal="confirmed" from="Window/DependencyDialog" to="." method="_on_dependency_dialog_confirmed"]
 [connection signal="confirmed" from="Window/EnableDialog" to="." method="_on_enable_dialog_confirmed"]
