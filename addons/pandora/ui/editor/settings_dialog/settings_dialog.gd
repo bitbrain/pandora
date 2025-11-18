@@ -75,6 +75,7 @@ func _on_item_selected(index: int) -> void:
 	
 	no_properties_label.hide()
 	select_extension_label.hide()
+	ext_configuration_container.hide()
 	if not extensions_configuration["properties"]:
 		no_properties_label.show()
 	else:
