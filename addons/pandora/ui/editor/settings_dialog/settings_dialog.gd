@@ -73,6 +73,7 @@ func _on_item_selected(index: int) -> void:
 	var extensions_configuration := extensions_configurations[index]
 	extension_label.text = "%s - Extensions Settings" % extensions_configuration["configuration"]["name"]
 	
+	no_properties_label.hide()
 	select_extension_label.hide()
 	if not extensions_configuration["properties"]:
 		no_properties_label.show()
