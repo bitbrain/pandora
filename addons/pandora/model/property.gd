@@ -37,7 +37,7 @@ func _init(id: String, name: String, type_name: String) -> void:
 func get_setting(key: String) -> Variant:
 	if has_setting_override(key):
 		return _setting_overrides[key]
-	elif _type != null:
+	elif _type != null and _type.get_settings().has(key):
 		return _type.get_settings()[key]["value"]
 	else:
 		return null

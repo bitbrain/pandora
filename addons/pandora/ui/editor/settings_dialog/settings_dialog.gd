@@ -3,6 +3,12 @@ extends Control
 
 signal update_extensions_configurations
 
+const DependencyScene = preload("uid://dn5yxfosec2ta")
+const STRING_FIELD_SETTINGS = preload("uid://bn7da5ljy5mqh")
+const RANGE_FIELD_SETTINGS = preload("uid://cyd24jwivayf5")
+const ARRAY_FIELD_SETTINGS = preload("uid://cgwd2gdv7xeia")
+const REFERENCE_FIELD_SETTINGS = preload("uid://d3a0188wd61px")
+
 @onready var window: Window = $Window
 @onready var extensions_list: ItemList = $Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList
 @onready var extension_label: Label = $Window/PanelContainer/HBoxContainer/VBoxContainer/Label
@@ -14,6 +20,8 @@ signal update_extensions_configurations
 @onready var ext_property_desc: Label = %PropertyDescription
 @onready var ext_property_enable_btn: CheckButton = %EnableButton
 @onready var ext_property_show_on_top_btn: CheckButton = %ShowPropertyOnTop
+@onready var customization_container: FoldableContainer = %CustomizationContainer
+@onready var dependencies_container: FoldableContainer = %DependenciesContainer
 @onready var properties_dependencies: VBoxContainer = %PropertiesDependencies
 @onready var entities_dependencies: VBoxContainer = %EntitiesDependencies
 @onready var properties_dependencies_container: GridContainer = %PropertiesDependencies/GridContainer
@@ -29,6 +37,10 @@ signal update_extensions_configurations
 @onready var extensions_properties_selector: OptionButton = $Window/DependencyDialog/VBoxContainer/OptionButton
 @onready var dependency_type_edit: LineEdit = $Window/DependencyDialog/VBoxContainer/LineEdit
 @onready var enable_dialog: ConfirmationDialog = $Window/EnableDialog
+@onready var dependency_check_alert: AcceptDialog = $Window/DependencyCheckAlert
+
+@onready var property_scene_container: MarginContainer = %PropertySceneContainer
+@onready var fields_settings: VBoxContainer = %FieldsSettings
 
 var _selected_extension_conf_index : int
 var _selected_extension_property_index : int
@@ -92,6 +104,9 @@ func _on_property_selected(index: int) -> void:
 		child.queue_free()
 	for child in entities_dependencies_container.get_children():
 		child.queue_free()
+	for child in fields_settings.get_children():
+		child.queue_free()
+	property_scene_container.get_child(0).queue_free()
 	
 	var extensions_configurations := PandoraSettings.get_extensions_configurations()
 	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
@@ -105,24 +120,58 @@ func _on_property_selected(index: int) -> void:
 	var model_dependencies := dependencies.filter(func(dep: Dictionary): return dep["type"] == "MODEL")
 	if property_dependencies:
 		for dep in property_dependencies:
-			var dep_label = Label.new()
-			dep_label.text = dep["name"]
-			properties_dependencies_container.add_child(dep_label)
+			var dependency_scene : Dependency = DependencyScene.instantiate()
+			dependency_scene.dependency = dep
+			properties_dependencies_container.add_child(dependency_scene)
+			dependency_scene.removed.connect(_on_dependency_removed)
 	if model_dependencies:
 		for dep in model_dependencies:
-			var dep_label = Label.new()
-			dep_label.text = dep["name"]
-			entities_dependencies_container.add_child(dep_label)
+			var dependency_scene : Dependency = DependencyScene.instantiate()
+			dependency_scene.dependency = dep
+			entities_dependencies_container.add_child(dependency_scene)
+			dependency_scene.removed.connect(_on_dependency_removed)
+	var extension_dir = PandoraSettings.get_extensions_confs_map().find_key(_selected_extension_conf_index)
+	var property_scene := (load(extension_dir + "/" + extension_property["dir_name"] + "/ui_component/" + extension_property["dir_name"] + ".tscn") as PackedScene).instantiate()
+	property_scene_container.add_child(property_scene)
+	
+	if extension_property["fields"]:
+		for property_field in extension_property["fields"]:
+			if property_field["type"] == "STRING":
+				var field_instance := STRING_FIELD_SETTINGS.instantiate() as StringFieldSettings
+				fields_settings.add_child(field_instance)
+				field_instance.set_property_field(property_field)
+				field_instance.updated.connect(_on_field_settings_update)
+			elif property_field["type"] == "RANGE":
+				var field_instance := RANGE_FIELD_SETTINGS.instantiate() as RangeFieldSettings
+				fields_settings.add_child(field_instance)
+				field_instance.set_property_field(property_field)
+				field_instance.updated.connect(_on_field_settings_update)
+			elif property_field["type"] == "ARRAY":
+				var field_instance := ARRAY_FIELD_SETTINGS.instantiate() as ArrayFieldSettings
+				fields_settings.add_child(field_instance)
+				field_instance.set_property_field(property_field)
+				field_instance.updated.connect(_on_field_settings_update)
+			elif property_field["type"] == "REFERENCE":
+				var field_instance := REFERENCE_FIELD_SETTINGS.instantiate() as ReferenceFieldSettings
+				fields_settings.add_child(field_instance)
+				field_instance.set_property_field(property_field)
+				field_instance.updated.connect(_on_field_settings_update)
 	
 	if not extension_property["enabled"]:
 		ext_property_show_on_top_btn.disabled = true
-		properties_dependencies.modulate.a = 0.45
-		entities_dependencies.modulate.a = 0.45
+		dependencies_container.modulate.a = 0.45
+		customization_container.modulate.a = 0.45
 	else:
 		ext_property_show_on_top_btn.disabled = false
-		properties_dependencies.modulate.a = 1
-		entities_dependencies.modulate.a = 1
+		dependencies_container.modulate.a = 1
+		customization_container.modulate.a = 1
 	ext_property_details.show()
+
+func _on_field_settings_update(property_field: Dictionary) -> void:
+	var property_control = property_scene_container.get_child(0) as PandoraPropertyControl
+	property_control.update_field_settings(property_field)
+	PandoraSettings.save_extensions_configurations()
+	update_extensions_configurations.emit()
 
 func _on_enabled(toggled_on: bool) -> void:
 	var extensions_configurations := PandoraSettings.get_extensions_configurations()
@@ -132,12 +181,12 @@ func _on_enabled(toggled_on: bool) -> void:
 	
 	if not toggled_on:
 		ext_property_show_on_top_btn.disabled = true
-		properties_dependencies.modulate.a = 0.45
-		entities_dependencies.modulate.a = 0.45
+		dependencies_container.modulate.a = 0.45
+		customization_container.modulate.a = 0.45
 	else:
 		ext_property_show_on_top_btn.disabled = false
-		properties_dependencies.modulate.a = 1
-		entities_dependencies.modulate.a = 1
+		dependencies_container.modulate.a = 1
+		customization_container.modulate.a = 1
 	
 	PandoraSettings.save_extensions_configurations()
 	update_extensions_configurations.emit()
@@ -177,9 +226,22 @@ func _on_creation_dialog_confirmed() -> void:
 	opened_ext_dir.make_dir_recursive(property_type + "/ui_component")
 	FileAccess.open(extensions_dir + "/" + property_type + "/model/" + property_type + ".gd", FileAccess.WRITE)
 	FileAccess.open(extensions_dir + "/" + property_type + "/model/types/" + property_type + ".gd", FileAccess.WRITE)
-	FileAccess.open(extensions_dir + "/" + property_type + "/property_button/property_button.tscn", FileAccess.WRITE)
 	FileAccess.open(extensions_dir + "/" + property_type + "/ui_component/" + property_type + ".gd", FileAccess.WRITE)
-	FileAccess.open(extensions_dir + "/" + property_type + "/ui_component/" + property_type + ".tscn", FileAccess.WRITE)
+	
+	var ui_component := PandoraPropertyControl.new()
+	ui_component.type = property_type
+	
+	var ui_component_scene := PackedScene.new()
+	var result = ui_component_scene.pack(ui_component)
+	if result == OK:
+		ResourceSaver.save(ui_component_scene, extensions_dir + "/" + property_type + "/ui_component/" + property_type + ".tscn")
+	
+	var property_button := PandoraPropertyButton.new()
+	property_button.scene = load(extensions_dir + "/" + property_type + "/ui_component/" + property_type + ".tscn")
+	var property_button_scene := PackedScene.new()
+	result = property_button_scene.pack(property_button)
+	if result == OK:
+		ResourceSaver.save(property_button_scene, extensions_dir + "/" + property_type + "/property_button/property_button.tscn")
 	
 	var extension_property : Dictionary = {
 		"name": property_name,
@@ -241,5 +303,28 @@ func _on_enable_dialog_confirmed() -> void:
 	var extension_properties = extensions_configurations[_selected_extension_conf_index]["properties"]
 	extension_properties.filter(func(property: Dictionary): return property["name"] == _selected_dependency["name"])[0]["enabled"] = true
 	extension_properties[_selected_extension_property_index]["dependencies"].append({"name": _selected_dependency["name"], "type": "PROPERTY"})
+	PandoraSettings.save_extensions_configurations()
+	update_extensions_configurations.emit()
+
+func _on_delete_property_pressed() -> void:
+	var extensions_configurations := PandoraSettings.get_extensions_configurations()
+	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
+	var current_property_name = extensions_configuration["properties"][_selected_extension_property_index]["name"]
+	var is_dependency = extensions_configuration["properties"].any(func(property: Dictionary): \
+		return property["dependencies"].any(func(dep: Dictionary): \
+			return dep["name"] == current_property_name))
+	
+	if is_dependency:
+		dependency_check_alert.popup_centered()
+	else:
+		pass
+
+func _on_dependency_removed(dep: Dictionary) -> void:
+	var extensions_configurations := PandoraSettings.get_extensions_configurations()
+	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
+	var extension_properties = extensions_configurations[_selected_extension_conf_index]["properties"]
+	var property_dependencies = extension_properties[_selected_extension_property_index]["dependencies"] as Array
+	property_dependencies.erase(dep)
+	
 	PandoraSettings.save_extensions_configurations()
 	update_extensions_configurations.emit()

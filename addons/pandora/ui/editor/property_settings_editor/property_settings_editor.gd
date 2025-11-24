@@ -19,6 +19,7 @@ func set_property(property: PandoraProperty) -> void:
 	self._property = property
 	if property:
 		var property_type = property.get_property_type()
+		print(property_type.get_settings())
 		if property_type.get_type_name() == "array":
 			self._default_settings = property_type.get_merged_settings(property)
 		else:

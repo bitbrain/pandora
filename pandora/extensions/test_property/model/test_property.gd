@@ -20,11 +20,20 @@ func get_quantity() -> int:
 	return _quantity
 
 func load_data(data: Dictionary) -> void:
-	_item_name = data["item_name"]
-	_quantity = data["quantity"]
+	if data.has("item_name"):
+		_item_name = data["item_name"]
+	if data.has("quantity"):
+		_quantity = data["quantity"]
 
-func save_data() -> Dictionary:
-	return { "item_name": _item_name, "quantity": _quantity }
+func save_data(fields_settings: Array[Dictionary]) -> Dictionary:
+	var result := {}
+	var itemNameIdx := fields_settings.find(func(dic: Dictionary): return dic["name"] == "Item Name")
+	var quantityIdx := fields_settings.find(func(dic: Dictionary): return dic["name"] == "Quantity")
+	if fields_settings[itemNameIdx]["enabled"]:
+		result["item_name"] = _item_name
+	if fields_settings[quantityIdx]["enabled"]:
+		result["quantity"] = _quantity
+	return result
 
 func _to_string() -> String:
-	return "<PandoraTestProperty [ " + _item_name + " ]>"
+	return "<PandoraTestProperty>"

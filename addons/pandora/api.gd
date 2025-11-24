@@ -13,6 +13,7 @@ signal import_failed(reason: String)
 signal import_calculation_ended(import_info: Dictionary)
 signal import_calculation_failed(reason: String)
 signal import_progress
+signal update_fields_settings(type: String)
 
 var _context_manager: PandoraContextManager
 var _storage: PandoraDataStorage

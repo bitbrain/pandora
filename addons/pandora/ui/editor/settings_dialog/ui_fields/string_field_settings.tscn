@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn7da5ljy5mqh"]
+
+[ext_resource type="Script" uid="uid://ds6adhc4rxiyl" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/string_field_settings.gd" id="1_1ygog"]
+
+[node name="StringFieldSettings" type="VBoxContainer"]
+script = ExtResource("1_1ygog")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.59607846, 0.43529412, 0.40392157, 1)
+text = "Item Name Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Enable field"
+
+[connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]

@@ -8,6 +8,7 @@ signal unfocused
 @export var type: String
 
 var _property: PandoraProperty
+var _fields_settings: Array = []
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PARENTED:
@@ -17,7 +18,20 @@ func _notification(what: int) -> void:
 
 func init(property: PandoraProperty) -> void:
 	self._property = property
-
+	print("init ", property)
+	_load_fields_settings()
 
 func refresh() -> void:
 	pass
+
+func update_field_settings(field_settings: Dictionary) -> void:
+	_load_fields_settings()
+	var fs_idx := _fields_settings.find(func(fs: Dictionary): return fs["name"] == field_settings["name"])
+	_fields_settings[fs_idx] = field_settings
+	Pandora.update_fields_settings.emit(type)
+
+func _load_fields_settings() -> void:
+	if _fields_settings.is_empty():
+		var extension_configuration := PandoraSettings.find_extension_configuration_property(type)
+		if not extension_configuration.is_empty():
+			_fields_settings = extension_configuration["fields"] as Array

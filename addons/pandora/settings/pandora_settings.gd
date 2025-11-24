@@ -127,7 +127,7 @@ static func set_extensions_dir(array: Array) -> void:
 static func find_extension_configuration_property(type: String) -> Dictionary:
 	for conf in extensions_configurations:
 		for property in conf["properties"]:
-			if property["dir_name"] == type:
+			if property and property.has("dir_name") and property["dir_name"] == type:
 				return property
 	return {}
 

@@ -5,11 +5,75 @@
 	},
 	"properties": [
 		{
-			"dependencies": [],
+			"dependencies": [
+				{
+					"name": "DependencyProperty",
+					"type": "PROPERTY"
+				}
+			],
 			"description": "A simple property of test to show how to use new custom extensions.",
 			"dir_name": "test_property",
 			"enabled": true,
+			"fields": [
+				{
+					"enabled": true,
+					"name": "Item Name",
+					"settings": [],
+					"type": "STRING"
+				},
+				{
+					"enabled": false,
+					"name": "Quantity",
+					"settings": {
+						"max_value": 100.0,
+						"min_value": 0.0
+					},
+					"type": "RANGE"
+				}
+			],
 			"name": "PandoraTestProperty",
+			"show_on_top": true
+		},
+		{
+			"dependencies": [],
+			"description": "",
+			"dir_name": "dependency_property",
+			"enabled": true,
+			"fields": [
+				{
+					"enabled": true,
+					"name": "Item Name",
+					"settings": [],
+					"type": "STRING"
+				},
+				{
+					"enabled": true,
+					"name": "Quantity",
+					"settings": {
+						"max_value": 100.0,
+						"min_value": 0.0
+					},
+					"type": "RANGE"
+				},
+				{
+					"enabled": true,
+					"name": "Test",
+					"settings": {
+						"type": "bool"
+					},
+					"type": "ARRAY"
+				},
+				{
+					"enabled": true,
+					"name": "Test Ref",
+					"settings": {
+						"entity_id": "1",
+						"category_only": true
+					},
+					"type": "REFERENCE"
+				}
+			],
+			"name": "DependencyProperty",
 			"show_on_top": true
 		}
 	]

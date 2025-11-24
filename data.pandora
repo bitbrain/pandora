@@ -428,12 +428,19 @@
 				"_id": "5",
 				"_name": "array property",
 				"_type": "array"
+			},
+			{
+				"_category_id": "1",
+				"_default_value": null,
+				"_id": "17.0",
+				"_name": "test_property property",
+				"_type": "test_property"
 			}
 		]
 	},
 	"_id_generator": {
 		"_ids_by_context": {
-			"default": 9.0
+			"default": 17.0
 		}
 	}
 }
