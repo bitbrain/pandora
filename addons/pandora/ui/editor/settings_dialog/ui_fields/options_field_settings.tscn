@@ -1,0 +1,114 @@
+[gd_scene load_steps=4 format=3 uid="uid://7c8j3yx3hnr4"]
+
+[ext_resource type="Texture2D" uid="uid://b0mt8ysdc5m4a" path="res://addons/pandora/icons/Edit.svg" id="1_atebi"]
+[ext_resource type="Script" uid="uid://qx222rida1tm" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/options_field_settings.gd" id="1_ceb5e"]
+[ext_resource type="Script" uid="uid://1higomb3gr2t" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/options_window.gd" id="3_xc8d3"]
+
+[node name="OptionsFieldSettings" type="VBoxContainer"]
+script = ExtResource("1_ceb5e")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.59607846, 0.43529412, 0.40392157, 1)
+text = "Options Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+button_pressed = true
+text = "Enable field"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0 Options"
+alignment = 1
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+flat = true
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("1_atebi")
+
+[node name="OptionsWindow" type="Window" parent="."]
+disable_3d = true
+oversampling_override = 1.0
+title = "Options Manager"
+initial_position = 2
+size = Vector2i(134, 100)
+visible = false
+wrap_controls = true
+content_scale_mode = 1
+content_scale_aspect = 4
+script = ExtResource("3_xc8d3")
+
+[node name="Panel" type="Panel" parent="OptionsWindow"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="OptionsWindow/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MainContainer" type="VBoxContainer" parent="OptionsWindow/Panel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="OptionsWindow/Panel/MarginContainer/MainContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsWindow/Panel/MarginContainer/MainContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="OptionsWindow/Panel/MarginContainer/MainContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_bottom = 10
+
+[node name="NewItemButton" type="Button" parent="OptionsWindow/Panel/MarginContainer/MainContainer/ScrollContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add New Item +"
+
+[node name="ArrayItems" type="VBoxContainer" parent="OptionsWindow/Panel/MarginContainer/MainContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="OptionsWindow/Panel/MarginContainer/MainContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionsWindow/Panel/MarginContainer/MainContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CloseButton" type="Button" parent="OptionsWindow/Panel/MarginContainer/MainContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"
+
+[connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="close_requested" from="OptionsWindow" to="." method="_on_window_close_requested"]

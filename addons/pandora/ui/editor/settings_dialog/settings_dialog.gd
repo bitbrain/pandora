@@ -8,6 +8,7 @@ const STRING_FIELD_SETTINGS = preload("uid://bn7da5ljy5mqh")
 const RANGE_FIELD_SETTINGS = preload("uid://cyd24jwivayf5")
 const ARRAY_FIELD_SETTINGS = preload("uid://cgwd2gdv7xeia")
 const REFERENCE_FIELD_SETTINGS = preload("uid://d3a0188wd61px")
+const OPTIONS_FIELD_SETTINGS = preload("uid://7c8j3yx3hnr4")
 
 @onready var window: Window = $Window
 @onready var extensions_list: ItemList = $Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList
@@ -106,7 +107,8 @@ func _on_property_selected(index: int) -> void:
 		child.queue_free()
 	for child in fields_settings.get_children():
 		child.queue_free()
-	property_scene_container.get_child(0).queue_free()
+	if property_scene_container.get_child_count() > 0:
+		property_scene_container.get_child(0).queue_free()
 	
 	var extensions_configurations := PandoraSettings.get_extensions_configurations()
 	var extensions_configuration := extensions_configurations[_selected_extension_conf_index]
@@ -153,6 +155,11 @@ func _on_property_selected(index: int) -> void:
 				field_instance.updated.connect(_on_field_settings_update)
 			elif property_field["type"] == "REFERENCE":
 				var field_instance := REFERENCE_FIELD_SETTINGS.instantiate() as ReferenceFieldSettings
+				fields_settings.add_child(field_instance)
+				field_instance.set_property_field(property_field)
+				field_instance.updated.connect(_on_field_settings_update)
+			elif property_field["type"] == "OPTIONS":
+				var field_instance := OPTIONS_FIELD_SETTINGS.instantiate() as OptionsFieldSettings
 				fields_settings.add_child(field_instance)
 				field_instance.set_property_field(property_field)
 				field_instance.updated.connect(_on_field_settings_update)

@@ -18,7 +18,9 @@
 				{
 					"enabled": true,
 					"name": "Item Name",
-					"settings": [],
+					"settings": {
+
+					},
 					"type": "STRING"
 				},
 				{
@@ -43,8 +45,10 @@
 				{
 					"enabled": true,
 					"name": "Item Name",
-					"settings": [],
-					"type": "STRING"
+					"settings": {
+						"options": []
+					},
+					"type": "OPTIONS"
 				},
 				{
 					"enabled": true,
@@ -65,12 +69,11 @@
 				},
 				{
 					"enabled": true,
-					"name": "Test Ref",
+					"name": "Item Name",
 					"settings": {
-						"entity_id": "1",
-						"category_only": true
+						"options": []
 					},
-					"type": "REFERENCE"
+					"type": "OPTIONS"
 				}
 			],
 			"name": "DependencyProperty",
