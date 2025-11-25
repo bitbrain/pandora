@@ -1,10 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://ctp7xnvi5ep0e"]
+[gd_scene load_steps=4 format=3 uid="uid://ctp7xnvi5ep0e"]
 
 [ext_resource type="Script" uid="uid://d4efa7td5f0e0" path="res://addons/pandora/ui/editor/settings_dialog/settings_dialog.gd" id="1_4vos3"]
 [ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="2_4vos3"]
-[ext_resource type="PackedScene" uid="uid://byn750powq8to" path="res://pandora/extensions/test_property/ui_component/test_property.tscn" id="3_auw3h"]
-[ext_resource type="PackedScene" uid="uid://bn7da5ljy5mqh" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/string_field_settings.tscn" id="4_kwmsf"]
-[ext_resource type="PackedScene" uid="uid://cyd24jwivayf5" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/range_field_settings.tscn" id="5_i3wf7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4vos3"]
 
@@ -186,9 +183,6 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="TestProperty" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer/PanelContainer/PropertySceneContainer" instance=ExtResource("3_auw3h")]
-layout_mode = 2
-
 [node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
@@ -198,12 +192,6 @@ theme_override_constants/margin_bottom = 5
 
 [node name="FieldsSettings" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer/MarginContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-
-[node name="StringFieldSettings" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer/MarginContainer/FieldsSettings" instance=ExtResource("4_kwmsf")]
-layout_mode = 2
-
-[node name="RangeFieldSettings" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer/MarginContainer/FieldsSettings" instance=ExtResource("5_i3wf7")]
 layout_mode = 2
 
 [node name="DependenciesContainer" type="FoldableContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/PropertyContainer"]
