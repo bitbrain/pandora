@@ -1,18 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://cgwd2gdv7xeia"]
+[gd_scene load_steps=2 format=3 uid="uid://cgwd2gdv7xeia"]
 
 [ext_resource type="Script" uid="uid://gifa0m2v52h7" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/array_field_settings.gd" id="1_qtgvu"]
-[ext_resource type="Texture2D" uid="uid://mmkaghs6sbx4" path="res://addons/pandora/icons/bool.svg" id="2_n38cs"]
-[ext_resource type="Texture2D" uid="uid://c2738ylh13lsi" path="res://addons/pandora/icons/Color.svg" id="3_kbpme"]
-[ext_resource type="Texture2D" uid="uid://cgupnims1vk7r" path="res://addons/pandora/icons/float.svg" id="4_ypw5q"]
-[ext_resource type="Texture2D" uid="uid://blvy22tu53qxy" path="res://addons/pandora/icons/int.svg" id="5_g46yb"]
-[ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="6_t3n1c"]
-[ext_resource type="Texture2D" uid="uid://rwodit05tms7" path="res://addons/pandora/icons/AtlasTexture.svg" id="7_dmypf"]
-[ext_resource type="Texture2D" uid="uid://do5tkodyvid10" path="res://addons/pandora/icons/String.svg" id="8_vc3xr"]
-[ext_resource type="Texture2D" uid="uid://dcqltisjej0lu" path="res://addons/pandora/icons/Vector2.svg" id="9_ajy2u"]
-[ext_resource type="Texture2D" uid="uid://bk7a4jkyif178" path="res://addons/pandora/icons/Vector2i.svg" id="10_du0bf"]
-[ext_resource type="Texture2D" uid="uid://bdxvds1pxhqv6" path="res://addons/pandora/icons/Vector3.svg" id="11_tt0p7"]
-[ext_resource type="Texture2D" uid="uid://c6kohe0abjrrs" path="res://addons/pandora/icons/Vector3i.svg" id="12_0a26p"]
-[ext_resource type="Texture2D" uid="uid://bxhfymfa16eho" path="res://pandora/extensions/test_property/icons/icon.png" id="13_fhxd2"]
 
 [node name="ArrayFieldSettings" type="VBoxContainer"]
 offset_right = 109.0
@@ -38,47 +26,6 @@ text = "Type"
 
 [node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
 layout_mode = 2
-selected = 0
-item_count = 13
-popup/item_0/text = "bool"
-popup/item_0/icon = ExtResource("2_n38cs")
-popup/item_0/id = 0
-popup/item_1/text = "color"
-popup/item_1/icon = ExtResource("3_kbpme")
-popup/item_1/id = 1
-popup/item_2/text = "float"
-popup/item_2/icon = ExtResource("4_ypw5q")
-popup/item_2/id = 2
-popup/item_3/text = "int"
-popup/item_3/icon = ExtResource("5_g46yb")
-popup/item_3/id = 3
-popup/item_4/text = "reference"
-popup/item_4/icon = ExtResource("6_t3n1c")
-popup/item_4/id = 4
-popup/item_5/text = "resource"
-popup/item_5/icon = ExtResource("7_dmypf")
-popup/item_5/id = 5
-popup/item_6/text = "string"
-popup/item_6/icon = ExtResource("8_vc3xr")
-popup/item_6/id = 6
-popup/item_7/text = "vector2"
-popup/item_7/icon = ExtResource("9_ajy2u")
-popup/item_7/id = 7
-popup/item_8/text = "vector2i"
-popup/item_8/icon = ExtResource("10_du0bf")
-popup/item_8/id = 8
-popup/item_9/text = "vector3"
-popup/item_9/icon = ExtResource("11_tt0p7")
-popup/item_9/id = 9
-popup/item_10/text = "vector3i"
-popup/item_10/icon = ExtResource("12_0a26p")
-popup/item_10/id = 10
-popup/item_11/text = "dependency_property"
-popup/item_11/icon = ExtResource("13_fhxd2")
-popup/item_11/id = 11
-popup/item_12/text = "test_property"
-popup/item_12/icon = ExtResource("13_fhxd2")
-popup/item_12/id = 12
 
 [connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
 [connection signal="item_selected" from="HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]

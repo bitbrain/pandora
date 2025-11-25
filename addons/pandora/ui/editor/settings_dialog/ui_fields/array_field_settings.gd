@@ -12,6 +12,7 @@ var property_field : Dictionary : set = set_property_field
 var property_types_idx: Dictionary
 
 func _ready() -> void:
+	option_button.clear()
 	var idx = 0
 	for property_type in PandoraPropertyType.get_all_types():
 		if property_type.allow_nesting():
