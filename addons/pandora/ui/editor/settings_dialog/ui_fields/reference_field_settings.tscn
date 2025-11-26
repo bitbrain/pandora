@@ -31,6 +31,7 @@ layout_mode = 2
 text = "Category Filter"
 
 [node name="EntityPicker" parent="HBoxContainer" instance=ExtResource("1_hcy81")]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 
 [connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
