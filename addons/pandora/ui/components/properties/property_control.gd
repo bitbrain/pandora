@@ -26,7 +26,8 @@ func refresh() -> void:
 
 func update_field_settings(field_settings: Dictionary) -> void:
 	_load_fields_settings()
-	var fs_idx := _fields_settings.find(func(fs: Dictionary): return fs["name"] == field_settings["name"])
+	var fs := _fields_settings.filter(func(dic: Dictionary): return dic["name"] == field_settings["name"])[0] as Dictionary
+	var fs_idx := _fields_settings.find(fs)
 	_fields_settings[fs_idx] = field_settings
 	Pandora.update_fields_settings.emit(type)
 

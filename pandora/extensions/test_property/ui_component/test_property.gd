@@ -31,12 +31,13 @@ func _ready() -> void:
 			property_value_changed.emit(current_property))
 
 func refresh() -> void:
+	for field_settings in _fields_settings:
+		if field_settings["name"] == "Quantity":
+			spin_box.visible = field_settings["enabled"]
+		elif field_settings["name"] == "Item Name":
+			spin_box.visible = field_settings["enabled"]
+	
 	if _property != null:
-		for field_settings in _fields_settings:
-			if field_settings["name"] == "Quantity":
-				spin_box.visible = field_settings["enabled"]
-			elif field_settings["name"] == "Item Name":
-				spin_box.visible = field_settings["enabled"]
 		if _property.get_setting(TestPropertyType.SETTING_MIN_VALUE):
 			spin_box.min_value = _property.get_setting(TestPropertyType.SETTING_MIN_VALUE) as int
 		if _property.get_setting(TestPropertyType.SETTING_MAX_VALUE):

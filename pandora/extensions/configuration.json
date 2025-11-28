@@ -24,7 +24,7 @@
 					"type": "STRING"
 				},
 				{
-					"enabled": false,
+					"enabled": true,
 					"name": "Quantity",
 					"settings": {
 						"max_value": 100.0,
