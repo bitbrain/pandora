@@ -23,6 +23,9 @@ const DEFAULT_PANDORA_DEFINITIONS_DIR: StringName = "res://pandora/"
 const SETTINGS_PANDORA_EXTENSIONS_DIR: StringName = CATEGORY_CONFIG + "/extensions"
 const DEFAULT_PANDORA_EXTENSIONS_DIR: Array[StringName] = ["res://pandora/extensions"]
 
+const SETTING_USE_CATEGORY_TABS:  StringName = CATEGORY_CONFIG + "/use_category_tabs"
+const DEFAULT_USE_CATEGORY_TABS: bool = false
+
 static var extensions_models: Dictionary[String, RefCounted] = {}
 static var extensions_types: Dictionary[String, String] = {}
 
@@ -54,6 +57,12 @@ static func initialize() -> void:
 		DEFAULT_PANDORA_EXTENSIONS_DIR,
 		TYPE_ARRAY,
 		PROPERTY_HINT_DIR
+	)
+
+	init_setting(
+		SETTING_USE_CATEGORY_TABS,
+		DEFAULT_USE_CATEGORY_TABS,
+		TYPE_BOOL
 	)
 
 static func init_setting(
@@ -106,13 +115,22 @@ static func set_definitions_dir(path: StringName) -> void:
 
 static func get_extensions_dirs() -> Array:
 	return ProjectSettings.get_setting(
-		SETTINGS_PANDORA_EXTENSIONS_DIR, 
+		SETTINGS_PANDORA_EXTENSIONS_DIR,
 		DEFAULT_PANDORA_EXTENSIONS_DIR
 	)
 
 static func set_extensions_dir(array: Array) -> void:
 	ProjectSettings.set_setting(SETTINGS_PANDORA_EXTENSIONS_DIR, array)
 	_check_new_extensions_models()
+
+static func get_use_category_tabs() -> bool:
+	return ProjectSettings.get_setting(
+		SETTING_USE_CATEGORY_TABS,
+		DEFAULT_USE_CATEGORY_TABS
+	)
+
+static func set_use_category_tabs(enabled: bool) -> void:
+	ProjectSettings.set_setting(SETTING_USE_CATEGORY_TABS, enabled)
 
 static func _check_new_extensions_models() -> void:
 	var extensions_dirs = PandoraSettings.get_extensions_dirs()
