@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=26 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" uid="uid://b4f7fhcompuon" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
@@ -14,8 +14,38 @@
 [ext_resource type="Texture2D" uid="uid://dp8it1xjb8k2g" path="res://addons/pandora/icons/AssetLib.svg" id="8_wruey"]
 [ext_resource type="PackedScene" uid="uid://dibfkp6i5uvgi" path="res://addons/pandora/ui/components/progress_bar/progress_bar.tscn" id="10_xf8wv"]
 [ext_resource type="PackedScene" uid="uid://dy4xl20q2nq7q" path="res://addons/pandora/ui/components/update_button/update_button.tscn" id="11_cva2e"]
+[ext_resource type="Script" uid="uid://8q73873xik7s" path="res://addons/pandora/model/entity.gd" id="12_yfrlk"]
+[ext_resource type="Script" uid="uid://ddi7nbxu0sys3" path="res://addons/pandora/model/category.gd" id="13_wl01q"]
 [ext_resource type="Texture2D" uid="uid://crgjwaubao8pj" path="res://addons/pandora/icons/icon.png" id="15_3jwvj"]
 [ext_resource type="PackedScene" uid="uid://ceboo5esbe2ld" path="res://addons/pandora/ui/editor/import_dialog/import_dialog.tscn" id="15_umv0u"]
+
+[sub_resource type="Resource" id="Resource_yfrlk"]
+script = ExtResource("13_wl01q")
+_id = "1"
+
+[sub_resource type="Resource" id="Resource_wl01q"]
+script = ExtResource("13_wl01q")
+_id = "16"
+
+[sub_resource type="Resource" id="Resource_6o74y"]
+script = ExtResource("13_wl01q")
+_id = "27"
+
+[sub_resource type="Resource" id="Resource_pb06q"]
+script = ExtResource("13_wl01q")
+_id = "28"
+
+[sub_resource type="Resource" id="Resource_38m4h"]
+script = ExtResource("13_wl01q")
+_id = "29"
+
+[sub_resource type="Resource" id="Resource_8gko7"]
+script = ExtResource("13_wl01q")
+_id = "54"
+
+[sub_resource type="Resource" id="Resource_8jxw7"]
+script = ExtResource("13_wl01q")
+_id = "2"
 
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
@@ -45,6 +75,7 @@ size_flags_horizontal = 3
 
 [node name="CreateCategoryButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 tooltip_text = "Create category"
 icon = ExtResource("3_ehaql")
@@ -53,7 +84,6 @@ icon = ExtResource("3_ehaql")
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Create entity"
-disabled = true
 icon = ExtResource("2_aj8uc")
 
 [node name="RegenerateIDButton" type="Button" parent="Contents/HeaderBar/Actions"]
@@ -130,13 +160,20 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 0.27451)
-text = "Pandora v1.0-alpha4"
+text = "Pandora v1.0-alpha10-dev"
 horizontal_alignment = 2
 vertical_alignment = 1
 justification_flags = 0
 
 [node name="UpdateButton" parent="Contents/HeaderBar/Links" instance=ExtResource("11_cva2e")]
 layout_mode = 2
+
+[node name="CategoryTabContainer" type="TabContainer" parent="Contents"]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+drag_to_rearrange_enabled = true
+metadata/root_categories = Array[ExtResource("12_yfrlk")]([SubResource("Resource_yfrlk"), SubResource("Resource_wl01q"), SubResource("Resource_6o74y"), SubResource("Resource_pb06q"), SubResource("Resource_38m4h"), SubResource("Resource_8gko7"), SubResource("Resource_8jxw7")])
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
 unique_name_in_owner = true
@@ -159,11 +196,11 @@ size_flags_vertical = 0
 placeholder_text = "Search..."
 right_icon = ExtResource("5_4i0xc")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
+[node name="TreeScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EntityTree" parent="Contents/DataContent/HSplitContainer/EntitySelection/ScrollContainer" instance=ExtResource("3_4ayq8")]
+[node name="EntityTree" parent="Contents/DataContent/HSplitContainer/EntitySelection/TreeScrollContainer" instance=ExtResource("3_4ayq8")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
