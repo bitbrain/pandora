@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://0bxxjjroysub"]
+[gd_scene load_steps=26 format=3 uid="uid://0bxxjjroysub"]
 
 [ext_resource type="Script" uid="uid://b4f7fhcompuon" path="res://addons/pandora/ui/editor/pandora_editor.gd" id="1_bowve"]
 [ext_resource type="Texture2D" uid="uid://dojpd3ptnta4m" path="res://addons/pandora/icons/Object.svg" id="2_aj8uc"]
@@ -47,14 +47,6 @@ _id = "54"
 script = ExtResource("13_wl01q")
 _id = "2"
 
-[sub_resource type="Resource" id="Resource_whg32"]
-script = ExtResource("13_wl01q")
-_id = "10.0"
-
-[sub_resource type="Resource" id="Resource_n2q7d"]
-script = ExtResource("13_wl01q")
-_id = "11.0"
-
 [node name="PandoraEditor" type="MarginContainer"]
 clip_contents = true
 anchors_preset = 15
@@ -83,6 +75,7 @@ size_flags_horizontal = 3
 
 [node name="CreateCategoryButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 tooltip_text = "Create category"
 icon = ExtResource("3_ehaql")
@@ -98,12 +91,14 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Generate a new ID for selected entry.
 Shift-click: generate new IDs for all entries."
+disabled = true
 icon = ExtResource("4_wy3he")
 
 [node name="DeleteButton" type="Button" parent="Contents/HeaderBar/Actions"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Delete selected entry"
+disabled = true
 icon = ExtResource("5_0e3qw")
 
 [node name="SaveButton" type="Button" parent="Contents/HeaderBar/Actions"]
@@ -178,7 +173,7 @@ unique_name_in_owner = true
 layout_mode = 2
 current_tab = 0
 drag_to_rearrange_enabled = true
-metadata/root_categories = Array[ExtResource("12_yfrlk")]([SubResource("Resource_yfrlk"), SubResource("Resource_wl01q"), SubResource("Resource_6o74y"), SubResource("Resource_pb06q"), SubResource("Resource_38m4h"), SubResource("Resource_8gko7"), SubResource("Resource_8jxw7"), SubResource("Resource_whg32"), SubResource("Resource_n2q7d")])
+metadata/root_categories = Array[ExtResource("12_yfrlk")]([SubResource("Resource_yfrlk"), SubResource("Resource_wl01q"), SubResource("Resource_6o74y"), SubResource("Resource_pb06q"), SubResource("Resource_38m4h"), SubResource("Resource_8gko7"), SubResource("Resource_8jxw7")])
 
 [node name="DataContent" type="HBoxContainer" parent="Contents"]
 unique_name_in_owner = true
@@ -201,11 +196,11 @@ size_flags_vertical = 0
 placeholder_text = "Search..."
 right_icon = ExtResource("5_4i0xc")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
+[node name="TreeScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EntityTree" parent="Contents/DataContent/HSplitContainer/EntitySelection/ScrollContainer" instance=ExtResource("3_4ayq8")]
+[node name="EntityTree" parent="Contents/DataContent/HSplitContainer/EntitySelection/TreeScrollContainer" instance=ExtResource("3_4ayq8")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2

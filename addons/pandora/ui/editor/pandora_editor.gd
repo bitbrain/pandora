@@ -16,7 +16,7 @@ class_name PandoraEditor extends Control
 @onready var import_dialog = %ImportDialog
 @onready var progress_bar = %ProgressBar
 @onready var category_tab_container: TabContainer = %CategoryTabContainer
-@onready var tree_scroll_container: ScrollContainer = $Contents/DataContent/HSplitContainer/EntitySelection/ScrollContainer
+@onready var tree_scroll_container: ScrollContainer = %TreeScrollContainer
 
 @onready var data_content = %DataContent
 @onready var error_content = %ErrorContent
@@ -391,8 +391,8 @@ func _on_tab_context_menu_pressed(id: int) -> void:
 			_show_delete_confirmation(category, clicked_tab)
 
 
-func _show_rename_dialog(category:  PandoraCategory, tab_index: int) -> void:
-	var dialog = AcceptDialog. new()
+func _show_rename_dialog(category: PandoraCategory, tab_index: int) -> void:
+	var dialog = AcceptDialog.new()
 	dialog.title = "Rename Category"
 	dialog.dialog_text = "Enter new name:"
 
