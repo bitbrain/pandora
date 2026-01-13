@@ -95,6 +95,10 @@ func get_property_type() -> PandoraPropertyType:
 func get_default_value() -> Variant:
 	if _default_value is PandoraReference:
 		return _default_value.get_entity()
+	# If the default value has a duplicate() method, use it to avoid reference sharing. This is important for complex types.
+	# Only Objects have has_method(), so check type first
+	if _default_value != null and _default_value is Object and _default_value.has_method("duplicate"):
+		return _default_value.duplicate()
 	return _default_value
 
 

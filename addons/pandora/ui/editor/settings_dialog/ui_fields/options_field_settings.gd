@@ -17,18 +17,12 @@ func _ready() -> void:
 	
 	options_window.item_added.connect(func(item: Variant): 
 		property_field["settings"]["options"].append(item)
-		_update_field_settings.call_deferred()
-		updated.emit(property_field)
 	)
 	options_window.item_removed.connect(func(item: Variant): 
 		property_field["settings"]["options"].erase(item)
-		_update_field_settings.call_deferred()
-		updated.emit(property_field)
 	)
 	options_window.item_updated.connect(func(idx: int, item: Variant):
 		property_field["settings"]["options"][idx] = item
-		_update_field_settings.call_deferred()
-		updated.emit(property_field)
 	)
 
 func set_property_field(field: Dictionary) -> void:
@@ -45,4 +39,6 @@ func _on_check_button_toggled(toggled_on: bool) -> void:
 	updated.emit(property_field)
 
 func _on_window_close_requested() -> void:
+	_update_field_settings.call_deferred()
+	updated.emit(property_field)
 	options_window.hide()
