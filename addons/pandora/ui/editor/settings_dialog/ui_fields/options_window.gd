@@ -80,3 +80,4 @@ func open(original_items: Array):
 func _on_close_requested():
 	hide()
 	property_bar.queue_free()
+	close_requested.emit()
