@@ -78,6 +78,7 @@ func open(original_items: Array):
 	_load_items()
 
 func _on_close_requested():
+	close()
 	hide()
 	property_bar.queue_free()
 	close_requested.emit()

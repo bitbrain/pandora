@@ -111,6 +111,9 @@ class OverridingProperty:
 			var value = _parent_entity._property_overrides[_property.get_property_name()]
 			if value is PandoraReference:
 				return value.get_entity()
+			# Duplicate objects to avoid reference sharing between entities
+			if value != null and value is Object and value.has_method("duplicate"):
+				return value.duplicate()
 			return value
 		return _property.get_default_value()
 
