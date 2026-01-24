@@ -17,6 +17,12 @@ func _ready() -> void:
 
 
 func set_resource_path(path: String) -> void:
+	# Handle empty path - clear the field
+	if path == "":
+		line_edit.text = ""
+		self.resource_path = ""
+		return
+	
 	var resource = load(path) as Resource
 	if resource != null:
 		line_edit.text = path
