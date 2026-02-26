@@ -86,9 +86,13 @@ func write_value(variant: Variant) -> Variant:
 				value_type = PandoraPropertyType.lookup("reference")
 				value = value.save_data()
 			elif PandoraSettings.compare_with_extensions_models(value):
-				var path = PandoraSettings.extensions_types[value]
-				value_type = PandoraPropertyType.lookup(PandoraSettings.get_lookup_property_name(value), path)
-				value = value.save_data()
+				var type_name = PandoraSettings.get_lookup_property_name(value)
+				# extensions_models keys have ".gd", extensions_types keys don't
+				if type_name.ends_with(".gd"):
+					type_name = type_name.left(type_name.length() - 3)
+				var path = PandoraSettings.extensions_types[type_name]
+				value_type = PandoraPropertyType.lookup(type_name, path)
+				value = value_type.write_value(value)
 			else:
 				for type in types:
 					if type.is_valid(value):

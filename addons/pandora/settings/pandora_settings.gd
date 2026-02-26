@@ -169,10 +169,11 @@ static func _check_new_extensions_models() -> void:
 			types_dir.list_dir_end()
 
 static func compare_with_extensions_models(value) -> bool:
+	if not (value is Object):
+		return false
 	for emodel in extensions_models:
-		if not value is Dictionary and not value is Color:
-			if typeof(value) == typeof(extensions_models[emodel]):
-				return true
+		if value.get_script() == extensions_models[emodel]:
+			return true
 	return false
 
 static func save_extensions_configurations() -> void:
@@ -200,8 +201,9 @@ static func get_property_dependencies_by(current_property: Dictionary) -> Array[
 	return property_dependencies
 
 static func get_lookup_property_name(value) -> String:
+	if not (value is Object):
+		return ""
 	for emodel in extensions_models:
-		if not value is Dictionary and not value is Color:
-			if typeof(value) == typeof(extensions_models[emodel]):
-				return emodel
+		if value.get_script() == extensions_models[emodel]:
+			return emodel
 	return ""
