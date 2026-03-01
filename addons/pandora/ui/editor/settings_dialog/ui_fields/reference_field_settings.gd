@@ -23,8 +23,11 @@ func _update_field_settings() -> void:
 	_pick_entity_or_category.call_deferred(property_field["settings"]["entity_id"])
 
 func _pick_entity_or_category(category_id: String) -> void:
+	if category_id.is_empty():
+		return
 	var category = Pandora.get_category(category_id)
-	entity_picker.select(category)
+	if category != null:
+		entity_picker.select(category)
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
 	property_field["enabled"] = toggled_on

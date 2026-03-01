@@ -18,7 +18,6 @@ func _notification(what: int) -> void:
 
 func init(property: PandoraProperty) -> void:
 	self._property = property
-	print("init ", property)
 	_load_fields_settings()
 
 func refresh() -> void:
