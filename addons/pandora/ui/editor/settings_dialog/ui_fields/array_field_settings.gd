@@ -29,8 +29,11 @@ func set_property_field(field: Dictionary) -> void:
 func _update_field_settings() -> void:
 	label.text = property_field["name"] + " Settings"
 	check_button.button_pressed = property_field["enabled"]
+	if not property_field["settings"].has("type"):
+		return
 	var idx = property_types_idx.find_key(property_field["settings"]["type"])
-	option_button.select(idx)
+	if idx != null:
+		option_button.select(idx)
 
 func _on_check_button_toggled(toggled_on: bool) -> void:
 	property_field["enabled"] = toggled_on

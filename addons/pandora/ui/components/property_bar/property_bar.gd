@@ -17,6 +17,8 @@ func _pressed(button: PandoraPropertyButton) -> void:
 	property_added.emit(button.scene)
 
 func get_scene_by_type(type: String) -> PackedScene:
+	if not type_to_scene.has(type):
+		return null
 	return type_to_scene[type]
 
 func add_extensions_button() -> void:
