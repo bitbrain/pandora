@@ -82,7 +82,8 @@ func _new_control_for_type(
 	elif type == "string":
 		var edit = LineEdit.new()
 		edit.text = current_value as String
-		edit.text_changed.connect(func(new): _change_value(key, new, default_value))
+		edit.text_submitted.connect(func(new): _change_value(key, new, default_value))
+		edit.focus_exited.connect(func(): _change_value(key, edit.text, default_value))
 		return edit
 	elif type == "color":
 		var color_picker = ColorPickerButton.new()
