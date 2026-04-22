@@ -39,7 +39,7 @@ jobs:
       fail-fast: false
       max-parallel: 10
       matrix:
-        godot-version: ["4.5", "4.5.1"]
+        godot-version: ["4.5", "4.5.1", "4.6"]
 
     name: "🤖 CI on Godot ${{ matrix.godot-version }}"
     steps:
@@ -51,7 +51,7 @@ jobs:
           export RUNNER_TRACKING_ID=""
 
       - name: Run GDUnit4 tests
-        uses: MikeSchulze/gdUnit4-action@v1.1.1
+        uses: MikeSchulze/gdUnit4-action@v1.3.0
         with:
           godot-version: ${{ matrix.godot-version }}
           godot-status: "stable"
