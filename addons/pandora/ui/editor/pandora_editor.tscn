@@ -205,6 +205,7 @@ placeholder_text = "Search..."
 right_icon = ExtResource("5_4i0xc")
 
 [node name="TreeScrollContainer" type="ScrollContainer" parent="Contents/DataContent/HSplitContainer/EntitySelection"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
