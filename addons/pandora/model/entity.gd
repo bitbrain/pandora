@@ -111,7 +111,15 @@ class OverridingProperty:
 			var value = _parent_entity._property_overrides[_property.get_property_name()]
 			if value is PandoraReference:
 				return value.get_entity()
-			return value
+			# Parse the value through the property type to handle conversions
+			# (e.g., String paths to Resources)
+			var parsed_value = _property.get_property_type().parse_value(value, {})
+			# Duplicate RefCounted objects (custom classes like Pandora+, etc.)
+			# to avoid reference sharing between entities.
+			# Don't duplicate Resources (Texture, AudioStream, etc.) as they are shared assets.
+			if parsed_value != null and parsed_value is RefCounted and parsed_value.has_method("duplicate"):
+				return parsed_value.duplicate()
+			return parsed_value
 		return _property.get_default_value()
 
 	func get_property_id() -> String:

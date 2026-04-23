@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm6rmjycqduyn"]
+
+[ext_resource type="Script" uid="uid://ch5nj1y2dxmjk" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/bool_field_settings.gd" id="1_h648l"]
+
+[node name="BoolFieldSettings" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h648l")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.59607846, 0.43529412, 0.40392157, 1)
+text = "Bool Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Enable field"
+
+[connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]

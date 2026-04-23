@@ -1,0 +1,388 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctp7xnvi5ep0e"]
+
+[ext_resource type="Script" uid="uid://d4efa7td5f0e0" path="res://addons/pandora/ui/editor/settings_dialog/settings_dialog.gd" id="1_4vos3"]
+[ext_resource type="Texture2D" uid="uid://dmh7pik8vjog8" path="res://addons/pandora/icons/pandora-icon.svg" id="2_4vos3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4vos3"]
+
+[node name="SettingsDialog" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_4vos3")
+
+[node name="Window" type="Window" parent="."]
+disable_3d = true
+oversampling_override = 1.0
+title = "Extensions Settings"
+initial_position = 2
+size = Vector2i(1152, 648)
+visible = false
+wrap_controls = true
+content_scale_mode = 1
+content_scale_aspect = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="Window"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4vos3")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer"]
+layout_mode = 2
+
+[node name="ExtensionsContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/ExtensionsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.69411767, 1)
+text = "Extensions list"
+
+[node name="ItemList" type="ItemList" parent="Window/PanelContainer/HBoxContainer/ExtensionsContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+item_count = 1
+item_0/text = "Default"
+item_0/icon = ExtResource("2_4vos3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7882353, 0.3137255, 0.80784315, 1)
+text = "Pandora - Extensions Settings"
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Here you can enable/disable any properties added by the extension or change their behaviours."
+
+[node name="NoProperties" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.5489626, 0.5489626, 0.54896253, 1)
+text = "This extensions doesn't add custom properties to Pandora."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectExtension" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.5489626, 0.5489626, 0.54896253, 1)
+text = "Select an extension to check its configuration"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExtConfigurationContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6039216, 0.44313726, 0.4117647, 1)
+text = "All Properties"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Properties" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="PropertyItemList" type="ItemList" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_selected_color = Color(0.64705884, 0.25490198, 0.6627451, 1)
+item_count = 1
+item_0/text = "TestProperty"
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties"]
+layout_mode = 2
+text = "New Property"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PropertyContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PropertyDescription" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Defines the main attributes of an entity (mob, player, NPC, etc.)."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer"]
+layout_mode = 2
+
+[node name="EnableButton" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Enable property"
+
+[node name="ShowPropertyOnTop" type="CheckButton" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+disabled = true
+text = "Show property on top (inside Property bar)"
+
+[node name="CustomizationContainer" type="FoldableContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 2
+title = "Customize Property"
+
+[node name="PropertyShowcase" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer/PropertyShowcase"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PropertySceneContainer" type="MarginContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 0
+mouse_behavior_recursive = 1
+mouse_force_pass_scroll_events = false
+mouse_default_cursor_shape = 8
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="FieldsSettings" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/CustomizationContainer/PropertyShowcase/MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DependenciesContainer" type="FoldableContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 2
+title = "Dependencies"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer"]
+layout_mode = 2
+
+[node name="PropertiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/PropertiesDependencies"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/PropertiesDependencies"]
+layout_mode = 2
+
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/PropertiesDependencies/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
+text = "Dependencies (Properties)"
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/PropertiesDependencies/HBoxContainer"]
+layout_mode = 2
+text = "Add dependency"
+
+[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/PropertiesDependencies"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 5
+
+[node name="EntitiesDependencies" type="VBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies"]
+layout_mode = 2
+
+[node name="Dependecies" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.23921569, 0.2509804, 1)
+text = "Dependencies (Entities/Models)"
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies/HBoxContainer"]
+layout_mode = 2
+text = "Add dependency"
+
+[node name="GridContainer" type="GridContainer" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies"]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+columns = 5
+
+[node name="Label" type="Label" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies/GridContainer"]
+layout_mode = 2
+text = "ItemEntity"
+
+[node name="BottomSpace" type="HSeparator" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Button" type="Button" parent="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+theme_override_colors/font_color = Color(0.8745098, 0.24313726, 0, 1)
+text = "Delete Property"
+
+[node name="CreationDialog" type="ConfirmationDialog" parent="Window"]
+oversampling_override = 1.0
+title = "New Property"
+initial_position = 2
+size = Vector2i(500, 246)
+ok_button_text = "Create"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/CreationDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 492.0
+offset_bottom = 197.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/CreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/CreationDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Property Name"
+
+[node name="LineEdit" type="LineEdit" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "TestProperty"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Window/CreationDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Type"
+
+[node name="LineEdit2" type="LineEdit" parent="Window/CreationDialog/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "test_property"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/CreationDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Window/CreationDialog/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Description"
+
+[node name="TextEdit" type="TextEdit" parent="Window/CreationDialog/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+placeholder_text = "Write here a description of your property"
+
+[node name="DependencyDialog" type="ConfirmationDialog" parent="Window"]
+oversampling_override = 1.0
+title = "Add new dependency"
+initial_position = 2
+size = Vector2i(300, 166)
+ok_button_text = "Add"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/DependencyDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 292.0
+offset_bottom = 117.0
+
+[node name="Label" type="Label" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+text = "Select a property"
+
+[node name="OptionButton" type="OptionButton" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+text = "Type of dependency"
+
+[node name="LineEdit" type="LineEdit" parent="Window/DependencyDialog/VBoxContainer"]
+layout_mode = 2
+editable = false
+
+[node name="EnableDialog" type="ConfirmationDialog" parent="Window"]
+oversampling_override = 1.0
+title = "Warning"
+initial_position = 2
+size = Vector2i(275, 106)
+ok_button_text = "Enable"
+dialog_text = "The selected property is disabled.
+Do you want to enable it?"
+
+[node name="DependencyCheckAlert" type="AcceptDialog" parent="Window"]
+oversampling_override = 1.0
+title = "Warning!"
+initial_position = 2
+size = Vector2i(370, 106)
+dialog_text = "You can't delete this property because is used
+by another property."
+
+[connection signal="close_requested" from="Window" to="." method="_on_close_requested"]
+[connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/ExtensionsContainer/ItemList" to="." method="_on_item_selected"]
+[connection signal="item_selected" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties/PropertyItemList" to="." method="_on_property_selected"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/Properties/Button" to="." method="_on_new_property_pressed"]
+[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/HBoxContainer/EnableButton" to="." method="_on_enabled"]
+[connection signal="toggled" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/HBoxContainer/ShowPropertyOnTop" to="." method="_on_show_on_top"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/PropertiesDependencies/HBoxContainer/Button" to="." method="_on_add_prop_dependency_pressed"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/DependenciesContainer/VBoxContainer/EntitiesDependencies/HBoxContainer/Button" to="." method="_on_add_entity_dependency_pressed"]
+[connection signal="pressed" from="Window/PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer/ExtConfigurationContainer/HBoxContainer/ScrollContainer/PropertyContainer/Button" to="." method="_on_delete_property_pressed"]
+[connection signal="confirmed" from="Window/CreationDialog" to="." method="_on_creation_dialog_confirmed"]
+[connection signal="confirmed" from="Window/DependencyDialog" to="." method="_on_dependency_dialog_confirmed"]
+[connection signal="confirmed" from="Window/EnableDialog" to="." method="_on_enable_dialog_confirmed"]

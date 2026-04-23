@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://bm08cj4lcvudv"]
+
+[ext_resource type="Texture2D" uid="uid://cvktrbp2le3eb" path="res://addons/gdUnit4/src/update/assets/dot1.png" id="1_2jhnd"]
+[ext_resource type="Script" uid="uid://crr6rlkqtg6we" path="res://addons/pandora/ui/components/property_bar/property_button.gd" id="2_nq2f7"]
+[ext_resource type="PackedScene" uid="uid://byn750powq8to" path="res://pandora/extensions/test_property/ui_component/test_property.tscn" id="3_ovgkr"]
+
+[node name="AddDependencyPropertyButton" type="Button"]
+tooltip_text = "Dependency property"
+icon = ExtResource("1_2jhnd")
+script = ExtResource("2_nq2f7")
+scene = ExtResource("3_ovgkr")
+metadata/_custom_type_script = "uid://crr6rlkqtg6we"

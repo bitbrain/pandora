@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3a0188wd61px"]
+
+[ext_resource type="Script" uid="uid://nt7wcwqkldyq" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/reference_field_settings.gd" id="1_a0vmf"]
+[ext_resource type="PackedScene" uid="uid://bfhqt0xa4a2fh" path="res://addons/pandora/ui/components/entity_picker/entity_picker.tscn" id="1_hcy81"]
+
+[node name="ReferenceFieldSettings" type="VBoxContainer"]
+script = ExtResource("1_a0vmf")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.59607846, 0.43529412, 0.40392157, 1)
+text = "Reference Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+button_pressed = true
+text = "Enable field"
+
+[node name="CategoryOnly" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Category only"
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Category Filter"
+
+[node name="EntityPicker" parent="HBoxContainer" instance=ExtResource("1_hcy81")]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="toggled" from="HBoxContainer/CategoryOnly" to="." method="_on_category_only_toggled"]
+[connection signal="entity_selected" from="HBoxContainer/EntityPicker" to="." method="_on_entity_picker_entity_selected"]

@@ -1,0 +1,83 @@
+{
+	"configuration": {
+		"icon": "res://addons/pandora/icons/pandora-icon.svg",
+		"name": "Pandora"
+	},
+	"properties": [
+		{
+			"dependencies": [
+				{
+					"name": "DependencyProperty",
+					"type": "PROPERTY"
+				}
+			],
+			"description": "A simple property of test to show how to use new custom extensions.",
+			"dir_name": "test_property",
+			"enabled": true,
+			"fields": [
+				{
+					"enabled": true,
+					"name": "Item Name",
+					"settings": {
+
+					},
+					"type": "STRING"
+				},
+				{
+					"enabled": true,
+					"name": "Quantity",
+					"settings": {
+						"max_value": 100.0,
+						"min_value": 0.0
+					},
+					"type": "RANGE"
+				}
+			],
+			"name": "PandoraTestProperty",
+			"show_on_top": true
+		},
+		{
+			"dependencies": [],
+			"description": "",
+			"dir_name": "dependency_property",
+			"enabled": true,
+			"fields": [
+				{
+					"enabled": true,
+					"name": "Item Name",
+					"settings": {
+						"options": []
+					},
+					"type": "OPTIONS"
+				},
+				{
+					"enabled": true,
+					"name": "Quantity",
+					"settings": {
+						"max_value": 100.0,
+						"min_value": 0.0
+					},
+					"type": "RANGE"
+				},
+				{
+					"enabled": true,
+					"name": "Test",
+					"settings": {
+						"type": "bool"
+					},
+					"type": "ARRAY"
+				},
+				{
+					"enabled": true,
+					"name": "Item Name",
+					"settings": {
+						"options": []
+					},
+					"type": "OPTIONS"
+				}
+			],
+			"name": "DependencyProperty",
+			"show_on_top": true
+		}
+	]
+}

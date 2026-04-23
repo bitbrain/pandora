@@ -13,6 +13,12 @@ var _exporter: PandoraExportPlugin
 func _init() -> void:
 	self.name = 'PandoraPlugin'
 
+func _ready() -> void:
+	if not DirAccess.dir_exists_absolute("res://pandora/extensions/"):
+		DirAccess.make_dir_recursive_absolute("res://pandora/extensions/")
+	if not FileAccess.file_exists("res://pandora/extensions/configuration.json"):
+		var extensionsDir = DirAccess.open("res://pandora/extensions/")
+		extensionsDir.copy("res://addons/pandora/util/configuration_template.json", "res://pandora/extensions/configuration.json")
 
 func _enter_tree() -> void:
 	Engine.set_meta("PandoraEditorPlugin", self)
@@ -36,7 +42,6 @@ func _enter_tree() -> void:
 			add_inspector_plugin(entity_inspector)
 
 	_make_visible(false)
-
 
 func _apply_changes() -> void:
 	if Engine.is_editor_hint() and is_instance_valid(editor_view):

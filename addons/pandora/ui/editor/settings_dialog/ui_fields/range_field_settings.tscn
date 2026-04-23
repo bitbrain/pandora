@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyd24jwivayf5"]
+
+[ext_resource type="Script" uid="uid://ba6xr8b575on3" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/range_field_settings.gd" id="1_oe68r"]
+
+[node name="RangeFieldSettings" type="VBoxContainer"]
+script = ExtResource("1_oe68r")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.59607846, 0.43529412, 0.40392157, 1)
+text = "Quantity Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Enable field"
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Min Value"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+min_value = -999999999.0
+max_value = 999999999.0
+value = -999999999.0
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Max Value"
+
+[node name="SpinBox2" type="SpinBox" parent="HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+min_value = -999999999.0
+max_value = 999999999.0
+value = 999999999.0
+
+[connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="value_changed" from="HBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="HBoxContainer/SpinBox2" to="." method="_on_spin_box_2_value_changed"]

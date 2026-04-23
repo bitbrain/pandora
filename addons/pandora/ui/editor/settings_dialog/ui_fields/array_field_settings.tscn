@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgwd2gdv7xeia"]
+
+[ext_resource type="Script" uid="uid://gifa0m2v52h7" path="res://addons/pandora/ui/editor/settings_dialog/ui_fields/array_field_settings.gd" id="1_qtgvu"]
+
+[node name="ArrayFieldSettings" type="VBoxContainer"]
+offset_right = 109.0
+offset_bottom = 23.0
+script = ExtResource("1_qtgvu")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.59607846, 0.43529412, 0.40392157, 1)
+text = "Array Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Enable field"
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Type"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+layout_mode = 2
+
+[connection signal="toggled" from="HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="item_selected" from="HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
