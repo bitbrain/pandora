@@ -58,6 +58,8 @@ func get_type_icon_path() -> String:
 func is_valid(variant: Variant) -> bool:
 	return false
 
+func is_actual_type(variant: Variant) -> bool:
+	return false
 
 func allow_nesting() -> bool:
 	return true

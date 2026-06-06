@@ -11,3 +11,6 @@ func _init() -> void:
 
 func is_valid(variant: Variant) -> bool:
 	return variant is bool
+
+func is_actual_type(variant: Variant) -> bool:
+	return variant is bool

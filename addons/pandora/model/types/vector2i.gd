@@ -29,3 +29,6 @@ func write_value(variant: Variant) -> Variant:
 
 func is_valid(variant: Variant) -> bool:
 	return variant is Vector2i
+
+func is_actual_type(variant: Variant) -> bool:
+	return variant is Vector2i

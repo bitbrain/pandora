@@ -35,3 +35,6 @@ func is_valid(variant: Variant) -> bool:
 	# Allow String (resource paths) as they will be converted to Resources
 	# Allow Resource objects directly
 	return variant == null or variant is Resource or variant is String
+
+func is_actual_type(variant: Variant) -> bool:
+	return variant is Resource
