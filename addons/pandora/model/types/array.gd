@@ -20,6 +20,9 @@ func _init() -> void:
 func is_valid(variant: Variant) -> bool:
 	return variant is Array
 
+func is_actual_type(variant: Variant) -> bool:
+	return variant is Array
+
 
 func get_merged_settings(property: PandoraProperty) -> Dictionary:
 	var merged_settings: Dictionary = _settings.duplicate()
@@ -95,7 +98,7 @@ func write_value(variant: Variant) -> Variant:
 				value = value_type.write_value(value)
 			else:
 				for type in types:
-					if type.is_valid(value):
+					if type.is_actual_type(value):
 						value_type = type
 						value = type.write_value(value)
 						break

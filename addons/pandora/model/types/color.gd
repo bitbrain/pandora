@@ -22,3 +22,6 @@ func write_value(variant: Variant) -> Variant:
 
 func is_valid(variant: Variant) -> bool:
 	return variant is Color or variant is String
+
+func is_actual_type(variant: Variant) -> bool:
+	return variant is Color

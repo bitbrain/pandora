@@ -23,3 +23,6 @@ func parse_value(variant: Variant, settings: Dictionary = {}) -> Variant:
 
 func is_valid(variant: Variant) -> bool:
 	return variant is int
+
+func is_actual_type(variant: Variant) -> bool:
+	return variant is int
