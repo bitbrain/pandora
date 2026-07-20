@@ -10,3 +10,5 @@ data_*/
 .godot/
 
 addons/gdUnit4/GdUnitRunner.cfg
+
+reports/

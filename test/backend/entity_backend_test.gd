@@ -666,6 +666,37 @@ func test_category_moving_entities_inside() -> void:
 	backend.move_entity(entity, category_b, PandoraEntityBackend.DropSection.INSIDE)
 	assert_that(entity._category_id).is_equal(category_b._id)
 
+
+func test_moving_category_preserves_custom_icon() -> void:
+	var backend = create_object_backend()
+	var parent_a = backend.create_category("Parent A")
+	var parent_b = backend.create_category("Parent B")
+	var child = backend.create_category("Child", parent_a)
+	var custom_icon = "res://addons/pandora/icons/Color.svg"
+	child.set_icon_path(custom_icon)
+
+	backend.move_entity(child, parent_b, PandoraEntityBackend.DropSection.INSIDE)
+
+	assert_that(child._category_id).is_equal(parent_b._id)
+	assert_that(child._icon_path).is_equal(custom_icon)
+	assert_that(child.get_icon_path()).is_equal(custom_icon)
+
+
+func test_moving_entity_preserves_custom_icon() -> void:
+	var backend = create_object_backend()
+	var category_a = backend.create_category("Category A")
+	var category_b = backend.create_category("Category B")
+	var entity = backend.create_entity("Entity", category_a)
+	var custom_icon = "res://addons/pandora/icons/Color.svg"
+	entity.set_icon_path(custom_icon)
+
+	backend.move_entity(entity, category_b, PandoraEntityBackend.DropSection.INSIDE)
+
+	assert_that(entity._category_id).is_equal(category_b._id)
+	assert_that(entity._icon_path).is_equal(custom_icon)
+	assert_that(entity.get_icon_path()).is_equal(custom_icon)
+
+
 func test_check_properties_will_change_after_move() -> void:
 	var backend = create_object_backend()
 	var root = backend.create_category("root")

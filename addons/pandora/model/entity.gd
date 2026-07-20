@@ -281,11 +281,6 @@ func set_generate_ids(generate_ids: bool) -> void:
 
 
 func set_category(category: PandoraCategory) -> void:
-	if get_icon_path() != category.get_icon_path():
-		if category.get_icon_path() != CATEGORY_ICON_PATH:
-			set_icon_path(category.get_icon_path())
-		else:
-			set_icon_path(ENTITY_ICON_PATH)
 	self._category_id = category._id
 	category._children.append(self)
 
