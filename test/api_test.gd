@@ -172,3 +172,15 @@ func test_category_of_instance() -> void:
 	assert_that(duplicate.is_category(category.get_entity_id())).is_equal(true)
 	assert_that(instance.is_category(child_category.get_entity_id())).is_equal(true)
 	assert_that(duplicate.is_category(child_category.get_entity_id())).is_equal(true)
+
+
+func test_pandora_data_version() -> void:
+	Pandora._clear()
+	assert_that(Pandora._data_version).is_equal(-1)
+
+	Pandora.set_context_id(TEST_DIR)
+	Pandora._clear()
+	Pandora.load_data()
+	Pandora.save_data()
+
+	assert_that(Pandora._data_version).is_equal(Pandora.PANDORA_DATA_VERSION)
