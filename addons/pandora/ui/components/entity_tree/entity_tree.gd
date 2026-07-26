@@ -196,16 +196,17 @@ func _on_icon_color_changed(entity_id:String, new_color:Color) -> void:
 		_on_icon_color_changed(child.get_metadata(0).get_entity_id(), child.get_metadata(0).get_icon_color())
 	
 func _get_drag_data(_at_position):
-	if get_selected():
-		set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)
+	if not get_selected():
+		return
+	set_drop_mode_flags(DROP_MODE_INBETWEEN | DROP_MODE_ON_ITEM)
 
-		if drag_preview_label == null or drag_preview_label.is_queued_for_deletion():
-			drag_preview_label = Label.new()
+	if drag_preview_label == null or drag_preview_label.is_queued_for_deletion():
+		drag_preview_label = Label.new()
 
-		drag_preview_label.text = get_selected().get_text(0)
-		set_drag_preview(drag_preview_label)
-		
-		return get_selected()
+	drag_preview_label.text = get_selected().get_text(0)
+	set_drag_preview(drag_preview_label)
+
+	return get_selected()
 
 func _can_drop_data(at_position, source):
 	if not source is TreeItem:
@@ -244,7 +245,7 @@ func _can_drop_data(at_position, source):
 func _drop_data(at_position, source):
 	var target = get_item_at_position(at_position)
 	if not target:
-		return false
+		return
 
 	var source_entity: PandoraEntity = source.get_metadata(0)
 	var target_entity: PandoraEntity = target.get_metadata(0)
