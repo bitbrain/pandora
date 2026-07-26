@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://wqbu0ir2a0qy"]
+[gd_scene format=3 uid="uid://wqbu0ir2a0qy"]
 
 [ext_resource type="Script" uid="uid://e1djuwk7lsrl" path="res://TestScene.gd" id="1_88w03"]
 [ext_resource type="Texture2D" uid="uid://bd13bip4a1yuy" path="res://splash.png" id="1_r3xd3"]
@@ -12,7 +12,7 @@ _id = "49"
 script = ExtResource("2_racr8")
 _id = "50"
 
-[node name="TestScene" type="CenterContainer"]
+[node name="TestScene" type="CenterContainer" unique_id=1257143517]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,9 +22,9 @@ script = ExtResource("1_88w03")
 item = SubResource("Resource_dfvqv")
 entity = SubResource("Resource_xfcj2")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=452625669]
 layout_mode = 2
 texture = ExtResource("1_r3xd3")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=585739880]
 layout_mode = 2
