@@ -1,12 +1,16 @@
 @tool
 extends Node
 
+const PANDORA_DATA_VERSION: int = 1
+
 const EntityIdFileGenerator = preload("res://addons/pandora/util/entity_id_file_generator.gd")
 const CategoryIdFileGenerator = preload("res://addons/pandora/util/category_id_file_generator.gd")
 const ScriptUtil = preload("res://addons/pandora/util/script_util.gd")
+const DataMigration = preload("res://addons/pandora/util/migration.gd")
 
 signal data_loaded
 signal data_loaded_failure
+signal data_migrated(ctx: StringName, old_version: int, new_version: int)
 signal entity_added(entity: PandoraEntity)
 signal import_success(imported_count: int)
 signal import_failed(reason: String)
@@ -22,6 +26,7 @@ var _entity_backend: PandoraEntityBackend
 
 var _loaded = false
 var _backend_load_state: PandoraEntityBackend.LoadState = PandoraEntityBackend.LoadState.NOT_LOADED
+var _data_version: int = -1
 
 
 func _enter_tree() -> void:
@@ -140,7 +145,21 @@ func load_data() -> void:
 		print("Skipping loading data - loaded already!")
 		data_loaded.emit()
 		return
+
 	var all_object_data = _storage.get_all_data(_context_manager.get_context_id())
+	# Older versions of Pandora don't include a version number.
+	# As a fallback, if not present, we set it to the first version,
+	# making it so we can migrate it to the latest one.
+	if all_object_data.has("_version"):
+		_data_version = all_object_data["_version"]
+	else:
+		_data_version = 0
+
+	if _data_version < PANDORA_DATA_VERSION:
+		all_object_data = DataMigration.migrate(all_object_data, _data_version, PANDORA_DATA_VERSION)
+		data_migrated.emit(_context_manager.get_context_id(), _data_version, PANDORA_DATA_VERSION)
+		_data_version = PANDORA_DATA_VERSION
+
 	if all_object_data.has("_entity_data") and not all_object_data.is_empty():
 		_backend_load_state = _entity_backend.load_data(all_object_data["_entity_data"])
 	if all_object_data.has("_id_generator") and not all_object_data.is_empty():
@@ -160,6 +179,7 @@ func save_data() -> void:
 	var all_object_data = {
 		"_entity_data": _entity_backend.save_data(),
 		"_id_generator": _id_generator.save_data(),
+		"_version": _data_version,
 	}
 	_storage.store_all_data(all_object_data, _context_manager.get_context_id())
 
@@ -248,3 +268,4 @@ func _clear() -> void:
 	_id_generator.clear()
 	_loaded = false
 	_backend_load_state = PandoraEntityBackend.LoadState.NOT_LOADED
+	_data_version = -1
